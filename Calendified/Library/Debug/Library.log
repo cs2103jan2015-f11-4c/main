@@ -1,9 +1,16 @@
-﻿Build started 23/2/15 5:44:30 pm.
-     1>Project "\\psf\Home\Desktop\Calendified\Library\Library.vcxproj" on node 2 (Build target(s)).
-     1>Lib:
-         Library.vcxproj -> \\psf\Home\Desktop\Calendified\Debug\Library.lib
-     1>Done Building Project "\\psf\Home\Desktop\Calendified\Library\Library.vcxproj" (Build target(s)).
+﻿Build started 24/2/15 3:30:57 pm.
+     1>Project "\\psf\Home\Desktop\main\Calendified\Library\Library.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Users\kangsing\Desktop\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Calendified.cpp main.cpp
+         main.cpp
+         Calendified.cpp
+         Generating Code...
+       Lib:
+         C:\Users\kangsing\Desktop\VC\bin\Lib.exe /OUT:"\\psf\Home\Desktop\main\Calendified\Debug\Library.lib" /NOLOGO Debug\Calendified.obj
+         Debug\main.obj
+         Library.vcxproj -> \\psf\Home\Desktop\main\Calendified\Debug\Library.lib
+     1>Done Building Project "\\psf\Home\Desktop\main\Calendified\Library\Library.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.19
+Time Elapsed 00:00:02.39
