@@ -44,6 +44,7 @@ namespace UI {
 	private: System::Windows::Forms::Button^  button_undo;
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Button^  button_help;
 
 	protected: 
 
@@ -73,6 +74,7 @@ namespace UI {
 			this->button_undo = (gcnew System::Windows::Forms::Button());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->button_help = (gcnew System::Windows::Forms::Button());
 			this->SuspendLayout();
 			// 
 			// richTextBox1
@@ -169,6 +171,17 @@ namespace UI {
 			this->label3->TabIndex = 8;
 			this->label3->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
 			// 
+			// button_help
+			// 
+			this->button_help->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->button_help->Location = System::Drawing::Point(787, 13);
+			this->button_help->Name = L"button_help";
+			this->button_help->Size = System::Drawing::Size(75, 23);
+			this->button_help->TabIndex = 9;
+			this->button_help->Text = L"Help";
+			this->button_help->UseVisualStyleBackColor = true;
+			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -176,6 +189,7 @@ namespace UI {
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(885, 558);
+			this->Controls->Add(this->button_help);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button_undo);
