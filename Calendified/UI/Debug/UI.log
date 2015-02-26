@@ -1,4 +1,4 @@
-﻿Build started 24/2/15 4:09:22 pm.
+﻿Build started 26/2/15 3:15:02 pm.
      1>Project "\\psf\Home\Desktop\main\Calendified\UI\UI.vcxproj" on node 2 (Build target(s)).
      1>Link:
          UI.vcxproj -> \\psf\Home\Desktop\main\Calendified\Debug\UI.exe
@@ -6,4 +6,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.39
+Time Elapsed 00:00:00.59

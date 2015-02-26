@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 namespace UI {
 
@@ -38,7 +39,8 @@ namespace UI {
 	protected: 
 	private: System::Windows::Forms::Button^  button_notification;
 	private: System::Windows::Forms::Button^  change_view_button;
-	private: System::Windows::Forms::RichTextBox^  richTextBox2;
+	private: System::Windows::Forms::RichTextBox^  commandBox;
+
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Button^  button_enter;
 	private: System::Windows::Forms::Button^  button_undo;
@@ -68,7 +70,7 @@ namespace UI {
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->button_notification = (gcnew System::Windows::Forms::Button());
 			this->change_view_button = (gcnew System::Windows::Forms::Button());
-			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
+			this->commandBox = (gcnew System::Windows::Forms::RichTextBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->button_undo = (gcnew System::Windows::Forms::Button());
@@ -104,13 +106,14 @@ namespace UI {
 			this->change_view_button->Text = L"changeviewbutton";
 			this->change_view_button->UseVisualStyleBackColor = true;
 			// 
-			// richTextBox2
+			// commandBox
 			// 
-			this->richTextBox2->Location = System::Drawing::Point(12, 417);
-			this->richTextBox2->Name = L"richTextBox2";
-			this->richTextBox2->Size = System::Drawing::Size(864, 74);
-			this->richTextBox2->TabIndex = 3;
-			this->richTextBox2->Text = L"<Insert Your Command Here>";
+			this->commandBox->Location = System::Drawing::Point(12, 417);
+			this->commandBox->Name = L"commandBox";
+			this->commandBox->Size = System::Drawing::Size(864, 74);
+			this->commandBox->TabIndex = 3;
+			this->commandBox->Text = L"<Insert Your Command Here>";
+			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
 			// 
 			// label1
 			// 
@@ -188,14 +191,14 @@ namespace UI {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(885, 558);
+			this->ClientSize = System::Drawing::Size(796, 558);
 			this->Controls->Add(this->button_help);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button_undo);
 			this->Controls->Add(this->button_enter);
 			this->Controls->Add(this->label1);
-			this->Controls->Add(this->richTextBox2);
+			this->Controls->Add(this->commandBox);
 			this->Controls->Add(this->change_view_button);
 			this->Controls->Add(this->button_notification);
 			this->Controls->Add(this->richTextBox1);
@@ -209,6 +212,16 @@ namespace UI {
 
 		}
 #pragma endregion
-	
-	};
+
+private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+			 if(e->KeyCode==Keys::Enter){
+			 char buffer[999];
+			 sprintf(buffer,"%s",commandBox->Text);
+			 std::string inputCommandBox(buffer);
+
+			 String^ str2 = gcnew String(inputCommandBox.c_str());
+			 MessageBox::Show(str2); 
+			 }
+		 }
+};
 }
