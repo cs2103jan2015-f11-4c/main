@@ -43,6 +43,7 @@ namespace UI {
 	private: System::Windows::Forms::Button^  button_enter;
 	private: System::Windows::Forms::Button^  button_undo;
 	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::Label^  label3;
 
 	protected: 
 
@@ -71,6 +72,7 @@ namespace UI {
 			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->button_undo = (gcnew System::Windows::Forms::Button());
 			this->label2 = (gcnew System::Windows::Forms::Label());
+			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->SuspendLayout();
 			// 
 			// richTextBox1
@@ -111,15 +113,14 @@ namespace UI {
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::Transparent;
+			this->label1->BackColor = System::Drawing::Color::WhiteSmoke;
 			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->label1->Location = System::Drawing::Point(12, 396);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(824, 18);
+			this->label1->Size = System::Drawing::Size(210, 18);
 			this->label1->TabIndex = 4;
-			this->label1->Text = L"Insert Your Command Below:                                               Legend: " 
-				L"&& - Title, $ - Time, % - Date, @ - Location, # - Description ";
+			this->label1->Text = L"Insert Your Command Below:  ";
 			// 
 			// button_enter
 			// 
@@ -127,9 +128,9 @@ namespace UI {
 			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial Black", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->button_enter->ForeColor = System::Drawing::Color::Maroon;
-			this->button_enter->Location = System::Drawing::Point(760, 443);
+			this->button_enter->Location = System::Drawing::Point(787, 417);
 			this->button_enter->Name = L"button_enter";
-			this->button_enter->Size = System::Drawing::Size(75, 23);
+			this->button_enter->Size = System::Drawing::Size(89, 74);
 			this->button_enter->TabIndex = 5;
 			this->button_enter->Text = L"Enter";
 			this->button_enter->UseVisualStyleBackColor = false;
@@ -155,6 +156,19 @@ namespace UI {
 			this->label2->TabIndex = 7;
 			this->label2->Text = L"Welcome to Calendified!";
 			// 
+			// label3
+			// 
+			this->label3->AutoSize = true;
+			this->label3->BackColor = System::Drawing::Color::Silver;
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->label3->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->label3->Location = System::Drawing::Point(416, 396);
+			this->label3->Name = L"label3";
+			this->label3->Size = System::Drawing::Size(460, 16);
+			this->label3->TabIndex = 8;
+			this->label3->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
+			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -162,6 +176,7 @@ namespace UI {
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
 			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
 			this->ClientSize = System::Drawing::Size(885, 558);
+			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button_undo);
 			this->Controls->Add(this->button_enter);
