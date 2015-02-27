@@ -1,5 +1,8 @@
 #pragma once
 #include <iostream>
+#include "Calendified.h"
+#include "logic.h"
+#include "parser.h"
 
 namespace UI {
 
@@ -66,7 +69,6 @@ namespace UI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(CalendifiedGUI::typeid));
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
 			this->button_notification = (gcnew System::Windows::Forms::Button());
 			this->change_view_button = (gcnew System::Windows::Forms::Button());
@@ -110,7 +112,7 @@ namespace UI {
 			// 
 			this->commandBox->Location = System::Drawing::Point(12, 417);
 			this->commandBox->Name = L"commandBox";
-			this->commandBox->Size = System::Drawing::Size(864, 74);
+			this->commandBox->Size = System::Drawing::Size(782, 74);
 			this->commandBox->TabIndex = 3;
 			this->commandBox->Text = L"<Insert Your Command Here>";
 			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
@@ -133,7 +135,7 @@ namespace UI {
 			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial Black", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->button_enter->ForeColor = System::Drawing::Color::Maroon;
-			this->button_enter->Location = System::Drawing::Point(787, 417);
+			this->button_enter->Location = System::Drawing::Point(705, 417);
 			this->button_enter->Name = L"button_enter";
 			this->button_enter->Size = System::Drawing::Size(89, 74);
 			this->button_enter->TabIndex = 5;
@@ -168,7 +170,7 @@ namespace UI {
 			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->label3->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label3->Location = System::Drawing::Point(416, 396);
+			this->label3->Location = System::Drawing::Point(334, 398);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(460, 16);
 			this->label3->TabIndex = 8;
@@ -178,7 +180,7 @@ namespace UI {
 			// 
 			this->button_help->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->button_help->Location = System::Drawing::Point(787, 13);
+			this->button_help->Location = System::Drawing::Point(709, 13);
 			this->button_help->Name = L"button_help";
 			this->button_help->Size = System::Drawing::Size(75, 23);
 			this->button_help->TabIndex = 9;
@@ -190,8 +192,7 @@ namespace UI {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"$this.BackgroundImage")));
-			this->ClientSize = System::Drawing::Size(796, 558);
+			this->ClientSize = System::Drawing::Size(796, 570);
 			this->Controls->Add(this->button_help);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
@@ -203,7 +204,6 @@ namespace UI {
 			this->Controls->Add(this->button_notification);
 			this->Controls->Add(this->richTextBox1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
-			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
@@ -215,12 +215,22 @@ namespace UI {
 
 private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 			 if(e->KeyCode==Keys::Enter){
-			 char buffer[999];
-			 sprintf(buffer,"%s",commandBox->Text);
-			 std::string inputCommandBox(buffer);
+				 //system::string -> std::string
+				 char buffer[999];
+				 sprintf(buffer,"%s",commandBox->Text);
+				 std::string inputCommandBox(buffer);
+				 
+				 parser newParser;
+				 std::string newString = newParser.readCommand("hello");
+				 String^ str2 = gcnew String(newString.c_str());
+				 MessageBox::Show(str2);
 
-			 String^ str2 = gcnew String(inputCommandBox.c_str());
-			 MessageBox::Show(str2); 
+				 /*
+				 //std::string ->system::string
+				 String^ systemString = gcnew String(inputCommandBox.c_str()); 
+				 MessageBox::Show(systemString); 
+				 */
+
 			 }
 		 }
 };

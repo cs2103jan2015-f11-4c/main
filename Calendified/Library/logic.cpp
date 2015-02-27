@@ -1,6 +1,7 @@
 #include "logic.h"
 #include <iostream>
 
+
 logic::logic(void)
 {
 }
@@ -62,9 +63,4 @@ std::string logic::getLocation(){
 }
 std::string logic::getDescription(){
 	return _description;
-}
-
-void logic::readCommand(std::string command){
-
-
 }

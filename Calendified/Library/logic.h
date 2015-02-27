@@ -3,6 +3,7 @@
 #define LOGIC_H
 
 #include <iostream>
+#include "parser.h"
 
 class logic
 {
@@ -32,8 +33,6 @@ public:
 	std::string getDate();
 	std::string getLocation();
 	std::string getDescription();
-
-	void readCommand(std::string command);
 
 	logic(void);
 	~logic(void);

@@ -1,10 +1,8 @@
-﻿Build started 26/2/15 2:57:55 pm.
+﻿Build started 27/2/15 11:26:13 am.
      1>Project "\\psf\Home\Desktop\main\Calendified\Library\Library.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Users\kangsing\Desktop\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt logic.cpp parser.cpp
-         parser.cpp
+         C:\Users\kangsing\Desktop\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt logic.cpp
          logic.cpp
-         Generating Code...
        Lib:
          C:\Users\kangsing\Desktop\VC\bin\Lib.exe /OUT:"\\psf\Home\Desktop\main\Calendified\Debug\Library.lib" /NOLOGO Debug\Calendified.obj
          Debug\logic.obj
@@ -15,4 +13,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.98
+Time Elapsed 00:00:01.46

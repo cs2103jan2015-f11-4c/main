@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>\\psf\Home\Desktop\Calendified\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\\psf\Home\Desktop\main\Calendified\Library;\\psf\Home\Desktop\Calendified\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -90,11 +90,13 @@
     <ClInclude Include="CalendifiedGUI.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CalendifiedGUI.resx">
-      <DependentUpon>CalendifiedGUI.h</DependentUpon>
-    </EmbeddedResource>
+    <ResourceCompile Include="UI.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CalendifiedGUI.resx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
