@@ -221,9 +221,12 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 std::string inputCommandBox(buffer);
 				 
 				 parser newParser;
-				 std::string newString = newParser.readCommand("hello");
+				 std::string newString = newParser.readCommand(inputCommandBox);
+				 
+				 
 				 String^ str2 = gcnew String(newString.c_str());
 				 MessageBox::Show(str2);
+				 commandBox->Text = "";
 
 				 /*
 				 //std::string ->system::string
