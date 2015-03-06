@@ -207,6 +207,7 @@ namespace UI {
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
+			this->Load += gcnew System::EventHandler(this, &CalendifiedGUI::CalendifiedGUI_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -235,6 +236,8 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 */
 
 			 }
+		 }
+private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 		 }
 };
 }
