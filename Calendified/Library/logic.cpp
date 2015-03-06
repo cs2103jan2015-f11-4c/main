@@ -64,3 +64,7 @@ std::string logic::getLocation(){
 std::string logic::getDescription(){
 	return _description;
 }
+std::string logic::toParser(std::string command){
+	parser newParser;
+	return (newParser.readCommand(command));
+}

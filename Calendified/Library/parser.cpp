@@ -30,13 +30,14 @@ std::string parser::readCommand(std::string command){
 	std::string commandDELETE = "delete";
 	std::string tolower(command);
 
-	if (command.compare(commandADD)){
+	if (command.compare(commandADD) == 0 ){
 		return "added";
 	}
-	else
-		if (command.compare(commandDELETE)){
+	else if (command.compare(commandDELETE) == 0 ){
 			return "deleted";
-		}
+		} else {
+			return "invalid";
+	}
 
 	// add, delete, view, display, edit, undo, repeat ,
 	// specify, redo, toggle, 

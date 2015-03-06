@@ -220,8 +220,10 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 sprintf(buffer,"%s",commandBox->Text);
 				 std::string inputCommandBox(buffer);
 				 
-				 parser newParser;
-				 std::string newString = newParser.readCommand(inputCommandBox);
+			
+				 //@author A0125489U
+				 logic newLogic;
+				 std::string newString = newLogic.toParser(inputCommandBox);
 				 
 				 
 				 String^ str2 = gcnew String(newString.c_str());

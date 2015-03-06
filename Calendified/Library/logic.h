@@ -26,6 +26,7 @@ public:
 	void setDate(std::string date);
 	void setLocation(std::string location);
 	void setDescription(std::string description);
+	std::string toParser(std::string command);
 
 	std::string getCommand();
 	std::string getTitle();
