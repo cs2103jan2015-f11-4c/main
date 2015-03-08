@@ -230,7 +230,8 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 
 				 String^ str2 = gcnew String(newString.c_str());
 				 MessageBox::Show(str2);
-				 commandBox->Text = "";
+				 commandBox->ResetText();
+				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 
 				 /*
 				 //std::string ->system::string
