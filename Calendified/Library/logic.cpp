@@ -1,5 +1,7 @@
 #include "logic.h"
+#include "commandDelete.h"
 #include <iostream>
+#include <string>
 
 
 logic::logic(void){
@@ -27,6 +29,8 @@ void logic::readCommand(std::string commandLine){
 	char symbolDescription = '#';
 
 	std::string title,location,description;
+	commandDelete deleteItem;
+	std::string stringToBeDeleted ="";
 
 	switch(hashCommandAction(commandAction)){
 	case ADD:
@@ -48,6 +52,10 @@ void logic::readCommand(std::string commandLine){
 		temp2.setLocation(location);
 		description = temp.getItemsInString(commandLine, symbolDescription);
 		temp2.setDescription(description);
+
+		stringToBeDeleted = title + location + description;
+		deleteItem.executeDelete(stringToBeDeleted);
+
 		break;
 	case VIEW:
 		//_title = temp.getItemsInString(commandLine, symbolTitle);
