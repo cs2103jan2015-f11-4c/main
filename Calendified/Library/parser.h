@@ -2,19 +2,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 #include <iostream>
-
-enum commandType { //put in logic
-	ADD, 
-	DELETE, 
-	VIEW,
-	DISPLAY, 
-	EDIT, 
-	UNDO, 
-	REPEAT, 
-	SPECIFY, 
-	REDO, 
-	TOGGLE 
-};
+#include "logic.h"
 
 class parser
 {
@@ -32,8 +20,6 @@ public:
 	std::string getItemsInString(std::string inputString, char itemType);
 
 	//put in logic
-	commandType hashCommandAction(std::string commandAction);
-	void readCommand(std::string commandLine);
 
 	time_t convertDateAndTime(std::string _taskDateAndTime);
 	std::string getTaskCommand();

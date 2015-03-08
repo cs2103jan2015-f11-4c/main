@@ -1,5 +1,4 @@
 #include "logic.h"
-#include "parser.h"
 #include <iostream>
 
 
@@ -17,6 +16,121 @@ logic::logic(std::string command, std::string title, std::string time, std::stri
 		  _date = date;
 		  _location = location;
 		  _description = description;
+}
+
+void logic::readCommand(std::string commandLine){
+	parser temp;
+	logic temp2;
+	std::string commandAction = temp.getItemsInString(commandLine, '\0');
+	char symbolTitle = '&';
+	char symbolLocation = '@';
+	char symbolDescription = '#';
+
+	std::string title,location,description;
+
+	switch(hashCommandAction(commandAction)){
+	case ADD:
+		title = temp.getItemsInString(commandLine, symbolTitle);
+		temp2.setTitle(title);
+		location = temp.getItemsInString(commandLine, symbolLocation);
+		temp2.setLocation(location);
+		description = temp.getItemsInString(commandLine, symbolDescription);
+		temp2.setDescription(description);
+		//put convert string to time_h class funtion here(timeAndDate)
+		break;
+	case DELETE:
+		//_title = temp.getItemsInString(commandLine, symbolTitle);
+		//_location = temp.getItemsInString(commandLine, symbolLocation);
+		//_description = temp.getItemsInString(commandLine, symbolDescription);
+		title = temp.getItemsInString(commandLine, symbolTitle);
+		temp2.setTitle(title);
+		location = temp.getItemsInString(commandLine, symbolLocation);
+		temp2.setLocation(location);
+		description = temp.getItemsInString(commandLine, symbolDescription);
+		temp2.setDescription(description);
+		break;
+	case VIEW:
+		//_title = temp.getItemsInString(commandLine, symbolTitle);
+		title = temp.getItemsInString(commandLine, symbolTitle);
+		temp2.setTitle(title);
+		//put convert string to time_h class funtion here(timeAndDate)
+		break;
+	case DISPLAY:
+		//Shijia: what should I put here?
+		break;
+	case EDIT:
+		//_title = temp.getItemsInString(commandLine, symbolTitle);
+		//_location = temp.getItemsInString(commandLine, symbolLocation);
+		//_description = temp.getItemsInString(commandLine, symbolDescription);
+		title = temp.getItemsInString(commandLine, symbolTitle);
+		temp2.setTitle(title);
+		location = temp.getItemsInString(commandLine, symbolLocation);
+		temp2.setLocation(location);
+		description = temp.getItemsInString(commandLine, symbolDescription);
+		temp2.setDescription(description);
+		//put convert string to time_h class funtion here(timeAndDate)
+		break;
+	case UNDO:
+		//Shijia: what should I put here?
+		break;
+	case REPEAT:
+		//Shijia: what should I put here?
+		break;
+	case SPECIFY:
+		//Shijia: what should I put here?
+		break;
+	case REDO:
+		//Shijia: what should I put here?
+		break;
+	case TOGGLE:
+		//Shijia: what should I put here?
+		break;
+	default:
+		break;
+	}
+}
+
+commandType hashCommandAction(std::string commandAction){
+	std::string commandAdd = "add";
+	std::string commandDelete = "delete";
+	std::string commandView = "view";
+	std::string commandDisplay = "display" ;
+	std::string commandEdit = "edit";
+	std::string commandUndo = "undo";
+	std::string commandRepeat = "repeat";
+	std::string commandSpecify = "specify";
+	std::string commandRedo = "redo";
+	std::string commandToggle = "toggle";
+	if(commandAction.compare(commandAdd) == 0){ 
+		return ADD;
+	}
+	if(commandAction.compare(commandDelete) == 0){ 
+		return DELETE;
+	}
+	if(commandAction.compare(commandView) == 0){ 
+		return VIEW;
+	}
+	if(commandAction.compare(commandDisplay) == 0){ 
+		return DISPLAY;
+	}
+	if(commandAction.compare(commandEdit) == 0){ 
+		return EDIT;
+	}
+	if(commandAction.compare(commandUndo) == 0){ 
+		return UNDO;
+	}
+	if(commandAction.compare(commandRepeat) == 0){ 
+		return REPEAT;
+	}
+	if(commandAction.compare(commandSpecify) == 0){ 
+		return SPECIFY;
+	}
+	if(commandAction.compare(commandRedo) == 0){ 
+		return REDO;
+	}
+	if(commandAction.compare(commandToggle) == 0){ 
+		return TOGGLE;
+	}
 }
 
 void logic::setCommand(std::string command){
@@ -64,8 +178,8 @@ std::string logic::getDescription(){
 	return _description;
 }
 void logic::toParser(std::string command){
-	parser newParser;
-	newParser.readCommand(command);
+	//parser newParser;
+	//newParser.readCommand(command);
 
 	return;
 }

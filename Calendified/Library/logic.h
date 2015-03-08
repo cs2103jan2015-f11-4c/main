@@ -5,6 +5,19 @@
 #include <iostream>
 #include "parser.h"
 
+enum commandType { //put in logic
+	ADD, 
+	DELETE, 
+	VIEW,
+	DISPLAY, 
+	EDIT, 
+	UNDO, 
+	REPEAT, 
+	SPECIFY, 
+	REDO, 
+	TOGGLE 
+};
+
 class logic
 {
 private:
@@ -26,6 +39,9 @@ public:
 	void setLocation(std::string location);
 	void setDescription(std::string description);
 	void toParser(std::string command);
+
+	commandType hashCommandAction(std::string commandAction);
+	void readCommand(std::string commandLine);
 
 	std::string getCommand();
 	std::string getTitle();
