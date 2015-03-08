@@ -1,13 +1,12 @@
 #include "logic.h"
+#include "parser.h"
 #include <iostream>
 
 
-logic::logic(void)
-{
+logic::logic(void){
 }
 
-logic::~logic(void)
-{
+logic::~logic(void){
 }
 
 logic::logic(std::string command, std::string title, std::string time, std::string date, 
@@ -64,7 +63,9 @@ std::string logic::getLocation(){
 std::string logic::getDescription(){
 	return _description;
 }
-std::string logic::toParser(std::string command){
+void logic::toParser(std::string command){
 	parser newParser;
-	return (newParser.readCommand(command));
+	newParser.readCommand(command);
+
+	return;
 }

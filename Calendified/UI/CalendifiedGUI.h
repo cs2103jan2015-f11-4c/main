@@ -207,6 +207,7 @@ namespace UI {
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
+			this->Load += gcnew System::EventHandler(this, &CalendifiedGUI::CalendifiedGUI_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -220,10 +221,8 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 sprintf(buffer,"%s",commandBox->Text);
 				 std::string inputCommandBox(buffer);
 				 
-			
-				 //@author A0125489U
-				 logic newLogic;
-				 std::string newString = newLogic.toParser(inputCommandBox);
+				 parser newParser;
+				 std::string newString = newParser.readCommand(inputCommandBox);
 				 
 				 
 				 String^ str2 = gcnew String(newString.c_str());
@@ -237,6 +236,8 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 */
 
 			 }
+		 }
+private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 		 }
 };
 }

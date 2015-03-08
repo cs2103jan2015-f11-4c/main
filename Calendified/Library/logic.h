@@ -16,9 +16,8 @@ private:
 	std::string _description;
 
 public:
-
 	logic(std::string command, std::string title, std::string time,
-				std::string date, std::string location, std::string description);
+			std::string date, std::string location, std::string description);
 
 	void setCommand(std::string command);
 	void setTitle(std::string title);
@@ -26,7 +25,7 @@ public:
 	void setDate(std::string date);
 	void setLocation(std::string location);
 	void setDescription(std::string description);
-	std::string toParser(std::string command);
+	void toParser(std::string command);
 
 	std::string getCommand();
 	std::string getTitle();
