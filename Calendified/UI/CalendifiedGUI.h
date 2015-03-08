@@ -223,16 +223,17 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 sprintf(buffer,"%s",commandBox->Text);
 				 std::string inputCommandBox(buffer);
 				 
-				 
 				 logic newLogic;
-				 newLogic.readCommand(inputCommandBox);
-				 std::string newString =newLogic.getTitle(); 
-
-				 String^ str2 = gcnew String(newString.c_str());
-				 MessageBox::Show(str2);
-				 commandBox->ResetText();
+				 std::string logicResult = newLogic.readCommand(inputCommandBox);
+				 richTextBox1->Text = gcnew String(logicResult.c_str());	 
+				 commandBox->ResetText();				 				 
 				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 
+				 /*MessageBoxShowTest
+				 std::string newString =newLogic.getTitle(); 
+				 String^ str2 = gcnew String(newString.c_str());
+				 MessageBox::Show(str2);
+				 */
 				 /*
 				 //std::string ->system::string
 				 String^ systemString = gcnew String(inputCommandBox.c_str()); 

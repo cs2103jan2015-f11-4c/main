@@ -3,6 +3,11 @@
 #define LOGIC_H
 
 #include <iostream>
+#include <set>
+#include <iostream>
+#include <fstream>
+#include <string>
+#include "taskDelete.h"
 #include "parser.h"
 
 enum commandType { //put in logic
@@ -27,6 +32,7 @@ private:
 	std::string _date;
 	std::string _location;
 	std::string _description;
+	std::set <std::string> allTasks;
 
 public:
 	logic(std::string command, std::string title, std::string time,
@@ -39,9 +45,10 @@ public:
 	void setLocation(std::string location);
 	void setDescription(std::string description);
 	void toParser(std::string command);
+	bool displayTasks();
 
 	
-	void readCommand(std::string commandLine);
+	std::string readCommand(std::string commandLine);
 
 	std::string getCommand();
 	std::string getTitle();
