@@ -115,7 +115,9 @@ namespace UI {
 			this->commandBox->Size = System::Drawing::Size(782, 74);
 			this->commandBox->TabIndex = 3;
 			this->commandBox->Text = L"<Insert Your Command Here>";
+			this->commandBox->Enter += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Enter);
 			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
+			this->commandBox->Leave += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Leave);
 			// 
 			// label1
 			// 
@@ -224,9 +226,7 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 
 				 logic newLogic;
 				 newLogic.readCommand(inputCommandBox);
-				 //parser newParser(inputCommandBox);
 				 std::string newString =newLogic.getTitle(); 
-				 //newParser.readCommand(inputCommandBox);
 
 				 String^ str2 = gcnew String(newString.c_str());
 				 MessageBox::Show(str2);
@@ -241,6 +241,13 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 			 }
 		 }
 private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
+			 UI::CalendifiedGUI::ActiveControl = this->commandBox;
+		 }
+private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
+			 this->commandBox->Text="<Enter Your Command Here>";
+		 }
+private: System::Void commandBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+			 this->commandBox->ResetText();
 		 }
 };
 }
