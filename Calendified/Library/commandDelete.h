@@ -1,5 +1,5 @@
 //@author A0114411B
-
+#include <string>
 #pragma once
 #ifndef COMMANDDELETE_H
 #define COMMANDDELETE_H

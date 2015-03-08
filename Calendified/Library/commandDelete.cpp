@@ -35,7 +35,7 @@ void commandDelete::executeDelete(std::string stringToBeDeleted){
 	char buffer[999];
 	std::vector<std::string> file;
 	std::string data;
-	std::ifstream extract(storageName); //insert storage location file name here
+	std::ifstream extract(""); //insert storage location file name here
 
 	while(getline(extract,data)){
 		file.push_back(data);
@@ -52,10 +52,10 @@ void commandDelete::executeDelete(std::string stringToBeDeleted){
 
 		if(iter != file.end()){
 			
-			updateSession(stringToBeDeleted); //a new function?
+			//updateSession(stringToBeDeleted); //a new function?
 
 			file.erase(iter);
-			std::ofstream add(storageName); //insert storage location file name here
+			std::ofstream add(""); //insert storage location file name here
 			for(int i=0; file.size()>0 ; i++){
 				add << file[i] << '\n';
 			}

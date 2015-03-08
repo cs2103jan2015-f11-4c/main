@@ -3,7 +3,6 @@
 #include <iostream>
 #include <string>
 
-
 logic::logic(void){
 }
 
@@ -19,10 +18,9 @@ logic::logic(std::string command, std::string title, std::string time, std::stri
 		  _location = location;
 		  _description = description;
 }
-
+commandType hashCommandAction(std::string commandAction);
 void logic::readCommand(std::string commandLine){
 	parser temp;
-	logic temp2;
 	std::string commandAction = temp.getItemsInString(commandLine, '\0');
 	char symbolTitle = '&';
 	char symbolLocation = '@';
@@ -35,11 +33,11 @@ void logic::readCommand(std::string commandLine){
 	switch(hashCommandAction(commandAction)){
 	case ADD:
 		title = temp.getItemsInString(commandLine, symbolTitle);
-		temp2.setTitle(title);
+		setTitle(title);
 		location = temp.getItemsInString(commandLine, symbolLocation);
-		temp2.setLocation(location);
+		setLocation(location);
 		description = temp.getItemsInString(commandLine, symbolDescription);
-		temp2.setDescription(description);
+		setDescription(description);
 		//put convert string to time_h class funtion here(timeAndDate)
 		break;
 	case DELETE:
@@ -47,11 +45,11 @@ void logic::readCommand(std::string commandLine){
 		//_location = temp.getItemsInString(commandLine, symbolLocation);
 		//_description = temp.getItemsInString(commandLine, symbolDescription);
 		title = temp.getItemsInString(commandLine, symbolTitle);
-		temp2.setTitle(title);
+		setTitle(title);
 		location = temp.getItemsInString(commandLine, symbolLocation);
-		temp2.setLocation(location);
+		setLocation(location);
 		description = temp.getItemsInString(commandLine, symbolDescription);
-		temp2.setDescription(description);
+		setDescription(description);
 
 		stringToBeDeleted = title + location + description;
 		deleteItem.executeDelete(stringToBeDeleted);
@@ -60,7 +58,7 @@ void logic::readCommand(std::string commandLine){
 	case VIEW:
 		//_title = temp.getItemsInString(commandLine, symbolTitle);
 		title = temp.getItemsInString(commandLine, symbolTitle);
-		temp2.setTitle(title);
+		setTitle(title);
 		//put convert string to time_h class funtion here(timeAndDate)
 		break;
 	case DISPLAY:
@@ -71,11 +69,11 @@ void logic::readCommand(std::string commandLine){
 		//_location = temp.getItemsInString(commandLine, symbolLocation);
 		//_description = temp.getItemsInString(commandLine, symbolDescription);
 		title = temp.getItemsInString(commandLine, symbolTitle);
-		temp2.setTitle(title);
+		setTitle(title);
 		location = temp.getItemsInString(commandLine, symbolLocation);
-		temp2.setLocation(location);
+		setLocation(location);
 		description = temp.getItemsInString(commandLine, symbolDescription);
-		temp2.setDescription(description);
+		setDescription(description);
 		//put convert string to time_h class funtion here(timeAndDate)
 		break;
 	case UNDO:

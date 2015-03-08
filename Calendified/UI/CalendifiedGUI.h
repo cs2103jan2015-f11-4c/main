@@ -221,8 +221,11 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 sprintf(buffer,"%s",commandBox->Text);
 				 std::string inputCommandBox(buffer);
 				 
-				 parser newParser;
-				 std::string newString =""; 
+				 
+				 logic newLogic;
+				 newLogic.readCommand(inputCommandBox);
+				 //parser newParser(inputCommandBox);
+				 std::string newString =newLogic.getTitle(); 
 				 //newParser.readCommand(inputCommandBox);
 
 				 String^ str2 = gcnew String(newString.c_str());

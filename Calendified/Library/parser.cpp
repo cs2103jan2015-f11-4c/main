@@ -55,23 +55,23 @@ time_t parser::convertDateAndTime(std::string _taskDateAndTime){
 }
 
 
-	std::string parser::getTaskCommand(){
-		return _taskCommand;
-	}
+std::string parser::getTaskCommand(){
+	return _taskCommand;
+}
 
-	std::string parser::getTaskTitle(){
-		return _taskTitle;
-	}
+std::string parser::getTaskTitle(){
+	return _taskTitle;
+}
 
-	std::string parser::getTaskLocation(){
-		return _taskLocation;
-	}
+std::string parser::getTaskLocation(){
+	return _taskLocation;
+}
 
-	std::string parser::getTaskDescription(){
-		return _taskDescription;
-	}
+std::string parser::getTaskDescription(){
+	return _taskDescription;
+}
 
-	time_t parser::getTaskTimeAndDate(){
-		return convertDateAndTime(_taskDateAndTime);
-	}
+time_t parser::getTaskTimeAndDate(){
+	return convertDateAndTime(_taskDateAndTime);
+}
 

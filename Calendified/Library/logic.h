@@ -40,7 +40,7 @@ public:
 	void setDescription(std::string description);
 	void toParser(std::string command);
 
-	commandType hashCommandAction(std::string commandAction);
+	
 	void readCommand(std::string commandLine);
 
 	std::string getCommand();
@@ -52,7 +52,6 @@ public:
 
 	logic(void);
 	~logic(void);
-
 
 };
 
