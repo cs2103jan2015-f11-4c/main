@@ -1,4 +1,5 @@
 #include "logic.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -134,6 +135,9 @@ commandType hashCommandAction(std::string commandAction){
 	std::string commandSpecify = "specify";
 	std::string commandRedo = "redo";
 	std::string commandToggle = "toggle";
+
+	transform(commandAction.begin(),commandAction.end(),commandAction.begin(),tolower);
+
 	if(commandAction.compare(commandAdd) == 0){ 
 		return ADD;
 	}
@@ -225,6 +229,7 @@ bool logic::displayTasks(){
 			getline(myReadFile,task);
 			allTasks.insert(task);
 		}
+		myReadFile.close();
 		return true;
 	}
 	else{
