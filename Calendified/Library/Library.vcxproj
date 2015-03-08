@@ -63,16 +63,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Calendified.h" />
-    <ClInclude Include="commandDelete.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="parser.h" />
+    <ClInclude Include="taskDelete.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calendified.cpp" />
-    <ClCompile Include="commandDelete.cpp" />
     <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
+    <ClCompile Include="taskDelete.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

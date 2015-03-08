@@ -24,7 +24,7 @@
     <ClInclude Include="parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="commandDelete.h">
+    <ClInclude Include="taskDelete.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,7 +41,7 @@
     <ClCompile Include="parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="commandDelete.cpp">
+    <ClCompile Include="taskDelete.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

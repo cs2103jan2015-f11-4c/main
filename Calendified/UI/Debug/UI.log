@@ -1,9 +1,16 @@
-﻿Build started 8/3/2015 8:55:58 PM.
-     1>Project "C:\Users\Junhan\Documents\GitHub\main\Calendified\UI\UI.vcxproj" on node 2 (Build target(s)).
-     1>Link:
-         UI.vcxproj -> C:\Users\Junhan\Documents\GitHub\main\Calendified\Debug\UI.exe
-     1>Done Building Project "C:\Users\Junhan\Documents\GitHub\main\Calendified\UI\UI.vcxproj" (Build target(s)).
+﻿Build started 9/3/15 12:17:03 am.
+     1>Project "\\psf\Home\Desktop\main\Calendified\UI\UI.vcxproj" on node 2 (Build target(s)).
+     1>ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Debug\UI.res" UI.rc 
+       Link:
+         C:\Users\kangsing\Desktop\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"\\psf\Home\Desktop\main\Calendified\Debug\UI.exe" /INCREMENTAL /NOLOGO /ASSEMBLYRESOURCE:Debug\UI.CalendifiedGUI.resources /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"\\psf\Home\Desktop\main\Calendified\Debug\UI.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:WINDOWS /TLBID:1 /ENTRY:"main" /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\UI.res
+         Debug\CalendifiedGUI.obj
+         "Debug\.NETFramework,Version=v4.5.AssemblyAttributes.obj"
+         \\psf\Home\Desktop\main\Calendified\Debug\Library.lib
+     1>Library.lib(main.obj) : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/OPT:LBR' specification
+         UI.vcxproj -> \\psf\Home\Desktop\main\Calendified\Debug\UI.exe
+     1>Done Building Project "\\psf\Home\Desktop\main\Calendified\UI\UI.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.18
+Time Elapsed 00:00:04.31
