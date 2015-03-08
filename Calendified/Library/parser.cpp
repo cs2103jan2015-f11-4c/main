@@ -35,7 +35,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 
 	if(itemType == '\0'){
 		substringBegin = 0;
-		substringEnd = inputString.find_first_of(symbols);
+		substringEnd = inputString.find_first_of(symbols) -1;
 	} else{
 		substringBegin = inputString.find_first_of(itemType) + 1;
 		substringEnd = inputString.find_first_of(symbols, substringBegin);

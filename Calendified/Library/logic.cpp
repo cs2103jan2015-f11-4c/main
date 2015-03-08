@@ -1,5 +1,5 @@
 #include "logic.h"
-#include "commandDelete.h"
+#include "taskDelete.h"
 #include <iostream>
 #include <string>
 
@@ -27,7 +27,7 @@ void logic::readCommand(std::string commandLine){
 	char symbolDescription = '#';
 
 	std::string title,location,description;
-	commandDelete deleteItem;
+	taskDelete deleteItem;
 	std::string stringToBeDeleted ="";
 
 	switch(hashCommandAction(commandAction)){

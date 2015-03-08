@@ -1,17 +1,17 @@
 //@author A0114411B
 
-#include "commandDelete.h"
+#include "taskDelete.h"
 #include <string>
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <algorithm>
 
-commandDelete::commandDelete(void)
+taskDelete::taskDelete(void)
 {
 }
 
-commandDelete::~commandDelete(void)
+taskDelete::~taskDelete(void)
 {
 }
 
@@ -31,7 +31,7 @@ commandDelete::~commandDelete(void)
 //******************************************************************
 
 
-void commandDelete::executeDelete(std::string stringToBeDeleted){
+void taskDelete::executeDelete(std::string stringToBeDeleted){
 	char buffer[999];
 	std::vector<std::string> file;
 	std::string data;
