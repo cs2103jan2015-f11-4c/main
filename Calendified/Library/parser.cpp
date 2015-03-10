@@ -1,8 +1,10 @@
 #include "parser.h"
 #include <iostream>
 #include <ctype.h>
-#include <ctime>
+#include <time.h>
 #include <string>
+
+#include <sstream>
 
 parser::parser(void){
 	_taskCommand = "";
@@ -51,7 +53,25 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 
 time_t parser::convertDate(std::string _taskDate){
 	struct tm Date;
-	strftime((char*)_taskDate.c_str(),_taskDate.size(), "%d/%m/%y", &Date);
+
+	int outNum;
+	std::istringstream in(_taskDate);
+	
+	in >> outNum;
+	Date.tm_mday = outNum;
+
+	char ignore;
+
+	in >> ignore;
+
+	in >> outNum;
+	Date.tm_mon = outNum;
+
+	in >> ignore;
+
+	in >> outNum;
+	Date.tm_year = outNum;
+
 	time_t t = mktime(&Date);
 
 	return t;
@@ -59,7 +79,18 @@ time_t parser::convertDate(std::string _taskDate){
 
 time_t parser::convertTime(std::string _taskTime){
 	struct tm Time;
-	strftime((char*)_taskTime.c_str(),_taskTime.size(), "%H:%M", &Time);
+	int outNum;
+	std::istringstream in(_taskDate);
+	
+	in >> outNum;
+	Time.tm_mday = outNum;
+
+	char ignore;
+	in >> ignore;
+
+	in >> outNum;
+	Time.tm_mon = outNum;
+
 	time_t t1 = mktime(&Time);
 
 	return t1;

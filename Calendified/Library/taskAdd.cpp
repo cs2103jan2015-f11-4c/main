@@ -6,8 +6,6 @@
 #include <vector>
 
 taskAdd::taskAdd(std::string _task){
-	logic newLogic;
-	_task = newLogic.toString();
 }
 
 taskAdd::~taskAdd(void)

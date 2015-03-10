@@ -16,7 +16,17 @@ logic::~logic(void){
 
 string logic::readCommand(std::string commandLine){
 	parser temp(commandLine);
+	std::string stringDetails;
+
 	std::string commandAction = temp.getTaskCommand();
+	ostringstream details;
+	details << temp.getTaskDate()
+			<< temp.getTaskTime()
+			<< temp.getTaskTitle()
+			<< temp.getTaskLocation()
+			<< temp.getTaskDescription();
+	
+	stringDetails = details.str();
 
 	std::string title;
 	std::string location;
@@ -39,30 +49,26 @@ string logic::readCommand(std::string commandLine){
 	std::string displayResults="";
 	bool isViewed;
 
-	std::string task = toString();
-	taskAdd taskToBeAdded(task);
+	taskAdd taskToBeAdded(commandLine);
 
 	switch(hashCommandAction(commandAction)){
 	case ADD:
-		title = temp.getTaskTitle();
-		location = temp.getTaskLocation();
-		description = temp.getTaskDescription();
-		date = temp.getTaskDate();
-		time = temp.getTaskTime();
-		taskToBeAdded.taskAddTask();
 
+		addResults = taskToBeAdded.taskAddTask();
 		//addResults="Added Successfully!";
 		return addResults;
 		break;
 	case DELETE:
+		/*
 		title = temp.getTaskTitle();
 		location = temp.getTaskLocation();
 		description = temp.getTaskDescription();
 		date = temp.getTaskDate();
 		time = temp.getTaskTime();
-
-		stringToBeDeleted = title + location + description; //tostring
-		deleteItem.executeDelete(stringToBeDeleted);
+		*/
+		//stringToBeDeleted = title + location + description; //tostring
+		
+		deleteItem.executeDelete(stringDetails);
 		return "Deleted Successfully!";
 		break;
 	case VIEW:
@@ -120,18 +126,20 @@ string logic::readCommand(std::string commandLine){
 	}
 	return "";
 }
+/*
+std::string logic::toString(commandLine){
 
-std::string logic::toString(){
-	parser taskAdd;
+	parser taskAdd(commandLine);
 	std::ostringstream details;
-	details << taskAdd.getTaskDate()
-			<< taskAdd.getTaskTime()
+	details << taskAdd.getTaskDate() //time t version
+			<< taskAdd.getTaskTime() //time t version
 			<< taskAdd.getTaskTitle()
 			<< taskAdd.getTaskLocation()
 			<< taskAdd.getTaskDescription();
 
 	return details.str();
 }
+*/
 
 void logic::setCommand(std::string command){
 }
