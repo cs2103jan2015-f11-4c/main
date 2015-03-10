@@ -65,6 +65,8 @@
     <ClInclude Include="Calendified.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="parser.h" />
+    <ClInclude Include="storage.h" />
+    <ClInclude Include="taskAdd.h" />
     <ClInclude Include="taskDelete.h" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +74,8 @@
     <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
+    <ClCompile Include="storage.cpp" />
+    <ClCompile Include="taskAdd.cpp" />
     <ClCompile Include="taskDelete.cpp" />
   </ItemGroup>
   <ItemGroup>

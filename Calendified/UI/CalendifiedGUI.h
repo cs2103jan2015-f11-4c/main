@@ -3,6 +3,7 @@
 #include "Calendified.h"
 #include "logic.h"
 #include "parser.h"
+#include "storage.h"
 
 namespace UI {
 
@@ -50,6 +51,7 @@ namespace UI {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::Label^  label3;
 	private: System::Windows::Forms::Button^  button_help;
+	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
 
 	protected: 
 
@@ -79,6 +81,7 @@ namespace UI {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->label3 = (gcnew System::Windows::Forms::Label());
 			this->button_help = (gcnew System::Windows::Forms::Button());
+			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
 			this->SuspendLayout();
 			// 
 			// richTextBox1
@@ -245,6 +248,44 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 		 }
 private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 			 UI::CalendifiedGUI::ActiveControl = this->commandBox;
+			 storage newStorage;
+				 if(!newStorage.isFileExist()){
+					 IO::Stream^ mystream;
+					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
+
+					 saveFileDialog1->InitialDirectory = "c://";
+					 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
+					 saveFileDialog1->FilterIndex = 2;
+					 saveFileDialog1->RestoreDirectory = true;
+					 saveFileDialog1->FileName = "storage";
+
+					 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+					 {
+						 IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
+						 file->WriteLine("Calendified Database.");
+						 file->Close();
+					 }
+				 }
+
+				 //Own notes
+				 /*
+				 IO::Stream^ myStream;
+				 OpenFileDialog^ openFileDialog1 = gcnew OpenFileDialog;
+
+				 openFileDialog1->InitialDirectory = "c:\\";
+				 openFileDialog1->Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+				 openFileDialog1->FilterIndex = 2;
+				 openFileDialog1->RestoreDirectory = true;
+
+				 if ( openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK )
+				 {
+				 if ( (myStream = openFileDialog1->OpenFile()) != nullptr )
+				 {
+				 // Insert code to read the stream here.
+				 myStream->Close();
+				 }
+				 }
+				 */
 		 }
 private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
 			 this->commandBox->Text="<Enter Your Command Here>";
