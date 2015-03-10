@@ -18,7 +18,7 @@ public:
 	~taskAdd(void);
 	bool readingFile(std::string fileName, std::vector<std::string> _taskStorage);
 	bool writingFile(std::string fileName, std::vector<std::string> _taskStorage);
-	std::string taskAddTask(std::vector<std::string> _taskStorage);
+	std::string taskAddTask();
 	void taskAddRecurrent();
 	void taskAddTitle(); //floating task
 	void taskAddLocation(); //floating task

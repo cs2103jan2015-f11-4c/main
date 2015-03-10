@@ -39,6 +39,9 @@ string logic::readCommand(std::string commandLine){
 	std::string displayResults="";
 	bool isViewed;
 
+	std::string task = toString();
+	taskAdd taskToBeAdded(task);
+
 	switch(hashCommandAction(commandAction)){
 	case ADD:
 		title = temp.getTaskTitle();
@@ -46,8 +49,9 @@ string logic::readCommand(std::string commandLine){
 		description = temp.getTaskDescription();
 		date = temp.getTaskDate();
 		time = temp.getTaskTime();
+		taskToBeAdded.taskAddTask();
 
-		addResults="Added Successfully!";
+		//addResults="Added Successfully!";
 		return addResults;
 		break;
 	case DELETE:

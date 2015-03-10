@@ -34,7 +34,8 @@ bool taskAdd::writingFile(std::string fileName, std::vector<std::string> _taskSt
 	return true;
 }
 
-std::string taskAdd::taskAddTask(std::vector<std::string> _taskStorage){
+std::string taskAdd::taskAddTask(){
+	std::vector<std::string> _taskStorage;
 	std::string fileName = "storage.txt"; //temp filename
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
