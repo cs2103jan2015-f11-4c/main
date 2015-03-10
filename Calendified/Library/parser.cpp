@@ -24,8 +24,8 @@ parser::parser(std::string commandLine){
 	_taskTitle = getItemsInString(commandLine, symbolTitle);
 	_taskLocation = getItemsInString(commandLine, symbolLocation);
 	_taskDescription = getItemsInString(commandLine, symbolDescription);
-	_taskTime = getItemsInString(commandLine, symbolDate);
-	_taskDate = getItemsInString(commandLine, symbolTime);
+	_taskDate = getItemsInString(commandLine, symbolDate);
+	_taskTime = getItemsInString(commandLine, symbolTime);
 }
 
 parser::~parser(void){
