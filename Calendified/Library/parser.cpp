@@ -9,8 +9,8 @@ parser::parser(void){
 	_taskTitle = "";
 	_taskLocation = "";
 	_taskDescription = "";
-	_taskDate = "";
-	_taskTime = "";
+	_taskDate = "01/01/00";
+	_taskTime = "00:00";
 }
 
 parser::parser(std::string commandLine){
@@ -38,13 +38,16 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 
 	if(itemType == '\0'){
 		substringBegin = 0;
-		substringEnd = inputString.find_first_of(symbols) -1;
+		substringEnd = inputString.find_first_of(symbols);
 	} else{
 		substringBegin = inputString.find_first_of(itemType) + 1;
 		substringEnd = inputString.find_first_of(symbols, substringBegin);
 		if(substringEnd == std::string::npos){ //print last token
 			return inputString.substr(substringBegin);
 		}
+	}
+	while(inputString[substringEnd] == ' '){
+		substringEnd = substringEnd - 1;
 	}
 	return inputString.substr(substringBegin,substringEnd - substringBegin);
 }

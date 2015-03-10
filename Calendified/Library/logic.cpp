@@ -39,7 +39,7 @@ string logic::readCommand(std::string commandLine){
 	std::string displayResults="";
 	bool isViewed;
 
-	std::string task = toString();
+	std::string task = logic::toString();
 	taskAdd taskToBeAdded(task);
 
 	switch(hashCommandAction(commandAction)){
