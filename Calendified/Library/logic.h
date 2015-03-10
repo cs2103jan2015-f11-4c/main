@@ -28,7 +28,7 @@ class logic
 private:
 	std::string _command;
 	std::string _title;
-	std::string _time;
+	std::string _time; //separate time and date? or put tgt?
 	std::string _date;
 	std::string _location;
 	std::string _description;
