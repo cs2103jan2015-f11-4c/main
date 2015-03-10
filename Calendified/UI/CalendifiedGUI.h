@@ -230,10 +230,11 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 
 				 /*MessageBoxShowTest
-				 std::string newString =newLogic.getTitle(); 
+				 std::string newString =newLogic.getDateAndTime(); 
 				 String^ str2 = gcnew String(newString.c_str());
 				 MessageBox::Show(str2);
 				 */
+
 				 /*
 				 //std::string ->system::string
 				 String^ systemString = gcnew String(inputCommandBox.c_str()); 

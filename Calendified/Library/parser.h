@@ -11,22 +11,23 @@ private:
 	std::string _taskTitle;
 	std::string _taskLocation;
 	std::string _taskDescription;
-	std::string _taskDateAndTime;// use time_t type for easily sort the tasks in scheduled order
+	std::string _taskDate;
+	std::string _taskTime;
 
 public:
 	parser(void);
 	parser::parser(std::string commandLine);
 	~parser(void);
 	std::string getItemsInString(std::string inputString, char itemType);
-
-	//put in logic
-
-	time_t convertDateAndTime(std::string _taskDateAndTime);
+	time_t convertDate(std::string _taskDate);
+	time_t convertTime(std::string _taskTime);
 	std::string getTaskCommand();
 	std::string getTaskTitle();
 	std::string getTaskLocation();
 	std::string getTaskDescription();
-	time_t getTaskTimeAndDate();
+	time_t getTaskDate();
+	time_t getTaskTime();
+
 };
 
 #endif

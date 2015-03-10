@@ -1,7 +1,12 @@
 #include "logic.h"
 #include <algorithm>
+#include <string>
+#include <sstream>
+#include "taskAdd.h"
 
 using namespace std;
+
+commandType hashCommandAction(std::string commandAction);
 
 logic::logic(void){
 }
@@ -9,65 +14,58 @@ logic::logic(void){
 logic::~logic(void){
 }
 
-logic::logic(std::string command, std::string title, std::string time, std::string date, 
-	  std::string location, std::string description){
-		  _command = command;
-		  _title = title;
-		  _time = time;
-		  _date = date;
-		  _location = location;
-		  _description = description;
-}
-commandType hashCommandAction(std::string commandAction);
 string logic::readCommand(std::string commandLine){
-	parser temp;
-	std::string commandAction = temp.getItemsInString(commandLine, '\0');
+	parser temp(commandLine);
+	std::string commandAction = temp.getTaskCommand();
+
+	std::string title;
+	std::string location;
+	std::string description;
+	time_t date;
+	time_t time;
+
 	char symbolTitle = '&';
 	char symbolLocation = '@';
 	char symbolDescription = '#';
+	char symbolDate = '%';
+	char symbolTime = '$';
 
-	std::string title,location,description;
 	//Add operation variables
 	string addResults;
 	//Delete operation variables
 	taskDelete deleteItem;
 	std::string stringToBeDeleted ="";
 	//Display operation variables
-	string displayResults="";
+	std::string displayResults="";
 	bool isViewed;
 
 	switch(hashCommandAction(commandAction)){
 	case ADD:
-		title = temp.getItemsInString(commandLine, symbolTitle);
-		setTitle(title);
-		location = temp.getItemsInString(commandLine, symbolLocation);
-		setLocation(location);
-		description = temp.getItemsInString(commandLine, symbolDescription);
-		setDescription(description);
+		title = temp.getTaskTitle();
+		location = temp.getTaskLocation();
+		description = temp.getTaskDescription();
+		date = temp.getTaskDate();
+		time = temp.getTaskTime();
+
 		addResults="Added Successfully!";
 		return addResults;
-		//put convert string to time_h class funtion here(timeAndDate)
 		break;
 	case DELETE:
-		//_title = temp.getItemsInString(commandLine, symbolTitle);
-		//_location = temp.getItemsInString(commandLine, symbolLocation);
-		//_description = temp.getItemsInString(commandLine, symbolDescription);
-		title = temp.getItemsInString(commandLine, symbolTitle);
-		setTitle(title);
-		location = temp.getItemsInString(commandLine, symbolLocation);
-		setLocation(location);
-		description = temp.getItemsInString(commandLine, symbolDescription);
-		setDescription(description);
+		title = temp.getTaskTitle();
+		location = temp.getTaskLocation();
+		description = temp.getTaskDescription();
+		date = temp.getTaskDate();
+		time = temp.getTaskTime();
 
-		stringToBeDeleted = title + location + description;
+		stringToBeDeleted = title + location + description; //tostring
 		deleteItem.executeDelete(stringToBeDeleted);
 		return "Deleted Successfully!";
 		break;
 	case VIEW:
 		//_title = temp.getItemsInString(commandLine, symbolTitle);
-		title = temp.getItemsInString(commandLine, symbolTitle);
-		setTitle(title);
-		//put convert string to time_h class funtion here(timeAndDate)
+		title = temp.getTaskTitle();
+		date = temp.getTaskDate();
+		time = temp.getTaskTime();
 		return "";
 		break;
 	case DISPLAY:
@@ -85,16 +83,11 @@ string logic::readCommand(std::string commandLine){
 		}
 		break;
 	case EDIT:
-		//_title = temp.getItemsInString(commandLine, symbolTitle);
-		//_location = temp.getItemsInString(commandLine, symbolLocation);
-		//_description = temp.getItemsInString(commandLine, symbolDescription);
-		title = temp.getItemsInString(commandLine, symbolTitle);
-		setTitle(title);
-		location = temp.getItemsInString(commandLine, symbolLocation);
-		setLocation(location);
-		description = temp.getItemsInString(commandLine, symbolDescription);
-		setDescription(description);
-		//put convert string to time_h class funtion here(timeAndDate)
+		title = temp.getTaskTitle();
+		location = temp.getTaskLocation();
+		description = temp.getTaskDescription();
+		date = temp.getTaskDate();
+		time = temp.getTaskTime();
 		return "";
 		break;
 	case UNDO:
@@ -122,6 +115,82 @@ string logic::readCommand(std::string commandLine){
 		break;
 	}
 	return "";
+}
+
+std::string logic::toString(){
+	parser taskAdd;
+	std::ostringstream details;
+	details << taskAdd.getTaskDate()
+			<< taskAdd.getTaskTime()
+			<< taskAdd.getTaskTitle()
+			<< taskAdd.getTaskLocation()
+			<< taskAdd.getTaskDescription();
+
+	return details.str();
+}
+
+void logic::setCommand(std::string command){
+}
+
+void logic::setTitle(std::string title){
+}
+
+void logic::setLocation(std::string location){
+}
+
+void logic::setDescription(std::string description){
+}
+
+void logic::setDate(std::string date){
+}
+
+void logic::setTime(std::string time){
+}
+
+/*
+std::string logic::getCommand(){
+}
+
+std::string logic::getTitle(){
+}
+
+std::string logic::getLocation(){
+}
+
+std::string logic::getDescription(){
+}
+
+std::string logic::getDate(){
+}
+
+std::string logic::getTime(){
+}
+*/
+
+/*
+void logic::toParser(std::string commandLine){ //repetitive
+	//parser newParser;
+	//newParser.readCommand(command);
+
+	return;
+}
+*/
+
+bool logic::displayTasks(){
+	ifstream myReadFile;
+	string task;
+	myReadFile.open("storage.txt");
+	if (myReadFile.is_open()){
+		while (!myReadFile.eof()){
+			getline(myReadFile,task);
+			allTasks.insert(task);
+		}
+		myReadFile.close();
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 commandType hashCommandAction(std::string commandAction){
@@ -167,72 +236,5 @@ commandType hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandToggle) == 0){ 
 		return TOGGLE;
-	}
-}
-
-void logic::setCommand(std::string command){
-	_command = command;
-}
-
-void logic::setTitle(std::string title){
-	_title = title;
-}
-
-void logic::setTime(std::string time){
-	_time = time;
-}
-
-void logic::setDate(std::string date){
-	_date = date;
-}
-
-void logic::setLocation(std::string location){
-	_location = location;
-}
-
-void logic::setDescription(std::string description){
-	_description = description;
-}
-
-std::string logic::getCommand(){
-	return _command;
-}
-
-std::string logic::getTitle(){
-	return _title;
-}
-
-std::string logic::getTime(){
-	return _time;
-}
-std::string logic::getDate(){
-	return _date;
-}
-std::string logic::getLocation(){
-	return _location;
-}
-std::string logic::getDescription(){
-	return _description;
-}
-void logic::toParser(std::string command){
-	//parser newParser;
-	//newParser.readCommand(command);
-
-	return;
-}
-bool logic::displayTasks(){
-	ifstream myReadFile;
-	string task;
-	myReadFile.open("storage.txt");
-	if (myReadFile.is_open()){
-		while (!myReadFile.eof()){
-			getline(myReadFile,task);
-			allTasks.insert(task);
-		}
-		myReadFile.close();
-		return true;
-	}
-	else{
-		return false;
 	}
 }

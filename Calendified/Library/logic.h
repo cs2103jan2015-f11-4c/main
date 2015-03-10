@@ -10,7 +10,7 @@
 #include "taskDelete.h"
 #include "parser.h"
 
-enum commandType { //put in logic
+enum commandType {
 	ADD, 
 	DELETE, 
 	VIEW,
@@ -26,40 +26,34 @@ enum commandType { //put in logic
 class logic
 {
 private:
-	std::string _command;
-	std::string _title;
-	std::string _time; //separate time and date? or put tgt?
-	std::string _date;
-	std::string _location;
-	std::string _description;
 	std::set <std::string> allTasks;
-
 public:
-	logic(std::string command, std::string title, std::string time,
-			std::string date, std::string location, std::string description);
+	logic(void);
+	~logic(void);
+	std::string readCommand(std::string commandLine);
+	std::string toString();
 
 	void setCommand(std::string command);
 	void setTitle(std::string title);
-	void setTime(std::string time);
-	void setDate(std::string date);
 	void setLocation(std::string location);
 	void setDescription(std::string description);
-	void toParser(std::string command);
-	bool displayTasks();
+	void setDate(std::string date);
+	void setTime(std::string time);
 
-	
-	std::string readCommand(std::string commandLine);
-
+	/*
 	std::string getCommand();
 	std::string getTitle();
-	std::string getTime();
-	std::string getDate();
 	std::string getLocation();
 	std::string getDescription();
+	std::string getDate();
+	std::string getTime();
+	*/
 
-	logic(void);
-	~logic(void);
-
+	/*
+	void toParser(std::string command);
+	*/
+	
+	bool displayTasks();
 };
 
 #endif

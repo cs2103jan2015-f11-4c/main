@@ -4,21 +4,14 @@
 #include "logic.h"
 #include <iostream>
 #include <vector>
-#include <sstream>
 
 taskAdd::taskAdd(std::string _task){
-	_task = toString();
+	logic newLogic;
+	_task = newLogic.toString();
 }
 
-std::string taskAdd::toString(){
-	logic task;
-	std::ostringstream details;
-	details << task.getTitle()
-			<< task.getLocation()
-			<< task.getDescription()
-			<< task.getDate()
-			<< task.getTime();
-	return details.str();
+taskAdd::~taskAdd(void)
+{
 }
 
 bool taskAdd::readingFile(std::string fileName, std::vector<std::string> _taskStorage){
@@ -41,8 +34,8 @@ bool taskAdd::writingFile(std::string fileName, std::vector<std::string> _taskSt
 	return true;
 }
 
-void taskAdd::taskAddTask(std::string, std::vector<std::string> _taskStorage){
-	std::string fileName = "file1"; //temp filename
+std::string taskAdd::taskAddTask(std::vector<std::string> _taskStorage){
+	std::string fileName = "storage.txt"; //temp filename
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
 
@@ -53,23 +46,24 @@ void taskAdd::taskAddTask(std::string, std::vector<std::string> _taskStorage){
 		int sizeAfterAdd = _taskStorage.size();
 
 		if (isAdded(sizeBeforeAdd, sizeAfterAdd)){
-			std::cout << successMessage;
+			return successMessage;
 		} else {
-			std::cout << failureMessage;
+			return failureMessage;
 		}
 	}	
 }
 
-void taskAdd::taskAddRecurrent(std::string){
+void taskAdd::taskAddRecurrent(){
+
 }
 
-void taskAdd::taskAddTitle(std::string){
+void taskAdd::taskAddTitle(){
 }
 
-void taskAdd::taskAddLocation(std::string){
+void taskAdd::taskAddLocation(){
 }//floating task
 
-void taskAdd::taskAddDescription(std::string){
+void taskAdd::taskAddDescription(){
 }//floating task
 
 bool taskAdd::isAdded(int sizeBeforeAdd, int sizeAfterAdd){
@@ -79,9 +73,5 @@ bool taskAdd::isAdded(int sizeBeforeAdd, int sizeAfterAdd){
 	else{
 		return false;
 	}
-}
-
-taskAdd::~taskAdd(void)
-{
 }
 
