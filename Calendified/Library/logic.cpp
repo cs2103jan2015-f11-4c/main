@@ -69,7 +69,7 @@ string logic::readCommand(std::string commandLine){
 	case REDO:
 		return "";
 	case TOGGLE:
-		return "";
+		return "Toggled!";
 	default:
 		return "";
 	}

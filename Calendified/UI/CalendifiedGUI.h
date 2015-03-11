@@ -19,15 +19,37 @@ namespace UI {
 	/// </summary>
 	public ref class CalendifiedGUI : public System::Windows::Forms::Form
 	{
+
 	public:
+		int toggleCount;
+		void toggle(){
+			if(toggleCount ==0){
+				 toggleCount = 1;
+				 toggleBox->BorderStyle = BorderStyle::Fixed3D;
+				 richTextBox1->Visible = false;
+				 mainBg->Visible=false;
+				 richTextBox2->Visible = true;
+				 richTextBox2->Text = richTextBox1->Text;
+				 richTextBox2->BackColor = System::Drawing::SystemColors::Window;
+				 mainBg2->Visible  = true;			 
+			 }else{
+				 toggleCount = 0;
+				 toggleBox->BorderStyle =  BorderStyle::None;
+				 richTextBox2->Visible = false;
+				 mainBg2->Visible=false;
+				 richTextBox1->Visible = true;
+				 richTextBox1->Text = richTextBox2->Text;
+				 mainBg->Visible  = true;	
+			 }
+		}
 		CalendifiedGUI(void)
 		{
 			InitializeComponent();
+			toggleCount = 0;
 			//
 			//TODO: Add the constructor code here
 			//
-		}
-
+		}	
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -41,17 +63,30 @@ namespace UI {
 		}
 	private: System::Windows::Forms::RichTextBox^  richTextBox1;
 	protected: 
-	private: System::Windows::Forms::Button^  button_notification;
-	private: System::Windows::Forms::Button^  change_view_button;
-	private: System::Windows::Forms::RichTextBox^  commandBox;
 
-	private: System::Windows::Forms::Label^  label1;
+
+	private: System::Windows::Forms::RichTextBox^  commandBox;
+	private: System::Windows::Forms::Label^  lbInstructions;
+
+
 	private: System::Windows::Forms::Button^  button_enter;
 	private: System::Windows::Forms::Button^  button_undo;
-	private: System::Windows::Forms::Label^  label2;
-	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::Label^  lb_results;
+
+	private: System::Windows::Forms::Label^  lbLengend;
+
 	private: System::Windows::Forms::Button^  button_help;
 	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
+	private: System::Windows::Forms::PictureBox^  toggleBox;
+	private: System::Windows::Forms::PictureBox^  notifyBox;
+
+
+	private: System::Windows::Forms::PictureBox^  mainBg;
+	private: System::Windows::Forms::PictureBox^  mainBg2;
+	private: System::Windows::Forms::RichTextBox^  richTextBox2;
+
+
+
 
 	protected: 
 
@@ -71,68 +106,59 @@ namespace UI {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(CalendifiedGUI::typeid));
 			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
-			this->button_notification = (gcnew System::Windows::Forms::Button());
-			this->change_view_button = (gcnew System::Windows::Forms::Button());
 			this->commandBox = (gcnew System::Windows::Forms::RichTextBox());
-			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->lbInstructions = (gcnew System::Windows::Forms::Label());
 			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->button_undo = (gcnew System::Windows::Forms::Button());
-			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->lb_results = (gcnew System::Windows::Forms::Label());
+			this->lbLengend = (gcnew System::Windows::Forms::Label());
 			this->button_help = (gcnew System::Windows::Forms::Button());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
+			this->toggleBox = (gcnew System::Windows::Forms::PictureBox());
+			this->notifyBox = (gcnew System::Windows::Forms::PictureBox());
+			this->mainBg = (gcnew System::Windows::Forms::PictureBox());
+			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
+			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// richTextBox1
 			// 
-			this->richTextBox1->Location = System::Drawing::Point(12, 43);
+			this->richTextBox1->BackColor = System::Drawing::SystemColors::MenuBar;
+			this->richTextBox1->Enabled = false;
+			this->richTextBox1->Location = System::Drawing::Point(3, 152);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(864, 346);
+			this->richTextBox1->Size = System::Drawing::Size(633, 237);
 			this->richTextBox1->TabIndex = 0;
 			this->richTextBox1->Text = L"";
 			// 
-			// button_notification
-			// 
-			this->button_notification->Enabled = false;
-			this->button_notification->Location = System::Drawing::Point(12, 14);
-			this->button_notification->Name = L"button_notification";
-			this->button_notification->Size = System::Drawing::Size(75, 23);
-			this->button_notification->TabIndex = 1;
-			this->button_notification->Text = L"Notification";
-			this->button_notification->UseVisualStyleBackColor = true;
-			// 
-			// change_view_button
-			// 
-			this->change_view_button->Location = System::Drawing::Point(110, 13);
-			this->change_view_button->Name = L"change_view_button";
-			this->change_view_button->Size = System::Drawing::Size(75, 23);
-			this->change_view_button->TabIndex = 2;
-			this->change_view_button->Text = L"changeviewbutton";
-			this->change_view_button->UseVisualStyleBackColor = true;
-			// 
 			// commandBox
 			// 
-			this->commandBox->Location = System::Drawing::Point(12, 417);
+			this->commandBox->Location = System::Drawing::Point(3, 417);
 			this->commandBox->Name = L"commandBox";
-			this->commandBox->Size = System::Drawing::Size(782, 74);
+			this->commandBox->Size = System::Drawing::Size(540, 74);
 			this->commandBox->TabIndex = 3;
 			this->commandBox->Text = L"<Insert Your Command Here>";
 			this->commandBox->Enter += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Enter);
 			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
 			this->commandBox->Leave += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Leave);
 			// 
-			// label1
+			// lbInstructions
 			// 
-			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::WhiteSmoke;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->lbInstructions->AutoSize = true;
+			this->lbInstructions->BackColor = System::Drawing::Color::WhiteSmoke;
+			this->lbInstructions->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(12, 396);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(210, 18);
-			this->label1->TabIndex = 4;
-			this->label1->Text = L"Insert Your Command Below:  ";
+			this->lbInstructions->Location = System::Drawing::Point(0, 392);
+			this->lbInstructions->Name = L"lbInstructions";
+			this->lbInstructions->Size = System::Drawing::Size(210, 18);
+			this->lbInstructions->TabIndex = 4;
+			this->lbInstructions->Text = L"Insert Your Command Below:  ";
 			// 
 			// button_enter
 			// 
@@ -140,7 +166,7 @@ namespace UI {
 			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial Black", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->button_enter->ForeColor = System::Drawing::Color::Maroon;
-			this->button_enter->Location = System::Drawing::Point(705, 417);
+			this->button_enter->Location = System::Drawing::Point(549, 417);
 			this->button_enter->Name = L"button_enter";
 			this->button_enter->Size = System::Drawing::Size(89, 74);
 			this->button_enter->TabIndex = 5;
@@ -149,70 +175,134 @@ namespace UI {
 			// 
 			// button_undo
 			// 
-			this->button_undo->Location = System::Drawing::Point(211, 507);
+			this->button_undo->Location = System::Drawing::Point(140, 492);
 			this->button_undo->Name = L"button_undo";
 			this->button_undo->Size = System::Drawing::Size(75, 23);
 			this->button_undo->TabIndex = 6;
 			this->button_undo->Text = L"UNDO";
 			this->button_undo->UseVisualStyleBackColor = true;
 			// 
-			// label2
+			// lb_results
 			// 
-			this->label2->AutoSize = true;
-			this->label2->BackColor = System::Drawing::Color::Transparent;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->lb_results->AutoSize = true;
+			this->lb_results->BackColor = System::Drawing::Color::Transparent;
+			this->lb_results->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label2->Location = System::Drawing::Point(11, 507);
-			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(180, 20);
-			this->label2->TabIndex = 7;
-			this->label2->Text = L"Welcome to Calendified!";
+			this->lb_results->ForeColor = System::Drawing::Color::Red;
+			this->lb_results->Location = System::Drawing::Point(12, 497);
+			this->lb_results->Name = L"lb_results";
+			this->lb_results->Size = System::Drawing::Size(122, 13);
+			this->lb_results->TabIndex = 7;
+			this->lb_results->Text = L"Welcome to Calendified!";
 			// 
-			// label3
+			// lbLengend
 			// 
-			this->label3->AutoSize = true;
-			this->label3->BackColor = System::Drawing::Color::Silver;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->lbLengend->AutoSize = true;
+			this->lbLengend->BackColor = System::Drawing::Color::Silver;
+			this->lbLengend->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->label3->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->label3->Location = System::Drawing::Point(334, 398);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(460, 16);
-			this->label3->TabIndex = 8;
-			this->label3->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
+			this->lbLengend->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->lbLengend->Location = System::Drawing::Point(254, 397);
+			this->lbLengend->Name = L"lbLengend";
+			this->lbLengend->Size = System::Drawing::Size(382, 13);
+			this->lbLengend->TabIndex = 8;
+			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
 			// 
 			// button_help
 			// 
 			this->button_help->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->button_help->Location = System::Drawing::Point(709, 13);
+			this->button_help->Location = System::Drawing::Point(221, 492);
 			this->button_help->Name = L"button_help";
 			this->button_help->Size = System::Drawing::Size(75, 23);
 			this->button_help->TabIndex = 9;
 			this->button_help->Text = L"Help";
 			this->button_help->UseVisualStyleBackColor = true;
 			// 
+			// toggleBox
+			// 
+			this->toggleBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
+			this->toggleBox->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"toggleBox.Image")));
+			this->toggleBox->InitialImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"toggleBox.InitialImage")));
+			this->toggleBox->Location = System::Drawing::Point(40, 19);
+			this->toggleBox->Name = L"toggleBox";
+			this->toggleBox->Size = System::Drawing::Size(26, 28);
+			this->toggleBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+			this->toggleBox->TabIndex = 10;
+			this->toggleBox->TabStop = false;
+			this->toggleBox->Click += gcnew System::EventHandler(this, &CalendifiedGUI::toggleBox_Click);
+			// 
+			// notifyBox
+			// 
+			this->notifyBox->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"notifyBox.Image")));
+			this->notifyBox->Location = System::Drawing::Point(15, 19);
+			this->notifyBox->Name = L"notifyBox";
+			this->notifyBox->Size = System::Drawing::Size(19, 28);
+			this->notifyBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
+			this->notifyBox->TabIndex = 11;
+			this->notifyBox->TabStop = false;
+			this->notifyBox->Click += gcnew System::EventHandler(this, &CalendifiedGUI::notifyBox_Click);
+			// 
+			// mainBg
+			// 
+			this->mainBg->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"mainBg.Image")));
+			this->mainBg->Location = System::Drawing::Point(-13, 43);
+			this->mainBg->Name = L"mainBg";
+			this->mainBg->Size = System::Drawing::Size(692, 346);
+			this->mainBg->TabIndex = 13;
+			this->mainBg->TabStop = false;
+			// 
+			// mainBg2
+			// 
+			this->mainBg2->Enabled = false;
+			this->mainBg2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"mainBg2.Image")));
+			this->mainBg2->Location = System::Drawing::Point(3, 43);
+			this->mainBg2->Name = L"mainBg2";
+			this->mainBg2->Size = System::Drawing::Size(659, 351);
+			this->mainBg2->TabIndex = 14;
+			this->mainBg2->TabStop = false;
+			this->mainBg2->Visible = false;
+			// 
+			// richTextBox2
+			// 
+			this->richTextBox2->BackColor = System::Drawing::SystemColors::Window;
+			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox2->Enabled = false;
+			this->richTextBox2->Location = System::Drawing::Point(23, 67);
+			this->richTextBox2->Name = L"richTextBox2";
+			this->richTextBox2->Size = System::Drawing::Size(593, 303);
+			this->richTextBox2->TabIndex = 15;
+			this->richTextBox2->Text = L"";
+			this->richTextBox2->Visible = false;
+			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::SystemColors::ActiveCaption;
-			this->ClientSize = System::Drawing::Size(796, 570);
+			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->ClientSize = System::Drawing::Size(663, 520);
+			this->Controls->Add(this->notifyBox);
+			this->Controls->Add(this->toggleBox);
+			this->Controls->Add(this->richTextBox2);
+			this->Controls->Add(this->mainBg2);
+			this->Controls->Add(this->richTextBox1);
+			this->Controls->Add(this->mainBg);
 			this->Controls->Add(this->button_help);
-			this->Controls->Add(this->label3);
-			this->Controls->Add(this->label2);
+			this->Controls->Add(this->lbLengend);
+			this->Controls->Add(this->lb_results);
 			this->Controls->Add(this->button_undo);
 			this->Controls->Add(this->button_enter);
-			this->Controls->Add(this->label1);
+			this->Controls->Add(this->lbInstructions);
 			this->Controls->Add(this->commandBox);
-			this->Controls->Add(this->change_view_button);
-			this->Controls->Add(this->button_notification);
-			this->Controls->Add(this->richTextBox1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
 			this->Load += gcnew System::EventHandler(this, &CalendifiedGUI::CalendifiedGUI_Load);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -228,10 +318,13 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 
 				 logic newLogic;
 				 std::string logicResult = newLogic.readCommand(inputCommandBox);
-				 richTextBox1->Text = gcnew String(logicResult.c_str());	 
+				 richTextBox1->Text = gcnew String(logicResult.c_str());
+				 richTextBox2->Text = gcnew String(logicResult.c_str());
 				 commandBox->ResetText();				 				 
 				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
-
+				 if(richTextBox1->Text =="Toggled!" || richTextBox2->Text == "Toggled!"){
+					 toggle();
+				 }
 				 /*MessageBoxShowTest
 				 std::string newString =newLogic.getDateAndTime(); 
 				 String^ str2 = gcnew String(newString.c_str());
@@ -248,6 +341,7 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 		 }
 private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 			 UI::CalendifiedGUI::ActiveControl = this->commandBox;
+			 
 			 storage newStorage;
 				 if(!newStorage.isFileExist()){
 					 IO::Stream^ mystream;
@@ -267,6 +361,8 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 					 }
 				 }
 
+				 notifyBox->Text="0!";//need storage return num file;
+				 
 				 //Own notes
 				 /*
 				 IO::Stream^ myStream;
@@ -292,6 +388,20 @@ private: System::Void commandBox_Leave(System::Object^  sender, System::EventArg
 		 }
 private: System::Void commandBox_Enter(System::Object^  sender, System::EventArgs^  e) {
 			 this->commandBox->ResetText();
+		 }
+private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs^  e) {
+			 notifyBox->BorderStyle = BorderStyle::Fixed3D;
+			 logic newLogic;
+			 std::string logicResult = newLogic.readCommand("display");
+			 richTextBox1->Text = gcnew String(logicResult.c_str());
+			 richTextBox2->Text = gcnew String(logicResult.c_str());
+			 _sleep(500);
+			 notifyBox->BorderStyle = BorderStyle::None;
+
+			 
+		 }
+private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
+			 toggle();
 		 }
 };
 }
