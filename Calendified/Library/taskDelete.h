@@ -1,5 +1,10 @@
 //@author A0114411B
 #include <string>
+#include <string>
+#include <iostream>
+#include <vector>
+#include "storage.h"
+
 #pragma once
 #ifndef TASKDELETE_H
 #define TASKDELETE_H

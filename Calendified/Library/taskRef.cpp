@@ -1,9 +1,5 @@
+//@author shijia
 #include "taskRef.h"
-#include <iostream>
-#include <string>
-#include <ctype.h>
-#include <ctime>
-#include <sstream>
 
 taskRef::taskRef(void){
 	_taskTitle = "";
@@ -168,6 +164,13 @@ std::string taskRef::dataToString(){
 		   _taskLocation + "\n";
 }
 
+std::string taskRef::getSearchItem(){
+	return _searchItem;
+}
+
+void taskRef::setSearchItem(std::string searchItem){
+	_searchItem = searchItem;
+}
 
 
 

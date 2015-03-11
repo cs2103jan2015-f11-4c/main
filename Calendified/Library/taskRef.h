@@ -1,7 +1,13 @@
+//@author shijia
 #pragma once
 #ifndef TASKREF_H
 #define TASKREF_H
+
 #include <iostream>
+#include <string>
+#include <ctype.h>
+#include <ctime>
+#include <sstream>
 
 class taskRef
 {
@@ -12,6 +18,7 @@ private:
 	std::string _taskDescription;
 	std::string _taskDate;
 	std::string _taskTime;
+	std::string _searchItem;
 	int _indexToBeDeleted;
 
 public:
@@ -32,6 +39,7 @@ public:
 	time_t getTaskTimeAndDate();
 	std::string getTaskTimeAndDateInString();
 	int getIndexToBeDeleted();
+	std::string getSearchItem();
 
 	//set method: use this to assign value to data;
 	void setTaskTitle(std::string taskTitle);
@@ -40,6 +48,7 @@ public:
 	void setTaskDate(std::string taskDate);
 	void setTaskTime(std::string taskTime);
 	void setIndexToBeDeleted(int indexToBeDeleted);
+	void setSearchItem(std::string searchItem);
 
 	//toString: format the data in string to store in the file (the format can be changed if wish);
 	std::string dataToString();

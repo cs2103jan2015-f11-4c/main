@@ -7,9 +7,13 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
+#include <sstream>
 #include "taskDelete.h"
 #include "parser.h"
 #include "taskRef.h"
+#include "taskAdd.h"
+#include "storage.h"
 
 enum commandType {
 	ADD, 

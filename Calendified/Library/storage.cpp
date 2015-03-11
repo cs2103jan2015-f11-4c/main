@@ -48,10 +48,11 @@ std::vector<std::string> storage::readFile(){
 	std::string data;
 	std::vector<std::string> file;
 	std::ifstream extract(_fileName);
-	while(getline(extract,data)){
+	while(!extract.eof()){
+		getline(extract,data);
 		file.push_back(data);
-		extract.close();
 	}
+	extract.close();
 	return file;
 }
 

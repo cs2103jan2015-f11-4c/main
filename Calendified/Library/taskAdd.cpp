@@ -1,10 +1,10 @@
-//A0116027R
+//@author A0116027R
 
 #include "taskAdd.h"
-#include "logic.h"
-#include "storage.h"
-#include <iostream>
-#include <vector>
+
+
+taskAdd::taskAdd(){
+}
 
 taskAdd::taskAdd(std::string taskString){
 	_task = taskString;			//to add the task in a string of specific format
@@ -13,6 +13,7 @@ taskAdd::taskAdd(std::string taskString){
 
 taskAdd::~taskAdd(void)
 {
+	_task ="";
 }
 
 std::string taskAdd::taskAddTask(){
@@ -45,3 +46,6 @@ void taskAdd::taskAddLocation(){
 void taskAdd::taskAddDescription(){
 }//floating task
 
+void taskAdd::set_task(std::string taskString){
+	_task = taskString;
+}

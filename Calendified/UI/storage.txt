@@ -1,3 +1,3 @@
-Calendified Database.
-This is the first event.
-This is the second event.
+this is the first event
+this is the second event
+this is the second

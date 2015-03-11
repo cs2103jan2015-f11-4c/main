@@ -1,9 +1,15 @@
 #pragma once
 #ifndef PARSER_H
 #define PARSER_H
+
 #include <iostream>
+#include <ctype.h>
+#include <time.h>
+#include <string>
+#include <sstream>
 #include "logic.h"
 #include "taskRef.h"
+
 class parser
 {
 private:
