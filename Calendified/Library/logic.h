@@ -29,32 +29,18 @@ class logic
 private:
 	std::set <std::string> allTasks;
 	taskRef currentTaskReference;
-	commandType hashCommandAction(std::string commandAction);
+	
 public:
 	logic(void);
 	~logic(void);
 	std::string readCommand(std::string commandLine);
-	std::string toString();
-
+    commandType hashCommandAction(std::string commandAction);
 	void setCommand(std::string command);
 	void setTitle(std::string title);
 	void setLocation(std::string location);
 	void setDescription(std::string description);
 	void setDate(std::string date);
 	void setTime(std::string time);
-
-	/*
-	std::string getCommand();
-	std::string getTitle();
-	std::string getLocation();
-	std::string getDescription();
-	std::string getDate();
-	std::string getTime();
-	*/
-
-	/*
-	void toParser(std::string command);
-	*/
 	
 	bool displayTasks();
 };

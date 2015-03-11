@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>\\psf\Home\Desktop\main\Calendified\Library;\\psf\Home\Desktop\Calendified\Library;C:\Users\Junhan\Documents\GitHub\main\Calendified\Library;x;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\SE\Project\Calendified\Library;\\psf\Home\Desktop\main\Calendified\Library;\\psf\Home\Desktop\Calendified\Library;C:\Users\Junhan\Documents\GitHub\main\Calendified\Library;x;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
