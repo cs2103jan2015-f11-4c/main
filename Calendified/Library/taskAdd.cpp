@@ -6,13 +6,9 @@
 #include <iostream>
 #include <vector>
 
-taskAdd::taskAdd(std::string _task){
-	parser taskReference;
-	taskRef task;
-
-	task = taskReference.getTaskRef();
-	_task = task.dataToString(); //to add the task in a string of specific format
-								 //command &Title $Time %Date @Location #Description 
+taskAdd::taskAdd(std::string taskString){
+	_task = taskString;			//to add the task in a string of specific format
+								//command &Title $Time %Date @Location #Description 
 }
 
 taskAdd::~taskAdd(void)

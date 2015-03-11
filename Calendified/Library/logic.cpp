@@ -20,6 +20,9 @@ string logic::readCommand(std::string commandLine){
 
 	std::string stringDetails;
 
+	std::string taskString = temp.getTaskRef().dataToString(); //for taskAdd
+	taskAdd addTask(taskString);							 //for taskAdd
+
 	std::string commandAction = temp.getTaskCommand();
 
 	char symbolTitle = '&';
@@ -39,6 +42,9 @@ string logic::readCommand(std::string commandLine){
 
 	switch(hashCommandAction(commandAction)){
 	case ADD:
+
+	
+		
 	//	taskAdd taskToBeAdded(task);//use currentTaskReference to assign the data to storage(maybe use dataTostring(); or copyTo();? );
 	//	taskToBeAdded.taskAddTask();
 

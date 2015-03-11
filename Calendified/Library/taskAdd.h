@@ -13,7 +13,7 @@ private:
 	std::string _task;
 	std::vector<std::string> _taskStorage;
 public:
-	taskAdd(std::string _task);
+	taskAdd(std::string taskString);
 	~taskAdd(void);
 	std::string taskAddTask();
 	void taskAddRecurrent();
