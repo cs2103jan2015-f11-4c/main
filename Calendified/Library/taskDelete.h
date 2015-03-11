@@ -5,7 +5,7 @@
 #define TASKDELETE_H
 
 const std::string MESSAGE_SUCCESS_DELETED =
-	"%s is deleted!";
+	"Deleted!";
 
 const std::string MESSAGE_ERROR_FILE_IS_EMPTY =
 	"Error: File is empty. There is nothing to delete.\n";
@@ -20,7 +20,8 @@ public:
 	taskDelete(void);
 	~taskDelete(void);
 	
-	void executeDelete(std::string stringToBeDeleted);
+	std::string executeDelete(int indexToBeDeleted);
+	
 };
 
 #endif

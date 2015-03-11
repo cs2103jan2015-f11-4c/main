@@ -50,6 +50,8 @@ string logic::readCommand(std::string commandLine){
 		break;
 	case DELETE:
 
+
+
 		/*title = temp.getTaskTitle();
 		location = temp.getTaskLocation();
 		description = temp.getTaskDescription();
@@ -69,7 +71,7 @@ string logic::readCommand(std::string commandLine){
 		*/
 		//stringToBeDeleted = title + location + description; //tostring
 		
-		deleteItem.executeDelete(stringDetails);
+		//deleteItem.executeDelete(stringDetails);
 
 		return "Deleted Successfully!";
 		break;

@@ -27,6 +27,7 @@ taskRef taskRef::copyTo(){
 	newRef.setTaskLocation(_taskLocation);
 	newRef.setTaskTime(_taskTime);
 	newRef.setTaskTitle(_taskTitle);
+	newRef.setIndexToBeDeleted(_indexToBeDeleted);
 	return newRef;
 }
 
@@ -130,6 +131,10 @@ std::string taskRef::getTaskTimeAndDateInString(){
 	return _taskTime + " " + _taskDate;
 }
 
+int taskRef::getIndexToBeDeleted(){
+	return _indexToBeDeleted;
+}
+
 void taskRef::setTaskTitle(std::string taskTitle){
 	_taskTitle = taskTitle;
 }
@@ -148,6 +153,10 @@ void taskRef::setTaskDate(std::string taskDate){
 
 void taskRef::setTaskTime(std::string taskTime){
 	_taskTime = taskTime;
+}
+
+void taskRef::setIndexToBeDeleted(int indexToBeDeleted){
+	_indexToBeDeleted = indexToBeDeleted;
 }
 
 std::string taskRef::dataTostring(){

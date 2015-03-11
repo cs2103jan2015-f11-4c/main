@@ -12,6 +12,7 @@ private:
 	std::string _taskDescription;
 	std::string _taskDate;
 	std::string _taskTime;
+	int _indexToBeDeleted;
 
 public:
 	//constructor
@@ -30,6 +31,7 @@ public:
 	std::string getTaskDateInString();
 	time_t getTaskTimeAndDate();
 	std::string getTaskTimeAndDateInString();
+	int getIndexToBeDeleted();
 
 	//set method: use this to assign value to data;
 	void setTaskTitle(std::string taskTitle);
@@ -37,6 +39,7 @@ public:
 	void setTaskDescription(std::string taskDescription);
 	void setTaskDate(std::string taskDate);
 	void setTaskTime(std::string taskTime);
+	void setIndexToBeDeleted(int indexToBeDeleted);
 
 	//toString: format the data in string to store in the file (the format can be changed if wish);
 	std::string dataTostring();

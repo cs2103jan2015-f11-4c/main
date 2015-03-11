@@ -1,11 +1,10 @@
 //@author A0114411B
 
 #include "taskDelete.h"
+#include "storage.h"
 #include <string>
 #include <iostream>
 #include <vector>
-#include <fstream>
-#include <algorithm>
 
 taskDelete::taskDelete(void)
 {
@@ -20,51 +19,36 @@ taskDelete::~taskDelete(void)
 //
 // Step 1: Extracting the data from storage and save it in a vector of strings
 // Step 2: Check if the vector(containing the file's data) is empty
-// Step 3: If empty -> print error message
-// Step 4: Search through vector for the string to be deleted
-// Step 5: If string not found, print error message
-// Step 6: If found, update session with the string to be deleted
-// Step 7: Delete string
-// Step 8: Update storage with new information
-// Step 9: Print Message Success
+// Step 3: Check if the string to be deleted is inside the file
+// Step 4: If found, update session with the string to be deleted
+// Step 5: Delete string
+// Step 6: Update storage with new information
+// Step 7: Print Message Success
 //
 //******************************************************************
 
 
-void taskDelete::executeDelete(std::string stringToBeDeleted){
+std::string taskDelete::executeDelete(int indexToBeDeleted){
 	char buffer[999];
 	std::vector<std::string> file;
-	std::string data;
-	std::ifstream extract(""); //insert storage location file name here
-
-	while(getline(extract,data)){
-		file.push_back(data);
-	}
-	extract.close();
+	
+	storage newStorage;
+	file = newStorage.readFile();
 
 	if(file.empty()){
-		sprintf_s(buffer,MESSAGE_ERROR_FILE_IS_EMPTY.c_str());
+		return MESSAGE_ERROR_FILE_IS_EMPTY;
+	}
+	else if(indexToBeDeleted > file.size()){
+		return MESSAGE_ERROR_ITEM_NOT_FOUND;
 	}
 	else{
-		int indexToBeDeleted;
-		std::vector<std::string>::iterator iter;
-		iter = find(file.begin(),file.end(),stringToBeDeleted);
-
-		if(iter != file.end()){
-			
+		std::string deleteString;
+		deleteString = file[indexToBeDeleted-1];
+		file.erase(file.begin()+indexToBeDeleted-1);
+		if(newStorage.writeFile(file)){
 			//updateSession(stringToBeDeleted); //a new function?
-
-			file.erase(iter);
-			std::ofstream add(""); //insert storage location file name here
-			for(int i=0; file.size()>0 ; i++){
-				add << file[i] << '\n';
-			}
-			add.close();
 			file.clear();
-			sprintf_s(buffer,MESSAGE_SUCCESS_DELETED.c_str(), stringToBeDeleted);
-		}
-		else{
-			sprintf_s(buffer,MESSAGE_ERROR_ITEM_NOT_FOUND.c_str());
+			return MESSAGE_SUCCESS_DELETED;
 		}
 	}
 }

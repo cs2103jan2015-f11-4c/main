@@ -14,6 +14,7 @@ public:
 	parser(void);
 	parser::parser(std::string commandLine);
 	~parser(void);
+	int getItemInInteger(std::string inputString);
 	std::string getItemsInString(std::string inputString, char itemType);
 	std::string getTaskCommand();
 	taskRef getTaskRef();

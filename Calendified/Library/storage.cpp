@@ -17,27 +17,31 @@ storage::~storage(void)
 }
 
 /*void storage::createFile(){
-	std::ofstream writeFile(_fileName);
-	writeFile << "Calendified Database.";
-	writeFile.close();
+std::ofstream writeFile(_fileName);
+writeFile << "Calendified Database.";
+writeFile.close();
 }
 */
 
+// This function is to check if the user is a new user
+// If the user is a new user, the function returns false
+// Hence creating a new file to store the user's calendar
 bool storage::isFileExist(){
 
-	std::vector<std::string> v1;
+	std::vector<std::string> file;
 	std::string data;
 	std::ifstream extract(_fileName);
 	while(getline(extract,data)){
-		v1.push_back(data);
+		file.push_back(data);
 	}
 	extract.close();
 
-	if(v1.empty()){
+	if(file.empty()){
 		return false;
 	}
-	else 
+	else{
 		return true;
+	}
 }
 
 std::vector<std::string> storage::readFile(){
@@ -53,14 +57,25 @@ std::vector<std::string> storage::readFile(){
 
 bool storage::writeFile(std::vector<std::string> file){
 	std::ofstream add(_fileName);
-	int i=0;
-	int size=file.size();
-	while(size > 0){
-		add << file[i] << std::endl;
-		i++;
-		size--;
+
+	for(int i=0; i<file.size(); i++){
+		add << file[i] << "\n";
 	}
 	add.close();
 	file.clear();
 	return true;
+}
+
+std::string storage::searchFile(std::string stringToBeSearched){
+	std::vector<std::string> file;
+	std::string stringInsideFile;
+	std::ostringstream oss;
+	file = readFile();
+	for(int i=0; i<file.size() ; i++){
+		stringInsideFile = file[i];
+		if(stringInsideFile.find(stringToBeSearched) != stringInsideFile.npos){
+			oss << i+1 << ". " << stringInsideFile << std::endl;
+		}
+	}
+	return oss.str();
 }

@@ -1,10 +1,9 @@
 #include "parser.h"
+#include "taskRef.h"
 #include <iostream>
 #include <ctype.h>
 #include <time.h>
 #include <string>
-#include "taskRef.h"
-
 #include <sstream>
 
 parser::parser(void){
@@ -23,9 +22,24 @@ parser::parser(std::string commandLine){
 	taskReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
 	taskReference.setTaskDate(getItemsInString(commandLine, symbolDate));
 	taskReference.setTaskTime(getItemsInString(commandLine, symbolTime));
+
+	const std::string commandDelete = "delete";
+
+	if(_taskCommand.compare(commandDelete)==0){
+		taskReference.setIndexToBeDeleted(getItemInInteger(commandLine));
+	}
 }
 
 parser::~parser(void){
+}
+
+int parser::getItemInInteger(std::string inputString){
+	std::string dummy="";
+	int indexToBeDeleted=NULL;
+	std::istringstream in(inputString);
+	in >> dummy;
+	in >> indexToBeDeleted;
+	return indexToBeDeleted;
 }
 
 std::string parser::getItemsInString(std::string inputString, char itemType){
