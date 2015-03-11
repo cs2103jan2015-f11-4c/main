@@ -9,6 +9,7 @@
 #include <string>
 #include "taskDelete.h"
 #include "parser.h"
+#include "taskRef.h"
 
 enum commandType {
 	ADD, 
@@ -27,6 +28,8 @@ class logic
 {
 private:
 	std::set <std::string> allTasks;
+	taskRef currentTaskReference;
+	commandType hashCommandAction(std::string commandAction);
 public:
 	logic(void);
 	~logic(void);

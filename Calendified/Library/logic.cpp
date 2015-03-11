@@ -3,10 +3,9 @@
 #include <string>
 #include <sstream>
 #include "taskAdd.h"
+#include "taskRef.h"
 
 using namespace std;
-
-commandType hashCommandAction(std::string commandAction);
 
 logic::logic(void){
 }
@@ -16,6 +15,7 @@ logic::~logic(void){
 
 string logic::readCommand(std::string commandLine){
 	parser temp(commandLine);
+	currentTaskReference = temp.getTaskRef().copyTo();
 	std::string commandAction = temp.getTaskCommand();
 
 	std::string title;
@@ -44,22 +44,19 @@ string logic::readCommand(std::string commandLine){
 
 	switch(hashCommandAction(commandAction)){
 	case ADD:
-		title = temp.getTaskTitle();
-		location = temp.getTaskLocation();
-		description = temp.getTaskDescription();
-		date = temp.getTaskDate();
-		time = temp.getTaskTime();
+		//use currentTaskReference to assign the data to storage(maybe use dataTostring(); or copyTo();? );
 		taskToBeAdded.taskAddTask();
 
 		//addResults="Added Successfully!";
 		return addResults;
 		break;
 	case DELETE:
-		title = temp.getTaskTitle();
+		/*title = temp.getTaskTitle();
 		location = temp.getTaskLocation();
 		description = temp.getTaskDescription();
 		date = temp.getTaskDate();
-		time = temp.getTaskTime();
+		time = temp.getTaskTime();*/
+		//use currentTaskReference to assign the data to storage(maybe use dataTostring(); or copyTo();? );
 
 		stringToBeDeleted = title + location + description; //tostring
 		deleteItem.executeDelete(stringToBeDeleted);
@@ -67,9 +64,11 @@ string logic::readCommand(std::string commandLine){
 		break;
 	case VIEW:
 		//_title = temp.getItemsInString(commandLine, symbolTitle);
-		title = temp.getTaskTitle();
+		/*title = temp.getTaskTitle();
 		date = temp.getTaskDate();
-		time = temp.getTaskTime();
+		time = temp.getTaskTime();*/
+		//use currentTaskReference to assign the data to storage(maybe use dataTostring(); or copyTo();? );
+
 		return "";
 		break;
 	case DISPLAY:
@@ -87,11 +86,13 @@ string logic::readCommand(std::string commandLine){
 		}
 		break;
 	case EDIT:
-		title = temp.getTaskTitle();
+		/*title = temp.getTaskTitle();
 		location = temp.getTaskLocation();
 		description = temp.getTaskDescription();
 		date = temp.getTaskDate();
-		time = temp.getTaskTime();
+		time = temp.getTaskTime();*/
+		//use currentTaskReference to assign the data to storage(maybe use dataTostring(); or copyTo();? );
+
 		return "";
 		break;
 	case UNDO:
@@ -120,36 +121,36 @@ string logic::readCommand(std::string commandLine){
 	}
 	return "";
 }
+// This one below is not necessary????
+//std::string logic::toString(){
+//	parser taskAdd;
+//	std::ostringstream details;
+//	details << taskAdd.getTaskDate()
+//			<< taskAdd.getTaskTime()
+//			<< taskAdd.getTaskTitle()
+//			<< taskAdd.getTaskLocation()
+//			<< taskAdd.getTaskDescription();
+//
+//	return details.str();
+//}
 
-std::string logic::toString(){
-	parser taskAdd;
-	std::ostringstream details;
-	details << taskAdd.getTaskDate()
-			<< taskAdd.getTaskTime()
-			<< taskAdd.getTaskTitle()
-			<< taskAdd.getTaskLocation()
-			<< taskAdd.getTaskDescription();
-
-	return details.str();
-}
-
-void logic::setCommand(std::string command){
-}
-
-void logic::setTitle(std::string title){
-}
-
-void logic::setLocation(std::string location){
-}
-
-void logic::setDescription(std::string description){
-}
-
-void logic::setDate(std::string date){
-}
-
-void logic::setTime(std::string time){
-}
+//void logic::setCommand(std::string command){
+//}
+//
+//void logic::setTitle(std::string title){
+//}
+//
+//void logic::setLocation(std::string location){
+//}
+//
+//void logic::setDescription(std::string description){
+//}
+//
+//void logic::setDate(std::string date){
+//}
+//
+//void logic::setTime(std::string time){
+//}
 
 /*
 std::string logic::getCommand(){

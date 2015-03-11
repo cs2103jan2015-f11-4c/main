@@ -3,14 +3,9 @@
 #include <ctype.h>
 #include <ctime>
 #include <string>
+#include "taskRef.h"
 
 parser::parser(void){
-	_taskCommand = "";
-	_taskTitle = "";
-	_taskLocation = "";
-	_taskDescription = "";
-	_taskDate = "01/01/00";
-	_taskTime = "00:00";
 }
 
 parser::parser(std::string commandLine){
@@ -21,11 +16,11 @@ parser::parser(std::string commandLine){
 	char symbolTime = '$';
 
 	_taskCommand = getItemsInString(commandLine, NULL);
-	_taskTitle = getItemsInString(commandLine, symbolTitle);
-	_taskLocation = getItemsInString(commandLine, symbolLocation);
-	_taskDescription = getItemsInString(commandLine, symbolDescription);
-	_taskDate = getItemsInString(commandLine, symbolDate);
-	_taskTime = getItemsInString(commandLine, symbolTime);
+	taskReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
+	taskReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
+	taskReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
+	taskReference.setTaskDate(getItemsInString(commandLine, symbolDate));
+	taskReference.setTaskTime(getItemsInString(commandLine, symbolTime));
 }
 
 parser::~parser(void){
@@ -51,44 +46,47 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 	}
 	return inputString.substr(substringBegin,substringEnd - substringBegin);
 }
-
-time_t parser::convertDate(std::string _taskDate){
-	struct tm Date;
-	strftime((char*)_taskDate.c_str(),_taskDate.size(), "%d/%m/%y", &Date);
-	time_t t = mktime(&Date);
-
-	return t;
-}
-
-time_t parser::convertTime(std::string _taskTime){
-	struct tm Time;
-	strftime((char*)_taskTime.c_str(),_taskTime.size(), "%H:%M", &Time);
-	time_t t1 = mktime(&Time);
-
-	return t1;
-}
-
-
 std::string parser::getTaskCommand(){
 	return _taskCommand;
 }
-
-std::string parser::getTaskTitle(){
-	return _taskTitle;
+taskRef parser::getTaskRef(){
+	return taskReference;
 }
+//time_t parser::convertDate(std::string _taskDate){
+//	struct tm Date;
+//	strftime((char*)_taskDate.c_str(),_taskDate.size(), "%d/%m/%y", &Date);
+//	time_t t = mktime(&Date);
+//
+//	return t;
+//}
+//
+//time_t parser::convertTime(std::string _taskTime){
+//	struct tm Time;
+//	strftime((char*)_taskTime.c_str(),_taskTime.size(), "%H:%M", &Time);
+//	time_t t1 = mktime(&Time);
+//
+//	return t1;
+//}
 
-std::string parser::getTaskLocation(){
-	return _taskLocation;
-}
 
-std::string parser::getTaskDescription(){
-	return _taskDescription;
-}
 
-time_t parser::getTaskDate(){
-	return convertDate(_taskDate);
-}
-
-time_t parser::getTaskTime(){
-	return convertTime(_taskTime);
-}
+//
+//std::string parser::getTaskTitle(){
+//	return _taskTitle;
+//}
+//
+//std::string parser::getTaskLocation(){
+//	return _taskLocation;
+//}
+//
+//std::string parser::getTaskDescription(){
+//	return _taskDescription;
+//}
+//
+//time_t parser::getTaskDate(){
+//	return convertDate(_taskDate);
+//}
+//
+//time_t parser::getTaskTime(){
+//	return convertTime(_taskTime);
+//}
