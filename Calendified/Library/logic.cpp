@@ -4,6 +4,7 @@
 #include <sstream>
 #include "taskAdd.h"
 #include "taskRef.h"
+#include "storage.h"
 
 using namespace std;
 
@@ -15,7 +16,8 @@ logic::~logic(void){
 
 string logic::readCommand(std::string commandLine){
 	parser temp(commandLine);
-
+	storage newStorage;
+	vector <string> fileContent;
 	currentTaskReference = temp.getTaskRef().copyTo();
 
 	std::string stringDetails;
@@ -91,10 +93,12 @@ string logic::readCommand(std::string commandLine){
 		return "";
 		break;
 	case DISPLAY:
-		isViewed = displayTasks();
+		isViewed = newStorage.isFileExist();
 		if(isViewed){
+			fileContent = newStorage.readFile();
 			displayResults ="Results:\n";
-			for(set<string>:: iterator index = allTasks.begin(); index != allTasks.end(); index++){
+
+			for(vector <string>:: iterator index = fileContent.begin(); index != fileContent.end(); index++){
 				displayResults += *index+"\n";
 			}	
 			return displayResults;

@@ -45,21 +45,35 @@ int parser::getItemInInteger(std::string inputString){
 std::string parser::getItemsInString(std::string inputString, char itemType){
 	unsigned int substringBegin;
 	unsigned int substringEnd;
+	char blankSpace=0;
+	char checkSpace;
 	std::string symbols = "&@#%$";
 
 	if(itemType == '\0'){
+		if(!inputString.find("&") && !inputString.find("@") && !inputString.find("#") && !inputString.find("%") && !inputString.find("$")!= std::string::npos){
+			return inputString;
+		}
 		substringBegin = 0;
 		substringEnd = inputString.find_first_of(symbols);
+		std::string inputCommand = inputString.substr(substringBegin,substringEnd);
+		while(inputCommand.size()>0 && inputCommand.compare(inputCommand.size()-1,1," ")==0){
+			inputCommand.erase(inputCommand.end()-1); // remove trailing whitespaces
+		}
+		substringEnd = inputCommand.size();
 	} else{
-		substringBegin = inputString.find_first_of(itemType) + 1;
-		substringEnd = inputString.find_first_of(symbols, substringBegin);
-		if(substringEnd == std::string::npos){ //print last token
-			return inputString.substr(substringBegin);
+		if(inputString.find(itemType) != std::string::npos){
+			substringBegin = inputString.find_first_of(itemType) + 1;
+			substringEnd = inputString.find_first_of(symbols, substringBegin);
+			if(substringEnd == std::string::npos){ //print last token
+				return inputString.substr(substringBegin);
+			}
+		} else{
+			return "";
 		}
 	}
-	while(inputString[substringEnd] == ' '){
-		substringEnd = substringEnd - 1;
-	}
+	//while(inputString[substringEnd] == ' '){
+	//	substringEnd = substringEnd - 1;
+	//}
 	return inputString.substr(substringBegin,substringEnd - substringBegin);
 }
 
