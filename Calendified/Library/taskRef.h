@@ -42,7 +42,7 @@ public:
 	void setIndexToBeDeleted(int indexToBeDeleted);
 
 	//toString: format the data in string to store in the file (the format can be changed if wish);
-	std::string dataTostring();
+	std::string dataToString();
 };
 
 #endif
