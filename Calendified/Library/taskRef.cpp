@@ -161,7 +161,7 @@ std::string taskRef::dataToString(){
 		   _taskTime + "/" + 
 		   _taskTitle + "/" + 
 		   _taskDescription + "/" +
-		   _taskLocation + "\n";
+		   _taskLocation;
 }
 
 std::string taskRef::getSearchItem(){

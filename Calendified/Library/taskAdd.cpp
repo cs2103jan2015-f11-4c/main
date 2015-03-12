@@ -2,13 +2,7 @@
 
 #include "taskAdd.h"
 
-
 taskAdd::taskAdd(){
-}
-
-taskAdd::taskAdd(std::string taskString){
-	_task = taskString;			//to add the task in a string of specific format
-								//command &Title $Time %Date @Location #Description 
 }
 
 taskAdd::~taskAdd(void)

@@ -58,10 +58,11 @@ std::vector<std::string> storage::readFile(){
 
 bool storage::writeFile(std::vector<std::string> file){
 	std::ofstream add(_fileName);
-
-	for(int i=0; i<file.size(); i++){
-		add << file[i] << "\n";
+	int i;
+	for(i=0; i<(file.size()-1); i++){
+		add << file[i] << '\n';
 	}
+	add << file[i];
 	add.close();
 	file.clear();
 	return true;
