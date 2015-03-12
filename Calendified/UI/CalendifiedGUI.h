@@ -131,15 +131,15 @@ namespace UI {
 			// 
 			this->richTextBox1->BackColor = System::Drawing::SystemColors::MenuBar;
 			this->richTextBox1->Enabled = false;
-			this->richTextBox1->Location = System::Drawing::Point(3, 152);
+			this->richTextBox1->Location = System::Drawing::Point(3, 153);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(633, 237);
+			this->richTextBox1->Size = System::Drawing::Size(633, 236);
 			this->richTextBox1->TabIndex = 0;
 			this->richTextBox1->Text = L"";
 			// 
 			// commandBox
 			// 
-			this->commandBox->Location = System::Drawing::Point(3, 417);
+			this->commandBox->Location = System::Drawing::Point(3, 418);
 			this->commandBox->Name = L"commandBox";
 			this->commandBox->Size = System::Drawing::Size(540, 74);
 			this->commandBox->TabIndex = 3;
@@ -166,9 +166,9 @@ namespace UI {
 			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial Black", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->button_enter->ForeColor = System::Drawing::Color::Maroon;
-			this->button_enter->Location = System::Drawing::Point(549, 417);
+			this->button_enter->Location = System::Drawing::Point(549, 418);
 			this->button_enter->Name = L"button_enter";
-			this->button_enter->Size = System::Drawing::Size(89, 74);
+			this->button_enter->Size = System::Drawing::Size(89, 75);
 			this->button_enter->TabIndex = 5;
 			this->button_enter->Text = L"Enter";
 			this->button_enter->UseVisualStyleBackColor = false;
@@ -235,9 +235,9 @@ namespace UI {
 			// notifyBox
 			// 
 			this->notifyBox->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"notifyBox.Image")));
-			this->notifyBox->Location = System::Drawing::Point(15, 19);
+			this->notifyBox->Location = System::Drawing::Point(12, 12);
 			this->notifyBox->Name = L"notifyBox";
-			this->notifyBox->Size = System::Drawing::Size(19, 28);
+			this->notifyBox->Size = System::Drawing::Size(23, 35);
 			this->notifyBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
 			this->notifyBox->TabIndex = 11;
 			this->notifyBox->TabStop = false;
@@ -246,7 +246,7 @@ namespace UI {
 			// mainBg
 			// 
 			this->mainBg->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"mainBg.Image")));
-			this->mainBg->Location = System::Drawing::Point(-13, 43);
+			this->mainBg->Location = System::Drawing::Point(-14, 43);
 			this->mainBg->Name = L"mainBg";
 			this->mainBg->Size = System::Drawing::Size(692, 346);
 			this->mainBg->TabIndex = 13;
@@ -258,7 +258,7 @@ namespace UI {
 			this->mainBg2->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"mainBg2.Image")));
 			this->mainBg2->Location = System::Drawing::Point(3, 43);
 			this->mainBg2->Name = L"mainBg2";
-			this->mainBg2->Size = System::Drawing::Size(659, 351);
+			this->mainBg2->Size = System::Drawing::Size(658, 351);
 			this->mainBg2->TabIndex = 14;
 			this->mainBg2->TabStop = false;
 			this->mainBg2->Visible = false;
@@ -268,7 +268,7 @@ namespace UI {
 			this->richTextBox2->BackColor = System::Drawing::SystemColors::Window;
 			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->richTextBox2->Enabled = false;
-			this->richTextBox2->Location = System::Drawing::Point(23, 67);
+			this->richTextBox2->Location = System::Drawing::Point(22, 67);
 			this->richTextBox2->Name = L"richTextBox2";
 			this->richTextBox2->Size = System::Drawing::Size(593, 303);
 			this->richTextBox2->TabIndex = 15;
@@ -279,7 +279,7 @@ namespace UI {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->BackColor = System::Drawing::SystemColors::ControlLightLight;
+			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(663, 520);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->toggleBox);
@@ -294,7 +294,10 @@ namespace UI {
 			this->Controls->Add(this->button_enter);
 			this->Controls->Add(this->lbInstructions);
 			this->Controls->Add(this->commandBox);
+			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^  >(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
