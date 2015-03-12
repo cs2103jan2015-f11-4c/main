@@ -1,2 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="taskEdit">
+    <Position X="4" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAABAAAAAAgAAAAAAAAAAQEAiAAAAAAAA=</HashCode>
+      <FileName>taskEdit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="logic">
+    <Position X="2.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>FAAAAAAAAAAABAIABAAAAAQEACAAAAQAAAAAEAgwAAA=</HashCode>
+      <FileName>logic.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="parser">
+    <Position X="6" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAIAAAAAAAAACAAFgAAAAAAQAAAAAAAAAAAIAA=</HashCode>
+      <FileName>parser.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="storage">
+    <Position X="6" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAYBAAAACAAQAAAAAAAAAAAAAAAAAAAACAAgAAIg=</HashCode>
+      <FileName>storage.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="taskAdd">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAQAAAAAAAAAAAAAQAAAwAAgAIAAAAACAAQIAAA=</HashCode>
+      <FileName>taskAdd.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="taskDelete">
+    <Position X="2.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAEAAAAQAAA=</HashCode>
+      <FileName>taskDelete.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="taskRef" Collapsed="true">
+    <Position X="4" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BQogBAAAECAAggiiACAAAEIcZABAYgAACCAAAAAAMAI=</HashCode>
+      <FileName>taskRef.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Calendified" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Calendified.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

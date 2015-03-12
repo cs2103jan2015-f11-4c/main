@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<modelStoreModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner"
+  dslVersion="1.0.0.0"
+  Id="ba88fe08-97e9-49fd-8de4-d4bad72a314c"
+  name="ModelingProject3" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <profileInstances>
+    <packageHasProfileInstances
+      Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b">
+      <profileInstance
+        Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791"
+        name="StandardProfileL2" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances
+      Id="29349502-908c-4fda-9054-c48619c59ed0">
+      <profileInstance
+        Id="532ea607-fb19-44b8-8502-3351b05452be"
+        name="StandardProfileL3" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <packageHasNamedElement>
+      <component
+        Id="9e4c7443-1e43-4588-b850-93b4801d806a"
+        name="UI"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="f929674d-f6ea-4a4a-b373-e63a8cd945f4">
+            <componentMoniker
+              Id="44eb49eb-d5e7-47fa-bdff-1f42ab9cdf67"
+              LastKnownName="Logic"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="44eb49eb-d5e7-47fa-bdff-1f42ab9cdf67"
+        name="Logic"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="ec9d2949-d9a0-442f-91a0-2eb73fc72251">
+            <componentMoniker
+              Id="7ff0c5e9-a69e-45a8-95db-a422fd75f678"
+              LastKnownName="Parser"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+          <dependency
+            Id="f50e76ef-78dd-4520-85c0-709d722e1515">
+            <componentMoniker
+              Id="b34641cb-0e5f-4abd-84d5-d7b5383e919d"
+              LastKnownName="Storage"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+          <dependency
+            Id="ebf6081b-b201-4d90-b875-9e7f45ba26d8">
+            <componentMoniker
+              Id="1b092f96-0e97-4399-ba5e-764a1af1a85b"
+              LastKnownName="Session"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+          <dependency
+            Id="b69c087d-15b8-423f-816a-e68ee058b3ae">
+            <componentMoniker
+              Id="d7df4bd9-7316-43ae-af35-7ae2f4494e26"
+              LastKnownName="taskRef"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+        </suppliersInternal>
+        <ownedAttributesInternal>
+          <part
+            Id="01c24691-ca57-43f8-9f33-f5ee2090483c"
+            name="taskAdd"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="Composite"
+            isComposite="true">
+            <type_NamedElement>
+              <componentMoniker
+                Id="2be76c7e-405e-4642-9c41-3da756c71f4c"
+                LastKnownName="Component2"
+                LastKnownLocation="ModelingProject3.uml" />
+            </type_NamedElement>
+          </part>
+          <part
+            Id="94dffa1a-1a6f-4b4c-ad4b-4ae5c46d4c68"
+            name="taskDelete"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="Composite"
+            isComposite="true">
+            <type_NamedElement>
+              <componentMoniker
+                Id="9c02668a-496b-4b8c-a80e-254e2891dc58"
+                LastKnownName="Component3"
+                LastKnownLocation="ModelingProject3.uml" />
+            </type_NamedElement>
+          </part>
+          <part
+            Id="1ef81977-5be4-4ac7-bb2b-7cca6bae1aa7"
+            name="taskEdit"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="Composite"
+            isComposite="true">
+            <type_NamedElement>
+              <componentMoniker
+                Id="5e22f3fb-25f9-43e7-baad-dc2d2aa38d64"
+                LastKnownName="Component4"
+                LastKnownLocation="ModelingProject3.uml" />
+            </type_NamedElement>
+          </part>
+          <part
+            Id="22204f8e-acf3-4989-80d8-a6b2c532a7c9"
+            name="taskUndo"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="Composite"
+            isComposite="true">
+            <type_NamedElement>
+              <componentMoniker
+                Id="58df41c8-8b29-495e-a98e-23f459835f79"
+                LastKnownName="Component5"
+                LastKnownLocation="ModelingProject3.uml" />
+            </type_NamedElement>
+          </part>
+        </ownedAttributesInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="2be76c7e-405e-4642-9c41-3da756c71f4c"
+        name="Component2"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="9c02668a-496b-4b8c-a80e-254e2891dc58"
+        name="Component3"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="5e22f3fb-25f9-43e7-baad-dc2d2aa38d64"
+        name="Component4"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="58df41c8-8b29-495e-a98e-23f459835f79"
+        name="Component5"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="7ff0c5e9-a69e-45a8-95db-a422fd75f678"
+        name="Parser"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="6fb99b1e-ae08-4cc1-88d2-9ee7c871ff35">
+            <componentMoniker
+              Id="d7df4bd9-7316-43ae-af35-7ae2f4494e26"
+              LastKnownName="taskRef"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="d7df4bd9-7316-43ae-af35-7ae2f4494e26"
+        name="taskRef"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="1b092f96-0e97-4399-ba5e-764a1af1a85b"
+        name="Session"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <component
+        Id="b34641cb-0e5f-4abd-84d5-d7b5383e919d"
+        name="Storage"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <suppliersInternal>
+          <dependency
+            Id="9702adb9-2325-4fc6-823f-b71966c3d4f2">
+            <componentMoniker
+              Id="1b092f96-0e97-4399-ba5e-764a1af1a85b"
+              LastKnownName="Session"
+              LastKnownLocation="ModelingProject3.uml" />
+          </dependency>
+        </suppliersInternal>
+      </component>
+    </packageHasNamedElement>
+  </packagedElements>
+  <primitiveType
+    Id="220a3521-e091-4221-bae9-3ef9018e845c"
+    name="Integer"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+    name="Boolean"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+    name="String"
+    isAbstract="false"
+    isLeaf="false" />
+  <primitiveType
+    Id="3ab42e7d-4969-445a-b209-471f5cb8209c"
+    name="UnlimitedNatural"
+    isAbstract="false"
+    isLeaf="false" />
+</modelStoreModel>
