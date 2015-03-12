@@ -27,7 +27,7 @@ writeFile.close();
 // If the user is a new user, the function returns false
 // Hence creating a new file to store the user's calendar
 bool storage::isFileExist(){
-	
+
 	std::ifstream extract(_fileName);
 	if(extract.good()){
 		extract.close();
@@ -37,21 +37,21 @@ bool storage::isFileExist(){
 		extract.close();
 		return false;
 	}
-	
+
 	/*
 	std::vector<std::string> file;
 	std::string data;
 	std::ifstream extract(_fileName);
 	while(getline(extract,data)){
-		file.push_back(data);
+	file.push_back(data);
 	}
 	extract.close();
 
 	if(file.empty()){
-		return false;
+	return false;
 	}
 	else{
-		return true;
+	return true;
 	}
 	*/
 }
@@ -85,11 +85,15 @@ std::string storage::searchFile(std::string stringToBeSearched){
 	std::string stringInsideFile;
 	std::ostringstream oss;
 	file = readFile();
-	for(int i=0; i<file.size() ; i++){
-		stringInsideFile = file[i];
-		if(stringInsideFile.find(stringToBeSearched) != stringInsideFile.npos){
-			oss << i+1 << ". " << stringInsideFile << std::endl;
+	if(file[0] == ""){
+		return MESSAGE_FILE_EMPTY;
+	}else{
+		for(int i=0; i<file.size() ; i++){
+			stringInsideFile = file[i];
+			if(stringInsideFile.find(stringToBeSearched) != stringInsideFile.npos){
+				oss << i+1 << ". " << stringInsideFile << std::endl;
+			}
 		}
+		return oss.str();
 	}
-	return oss.str();
 }

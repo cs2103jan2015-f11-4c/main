@@ -6,7 +6,10 @@
 #include <iostream>
 #include <vector>
 
-const std::string FILE_NAME = "storage.txt";
+const std::string FILE_NAME 
+	= "storage.txt";
+const std::string MESSAGE_FILE_EMPTY =
+	"File is empty!";
 
 class storage
 {
