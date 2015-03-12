@@ -25,6 +25,7 @@ public:
 	bool writeFile(std::vector<std::string> file);
 	bool isFileExist();
 	std::string searchFile(std::string stringToBeSearched);
+	void clearFile();
 };
 
 #endif
