@@ -27,7 +27,18 @@ writeFile.close();
 // If the user is a new user, the function returns false
 // Hence creating a new file to store the user's calendar
 bool storage::isFileExist(){
-
+	
+	std::ifstream extract(_fileName);
+	if(extract.good()){
+		extract.close();
+		return true;
+	}
+	else {
+		extract.close();
+		return false;
+	}
+	
+	/*
 	std::vector<std::string> file;
 	std::string data;
 	std::ifstream extract(_fileName);
@@ -42,6 +53,7 @@ bool storage::isFileExist(){
 	else{
 		return true;
 	}
+	*/
 }
 
 std::vector<std::string> storage::readFile(){

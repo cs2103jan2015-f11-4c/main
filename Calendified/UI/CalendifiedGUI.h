@@ -359,7 +359,7 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 					 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 					 {
 						 IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
-						 file->WriteLine("Calendified Database.");
+						 //file->WriteLine("Calendified Database.");
 						 file->Close();
 					 }
 				 }
