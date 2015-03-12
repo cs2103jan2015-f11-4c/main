@@ -24,6 +24,7 @@ taskRef taskRef::copyTo(){
 	newRef.setTaskTime(_taskTime);
 	newRef.setTaskTitle(_taskTitle);
 	newRef.setIndexToBeDeleted(_indexToBeDeleted);
+	newRef.setIndexToBeEdited(_indexToBeEdited);
 	return newRef;
 }
 
@@ -163,6 +164,7 @@ void taskRef::setIndexToBeEdited(int indexToBeEdited){
 
 std::string taskRef::dataToString(){
 
+
 	return _taskDate + " " +
 		   _taskTime + " " +
 		   _taskTitle + "-" + 
@@ -174,21 +176,21 @@ void taskRef::stringTodata(std::string dataInString){
 	int cutEndIndex;
 	char cutSymbol = ' ';
 	cutEndIndex = dataInString.find_first_of(cutSymbol);
-	_taskDate = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	_taskDate = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
 	cutBeginIndex = cutEndIndex + 1;
 
 	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
-	_taskTime = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	_taskTime = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
 	cutBeginIndex = cutEndIndex + 1;
 
 	cutSymbol = '-';
 	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
-	_taskTitle = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	_taskTitle = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
 	cutBeginIndex = cutEndIndex + 1;
 
 	cutSymbol = '@';
 	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
-	_taskDescription = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	_taskDescription = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
 	cutBeginIndex = cutEndIndex + 1;
 
 	_taskLocation = dataInString.substr(cutBeginIndex);

@@ -6,7 +6,12 @@
 #include <iostream>
 #include <vector>
 
-const std::string FILE_NAME = "storage.txt";
+const std::string FILE_NAME 
+	= "storage.txt";
+const std::string MESSAGE_FILE_EMPTY =
+	"File is empty!";
+const std::string MESSAGE_FILE_CLEAR =
+	"File cleared!";
 
 class storage
 {
@@ -22,6 +27,8 @@ public:
 	bool writeFile(std::vector<std::string> file);
 	bool isFileExist();
 	std::string searchFile(std::string stringToBeSearched);
+	void clearFile();
+	std::string successMessageClear();
 };
 
 #endif

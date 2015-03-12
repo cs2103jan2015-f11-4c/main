@@ -9,8 +9,7 @@ taskEdit::~taskEdit(void){
 
 std::string taskEdit::executeEdit(int indexToBeEdited){
 	std::vector<std::string> file;
-	
-	storage newStorage;
+		storage newStorage;
 	taskRef newTaskRef;
 	
 	if(newStorage.isFileExist()){
@@ -25,9 +24,9 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 			std::string taskDataString;
 			taskDataString = file[indexToBeEdited-1];
 		    newTaskRef = editTaskRef(taskDataString);
-		    file.erase(file.begin() + indexToBeEdited -1 );
+		    
 			taskDataString = newTaskRef.dataToString();
-			file.push_back(taskDataString);
+			file[indexToBeEdited-1] = taskDataString;
 			if(newStorage.writeFile(file)){
 				return "edited";
 			}else{

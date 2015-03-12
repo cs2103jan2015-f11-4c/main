@@ -30,15 +30,18 @@ parser::parser(std::string commandLine){
 	//If commandLine has symbols
 	if(isSymbol){	
 		//@author A0083864U
-		_taskCommand = getItemsInString(commandLine, NULL);
+		if(isIndex){
+			taskReference.setIndexToBeEdited(getItemInInteger(commandLine));
+			_taskCommand = commandLine.substr(substringBegin, index - 1);
+		}else{
+			_taskCommand = getItemsInString(commandLine, NULL);
+		}
 		taskReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
 		taskReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
 		taskReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
 		taskReference.setTaskDate(getItemsInString(commandLine, symbolDate));
 		taskReference.setTaskTime(getItemsInString(commandLine, symbolTime));
-		if(isIndex){
-			taskReference.setIndexToBeEdited(getItemInInteger(commandLine));
-		}
+		
 	}else {
 		//@author A0125489U
 		//This method determine the 1st index of non-alpha character
@@ -100,12 +103,13 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 		itemString.erase(itemString.end() -1);
 	}
 	substringEnd = itemString.size();
-	return inputString.substr(substringBegin,substringEnd - substringBegin);
+	return inputString.substr(substringBegin,substringEnd);
 }
 
 std::string parser::getTaskCommand(){
 	return _taskCommand;
 }
+
 taskRef parser::getTaskRef(){
 	return taskReference;
 }

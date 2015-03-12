@@ -1,16 +1,14 @@
-12/12/14 /13:00 /lunch /singapore /town 
-
-
-
-
-
-
-
-
-
-
-12/12/14 /13:00 /lunch /singapore /town 
- 13:00 #dummy dummy descrname @utown $13:00 #dummy dummy descr-dummy dummy descr@utown $13:00 #dummy dummy descr
- -des@
-12/12/12 name %12/12/12-@
-12/12/12 #descrption 13:00 %12/12/12 #descrption name $13:00 %12/12/12 #descrption-descrption@
+12/12/1 18:0 V0.1 celebratio-we treat@MBS
+12/12/ 18: hug Fen-gggggg@SRC
+12/12/1 18:0 Punch Fen-smash his glass@SRC
+11/11/11 13:00 V0.1 celebratio-Feng treat and pa@MBS
+12/12/1 18:0 V0.1 celebratio-KS eat all@MBS
+12/12/ 16:00 Punch Fe-Hard@Hall
+12/12/12 18:00 V0.1 celebration-Feng treat and pay
+add@MBS
+12/12/1 18:0 V0.1 celebratio-we treat@MBS
+12/12/12 18:00 Punch Feng-Hardly@SRC
+12/12/12 18:00 V0.1 celebration-Feng treat and pay@China
+12/12/12 18:00 V0.1 celebration-Feng treat and pay
+@MBS
+12/12/12 18:00 Punch Feng-Hardly@SRC
