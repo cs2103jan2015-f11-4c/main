@@ -115,3 +115,7 @@ void storage::clearFile(){
 	std::ofstream add(_fileName);
 	add.close();
 }
+
+std::string storage::successMessageClear(){
+	return MESSAGE_FILE_CLEAR;
+}

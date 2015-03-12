@@ -58,6 +58,11 @@ string logic::readCommand(std::string commandLine){
 			displayResults = "Error: File not found";
 			return displayResults;
 		}
+
+	case CLEAR:
+		newStorage.clearFile();
+		return newStorage.successMessageClear();
+
 	case EDIT:
 		return "";
 	case UNDO:
@@ -82,7 +87,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
 	std::string commandDelete = "delete";
 	std::string commandView = "view";
-	std::string commandDisplay = "display" ;
+	std::string commandDisplay = "display";
+	std::string commandClear = "clear";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
 	std::string commandRepeat = "repeat";
@@ -103,6 +109,9 @@ commandType logic::hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
 		return DISPLAY;
+	}
+	if(commandAction.compare(commandClear) == 0){
+		return CLEAR;
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
 		return EDIT;

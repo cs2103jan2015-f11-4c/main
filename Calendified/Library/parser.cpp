@@ -102,6 +102,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 std::string parser::getTaskCommand(){
 	return _taskCommand;
 }
+
 taskRef parser::getTaskRef(){
 	return taskReference;
 }
