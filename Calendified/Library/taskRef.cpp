@@ -157,10 +157,10 @@ void taskRef::setIndexToBeDeleted(int indexToBeDeleted){
 
 std::string taskRef::dataToString(){
 
-	return _taskDate + "/" +
-		   _taskTime + "/" + 
-		   _taskTitle + "/" + 
-		   _taskDescription + "/" +
+	return _taskDate +
+		   _taskTime +
+		   _taskTitle + '-' +
+		   _taskDescription + '@' +
 		   _taskLocation;
 }
 
