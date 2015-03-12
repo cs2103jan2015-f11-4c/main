@@ -30,7 +30,7 @@ namespace UI {
 				 mainBg->Visible=false;
 				 richTextBox2->Visible = true;
 				 richTextBox2->Text = richTextBox1->Text;
-				 richTextBox2->BackColor = System::Drawing::SystemColors::Window;
+				 richTextBox2->BackColor = System::Drawing::Color::White;
 				 mainBg2->Visible  = true;			 
 			 }else{
 				 toggleCount = 0;
@@ -131,6 +131,8 @@ namespace UI {
 			// 
 			this->richTextBox1->BackColor = System::Drawing::SystemColors::MenuBar;
 			this->richTextBox1->Enabled = false;
+			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
 			this->richTextBox1->Location = System::Drawing::Point(3, 153);
 			this->richTextBox1->Name = L"richTextBox1";
 			this->richTextBox1->Size = System::Drawing::Size(633, 236);
@@ -139,10 +141,12 @@ namespace UI {
 			// 
 			// commandBox
 			// 
+			this->commandBox->Font = (gcnew System::Drawing::Font(L"Verdana", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
 			this->commandBox->Location = System::Drawing::Point(3, 418);
 			this->commandBox->Name = L"commandBox";
 			this->commandBox->Size = System::Drawing::Size(540, 74);
-			this->commandBox->TabIndex = 3;
+			this->commandBox->TabIndex = 0;
 			this->commandBox->Text = L"<Insert Your Command Here>";
 			this->commandBox->Enter += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Enter);
 			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
@@ -157,28 +161,28 @@ namespace UI {
 			this->lbInstructions->Location = System::Drawing::Point(0, 392);
 			this->lbInstructions->Name = L"lbInstructions";
 			this->lbInstructions->Size = System::Drawing::Size(210, 18);
-			this->lbInstructions->TabIndex = 4;
+			this->lbInstructions->TabIndex = 5;
 			this->lbInstructions->Text = L"Insert Your Command Below:  ";
 			// 
 			// button_enter
 			// 
 			this->button_enter->BackColor = System::Drawing::Color::Transparent;
-			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial Black", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->button_enter->Font = (gcnew System::Drawing::Font(L"Verdana", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->button_enter->ForeColor = System::Drawing::Color::Maroon;
 			this->button_enter->Location = System::Drawing::Point(549, 418);
 			this->button_enter->Name = L"button_enter";
 			this->button_enter->Size = System::Drawing::Size(89, 75);
-			this->button_enter->TabIndex = 5;
+			this->button_enter->TabIndex = 1;
 			this->button_enter->Text = L"Enter";
 			this->button_enter->UseVisualStyleBackColor = false;
 			// 
 			// button_undo
 			// 
-			this->button_undo->Location = System::Drawing::Point(140, 492);
+			this->button_undo->Location = System::Drawing::Point(197, 496);
 			this->button_undo->Name = L"button_undo";
 			this->button_undo->Size = System::Drawing::Size(75, 23);
-			this->button_undo->TabIndex = 6;
+			this->button_undo->TabIndex = 3;
 			this->button_undo->Text = L"UNDO";
 			this->button_undo->UseVisualStyleBackColor = true;
 			// 
@@ -186,12 +190,12 @@ namespace UI {
 			// 
 			this->lb_results->AutoSize = true;
 			this->lb_results->BackColor = System::Drawing::Color::Transparent;
-			this->lb_results->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->lb_results->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->lb_results->ForeColor = System::Drawing::Color::Red;
-			this->lb_results->Location = System::Drawing::Point(12, 497);
+			this->lb_results->Location = System::Drawing::Point(9, 497);
 			this->lb_results->Name = L"lb_results";
-			this->lb_results->Size = System::Drawing::Size(122, 13);
+			this->lb_results->Size = System::Drawing::Size(168, 18);
 			this->lb_results->TabIndex = 7;
 			this->lb_results->Text = L"Welcome to Calendified!";
 			// 
@@ -199,12 +203,12 @@ namespace UI {
 			// 
 			this->lbLengend->AutoSize = true;
 			this->lbLengend->BackColor = System::Drawing::Color::Silver;
-			this->lbLengend->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 7, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+			this->lbLengend->Font = (gcnew System::Drawing::Font(L"Verdana", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->lbLengend->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->lbLengend->Location = System::Drawing::Point(254, 397);
+			this->lbLengend->Location = System::Drawing::Point(211, 397);
 			this->lbLengend->Name = L"lbLengend";
-			this->lbLengend->Size = System::Drawing::Size(382, 13);
+			this->lbLengend->Size = System::Drawing::Size(440, 13);
 			this->lbLengend->TabIndex = 8;
 			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
 			// 
@@ -212,10 +216,10 @@ namespace UI {
 			// 
 			this->button_help->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->button_help->Location = System::Drawing::Point(221, 492);
+			this->button_help->Location = System::Drawing::Point(278, 496);
 			this->button_help->Name = L"button_help";
 			this->button_help->Size = System::Drawing::Size(75, 23);
-			this->button_help->TabIndex = 9;
+			this->button_help->TabIndex = 4;
 			this->button_help->Text = L"Help";
 			this->button_help->UseVisualStyleBackColor = true;
 			// 
@@ -224,7 +228,7 @@ namespace UI {
 			this->toggleBox->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->toggleBox->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"toggleBox.Image")));
 			this->toggleBox->InitialImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"toggleBox.InitialImage")));
-			this->toggleBox->Location = System::Drawing::Point(40, 19);
+			this->toggleBox->Location = System::Drawing::Point(41, 12);
 			this->toggleBox->Name = L"toggleBox";
 			this->toggleBox->Size = System::Drawing::Size(26, 28);
 			this->toggleBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
@@ -235,7 +239,7 @@ namespace UI {
 			// notifyBox
 			// 
 			this->notifyBox->Image = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"notifyBox.Image")));
-			this->notifyBox->Location = System::Drawing::Point(12, 12);
+			this->notifyBox->Location = System::Drawing::Point(12, 5);
 			this->notifyBox->Name = L"notifyBox";
 			this->notifyBox->Size = System::Drawing::Size(23, 35);
 			this->notifyBox->SizeMode = System::Windows::Forms::PictureBoxSizeMode::CenterImage;
@@ -265,10 +269,13 @@ namespace UI {
 			// 
 			// richTextBox2
 			// 
-			this->richTextBox2->BackColor = System::Drawing::SystemColors::Window;
+			this->richTextBox2->BackColor = System::Drawing::Color::White;
 			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->richTextBox2->Enabled = false;
-			this->richTextBox2->Location = System::Drawing::Point(22, 67);
+			this->richTextBox2->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->richTextBox2->ForeColor = System::Drawing::Color::Black;
+			this->richTextBox2->Location = System::Drawing::Point(25, 67);
 			this->richTextBox2->Name = L"richTextBox2";
 			this->richTextBox2->Size = System::Drawing::Size(593, 303);
 			this->richTextBox2->TabIndex = 15;
@@ -280,7 +287,7 @@ namespace UI {
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
-			this->ClientSize = System::Drawing::Size(663, 520);
+			this->ClientSize = System::Drawing::Size(663, 526);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->toggleBox);
 			this->Controls->Add(this->richTextBox2);
@@ -294,6 +301,7 @@ namespace UI {
 			this->Controls->Add(this->button_enter);
 			this->Controls->Add(this->lbInstructions);
 			this->Controls->Add(this->commandBox);
+ 
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
