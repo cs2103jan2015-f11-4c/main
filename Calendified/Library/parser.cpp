@@ -10,27 +10,36 @@ parser::parser(std::string commandLine){
 	char symbolDate = '%';
 	char symbolTime = '$';
 	bool isSymbol = false;
+	bool isIndex = false;
 	unsigned int substringBegin = 0;
 	const std::string commandDelete = "delete";
+	const std::string commandEdit = "edit";
 
 	//@author A0125489U
 	//This method determine the 1st index of any non-alphanumeric character (exclude blankspace too)
 	std::size_t found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz1234567890 ");
 	//This operator determine whether the commandLine contains any symbol
+	std::size_t index = commandLine.find_first_of("1234567890");
 	if(found != std::string::npos){
 		isSymbol=true;
+		if(index < found){
+			isIndex = true;
+		}
 	}
 
 	//If commandLine has symbols
 	if(isSymbol){	
-		//@author ???
+		//@author A0083864U
 		_taskCommand = getItemsInString(commandLine, NULL);
 		taskReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
 		taskReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
 		taskReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
 		taskReference.setTaskDate(getItemsInString(commandLine, symbolDate));
 		taskReference.setTaskTime(getItemsInString(commandLine, symbolTime));
-	}else{
+		if(isIndex){
+			taskReference.setIndexToBeEdited(getItemInInteger(commandLine));
+		}
+	}else {
 		//@author A0125489U
 		//This method determine the 1st index of non-alpha character
 		found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz");
@@ -63,6 +72,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 	char blankSpace=0;
 	char checkSpace;
 	std::string symbols = "&@#%$";
+	std::string itemString;
 
 	if(itemType == '\0'){
 		// @author A0125489U
@@ -72,16 +82,6 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 		}
 		substringBegin = 0;
 		substringEnd = inputString.find_first_of(symbols);
-		std::string inputCommand = inputString.substr(substringBegin,substringEnd);
-		
-		// @author A0125489U
-		// This while loop remove trailing whitespaces
-		while(inputCommand.size()>0 && inputCommand.compare(inputCommand.size()-1,1," ")==0){
-			inputCommand.erase(inputCommand.end()-1); 
-		}
-		substringEnd = inputCommand.size();
-
-		//@author ??
 	} else{
 		if(inputString.find(itemType) != std::string::npos){
 			substringBegin = inputString.find_first_of(itemType) + 1;
@@ -93,9 +93,13 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 			return "";
 		}
 	}
-	//while(inputString[substringEnd] == ' '){
-	//	substringEnd = substringEnd - 1;
-	//}
+	itemString = inputString.substr(substringBegin,substringEnd - substringBegin);
+	// @author A0125489U
+	// This while loop remove trailing whitespaces
+	while(itemString.size() >0 && itemString.compare(itemString.size() - 1 ,1 , " ") == 0){
+		itemString.erase(itemString.end() -1);
+	}
+	substringEnd = itemString.size();
 	return inputString.substr(substringBegin,substringEnd - substringBegin);
 }
 

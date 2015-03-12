@@ -130,6 +130,9 @@ std::string taskRef::getTaskTimeAndDateInString(){
 int taskRef::getIndexToBeDeleted(){
 	return _indexToBeDeleted;
 }
+int taskRef::getIndexToBeEdited(){
+	return _indexToBeEdited;
+}
 
 void taskRef::setTaskTitle(std::string taskTitle){
 	_taskTitle = taskTitle;
@@ -154,14 +157,41 @@ void taskRef::setTaskTime(std::string taskTime){
 void taskRef::setIndexToBeDeleted(int indexToBeDeleted){
 	_indexToBeDeleted = indexToBeDeleted;
 }
+void taskRef::setIndexToBeEdited(int indexToBeEdited){
+	_indexToBeEdited = indexToBeEdited;
+}
 
 std::string taskRef::dataToString(){
 
-	return _taskDate + "/" +
-		   _taskTime + "/" + 
-		   _taskTitle + "/" + 
-		   _taskDescription + "/" +
+	return _taskDate + " " +
+		   _taskTime + " " +
+		   _taskTitle + "-" + 
+		   _taskDescription + "@" +
 		   _taskLocation;
+}
+void taskRef::stringTodata(std::string dataInString){
+	int cutBeginIndex = 0;
+	int cutEndIndex;
+	char cutSymbol = ' ';
+	cutEndIndex = dataInString.find_first_of(cutSymbol);
+	_taskDate = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	cutBeginIndex = cutEndIndex + 1;
+
+	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
+	_taskTime = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	cutBeginIndex = cutEndIndex + 1;
+
+	cutSymbol = '-';
+	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
+	_taskTitle = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	cutBeginIndex = cutEndIndex + 1;
+
+	cutSymbol = '@';
+	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
+	_taskDescription = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex-1);
+	cutBeginIndex = cutEndIndex + 1;
+
+	_taskLocation = dataInString.substr(cutBeginIndex);
 }
 
 std::string taskRef::getSearchItem(){
@@ -171,7 +201,35 @@ std::string taskRef::getSearchItem(){
 void taskRef::setSearchItem(std::string searchItem){
 	_searchItem = searchItem;
 }
+taskRef taskRef::compareAndSetTaskData(taskRef oldTaskData){
+	std::string temp;
 
+	temp = _taskDate;
+	if( temp != ""){
+		oldTaskData.setTaskDate(temp);
+	}
+
+	temp = _taskDescription;
+	if( temp != ""){
+		oldTaskData.setTaskDescription(temp);
+	}
+
+	temp = _taskLocation;
+	if(temp != ""){
+		oldTaskData.setTaskLocation(temp);
+	}
+
+	temp = _taskTime;
+	if( temp != ""){
+		oldTaskData.setTaskTime(temp);
+	}
+
+	temp = _taskTitle;
+	if( temp != ""){
+		oldTaskData.setTaskTitle(temp);
+	}
+	return oldTaskData;
+}
 
 
 

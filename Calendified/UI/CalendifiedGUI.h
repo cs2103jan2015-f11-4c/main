@@ -320,8 +320,7 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 std::string logicResult = newLogic.readCommand(inputCommandBox);
 				 richTextBox1->Text = gcnew String(logicResult.c_str());
 				 richTextBox2->Text = gcnew String(logicResult.c_str());
-				 commandBox->ResetText();				 				 
-				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
+				 commandBox->ResetText();				 				 				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 				 if(richTextBox1->Text =="Toggled!" || richTextBox2->Text == "Toggled!"){
 					 toggle();
 				 }

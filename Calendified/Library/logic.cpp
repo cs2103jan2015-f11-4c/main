@@ -26,9 +26,13 @@ string logic::readCommand(std::string commandLine){
 	taskAdd addTask;
 	//Delete operation variables
 	taskDelete deleteItem;
+	taskEdit editItem;
+	taskRef editedTaskRef;
+
 	string deleteResults = "";
 	//Display and View operation variables
 	string displayResults = "";
+	string editResults = "";
 	bool isViewed = false;
 
 	//@author A0125489U
@@ -59,7 +63,11 @@ string logic::readCommand(std::string commandLine){
 			return displayResults;
 		}
 	case EDIT:
-		return "";
+		
+		editItem.setEditingRef(currentTaskReference);
+		editResults = editItem.executeEdit(currentTaskReference.getIndexToBeEdited());
+
+		return editResults;
 	case UNDO:
 		return "";
 	case REPEAT:

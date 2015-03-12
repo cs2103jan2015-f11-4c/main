@@ -10,3 +10,7 @@
 
 
 12/12/14 /13:00 /lunch /singapore /town 
+ 13:00 #dummy dummy descrname @utown $13:00 #dummy dummy descr-dummy dummy descr@utown $13:00 #dummy dummy descr
+ -des@
+12/12/12 name %12/12/12-@
+12/12/12 #descrption 13:00 %12/12/12 #descrption name $13:00 %12/12/12 #descrption-descrption@

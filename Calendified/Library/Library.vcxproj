@@ -65,11 +65,10 @@
     <ClInclude Include="Calendified.h" />
     <ClInclude Include="logic.h" />
     <ClInclude Include="parser.h" />
-
     <ClInclude Include="storage.h" />
-
     <ClInclude Include="taskAdd.h" />
     <ClInclude Include="taskDelete.h" />
+    <ClInclude Include="taskEdit.h" />
     <ClInclude Include="taskRef.h" />
   </ItemGroup>
   <ItemGroup>
@@ -77,10 +76,10 @@
     <ClCompile Include="logic.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
-
     <ClCompile Include="storage.cpp" />
     <ClCompile Include="taskAdd.cpp" />
     <ClCompile Include="taskDelete.cpp" />
+    <ClCompile Include="taskEdit.cpp" />
     <ClCompile Include="taskRef.cpp" />
   </ItemGroup>
   <ItemGroup>

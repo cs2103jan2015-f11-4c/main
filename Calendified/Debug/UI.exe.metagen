@@ -17,3 +17,7 @@ Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c5619
 Class UI.CalendifiedGUI: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   :System.Windows.Forms.Form
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Int32 toggleCount : Public
+  Methods:
+    toggle(): PrivateScope, Public, HideBySig
