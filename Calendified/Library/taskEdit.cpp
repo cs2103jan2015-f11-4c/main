@@ -14,7 +14,7 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 	
 	if(newStorage.isFileExist()){
 		
-		file = newStorage.readFile();
+		file = newStorage.readFile("main");
 		
 		if(file.empty()){
 			return MESSAGE_ERROR_EDIT_FILE_IS_EMPTY;
@@ -27,7 +27,7 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 		    
 			taskDataString = newTaskRef.dataToString();
 			file[indexToBeEdited-1] = taskDataString;
-			if(newStorage.writeFile(file)){
+			if(newStorage.writeFile(file,"main")){
 				return "edited";
 			}else{
 				return "Not edited successfully";

@@ -48,20 +48,25 @@ string logic::readCommand(std::string commandLine){
 	case VIEW:
 		isViewed = newStorage.isFileExist();
 		if(isViewed){
-			displayResults = newStorage.searchFile(temp.getTaskRef().getSearchItem());
+			displayResults = newStorage.searchFile(temp.getTaskRef().getSearchItem(),"main");
 		}
 		return displayResults;
 	case DISPLAY:
 		isViewed = newStorage.isFileExist();
 		if(isViewed){
 			displayResults ="Calendified Database.:\n";
-			displayResults += newStorage.searchFile("");
+			displayResults += newStorage.searchFile("","main");
 			return displayResults;
 		}
 		else{
 			displayResults = "Error: File not found";
 			return displayResults;
 		}
+
+	case CLEAR:
+		newStorage.clearFile();
+		return newStorage.successMessageClear();
+
 	case EDIT:
 		
 		editItem.setEditingRef(currentTaskReference);
@@ -90,7 +95,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
 	std::string commandDelete = "delete";
 	std::string commandView = "view";
-	std::string commandDisplay = "display" ;
+	std::string commandDisplay = "display";
+	std::string commandClear = "clear";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
 	std::string commandRepeat = "repeat";
@@ -111,6 +117,9 @@ commandType logic::hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
 		return DISPLAY;
+	}
+	if(commandAction.compare(commandClear) == 0){
+		return CLEAR;
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
 		return EDIT;

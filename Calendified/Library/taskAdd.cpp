@@ -16,9 +16,9 @@ std::string taskAdd::taskAddTask(){
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
 	if(storageFile.isFileExist()){
-		_taskStorage = storageFile.readFile();
+		_taskStorage = storageFile.readFile("main");
 		_taskStorage.push_back(_task);
-		if(storageFile.writeFile(_taskStorage)){
+		if(storageFile.writeFile(_taskStorage,"main")){
 			return successMessage;
 		} else {
 			return failureMessage;

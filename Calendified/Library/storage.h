@@ -6,8 +6,8 @@
 #include <iostream>
 #include <vector>
 
-const std::string FILE_NAME 
-	= "storage.txt";
+const std::string FILE_NAME_FLOATING 
+	= "floatingTask.txt";
 const std::string MESSAGE_FILE_EMPTY =
 	"File is empty!";
 const std::string MESSAGE_FILE_CLEAR =
@@ -16,7 +16,7 @@ const std::string MESSAGE_FILE_CLEAR =
 class storage
 {
 private:
-	std::string _fileName;
+	std::string _filePath;
 
 public:
 	storage(void);
@@ -25,10 +25,10 @@ public:
 	void saveInformation(std::string filename);
 	std::string retrieveFilePath();
 	void createFile(std::string fileName);
-	std::vector<std::string> readFile();
-	bool writeFile(std::vector<std::string> file);
+	std::vector<std::string> readFile(std::string fileType);
+	bool writeFile(std::vector<std::string> file, std::string fileType);
 	bool isFileExist();
-	std::string searchFile(std::string stringToBeSearched);
+	std::string searchFile(std::string stringToBeSearched, std::string fileType);
 	void clearFile();
 	std::string successMessageClear();
 };

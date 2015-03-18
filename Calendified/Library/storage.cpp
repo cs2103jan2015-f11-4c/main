@@ -8,7 +8,7 @@
 
 storage::storage(void)
 {
-	_fileName = FILE_NAME;
+	_filePath = storage::retrieveFilePath();
 }
 
 
@@ -57,11 +57,17 @@ bool storage::isFileExist(){
 	}*/
 }
 
-std::vector<std::string> storage::readFile(){
+std::vector<std::string> storage::readFile(std::string fileType){
 	std::string data;
+	std::string filename;
 	std::vector<std::string> file;
-	std::string fileName = retrieveFilePath();
-	std::ifstream extract(fileName);
+	if(fileType.compare("main") == 0){
+		filename = _filePath;
+	}
+	else if(fileType.compare("float") == 0) {
+		filename = FILE_NAME_FLOATING;
+	}
+	std::ifstream extract(_filePath);
 	while(!extract.eof()){
 		getline(extract,data);
 		if(data == "") {
@@ -78,8 +84,14 @@ std::vector<std::string> storage::readFile(){
 	return file;
 }
 
-bool storage::writeFile(std::vector<std::string> file){
-	std::string fileName = retrieveFilePath();	
+bool storage::writeFile(std::vector<std::string> file, std::string fileType){
+	std::string fileName = "";
+	if(fileType.compare("main") == 0){
+		fileName = _filePath;
+	}
+	else if(fileType.compare("float") == 0){
+		fileName = FILE_NAME_FLOATING;
+	}
 	std::ofstream add(fileName);
 	int i;
 	if(file.size() == 0){
@@ -103,11 +115,11 @@ bool storage::writeFile(std::vector<std::string> file){
 	}
 }
 
-std::string storage::searchFile(std::string stringToBeSearched){
+std::string storage::searchFile(std::string stringToBeSearched, std::string fileType){
 	std::vector<std::string> file;
 	std::string stringInsideFile;
 	std::ostringstream oss;
-	file = readFile();
+	file = readFile(fileType);
 	if(file.empty()){
 		return MESSAGE_FILE_EMPTY;
 	}else{
@@ -122,9 +134,10 @@ std::string storage::searchFile(std::string stringToBeSearched){
 }
 
 void storage::clearFile(){
-	std::string fileName = retrieveFilePath();
-	std::ofstream add(fileName);
-	add.close();
+	std::ofstream out1(_filePath);
+	out1.close();
+	std::ofstream out2(FILE_NAME_FLOATING);
+	out2.close();
 }
 
 std::string storage::successMessageClear(){

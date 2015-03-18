@@ -30,7 +30,7 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 	std::vector<std::string> file;
 	
 	storage newStorage;
-	file = newStorage.readFile();
+	file = newStorage.readFile("main");
 
 	if(file.empty()){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
@@ -42,7 +42,7 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 		std::string deleteString;
 		deleteString = file[indexToBeDeleted-1];
 		file.erase(file.begin()+indexToBeDeleted-1);
-		if(newStorage.writeFile(file)){
+		if(newStorage.writeFile(file,"main")){
 			//updateSession(stringToBeDeleted); //a new function?
 			file.clear();
 			return MESSAGE_SUCCESS_DELETED;
