@@ -35,7 +35,7 @@ string logic::readCommand(std::string commandLine){
 	string editResults = "";
 	bool isViewed = false;
 
-	//@author A0125489U
+	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD:
 		taskString = temp.getTaskRef().dataToString();
@@ -80,8 +80,8 @@ string logic::readCommand(std::string commandLine){
 		return "Toggled!";
 	default:
 		return "";
-	}
 	return "";
+	}
 }
 
 

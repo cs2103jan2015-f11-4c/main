@@ -16,52 +16,57 @@ storage::~storage(void)
 {
 }
 
-/*void storage::createFile(){
-std::ofstream writeFile(_fileName);
-writeFile << "Calendified Database.";
-writeFile.close();
+void storage::saveInformation(std::string filename){
+	std::ofstream writeFile("storageInformation.txt");
+	writeFile << filename;
+	writeFile.close();
 }
-*/
+
+std::string storage::retrieveFilePath(){
+	std::ifstream retrieve("storageInformation.txt");
+	std::string directory;
+	getline(retrieve,directory);
+	return directory;
+}
+
+void storage::createFile(std::string fileName){
+	std::ofstream writeFile(fileName);
+	writeFile.close();
+}
 
 // This function is to check if the user is a new user
 // If the user is a new user, the function returns false
 // Hence creating a new file to store the user's calendar
 bool storage::isFileExist(){
 
-	std::ifstream extract(_fileName);
-	if(extract.good()){
-		extract.close();
-		return true;
-	}
-	else {
-		extract.close();
+	if(retrieveFilePath() == "")
+	{
 		return false;
 	}
-
-	/*
-	std::vector<std::string> file;
-	std::string data;
-	std::ifstream extract(_fileName);
-	while(getline(extract,data)){
-	file.push_back(data);
+	else {
+		return true;
 	}
+
+	/*if(extract.good()){
 	extract.close();
-
-	if(file.empty()){
-	return false;
-	}
-	else{
 	return true;
 	}
-	*/
+	else {
+	extract.close();
+	return false;
+	}*/
 }
 
 std::vector<std::string> storage::readFile(){
 	std::string data;
 	std::vector<std::string> file;
-	std::ifstream extract(_fileName);
+	std::string fileName = retrieveFilePath();
+	std::ifstream extract(fileName);
 	while(!extract.eof()){
 		getline(extract,data);
+		if(data == "") {
+			return file;
+		}
 		file.push_back(data);
 	}
 	extract.close();
@@ -74,7 +79,8 @@ std::vector<std::string> storage::readFile(){
 }
 
 bool storage::writeFile(std::vector<std::string> file){
-	std::ofstream add(_fileName);
+	std::string fileName = retrieveFilePath();	
+	std::ofstream add(fileName);
 	int i;
 	if(file.size() == 0){
 		clearFile();
@@ -82,10 +88,15 @@ bool storage::writeFile(std::vector<std::string> file){
 		return true;
 	}
 	else{
-		for(i=0; i<(file.size()-1); i++){
-			add << file[i] << '\n';
+		if(file.size() == 1){
+			add << file[0];
 		}
-		add << file[i];
+		else{
+			for(i=0; i<(file.size()-1); i++){
+				add << file[i] << '\n';
+			}
+			add << file[i];
+		}
 		add.close();
 		file.clear();
 		return true;
@@ -98,7 +109,6 @@ std::string storage::searchFile(std::string stringToBeSearched){
 	std::ostringstream oss;
 	file = readFile();
 	if(file.empty()){
-		clearFile();
 		return MESSAGE_FILE_EMPTY;
 	}else{
 		for(int i=0; i<file.size() ; i++){
@@ -112,7 +122,8 @@ std::string storage::searchFile(std::string stringToBeSearched){
 }
 
 void storage::clearFile(){
-	std::ofstream add(_fileName);
+	std::string fileName = retrieveFilePath();
+	std::ofstream add(fileName);
 	add.close();
 }
 

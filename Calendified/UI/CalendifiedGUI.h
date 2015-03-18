@@ -84,6 +84,7 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  mainBg;
 	private: System::Windows::Forms::PictureBox^  mainBg2;
 	private: System::Windows::Forms::RichTextBox^  richTextBox2;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 
 
 
@@ -121,6 +122,7 @@ namespace UI {
 			this->mainBg = (gcnew System::Windows::Forms::PictureBox());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -282,6 +284,10 @@ namespace UI {
 			this->richTextBox2->Text = L"";
 			this->richTextBox2->Visible = false;
 			// 
+			// openFileDialog1
+			// 
+			this->openFileDialog1->FileName = L"openFileDialog1";
+			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -301,7 +307,6 @@ namespace UI {
 			this->Controls->Add(this->button_enter);
 			this->Controls->Add(this->lbInstructions);
 			this->Controls->Add(this->commandBox);
- 
 			this->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
@@ -330,8 +335,9 @@ private: System::Void commandBox_KeyDown(System::Object^  sender, System::Window
 				 logic newLogic;
 				 std::string logicResult = newLogic.readCommand(inputCommandBox);
 				 richTextBox1->Text = gcnew String(logicResult.c_str());
-				 richTextBox2->Text = gcnew String(logicResult.c_str());
-				 commandBox->ResetText();				 				 				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
+				 richTextBox2->Text = gcnew String(logicResult.c_str());				 
+				 commandBox->ResetText();				 				 				
+				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 				 if(richTextBox1->Text =="Toggled!" || richTextBox2->Text == "Toggled!"){
 					 toggle();
 				 }
@@ -353,7 +359,9 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 			 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 			 
 			 storage newStorage;
-				 if(!newStorage.isFileExist()){
+			 std::string directory;
+			 directory = newStorage.retrieveFilePath();
+			 if(directory == ""){
 					 IO::Stream^ mystream;
 					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
 
@@ -361,15 +369,21 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 					 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
 					 saveFileDialog1->FilterIndex = 2;
 					 saveFileDialog1->RestoreDirectory = true;
-					 saveFileDialog1->FileName = "storage";
+					 saveFileDialog1->FileName = "";
 
 					 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 					 {
-						 IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
+						 char fileName[999];
+						 sprintf(fileName,"%s",saveFileDialog1->FileName);
+						 newStorage.saveInformation(fileName);
+						 newStorage.createFile(fileName);
+						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
-						 file->Close();
+						 //file->Close();
 					 }
 				 }
+
+
 
 				 notifyBox->Text="0!";//need storage return num file;
 				 

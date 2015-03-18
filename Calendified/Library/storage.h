@@ -22,7 +22,9 @@ public:
 	storage(void);
 	~storage(void);
 
-	void createFile();
+	void saveInformation(std::string filename);
+	std::string retrieveFilePath();
+	void createFile(std::string fileName);
 	std::vector<std::string> readFile();
 	bool writeFile(std::vector<std::string> file);
 	bool isFileExist();
