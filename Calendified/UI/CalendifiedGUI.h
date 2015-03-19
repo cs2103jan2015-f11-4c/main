@@ -83,9 +83,8 @@ namespace UI {
 
 	private: System::Windows::Forms::PictureBox^  mainBg;
 	private: System::Windows::Forms::PictureBox^  mainBg2;
-
-	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 	private: System::Windows::Forms::RichTextBox^  richTextBox2;
+	private: System::Windows::Forms::OpenFileDialog^  openFileDialog1;
 
 
 
@@ -122,8 +121,8 @@ namespace UI {
 			this->notifyBox = (gcnew System::Windows::Forms::PictureBox());
 			this->mainBg = (gcnew System::Windows::Forms::PictureBox());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
-			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
+			this->openFileDialog1 = (gcnew System::Windows::Forms::OpenFileDialog());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -133,6 +132,7 @@ namespace UI {
 			// richTextBox1
 			// 
 			this->richTextBox1->BackColor = System::Drawing::SystemColors::MenuBar;
+			this->richTextBox1->Enabled = false;
 			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->richTextBox1->Location = System::Drawing::Point(3, 153);
@@ -269,23 +269,24 @@ namespace UI {
 			this->mainBg2->TabStop = false;
 			this->mainBg2->Visible = false;
 			// 
+			// richTextBox2
+			// 
+			this->richTextBox2->BackColor = System::Drawing::Color::White;
+			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox2->Enabled = false;
+			this->richTextBox2->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->richTextBox2->ForeColor = System::Drawing::Color::Black;
+			this->richTextBox2->Location = System::Drawing::Point(25, 67);
+			this->richTextBox2->Name = L"richTextBox2";
+			this->richTextBox2->Size = System::Drawing::Size(593, 303);
+			this->richTextBox2->TabIndex = 15;
+			this->richTextBox2->Text = L"";
+			this->richTextBox2->Visible = false;
+			// 
 			// openFileDialog1
 			// 
 			this->openFileDialog1->FileName = L"openFileDialog1";
-			// 
-			// richTextBox2
-			// 
-			this->richTextBox2->Location = System::Drawing::Point(25, 67);
-			this->richTextBox2->Size = System::Drawing::Size(593, 303);
-			this->richTextBox2->Visible = false;
-			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox2->Name = L"richTextBox2";
-			this->richTextBox2->Size = System::Drawing::Size(588, 316);
-			this->richTextBox2->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->richTextBox2->TabIndex = 15;
-			this->richTextBox2->Text = L"";
-			this->richTextBox2->TextChanged += gcnew System::EventHandler(this, &CalendifiedGUI::richTextBox2_TextChanged);
 			// 
 			// CalendifiedGUI
 			// 
@@ -293,9 +294,9 @@ namespace UI {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Window;
 			this->ClientSize = System::Drawing::Size(663, 526);
-			this->Controls->Add(this->richTextBox2);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->toggleBox);
+			this->Controls->Add(this->richTextBox2);
 			this->Controls->Add(this->mainBg2);
 			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->mainBg);
@@ -425,8 +426,6 @@ private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs
 		 }
 private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
 			 toggle();
-		 }
-private: System::Void richTextBox2_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 		 }
 };
 }
