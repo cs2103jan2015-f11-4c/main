@@ -1,5 +1,4 @@
 #include "logic.h"
-using namespace std;
 
 logic::logic(void){
 }
@@ -7,7 +6,7 @@ logic::logic(void){
 logic::~logic(void){
 }
 
-string logic::readCommand(std::string commandLine){
+std::string logic::readCommand(std::string commandLine){
 	parser temp(commandLine);
 	storage newStorage;
 	currentTaskReference = temp.getTaskRef().copyTo();
@@ -21,25 +20,33 @@ string logic::readCommand(std::string commandLine){
 	char symbolTime = '$';
 
 	//Add operation variables
-	string addResults = "";
-	string taskString = "";
+	std::string addResults = "";
+	std::string taskString = "";
+	std::string MAIN = "main";
+	std::string FLOAT = "float";
 	taskAdd addTask;
 	//Delete operation variables
 	taskDelete deleteItem;
 	taskEdit editItem;
 	taskRef editedTaskRef;
 
-	string deleteResults = "";
+	std::string deleteResults = "";
 	//Display and View operation variables
-	string displayResults = "";
-	string editResults = "";
+	std::string displayResults = "";
+	std::string editResults = "";
 	bool isViewed = false;
 
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD:
 		taskString = temp.getTaskRef().dataToString();
-		addTask.set_task(taskString);
+		if(temp.getTaskRef().getTaskTimeAndDateInString() == " "){ //@author A0116027R
+			addTask.setTaskType(FLOAT);
+		}
+		else if(temp.getTaskRef().getTaskTimeAndDateInString() != "00:00 01/01/00"){
+			addTask.setTaskType(MAIN);
+		}
+		addTask.setTask(taskString);
 		addResults = addTask.taskAddTask();
 		return addResults;
 	case DELETE:

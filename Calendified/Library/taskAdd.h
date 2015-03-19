@@ -13,6 +13,7 @@ class taskAdd
 {
 private:
 	std::string _task;
+	std::string _taskType;
 	std::vector<std::string> _taskStorage;
 public:
 	taskAdd();
@@ -23,7 +24,8 @@ public:
 	void taskAddTitle(); //floating task
 	void taskAddLocation(); //floating task
 	void taskAddDescription(); //floating task
-	void set_task(std::string taskString);
+	void setTask(std::string taskString);
+	void setTaskType(std::string taskType);
 };
 
 #endif

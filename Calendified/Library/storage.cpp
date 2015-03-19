@@ -67,7 +67,7 @@ std::vector<std::string> storage::readFile(std::string fileType){
 	else if(fileType.compare("float") == 0) {
 		filename = FILE_NAME_FLOATING;
 	}
-	std::ifstream extract(_filePath);
+	std::ifstream extract(filename);
 	while(!extract.eof()){
 		getline(extract,data);
 		if(data == "") {

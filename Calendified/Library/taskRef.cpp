@@ -35,6 +35,8 @@ std::string taskRef::getTaskLocation(){
 std::string taskRef::getTaskDescription(){
 	return _taskDescription;
 }
+
+//@author A0116027R
 time_t taskRef::getTaskDate(){
 	struct tm Date;
 
@@ -65,6 +67,7 @@ std::string taskRef::getTaskDateInString(){
 	return _taskDate;
 }
 
+//@author A0116027R
 time_t taskRef::getTaskTime(){
 	struct tm Time;
 	int outNum;
@@ -88,6 +91,7 @@ std::string taskRef::getTaskTimeInString(){
 	return _taskTime;
 }
 
+//@author A0116027R
 time_t taskRef::getTaskTimeAndDate(){
 	std::string _timeAndDate = _taskTime + _taskDate;
 
@@ -163,8 +167,6 @@ void taskRef::setIndexToBeEdited(int indexToBeEdited){
 }
 
 std::string taskRef::dataToString(){
-
-
 	return _taskDate + " " +
 		   _taskTime + " " +
 		   _taskTitle + "-" + 
