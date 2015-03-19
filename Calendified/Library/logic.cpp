@@ -43,7 +43,7 @@ std::string logic::readCommand(std::string commandLine){
 		if(temp.getTaskRef().getTaskTimeAndDateInString() == " "){ //@author A0116027R
 			addTask.setTaskType(FLOAT);
 		}
-		else if(temp.getTaskRef().getTaskTimeAndDateInString() != "00:00 01/01/00"){
+		else if(temp.getTaskRef().getTaskTimeAndDateInString() != " "){
 			addTask.setTaskType(MAIN);
 		}
 		addTask.setTask(taskString);

@@ -162,17 +162,40 @@ void taskRef::setTaskTime(std::string taskTime){
 void taskRef::setIndexToBeDeleted(int indexToBeDeleted){
 	_indexToBeDeleted = indexToBeDeleted;
 }
+
 void taskRef::setIndexToBeEdited(int indexToBeEdited){
 	_indexToBeEdited = indexToBeEdited;
 }
 
 std::string taskRef::dataToString(){
-	return _taskDate + " " +
-		   _taskTime + " " +
-		   _taskTitle + "-" + 
-		   _taskDescription + "@" +
+
+	if(_taskDate != ""){
+		_taskDate = _taskDate + " ";
+	}
+
+	if(_taskTime != ""){
+		_taskTime = _taskTime + " ";
+	}
+
+	if(_taskTitle != ""){
+		_taskTitle = _taskTitle + " ";
+	}
+
+	if(_taskDescription != ""){
+		_taskDescription = "(" + _taskDescription + ") ";
+	}
+
+	if(_taskLocation != ""){
+		_taskLocation = "@" + _taskLocation;
+	}
+
+	return _taskDate +
+		   _taskTime +
+		   _taskTitle +
+		   _taskDescription +
 		   _taskLocation;
 }
+
 void taskRef::stringTodata(std::string dataInString){
 	int cutBeginIndex = 0;
 	int cutEndIndex;
@@ -205,6 +228,7 @@ std::string taskRef::getSearchItem(){
 void taskRef::setSearchItem(std::string searchItem){
 	_searchItem = searchItem;
 }
+
 taskRef taskRef::compareAndSetTaskData(taskRef oldTaskData){
 	std::string temp;
 
@@ -234,8 +258,3 @@ taskRef taskRef::compareAndSetTaskData(taskRef oldTaskData){
 	}
 	return oldTaskData;
 }
-
-
-
-
-

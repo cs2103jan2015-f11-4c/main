@@ -21,9 +21,6 @@ public:
 	~taskAdd(void);
 	std::string taskAddTask();
 	void taskAddRecurrent();
-	void taskAddTitle(); //floating task
-	void taskAddLocation(); //floating task
-	void taskAddDescription(); //floating task
 	void setTask(std::string taskString);
 	void setTaskType(std::string taskType);
 };

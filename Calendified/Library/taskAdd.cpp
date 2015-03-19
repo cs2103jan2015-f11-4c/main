@@ -31,15 +31,6 @@ void taskAdd::taskAddRecurrent(){
 
 }
 
-void taskAdd::taskAddTitle(){
-}
-
-void taskAdd::taskAddLocation(){
-}//floating task
-
-void taskAdd::taskAddDescription(){
-}//floating task
-
 void taskAdd::setTask(std::string taskString){
 	_task = taskString;
 }
