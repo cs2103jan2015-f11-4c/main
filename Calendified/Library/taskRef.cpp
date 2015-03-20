@@ -108,30 +108,30 @@ time_t taskRef::getTaskTimeAndDate(){
 	
 	in >> outNum;
 	timeAndDate.tm_hour = outNum;
-	assert (timeAndDate.tm_hour >= 0 && timeAndDate.tm_hour <= 23);
+	//assert (timeAndDate.tm_hour >= 0 && timeAndDate.tm_hour <= 23);
 
 
 	in >> ignore;
 
 	in >> outNum;
 	timeAndDate.tm_min = outNum;
-	assert (timeAndDate.tm_min >= 0 && timeAndDate.tm_min <= 59);
+	//assert (timeAndDate.tm_min >= 0 && timeAndDate.tm_min <= 59);
 
 	in >> outNum;
 	timeAndDate.tm_mday = outNum;
-	assert (timeAndDate.tm_mday >= 1 && timeAndDate.tm_mday <= 31);
+	//assert (timeAndDate.tm_mday >= 1 && timeAndDate.tm_mday <= 31);
 	
 	in >> ignore;
 
 	in >> outNum;
 	timeAndDate.tm_mon = outNum-1;
-	assert (timeAndDate.tm_mon >= 0 && timeAndDate.tm_mon <= 11);
+	//assert (timeAndDate.tm_mon >= 0 && timeAndDate.tm_mon <= 11);
 
 	in >> ignore;
 
 	in >> outNum;
 	timeAndDate.tm_year = outNum;
-	assert (timeAndDate.tm_year >=0);
+	//assert (timeAndDate.tm_year >=0);
 
 	time_t t = mktime(&timeAndDate);
 
