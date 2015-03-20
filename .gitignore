@@ -252,3 +252,7 @@ Calendified/UI/Debug/link.9372-rc.read.1.tlog
 Calendified/UI/Debug/link.9372-rc.write.1.tlog
 Calendified/UI/Debug/link.9372.read.1.tlog
 Calendified/UI/Debug/link.9372.write.1.tlog
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+*.suo
