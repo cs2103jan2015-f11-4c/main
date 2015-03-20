@@ -45,18 +45,21 @@ time_t taskRef::getTaskDate(){
 	
 	in >> outNum;
 	Date.tm_mday = outNum;
+	assert (Date.tm_mday >= 1 && Date.tm_mday <= 31);
 
 	char ignore;
 
 	in >> ignore;
 
 	in >> outNum;
-	Date.tm_mon = outNum;
+	Date.tm_mon = outNum-1;
+	assert (Date.tm_mon >= 0 && Date.tm_mon <= 11);
 
 	in >> ignore;
 
 	in >> outNum;
 	Date.tm_year = outNum;
+	assert (Date.tm_year >= 0);
 
 	time_t t = mktime(&Date);
 
@@ -75,12 +78,14 @@ time_t taskRef::getTaskTime(){
 	
 	in >> outNum;
 	Time.tm_hour = outNum;
+	assert (Time.tm_hour >= 0 && Time.tm_hour <= 23);
 
 	char ignore;
 	in >> ignore;
 
 	in >> outNum;
 	Time.tm_min = outNum;
+	assert (Time.tm_min >= 0 && Time.tm_min <= 59);
 
 	time_t t1 = mktime(&Time);
 
@@ -103,25 +108,30 @@ time_t taskRef::getTaskTimeAndDate(){
 	
 	in >> outNum;
 	timeAndDate.tm_hour = outNum;
+	assert (timeAndDate.tm_hour >= 0 && timeAndDate.tm_hour <= 23);
+
 
 	in >> ignore;
 
 	in >> outNum;
 	timeAndDate.tm_min = outNum;
+	assert (timeAndDate.tm_min >= 0 && timeAndDate.tm_min <= 59);
 
 	in >> outNum;
 	timeAndDate.tm_mday = outNum;
+	assert (timeAndDate.tm_mday >= 1 && timeAndDate.tm_mday <= 31);
 	
 	in >> ignore;
 
 	in >> outNum;
-	timeAndDate.tm_mon = outNum;
+	timeAndDate.tm_mon = outNum-1;
+	assert (timeAndDate.tm_mon >= 0 && timeAndDate.tm_mon <= 11);
 
 	in >> ignore;
 
 	in >> outNum;
 	timeAndDate.tm_year = outNum;
-
+	assert (timeAndDate.tm_year >=0);
 
 	time_t t = mktime(&timeAndDate);
 
@@ -168,32 +178,37 @@ void taskRef::setIndexToBeEdited(int indexToBeEdited){
 }
 
 std::string taskRef::dataToString(){
+	std::string taskDate = "";
+	std::string taskTime = "";
+	std::string taskTitle = "";
+	std::string taskDescription = "";
+	std::string taskLocation = "";
 
 	if(_taskDate != ""){
-		_taskDate = _taskDate + " ";
+		taskDate = _taskDate + " ";
 	}
 
 	if(_taskTime != ""){
-		_taskTime = _taskTime + " ";
+		taskTime = _taskTime + " ";
 	}
 
 	if(_taskTitle != ""){
-		_taskTitle = _taskTitle + " ";
+		taskTitle = _taskTitle + " ";
 	}
 
 	if(_taskDescription != ""){
-		_taskDescription = "(" + _taskDescription + ") ";
+		taskDescription = "(" + _taskDescription + ") ";
 	}
 
 	if(_taskLocation != ""){
-		_taskLocation = "@" + _taskLocation;
+		taskLocation = "@" + _taskLocation;
 	}
 
-	return _taskDate +
-		   _taskTime +
-		   _taskTitle +
-		   _taskDescription +
-		   _taskLocation;
+	return taskDate +
+		   taskTime +
+		   taskTitle +
+		   taskDescription +
+		   taskLocation;
 }
 
 void taskRef::stringTodata(std::string dataInString){

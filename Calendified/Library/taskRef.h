@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <ctime>
 #include <sstream>
+#include <assert.h>
 
 class taskRef
 {

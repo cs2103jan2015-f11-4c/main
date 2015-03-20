@@ -28,14 +28,14 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 			taskDataString = newTaskRef.dataToString();
 			file[indexToBeEdited-1] = taskDataString;
 			if(newStorage.writeFile(file,"main")){
-				return "edited";
+				return "Edited.";
 			}else{
-				return "Not edited successfully";
+				return "Not edited successfully.";
 			}
 	}
 
 	}else{
-		return "File do not exits";
+		return "File does not exit.";
 	}
 	
 

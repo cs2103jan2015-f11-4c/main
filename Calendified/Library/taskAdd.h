@@ -6,6 +6,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <assert.h>
 #include "logic.h"
 #include "storage.h"
 

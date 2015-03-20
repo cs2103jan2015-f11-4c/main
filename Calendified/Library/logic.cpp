@@ -39,6 +39,7 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD:
+		temp.getTaskRef().getTaskTimeAndDate();
 		taskString = temp.getTaskRef().dataToString();
 		if(temp.getTaskRef().getTaskTimeAndDateInString() == " "){ //@author A0116027R
 			addTask.setTaskType(FLOAT);
