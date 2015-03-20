@@ -1,5 +1,5 @@
 #include "logic.h"
-
+// comments
 logic::logic(void){
 }
 
