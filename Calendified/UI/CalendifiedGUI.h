@@ -321,7 +321,8 @@ namespace UI {
 			this->contextMenuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->commandHelpToolStripMenuItem, 
 				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
 			this->contextMenuStrip1->Name = L"contextMenuStrip1";
-			this->contextMenuStrip1->Size = System::Drawing::Size(190, 70);
+			this->contextMenuStrip1->Size = System::Drawing::Size(190, 92);
+			this->contextMenuStrip1->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip1_MouseLeave);
 			// 
 			// commandHelpToolStripMenuItem
 			// 
@@ -502,9 +503,7 @@ private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs
 			 richTextBox1->Text = gcnew String(logicResult.c_str());
 			 richTextBox2->Text = gcnew String(logicResult.c_str());
 			 _sleep(500);
-			 notifyBox->BorderStyle = BorderStyle::None;
-
-			 
+			 notifyBox->BorderStyle = BorderStyle::None;			 
 		 }
 private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
 			 toggle();
@@ -512,10 +511,12 @@ private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs
 
 private: System::Void pictureBox1_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
 			 contextMenuStrip1->Show(pictureBox1,0,pictureBox1->Height);
-			 
 		 }
 private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 			 toggle();
+		 }
+private: System::Void contextMenuStrip1_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
+			 contextMenuStrip1->Hide();
 		 }
 };
 }

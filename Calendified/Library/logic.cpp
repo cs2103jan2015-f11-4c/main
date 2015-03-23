@@ -48,6 +48,7 @@ std::string logic::readCommand(std::string commandLine){
 			addTask.setTaskType(MAIN);
 		}
 		addTask.setTask(taskString);
+
 		addResults = addTask.taskAddTask();
 		return addResults;
 	case DELETE:

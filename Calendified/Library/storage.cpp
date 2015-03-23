@@ -1,10 +1,23 @@
 //author @a0114411b
-
+//
+//***************************************************************
+//              Storage.cpp										*
+//																*			
+// Description :												*
+// Storage class governs the creating and storing of the		*
+// folder of user's choice. It allows the reading and writing	*
+// of the storage text file. It will create a text file			*
+// if there is no storage to begin with. It also provide		* 
+// functions such as clear and search.							*
+//																*
+//***************************************************************
+//
 #include "storage.h"
 #include <vector>
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <algorithm>
 
 storage::storage(void)
 {
@@ -85,6 +98,9 @@ std::vector<std::string> storage::readFile(std::string fileType){
 }
 
 bool storage::writeFile(std::vector<std::string> file, std::string fileType){
+	storageSort storageSort;
+	file = storageSort.sortData(file);
+	int i=0;
 	std::string fileName = "";
 	if(fileType.compare("main") == 0){
 		fileName = _filePath;
@@ -93,7 +109,7 @@ bool storage::writeFile(std::vector<std::string> file, std::string fileType){
 		fileName = FILE_NAME_FLOATING;
 	}
 	std::ofstream add(fileName);
-	int i;
+	sort(file.begin(),file.end());
 	if(file.size() == 0){
 		clearFile();
 		add.close();
@@ -104,7 +120,7 @@ bool storage::writeFile(std::vector<std::string> file, std::string fileType){
 			add << file[0];
 		}
 		else{
-			for(i=0; i<(file.size()-1); i++){
+			for(i=0; i<(file.size()-1); i++){				
 				add << file[i] << '\n';
 			}
 			add << file[i];

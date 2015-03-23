@@ -5,6 +5,7 @@
 #define STORAGE_H
 #include <iostream>
 #include <vector>
+#include "storageSort.h"
 
 const std::string FILE_NAME_FLOATING 
 	= "floatingTask.txt";
