@@ -1,4 +1,6 @@
 #include "logic.h"
+#include <iomanip>
+#include <ctime>
 // comments
 logic::logic(void){
 }
@@ -32,9 +34,10 @@ std::string logic::readCommand(std::string commandLine){
 
 	std::string deleteResults = "";
 	//Display and View operation variables
-	std::string displayResults = "";
+	std::string displayTodayResults = "";
+	std::string displayNextDayResults = "";
 	std::string editResults = "";
-	bool isViewed = false;
+	std::string displayFloatResults = "FLOAT";
 
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
@@ -55,23 +58,17 @@ std::string logic::readCommand(std::string commandLine){
 		deleteResults = deleteItem.executeDelete(temp.getTaskRef().getIndexToBeDeleted());
 		return deleteResults;
 	case VIEW:
-		isViewed = newStorage.isFileExist();
-		if(isViewed){
-			displayResults = newStorage.searchFile(temp.getTaskRef().getSearchItem(),"main");
-		}
-		return displayResults;
-	case DISPLAY:
-		isViewed = newStorage.isFileExist();
-		if(isViewed){
-			displayResults ="Calendified Database.:\n";
-			displayResults += newStorage.searchFile("","main");
-			return displayResults;
-		}
-		else{
-			displayResults = "Error: File not found";
-			return displayResults;
-		}
-
+		displayTodayResults = "Results:\n"+newStorage.searchFile(temp.getTaskRef().getSearchItem(),"main")+"\n";
+		displayTodayResults += "FLOAT\n"+newStorage.searchFile(temp.getTaskRef().getSearchItem(),"float");
+		return displayTodayResults;
+	case DISPLAY:		
+		displayTodayResults = getTodayDate()+"\n";
+		displayTodayResults += newStorage.searchFile(getTodayDate().substr(0,2)+"/","main");
+		displayNextDayResults = getNextDayDate()+"\n";
+		displayNextDayResults += newStorage.searchFile(getNextDayDate().substr(0,2)+"/","main");
+		displayFloatResults += "\n";
+		displayFloatResults += newStorage.searchFile("","float");
+		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case CLEAR:
 		newStorage.clearFile();
 		return newStorage.successMessageClear();
@@ -98,7 +95,31 @@ std::string logic::readCommand(std::string commandLine){
 	}
 }
 
+//@author A0125489U
+//This operation returns current date
+std::string logic::getTodayDate(){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%dth",timeinfo);
+	return std::string(output);
+}
 
+//@author A0125489U
+//This operation returns current date
+std::string logic::getNextDayDate(){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	timev += 1 * 24 * 60 * 60;
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%dth",timeinfo);
+	return std::string(output);
+	//return printf("%02d/%02d/%02d\n",timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_year %100);
+}
 
 commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
