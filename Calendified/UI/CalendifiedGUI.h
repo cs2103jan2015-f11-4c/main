@@ -55,6 +55,7 @@ namespace UI {
 		{
 			InitializeComponent();
 			toggleCount = 0;
+			currentTime->Start();
 			//
 			//TODO: Add the constructor code here
 			//
@@ -106,6 +107,8 @@ namespace UI {
 	private: System::Windows::Forms::ToolStripMenuItem^  commandGuidelinesToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^  mainBg2;
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
+	private: System::Windows::Forms::Timer^  currentTime;
+	private: System::Windows::Forms::Label^  label_currentTime;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -151,6 +154,8 @@ namespace UI {
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
+			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
+			this->label_currentTime = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -274,7 +279,7 @@ namespace UI {
 			this->richTextBox2->Location = System::Drawing::Point(53, 27);
 			this->richTextBox2->Name = L"richTextBox2";
 			this->richTextBox2->ReadOnly = true;
-			this->richTextBox2->Size = System::Drawing::Size(583, 389);
+			this->richTextBox2->Size = System::Drawing::Size(583, 366);
 			this->richTextBox2->TabIndex = 15;
 			this->richTextBox2->Text = L"";
 			this->richTextBox2->Visible = false;
@@ -321,7 +326,7 @@ namespace UI {
 			this->contextMenuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->commandHelpToolStripMenuItem, 
 				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
 			this->contextMenuStrip1->Name = L"contextMenuStrip1";
-			this->contextMenuStrip1->Size = System::Drawing::Size(190, 92);
+			this->contextMenuStrip1->Size = System::Drawing::Size(190, 70);
 			this->contextMenuStrip1->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip1_MouseLeave);
 			// 
 			// commandHelpToolStripMenuItem
@@ -364,12 +369,30 @@ namespace UI {
 			this->toggleBox_ListView->TabStop = false;
 			this->toggleBox_ListView->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &CalendifiedGUI::toggleBox_ListView_MouseClick);
 			// 
+			// currentTime
+			// 
+			this->currentTime->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::currentTime_Tick);
+			// 
+			// label_currentTime
+			// 
+			this->label_currentTime->AutoSize = true;
+			this->label_currentTime->BackColor = System::Drawing::Color::White;
+			this->label_currentTime->Font = (gcnew System::Drawing::Font(L"Gadugi", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->label_currentTime->ForeColor = System::Drawing::Color::Blue;
+			this->label_currentTime->Location = System::Drawing::Point(394, 516);
+			this->label_currentTime->Name = L"label_currentTime";
+			this->label_currentTime->Size = System::Drawing::Size(97, 17);
+			this->label_currentTime->TabIndex = 21;
+			this->label_currentTime->Text = L"Current Time: ";
+			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->ClientSize = System::Drawing::Size(659, 546);
+			this->Controls->Add(this->label_currentTime);
 			this->Controls->Add(this->toggleBox_Calendified);
 			this->Controls->Add(this->toggleBox_ListView);
 			this->Controls->Add(this->pictureBox1);
@@ -410,11 +433,11 @@ namespace UI {
 
 private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 			 if(e->KeyCode==Keys::Enter){
+				 
 				 //system::string -> std::string
 				 char buffer[999];
 				 sprintf(buffer,"%s",commandBox->Text);
 				 std::string inputCommandBox(buffer);
-				 
 				 logic newLogic;
 				 std::string logicResult = newLogic.readCommand(inputCommandBox);
 				 richTextBox1->Text = gcnew String(logicResult.c_str());
@@ -517,6 +540,10 @@ private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, Sys
 		 }
 private: System::Void contextMenuStrip1_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 			 contextMenuStrip1->Hide();
+		 }
+private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
+			 DateTime datetime = DateTime::Now;
+			 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
 		 }
 };
 }
