@@ -26,30 +26,32 @@ namespace UI {
 		int toggleCount;
 		void toggle(){
 			if(toggleCount ==0){
-				 toggleCount = 1;
-				 toggleBox_Calendified->BorderStyle = BorderStyle::Fixed3D;
-				 toggleBox_Calendified->Visible = false;
-				 toggleBox_ListView->Visible = true;
-				 richTextBox1->Visible = false;
-				 mainBg->Visible=false;
-				 mainBg2->Visible=true;
-				 richTextBox2->Visible = true;
-				 richTextBox2->Text = richTextBox1->Text;
-				 richTextBox2->BackColor = System::Drawing::Color::White;	
-				 label_status->Text = "List View Toggled!";
-			 }else{
-				 toggleCount = 0;
-				 toggleBox_Calendified->BorderStyle =  BorderStyle::None;
-				 toggleBox_Calendified->Visible = true;
-				 toggleBox_ListView->Visible = false;
-				 richTextBox2->Visible = false;
-				 mainBg2->Visible=false;
-				 richTextBox1->Visible = true;
-				 richTextBox1->Text = richTextBox2->Text;
-				 richTextBox2->BackColor = System::Drawing::Color::Red;
-				 mainBg->Visible  = true;	
-				 label_status->Text = "Calendified View Toggled!";
-			 }
+				toggleCount = 1;
+				toggleBox_Calendified->BorderStyle = BorderStyle::Fixed3D;
+				toggleBox_Calendified->Visible = false;
+				toggleBox_ListView->Visible = true;
+				richTextBox_CalendifiedViewL->Visible = false;
+				richTextBox_CalendifiedViewR->Visible = false;
+				mainBg->Visible=false;
+				mainBg2->Visible=true;
+				richTextBox_ListView->Visible = true;
+				updateRichTextBoxContent(richTextBox_ListView,"display");
+				//richTextBox_ListView->BackColor = System::Drawing::Color::White;	
+				label_status->Text = "List View Toggled!";
+			}else{
+				toggleCount = 0;
+				toggleBox_Calendified->BorderStyle =  BorderStyle::None;
+				toggleBox_Calendified->Visible = true;
+				toggleBox_ListView->Visible = false;
+				richTextBox_ListView->Visible = false;
+				mainBg2->Visible=false;
+				richTextBox_CalendifiedViewL->Visible = true;
+				richTextBox_CalendifiedViewR->Visible = true;
+				updateRichTextBoxContent(richTextBox_CalendifiedViewL,"display");
+				//richTextBox_ListView->BackColor = System::Drawing::Color::Red;
+				mainBg->Visible  = true;	
+				label_status->Text = "Calendified View Toggled!";
+			}
 		}
 		CalendifiedGUI(void)
 		{
@@ -71,7 +73,9 @@ namespace UI {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::RichTextBox^  richTextBox1;
+	private: System::Windows::Forms::RichTextBox^  richTextBox_CalendifiedViewL;
+	protected: 
+
 	protected: 
 
 
@@ -86,7 +90,6 @@ namespace UI {
 
 	private: System::Windows::Forms::Label^  lbLengend;
 
-
 	private: System::Windows::Forms::SaveFileDialog^  saveFileDialog1;
 	private: System::Windows::Forms::PictureBox^  toggleBox_Calendified;
 
@@ -97,11 +100,11 @@ namespace UI {
 
 
 
-	private: System::Windows::Forms::RichTextBox^  richTextBox2;
+	private: System::Windows::Forms::RichTextBox^  richTextBox_ListView;
 	private: System::Windows::Forms::PictureBox^  pictureBox_Undo;
 	private: System::Windows::Forms::PictureBox^  pictureBox_Redo;
-	private: System::Windows::Forms::PictureBox^  pictureBox1;
-	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip1;
+	private: System::Windows::Forms::PictureBox^  pictureBox_Help;
+	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip_HelpContent;
 	private: System::Windows::Forms::ToolStripMenuItem^  commandHelpToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  typingAToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^  commandGuidelinesToolStripMenuItem;
@@ -135,7 +138,7 @@ namespace UI {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(CalendifiedGUI::typeid));
-			this->richTextBox1 = (gcnew System::Windows::Forms::RichTextBox());
+			this->richTextBox_CalendifiedViewL = (gcnew System::Windows::Forms::RichTextBox());
 			this->commandBox = (gcnew System::Windows::Forms::RichTextBox());
 			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->label_status = (gcnew System::Windows::Forms::Label());
@@ -144,11 +147,11 @@ namespace UI {
 			this->toggleBox_Calendified = (gcnew System::Windows::Forms::PictureBox());
 			this->notifyBox = (gcnew System::Windows::Forms::PictureBox());
 			this->mainBg = (gcnew System::Windows::Forms::PictureBox());
-			this->richTextBox2 = (gcnew System::Windows::Forms::RichTextBox());
+			this->richTextBox_ListView = (gcnew System::Windows::Forms::RichTextBox());
 			this->pictureBox_Undo = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox_Redo = (gcnew System::Windows::Forms::PictureBox());
-			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
-			this->contextMenuStrip1 = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->pictureBox_Help = (gcnew System::Windows::Forms::PictureBox());
+			this->contextMenuStrip_HelpContent = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -161,25 +164,25 @@ namespace UI {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Undo))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Redo))->BeginInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->BeginInit();
-			this->contextMenuStrip1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Help))->BeginInit();
+			this->contextMenuStrip_HelpContent->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->BeginInit();
 			this->SuspendLayout();
 			// 
-			// richTextBox1
+			// richTextBox_CalendifiedViewL
 			// 
-			this->richTextBox1->BackColor = System::Drawing::Color::White;
-			this->richTextBox1->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox1->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->richTextBox_CalendifiedViewL->BackColor = System::Drawing::Color::White;
+			this->richTextBox_CalendifiedViewL->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox_CalendifiedViewL->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->richTextBox1->ForeColor = System::Drawing::Color::Black;
-			this->richTextBox1->Location = System::Drawing::Point(25, 73);
-			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->ReadOnly = true;
-			this->richTextBox1->Size = System::Drawing::Size(611, 320);
-			this->richTextBox1->TabIndex = 0;
-			this->richTextBox1->Text = L"";
+			this->richTextBox_CalendifiedViewL->ForeColor = System::Drawing::Color::Black;
+			this->richTextBox_CalendifiedViewL->Location = System::Drawing::Point(25, 73);
+			this->richTextBox_CalendifiedViewL->Name = L"richTextBox_CalendifiedViewL";
+			this->richTextBox_CalendifiedViewL->ReadOnly = true;
+			this->richTextBox_CalendifiedViewL->Size = System::Drawing::Size(305, 320);
+			this->richTextBox_CalendifiedViewL->TabIndex = 0;
+			this->richTextBox_CalendifiedViewL->Text = L"";
 			// 
 			// commandBox
 			// 
@@ -269,20 +272,20 @@ namespace UI {
 			this->mainBg->TabIndex = 13;
 			this->mainBg->TabStop = false;
 			// 
-			// richTextBox2
+			// richTextBox_ListView
 			// 
-			this->richTextBox2->BackColor = System::Drawing::Color::White;
-			this->richTextBox2->BorderStyle = System::Windows::Forms::BorderStyle::None;
-			this->richTextBox2->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+			this->richTextBox_ListView->BackColor = System::Drawing::Color::White;
+			this->richTextBox_ListView->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox_ListView->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
-			this->richTextBox2->ForeColor = System::Drawing::Color::Red;
-			this->richTextBox2->Location = System::Drawing::Point(53, 27);
-			this->richTextBox2->Name = L"richTextBox2";
-			this->richTextBox2->ReadOnly = true;
-			this->richTextBox2->Size = System::Drawing::Size(583, 366);
-			this->richTextBox2->TabIndex = 15;
-			this->richTextBox2->Text = L"";
-			this->richTextBox2->Visible = false;
+			this->richTextBox_ListView->ForeColor = System::Drawing::Color::Black;
+			this->richTextBox_ListView->Location = System::Drawing::Point(53, 27);
+			this->richTextBox_ListView->Name = L"richTextBox_ListView";
+			this->richTextBox_ListView->ReadOnly = true;
+			this->richTextBox_ListView->Size = System::Drawing::Size(583, 389);
+			this->richTextBox_ListView->TabIndex = 15;
+			this->richTextBox_ListView->Text = L"";
+			this->richTextBox_ListView->Visible = false;
 			// 
 			// pictureBox_Undo
 			// 
@@ -308,26 +311,26 @@ namespace UI {
 			this->pictureBox_Redo->TabIndex = 17;
 			this->pictureBox_Redo->TabStop = false;
 			// 
-			// pictureBox1
+			// pictureBox_Help
 			// 
-			this->pictureBox1->BackColor = System::Drawing::Color::White;
-			this->pictureBox1->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox1.BackgroundImage")));
-			this->pictureBox1->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
-			this->pictureBox1->Location = System::Drawing::Point(53, 430);
-			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(44, 35);
-			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			this->pictureBox1->TabIndex = 18;
-			this->pictureBox1->TabStop = false;
-			this->pictureBox1->MouseEnter += gcnew System::EventHandler(this, &CalendifiedGUI::pictureBox1_MouseEnter);
+			this->pictureBox_Help->BackColor = System::Drawing::Color::White;
+			this->pictureBox_Help->BackgroundImage = (cli::safe_cast<System::Drawing::Image^  >(resources->GetObject(L"pictureBox_Help.BackgroundImage")));
+			this->pictureBox_Help->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Center;
+			this->pictureBox_Help->Location = System::Drawing::Point(53, 430);
+			this->pictureBox_Help->Name = L"pictureBox_Help";
+			this->pictureBox_Help->Size = System::Drawing::Size(44, 35);
+			this->pictureBox_Help->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox_Help->TabIndex = 18;
+			this->pictureBox_Help->TabStop = false;
+			this->pictureBox_Help->MouseEnter += gcnew System::EventHandler(this, &CalendifiedGUI::pictureBox_Help_MouseEnter);
 			// 
-			// contextMenuStrip1
+			// contextMenuStrip_HelpContent
 			// 
-			this->contextMenuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->commandHelpToolStripMenuItem, 
+			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->commandHelpToolStripMenuItem, 
 				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
-			this->contextMenuStrip1->Name = L"contextMenuStrip1";
-			this->contextMenuStrip1->Size = System::Drawing::Size(190, 70);
-			this->contextMenuStrip1->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip1_MouseLeave);
+			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(190, 70);
+			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// commandHelpToolStripMenuItem
 			// 
@@ -393,14 +396,15 @@ namespace UI {
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->ClientSize = System::Drawing::Size(659, 546);
 			this->Controls->Add(this->label_currentTime);
+			this->Controls->Add(this->notifyBox);
+			this->Controls->Add(this->richTextBox_CalendifiedViewL);
+			this->Controls->Add(this->richTextBox_CalendifiedViewR);
+			this->Controls->Add(this->richTextBox_ListView);
 			this->Controls->Add(this->toggleBox_Calendified);
 			this->Controls->Add(this->toggleBox_ListView);
-			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->pictureBox_Help);
 			this->Controls->Add(this->pictureBox_Redo);
 			this->Controls->Add(this->pictureBox_Undo);
-			this->Controls->Add(this->richTextBox2);
-			this->Controls->Add(this->notifyBox);
-			this->Controls->Add(this->richTextBox1);
 			this->Controls->Add(this->lbLengend);
 			this->Controls->Add(this->label_status);
 			this->Controls->Add(this->button_enter);
@@ -414,15 +418,14 @@ namespace UI {
 			this->MaximizeBox = false;
 			this->Name = L"CalendifiedGUI";
 			this->Text = L"Calendified";
-			this->TopMost = true;
 			this->Load += gcnew System::EventHandler(this, &CalendifiedGUI::CalendifiedGUI_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Undo))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Redo))->EndInit();
-			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox1))->EndInit();
-			this->contextMenuStrip1->ResumeLayout(false);
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_Help))->EndInit();
+			this->contextMenuStrip_HelpContent->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->EndInit();
 			this->ResumeLayout(false);
@@ -430,44 +433,105 @@ namespace UI {
 
 		}
 #pragma endregion
+		//author A0125489U
+	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string day){
+				thisRichTextBox->Find(gcnew String(day.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
+				if(day.compare("FLOAT")==0){
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Blue;
+					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+						static_cast<System::Byte>(0)));	
+				}else{
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
+					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 16.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
+						static_cast<System::Byte>(0)));
+				}
+				thisRichTextBox->Select(0,0);
+			}
+			//author A0125489U
+	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult){
+				logic newLogic;
+				std::string todayDate = newLogic.getTodayDate();
+				std::string nextDayDate = newLogic.getNextDayDate();
+				std::string floatDate = "FLOAT";
+				std::string viewResults ="Results:";
 
-private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-			 if(e->KeyCode==Keys::Enter){
+				//Highlight Today
+				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str());
+				//Highlight NextDay 
+				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str());
+				//Highlight Float Text
+				highlightRichTextBoxContent(thisRichTextBox,floatDate.c_str());
+
+				//Highlight keyword "Results:" if inputcommand is View
+				if(logicResult.substr(0,8).compare(viewResults) ==0){
+					highlightRichTextBoxContent(thisRichTextBox,viewResults);
+				}
+			}
+			//author A0125489U
+	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 if(e->KeyCode==Keys::Enter){
 				 
-				 //system::string -> std::string
-				 char buffer[999];
-				 sprintf(buffer,"%s",commandBox->Text);
-				 std::string inputCommandBox(buffer);
-				 logic newLogic;
-				 std::string logicResult = newLogic.readCommand(inputCommandBox);
-				 richTextBox1->Text = gcnew String(logicResult.c_str());
-				 richTextBox2->Text = gcnew String(logicResult.c_str());				 
-				 commandBox->ResetText();				 				 				
-				 Windows::Forms::SendKeys::Send("{BACKSPACE}");
-				 if(richTextBox1->Text =="Toggled!" || richTextBox2->Text == "Toggled!"){
-					 toggle();
+					 //system::string -> std::string
+					 char buffer[999];
+					 sprintf(buffer,"%s",commandBox->Text);
+					 std::string inputCommandBox(buffer);
+
+					 logic newLogic;
+					 std::string logicResult = newLogic.readCommand(inputCommandBox);
+					 std::string todayDate = newLogic.getTodayDate();
+					 std::string nextDayDate = newLogic.getNextDayDate();
+					 std::string logicResult2="";
+					 std::size_t pos;
+					 if(logicResult.compare("")!=0)
+					 {
+						 if(toggleCount == 0){
+							 richTextBox_CalendifiedViewL->ResetText();
+							 richTextBox_CalendifiedViewR->ResetText();
+							 if(logicResult.substr(0,9).compare("Results:")){
+								 pos = logicResult.find("FLOAT");
+							 }else{
+								 pos = logicResult.find(nextDayDate);
+							 }
+							 logicResult2 = logicResult.substr(pos);
+							 logicResult = logicResult.substr(0,pos);
+							 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
+							 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
+							 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
+							 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
+						 }else{
+							 //Update Listview
+							 richTextBox_ListView->ResetText();
+							 richTextBox_ListView->Text = gcnew String(logicResult.c_str());
+							 updateRichTextBoxContent(richTextBox_ListView,logicResult);
+						 }
+					 }
+
+					 commandBox->ResetText();				 				 				
+					 Windows::Forms::SendKeys::Send("{BACKSPACE}");
+					 if(richTextBox_CalendifiedViewL->Text =="Toggled!" || richTextBox_ListView->Text == "Toggled!"){
+						 toggle();
+					 }
+					 /*MessageBoxShowTest
+					 std::string newString =newLogic.getDateAndTime(); 
+					 String^ str2 = gcnew String(newString.c_str());
+					 MessageBox::Show(str2);
+					 */
+
+					 /*
+					 //std::string ->system::string
+					 String^ systemString = gcnew String(inputCommandBox.c_str()); 
+					 MessageBox::Show(systemString); 
+					 */
+
 				 }
-				 /*MessageBoxShowTest
-				 std::string newString =newLogic.getDateAndTime(); 
-				 String^ str2 = gcnew String(newString.c_str());
-				 MessageBox::Show(str2);
-				 */
-
-				 /*
-				 //std::string ->system::string
-				 String^ systemString = gcnew String(inputCommandBox.c_str()); 
-				 MessageBox::Show(systemString); 
-				 */
-
 			 }
-		 }
-private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
-			 UI::CalendifiedGUI::ActiveControl = this->commandBox;
-			 
-			 storage newStorage;
-			 std::string directory;
-			 directory = newStorage.retrieveFilePath();
-			 if(directory == ""){
+	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
+				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
+
+				 storage newStorage;
+				 std::string directory;
+				 directory = newStorage.retrieveFilePath();
+				 if(directory == ""){
 					 IO::Stream^ mystream;
 					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
 
@@ -492,7 +556,7 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 
 
 				 notifyBox->Text="0!";//need storage return num file;
-				 
+
 				 //Own notes
 				 /*
 				 IO::Stream^ myStream;
@@ -512,38 +576,60 @@ private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::Event
 				 }
 				 }
 				 */
-		 }
-private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
-			 this->commandBox->Text="<Enter Your Command Here>";
-		 }
-private: System::Void commandBox_Enter(System::Object^  sender, System::EventArgs^  e) {
-			 this->commandBox->ResetText();
-		 }
-private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs^  e) {
-			 notifyBox->BorderStyle = BorderStyle::Fixed3D;
-			 logic newLogic;
-			 std::string logicResult = newLogic.readCommand("display");
-			 richTextBox1->Text = gcnew String(logicResult.c_str());
-			 richTextBox2->Text = gcnew String(logicResult.c_str());
-			 _sleep(500);
-			 notifyBox->BorderStyle = BorderStyle::None;			 
-		 }
-private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
-			 toggle();
-		 }
+			 }
+	private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
+				 this->commandBox->Text="<Enter Your Command Here>";
+			 }
+	private: System::Void commandBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+				 this->commandBox->ResetText();
+			 }
+			 //author A0125489U
+	private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs^  e) {
+				 notifyBox->BorderStyle = BorderStyle::Fixed3D;
+				 _sleep(500);
+				 logic newLogic;
+				 std::string logicResult = newLogic.readCommand("display");
+				 std::string todayDate = newLogic.getTodayDate();
+				 std::string nextDayDate = newLogic.getNextDayDate();
+				 std::string logicResult2="";
+				 std::size_t pos;
+				 if(logicResult.compare("")!=0)
+				 {
+					 if(toggleCount == 0){
+						 richTextBox_CalendifiedViewL->ResetText();
+						 richTextBox_CalendifiedViewR->ResetText();
+						 pos = logicResult.find(nextDayDate);
+						 logicResult2 = logicResult.substr(pos);
+						 logicResult = logicResult.substr(0,pos);
+						 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
+						 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
+						 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
+						 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
+					 }else{
+						 //Update Listview
+						 richTextBox_ListView->ResetText();
+						 richTextBox_ListView->Text = gcnew String(logicResult.c_str());
+						 updateRichTextBoxContent(richTextBox_ListView,logicResult);
+					 }
+				 }
+				 notifyBox->BorderStyle = BorderStyle::None;			 
+			 }
+	private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
+				 toggle();
+			 }
 
-private: System::Void pictureBox1_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
-			 contextMenuStrip1->Show(pictureBox1,0,pictureBox1->Height);
-		 }
-private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
-			 toggle();
-		 }
-private: System::Void contextMenuStrip1_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
-			 contextMenuStrip1->Hide();
+	private: System::Void pictureBox_Help_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
+				 contextMenuStrip_HelpContent->Show(pictureBox_Help,0,pictureBox_Help->Height);
+			 }
+	private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+				 toggle();
+			 }
+	private: System::Void contextMenuStrip_HelpContent_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
+				 contextMenuStrip_HelpContent->Hide();
 		 }
 private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
 			 DateTime datetime = DateTime::Now;
 			 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
-		 }
-};
+			 }
+	};
 }

@@ -47,8 +47,10 @@ public:
 	void setDescription(std::string description);
 	void setDate(std::string date);
 	void setTime(std::string time);
-	
+
 	bool displayTasks();
+	std::string getTodayDate();
+	std::string getNextDayDate();
 };
 
 #endif
