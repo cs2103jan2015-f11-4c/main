@@ -9,7 +9,7 @@ namespace CommandTestClear
 	{
 	public:
 		
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(CommandTestClear_Clear)
 		{
 			// TODO: Your test code here
 		}

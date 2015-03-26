@@ -8,10 +8,15 @@ namespace CommandTestDelete
 	TEST_CLASS(CommandTestDelete)
 	{
 	public:
-		
-		TEST_METHOD(CommandTestDelete_DeleteOneItem)
+		taskDelete testTaskDelete;
+		TEST_METHOD(CommandTestDelete_successInvalidIndex)
 		{
-			
+			// Boundary Testing
+			// Assumption : File is not empty.
+			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(-1));
+			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(0));
+			// Assuming file size would not exceed 10000
+			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(10000));
 		}
 
 	};

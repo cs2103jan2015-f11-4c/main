@@ -2,7 +2,6 @@
 
 #include "taskDelete.h"
 
-
 taskDelete::taskDelete(void)
 {
 }
@@ -25,18 +24,20 @@ taskDelete::~taskDelete(void)
 //******************************************************************
 
 
+// Add file type to parameter once the code is stable
 std::string taskDelete::executeDelete(int indexToBeDeleted){
 	char buffer[999];
 	std::vector<std::string> file;
-	
+
 	storage newStorage;
 	file = newStorage.readFile("main");
+
 
 	if(file.empty()){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeDeleted > file.size()){
-		return MESSAGE_ERROR_ITEM_NOT_FOUND;
+	else if(indexToBeDeleted <= 0 || indexToBeDeleted > file.size()){
+		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
 		std::string deleteString;
