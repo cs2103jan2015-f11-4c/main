@@ -74,6 +74,7 @@ namespace UI {
 			}
 		}
 	private: System::Windows::Forms::RichTextBox^  richTextBox_CalendifiedViewL;
+	private: System::Windows::Forms::RichTextBox^  richTextBox_CalendifiedViewR;
 	protected: 
 
 	protected: 
@@ -139,6 +140,7 @@ namespace UI {
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(CalendifiedGUI::typeid));
 			this->richTextBox_CalendifiedViewL = (gcnew System::Windows::Forms::RichTextBox());
+			this->richTextBox_CalendifiedViewR = (gcnew System::Windows::Forms::RichTextBox());
 			this->commandBox = (gcnew System::Windows::Forms::RichTextBox());
 			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->label_status = (gcnew System::Windows::Forms::Label());
@@ -183,6 +185,20 @@ namespace UI {
 			this->richTextBox_CalendifiedViewL->Size = System::Drawing::Size(305, 320);
 			this->richTextBox_CalendifiedViewL->TabIndex = 0;
 			this->richTextBox_CalendifiedViewL->Text = L"";
+			// 
+			// richTextBox_CalendifiedViewL
+			// 
+			this->richTextBox_CalendifiedViewR->BackColor = System::Drawing::Color::White;
+			this->richTextBox_CalendifiedViewR->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->richTextBox_CalendifiedViewR->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+				static_cast<System::Byte>(0)));
+			this->richTextBox_CalendifiedViewR->ForeColor = System::Drawing::Color::Black;
+			this->richTextBox_CalendifiedViewR->Location = System::Drawing::Point(25, 73);
+			this->richTextBox_CalendifiedViewR->Name = L"richTextBox_CalendifiedViewR";
+			this->richTextBox_CalendifiedViewR->ReadOnly = true;
+			this->richTextBox_CalendifiedViewR->Size = System::Drawing::Size(305, 320);
+			this->richTextBox_CalendifiedViewR->TabIndex = 0;
+			this->richTextBox_CalendifiedViewR->Text = L"";		
 			// 
 			// commandBox
 			// 
