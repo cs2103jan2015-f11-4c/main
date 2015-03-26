@@ -35,11 +35,8 @@ public:
 	std::string getTaskTitle();
 	std::string getTaskLocation();
 	std::string getTaskDescription();
-	time_t getTaskTime();
 	std::string getTaskTimeInString();
-	time_t getTaskDate();
 	std::string getTaskDateInString();
-	time_t getTaskTimeAndDate();
 	std::string getTaskTimeAndDateInString();
 	int getIndexToBeDeleted();
 	int getIndexToBeEdited();

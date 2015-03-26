@@ -19,13 +19,14 @@ std::string taskAdd::taskAddTask(){
 	if(storageFile.isFileExist()){
 		_taskStorage = storageFile.readFile(_taskType);
 		_taskStorage.push_back(_task);		
-		if(storageFile.writeFile(_taskStorage, _taskType)){
-			assert (storageFile.writeFile(_taskStorage, _taskType) == 1);			
+		if(storageFile.writeFile(_taskStorage, _taskType)){			
 			return successMessage;
 		} else {
 			return failureMessage;
 		}
-	}	
+	} else {
+		return failureMessage;
+	}
 }
 
 void taskAdd::taskAddRecurrent(){

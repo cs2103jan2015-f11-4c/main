@@ -37,109 +37,74 @@ std::string taskRef::getTaskDescription(){
 }
 
 //@author A0116027R
-time_t taskRef::getTaskDate(){
-	struct tm Date;
-
+std::string taskRef::getTaskDateInString(){
+	struct tm Date = {0};
+	char storeDate [20] = {0};
+	char ignore;
 	int outNum;
+
+	if (_taskDate != ""){
 	std::istringstream in(_taskDate);
 	
 	in >> outNum;
 	Date.tm_mday = outNum;
-	assert (Date.tm_mday >= 1 && Date.tm_mday <= 31);
-
-	char ignore;
 
 	in >> ignore;
 
 	in >> outNum;
-	Date.tm_mon = outNum-1;
-	assert (Date.tm_mon >= 0 && Date.tm_mon <= 11);
+	Date.tm_mon = outNum-1; //months since January
 
 	in >> ignore;
 
 	in >> outNum;
-	Date.tm_year = outNum;
-	assert (Date.tm_year >= 0);
+	Date.tm_year = outNum - 1900; //years since 1900
 
-	time_t t = mktime(&Date);
+	mktime(&Date);
 
-	return t;
-}
+	int mday = Date.tm_mday;
+	int mon = Date.tm_mon + 1;
+	int year = Date.tm_year + 1900;
 
-std::string taskRef::getTaskDateInString(){
-	return _taskDate;
-}
+	strftime(storeDate, 20, "%d/%m/%Y", &Date);
+
+	return storeDate;
+	} else
+		return "";
+	}
 
 //@author A0116027R
-time_t taskRef::getTaskTime(){
-	struct tm Time;
+std::string taskRef::getTaskTimeInString(){
+	struct tm Time = {0};
+	char storeTime [20] = {0};
+	char ignore;
 	int outNum;
-	std::istringstream in(_taskDate);
+
+	if(_taskTime != ""){
+	std::istringstream in(_taskTime);
 	
 	in >> outNum;
 	Time.tm_hour = outNum;
-	assert (Time.tm_hour >= 0 && Time.tm_hour <= 23);
 
-	char ignore;
 	in >> ignore;
 
 	in >> outNum;
 	Time.tm_min = outNum;
-	assert (Time.tm_min >= 0 && Time.tm_min <= 59);
 
-	time_t t1 = mktime(&Time);
+	mktime(&Time);
 
-	return t1;
-}
+	int hour = Time.tm_hour;
+	int min = Time.tm_min;
 
-std::string taskRef::getTaskTimeInString(){
-	return _taskTime;
-}
+	strftime(storeTime, 20, "%H:%M", &Time);
 
-//@author A0116027R
-time_t taskRef::getTaskTimeAndDate(){
-	std::string _timeAndDate = _taskTime + _taskDate;
-
-	struct tm timeAndDate;
-
-	char ignore;
-	int outNum;
-	std::istringstream in(_timeAndDate);
-	
-	in >> outNum;
-	timeAndDate.tm_hour = outNum;
-	//assert (timeAndDate.tm_hour >= 0 && timeAndDate.tm_hour <= 23);
-
-
-	in >> ignore;
-
-	in >> outNum;
-	timeAndDate.tm_min = outNum;
-	//assert (timeAndDate.tm_min >= 0 && timeAndDate.tm_min <= 59);
-
-	in >> outNum;
-	timeAndDate.tm_mday = outNum;
-	//assert (timeAndDate.tm_mday >= 1 && timeAndDate.tm_mday <= 31);
-	
-	in >> ignore;
-
-	in >> outNum;
-	timeAndDate.tm_mon = outNum-1;
-	//assert (timeAndDate.tm_mon >= 0 && timeAndDate.tm_mon <= 11);
-
-	in >> ignore;
-
-	in >> outNum;
-	timeAndDate.tm_year = outNum;
-	//assert (timeAndDate.tm_year >=0);
-
-	time_t t = mktime(&timeAndDate);
-
-	return t;
+	return storeTime;
+	} else {
+		return "";
+	}
 }
 
 std::string taskRef::getTaskTimeAndDateInString(){
-	return _taskTime + " " + _taskDate;
+	return getTaskDateInString() + " " + getTaskTimeInString();
 }
 
 int taskRef::getIndexToBeDeleted(){
@@ -177,6 +142,7 @@ void taskRef::setIndexToBeEdited(int indexToBeEdited){
 	_indexToBeEdited = indexToBeEdited;
 }
 
+//@author A0116027R
 std::string taskRef::dataToString(){
 	std::string taskDate = "";
 	std::string taskTime = "";
@@ -185,11 +151,11 @@ std::string taskRef::dataToString(){
 	std::string taskLocation = "";
 
 	if(_taskDate != ""){
-		taskDate = _taskDate + " ";
+		taskDate = getTaskDateInString() + " ";
 	}
 
 	if(_taskTime != ""){
-		taskTime = _taskTime + " ";
+		taskTime = getTaskTimeInString() + " ";
 	}
 
 	if(_taskTitle != ""){
