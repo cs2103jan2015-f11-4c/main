@@ -51,6 +51,8 @@ public:
 	bool displayTasks();
 	std::string getTodayDate();
 	std::string getNextDayDate();
+	std::string getTodayDateDMY();
+	std::string getNextDayDateDMY();
 };
 
 #endif

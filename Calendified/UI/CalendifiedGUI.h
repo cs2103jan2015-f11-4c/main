@@ -186,19 +186,19 @@ namespace UI {
 			this->richTextBox_CalendifiedViewL->TabIndex = 0;
 			this->richTextBox_CalendifiedViewL->Text = L"";
 			// 
-			// richTextBox_CalendifiedViewL
+			// richTextBox_CalendifiedViewR
 			// 
 			this->richTextBox_CalendifiedViewR->BackColor = System::Drawing::Color::White;
 			this->richTextBox_CalendifiedViewR->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->richTextBox_CalendifiedViewR->Font = (gcnew System::Drawing::Font(L"Verdana", 12, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->richTextBox_CalendifiedViewR->ForeColor = System::Drawing::Color::Black;
-			this->richTextBox_CalendifiedViewR->Location = System::Drawing::Point(25, 73);
+			this->richTextBox_CalendifiedViewR->Location = System::Drawing::Point(331, 73);
 			this->richTextBox_CalendifiedViewR->Name = L"richTextBox_CalendifiedViewR";
 			this->richTextBox_CalendifiedViewR->ReadOnly = true;
 			this->richTextBox_CalendifiedViewR->Size = System::Drawing::Size(305, 320);
 			this->richTextBox_CalendifiedViewR->TabIndex = 0;
-			this->richTextBox_CalendifiedViewR->Text = L"";		
+			this->richTextBox_CalendifiedViewR->Text = L"";
 			// 
 			// commandBox
 			// 
@@ -477,7 +477,6 @@ namespace UI {
 				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str());
 				//Highlight Float Text
 				highlightRichTextBoxContent(thisRichTextBox,floatDate.c_str());
-
 				//Highlight keyword "Results:" if inputcommand is View
 				if(logicResult.substr(0,8).compare(viewResults) ==0){
 					highlightRichTextBoxContent(thisRichTextBox,viewResults);
@@ -486,7 +485,7 @@ namespace UI {
 			//author A0125489U
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 if(e->KeyCode==Keys::Enter){
-				 
+
 					 //system::string -> std::string
 					 char buffer[999];
 					 sprintf(buffer,"%s",commandBox->Text);
@@ -498,22 +497,31 @@ namespace UI {
 					 std::string nextDayDate = newLogic.getNextDayDate();
 					 std::string logicResult2="";
 					 std::size_t pos;
+					 //check for non null result string
 					 if(logicResult.compare("")!=0)
 					 {
-						 if(toggleCount == 0){
+						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 richTextBox_CalendifiedViewL->ResetText();
 							 richTextBox_CalendifiedViewR->ResetText();
-							 if(logicResult.substr(0,9).compare("Results:")){
-								 pos = logicResult.find("FLOAT");
-							 }else{
-								 pos = logicResult.find(nextDayDate);
+							 if(logicResult.substr(0,5).compare("Added")==0){ //check for add operation
+								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
+							 } else if(logicResult.substr(0,7).compare("Deleted")==0){ //check for delete operation
+								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
+							 } else if(logicResult.substr(0,7).compare("Edited.")==0){ //check for edit operation
+								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
+							 } else{
+								 if(logicResult.substr(0,8).compare("Results:")==0){ //check for view operation
+									 pos = logicResult.find("FLOAT");
+								 } else {
+									 pos = logicResult.find(nextDayDate); //check for display operation
+								 }
+								 logicResult2 = logicResult.substr(pos);
+								 logicResult = logicResult.substr(0,pos);
+								 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
+								 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
+								 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
+								 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
 							 }
-							 logicResult2 = logicResult.substr(pos);
-							 logicResult = logicResult.substr(0,pos);
-							 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
-							 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
-							 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
-							 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
 						 }else{
 							 //Update Listview
 							 richTextBox_ListView->ResetText();
@@ -642,10 +650,10 @@ namespace UI {
 			 }
 	private: System::Void contextMenuStrip_HelpContent_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 				 contextMenuStrip_HelpContent->Hide();
-		 }
-private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
-			 DateTime datetime = DateTime::Now;
-			 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
+			 }
+	private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 DateTime datetime = DateTime::Now;
+				 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
 			 }
 	};
 }

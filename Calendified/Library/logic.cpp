@@ -38,7 +38,7 @@ std::string logic::readCommand(std::string commandLine){
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
 	std::string displayFloatResults = "FLOAT";
-
+	std::string s;
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD: //@author A0116027R
@@ -63,9 +63,9 @@ std::string logic::readCommand(std::string commandLine){
 		return displayTodayResults;
 	case DISPLAY:		
 		displayTodayResults = getTodayDate()+"\n";
-		displayTodayResults += newStorage.searchFile(getTodayDate().substr(0,2)+"/","main");
+		displayTodayResults += newStorage.searchFile(getTodayDateDMY().substr(0,5)+"/","main");
 		displayNextDayResults = getNextDayDate()+"\n";
-		displayNextDayResults += newStorage.searchFile(getNextDayDate().substr(0,2)+"/","main");
+		displayNextDayResults += newStorage.searchFile(getNextDayDateDMY().substr(0,5)+"/","main");
 		displayFloatResults += "\n";
 		displayFloatResults += newStorage.searchFile("","float");
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
@@ -96,7 +96,7 @@ std::string logic::readCommand(std::string commandLine){
 }
 
 //@author A0125489U
-//This operation returns current date
+//This operation returns current date- Day
 std::string logic::getTodayDate(){
 	time_t timev;
 	struct tm * timeinfo;
@@ -108,7 +108,19 @@ std::string logic::getTodayDate(){
 }
 
 //@author A0125489U
-//This operation returns current date
+//This operation returns current date- Day
+std::string logic::getTodayDateDMY(){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%d/%m/%y",timeinfo);
+	return std::string(output);
+}
+
+//@author A0125489U
+//This operation returns current date- Day
 std::string logic::getNextDayDate(){
 	time_t timev;
 	struct tm * timeinfo;
@@ -117,6 +129,20 @@ std::string logic::getNextDayDate(){
 	timeinfo = localtime(&timev);
 	char output[30];
 	strftime(output,30,"%dth",timeinfo);
+	return std::string(output);
+	//return printf("%02d/%02d/%02d\n",timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_year %100);
+}
+
+//@author A0125489U
+//This operation returns current date- Day
+std::string logic::getNextDayDateDMY(){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	timev += 1 * 24 * 60 * 60;
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%d/%m/%y",timeinfo);
 	return std::string(output);
 	//return printf("%02d/%02d/%02d\n",timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_year %100);
 }
