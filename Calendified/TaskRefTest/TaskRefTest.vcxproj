@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{37D8F749-1DD4-4055-8EC0-73278449A283}</ProjectGuid>
+    <ProjectGuid>{07019F78-A17B-46CD-8C20-F6AB047EC4D0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>CommandTest</RootNamespace>
+    <RootNamespace>TaskRefTest</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -52,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Junhan\Documents\GitHub\main\Calendified\Library;C:\Users\JINGZHEN\Desktop\main\Calendified\Library;\\psf\Home\Desktop\main\Calendified\Library;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\JINGZHEN\Desktop\main\Calendified\Library;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -86,23 +86,11 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CommandTestUndocpp.cpp" />
-    <ClCompile Include="TaskRefTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="CommandTestAdd.cpp" />
-    <ClCompile Include="CommandTestClear.cpp" />
-    <ClCompile Include="CommandTestDelete.cpp" />
-    <ClCompile Include="CommandTestEdit.cpp" />
-    <ClCompile Include="CommandTestStorage.cpp" />
-    <ClCompile Include="CommandTestView.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Library\Library.vcxproj">
-      <Project>{642af32a-f41c-41a2-b5f1-dd875808f0e7}</Project>
-    </ProjectReference>
+    <ClCompile Include="TaskRefTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

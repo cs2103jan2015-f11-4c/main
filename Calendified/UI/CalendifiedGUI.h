@@ -484,6 +484,7 @@ namespace UI {
 			}
 			//author A0125489U
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+			try {
 				 if(e->KeyCode==Keys::Enter){
 
 					 //system::string -> std::string
@@ -548,7 +549,12 @@ namespace UI {
 					 */
 
 				 }
+				} catch (const std::exception& e) {
+					String^ systemString = gcnew String(e.what()); 
+					MessageBox::Show(systemString);
+					}
 			 }
+
 	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 
