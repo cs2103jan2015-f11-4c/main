@@ -42,13 +42,11 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD: //@author A0116027R
-		//temp.getTaskRef().getTaskTimeAndDateInString();
 		taskString = temp.getTaskRef().dataToString();
-		if(temp.getTaskRef().getTaskTimeAndDateInString() == " "){ 
-			addTask.setTaskType(FLOAT);
-		}
-		else if(temp.getTaskRef().getTaskTimeAndDateInString() != " "){
+		if(temp.getTaskRef().getTaskDateInString() != "" && temp.getTaskRef().getTaskTimeInString() != ""){
 			addTask.setTaskType(MAIN);
+		} else if(temp.getTaskRef().getTaskDateInString() == "" || temp.getTaskRef().getTaskTimeInString() == ""){ 
+			addTask.setTaskType(FLOAT);
 		}
 		addTask.setTask(taskString);
 
