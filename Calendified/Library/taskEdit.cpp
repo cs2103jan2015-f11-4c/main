@@ -10,7 +10,7 @@ taskEdit::~taskEdit(void){
 std::string taskEdit::executeEdit(int indexToBeEdited){
 	std::vector<std::string> file;
 		storage newStorage;
-	taskRef newTaskRef;
+	commandRef newCommandRef;
 	
 	if(newStorage.isFileExist()){
 		
@@ -23,9 +23,9 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 		}else{
 			std::string taskDataString;
 			taskDataString = file[indexToBeEdited-1];
-		    newTaskRef = editTaskRef(taskDataString);
+		    newCommandRef = editCommandRef(taskDataString);
 		    
-			taskDataString = newTaskRef.dataToString();
+			taskDataString = newCommandRef.dataToString();
 			file[indexToBeEdited-1] = taskDataString;
 			if(newStorage.writeFile(file,"main")){
 				return "Edited.";
@@ -43,25 +43,25 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 	
 
 }
-taskRef taskEdit::editTaskRef(std::string taskDataString){
+commandRef taskEdit::editCommandRef(std::string taskDataString){
 
-	taskRef oldTaskData;
+	commandRef oldTaskData;
 	oldTaskData = getEditingTaskData(taskDataString).copyTo();	
 	oldTaskData = editingRef.compareAndSetTaskData(oldTaskData);
 	
 	return oldTaskData;
 }
 
-taskRef taskEdit::getEditingTaskData(std::string taskDataString){
+commandRef taskEdit::getEditingTaskData(std::string taskDataString){
 
-	taskRef oldTaskData;
+	commandRef oldTaskData;
 	oldTaskData.stringTodata(taskDataString);
 	return oldTaskData;
 }
 
-void taskEdit::setEditingRef(taskRef currentTaskRef){
+void taskEdit::setEditingRef(commandRef currentCommandRef){
 	
-	editingRef = currentTaskRef.copyTo();
+	editingRef = currentCommandRef.copyTo();
 
 }
 

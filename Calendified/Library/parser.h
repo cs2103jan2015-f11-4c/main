@@ -8,13 +8,13 @@
 #include <string>
 #include <sstream>
 #include "logic.h"
-#include "taskRef.h"
+#include "commandRef.h"
 
 class parser
 {
 private:
 	std::string _taskCommand;
-	taskRef taskReference;
+	commandRef commandReference;
 
 public:
 	parser(void);
@@ -23,7 +23,7 @@ public:
 	int getItemInInteger(std::string inputString);
 	std::string getItemsInString(std::string inputString, char itemType);
 	std::string getTaskCommand();
-	taskRef getTaskRef();
+	commandRef getCommandRef();
 
 };
 

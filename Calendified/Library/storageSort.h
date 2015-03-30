@@ -13,6 +13,9 @@ public:
 	~storageSort(void);
 
 	std::vector<std::string> sortData(std::vector<std::string> file);
+	bool compareStringsTime(std::string a, std::string b);
+	bool compareStringsYear(std::string a, std::string b);
+	bool compareStringsMonth(std::string a, std::string b);
 };
 
 #endif

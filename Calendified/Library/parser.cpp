@@ -31,28 +31,28 @@ parser::parser(std::string commandLine){
 	if(isSymbol){	
 		//@author A0083864U
 		if(isIndex){
-			taskReference.setIndexToBeEdited(getItemInInteger(commandLine));
+			commandReference.setIndexToBeEdited(getItemInInteger(commandLine));
 			_taskCommand = commandLine.substr(substringBegin, index - 1);
 		}else{
 			_taskCommand = getItemsInString(commandLine, NULL);
 		}
-		taskReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
-		taskReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
-		taskReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
-		taskReference.setTaskDate(getItemsInString(commandLine, symbolDate));
-		taskReference.setTaskTime(getItemsInString(commandLine, symbolTime));
+		commandReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
+		commandReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
+		commandReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
+		commandReference.setTaskDate(getItemsInString(commandLine, symbolDate));
+		commandReference.setTaskTime(getItemsInString(commandLine, symbolTime));
 		
 	}else {
 		//@author A0125489U
 		//This method determine the 1st index of non-alpha character
 		found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz");
 		_taskCommand = commandLine.substr(substringBegin,found);
-		taskReference.setSearchItem(commandLine.substr(found+1, commandLine.size()));
+		commandReference.setSearchItem(commandLine.substr(found+1, commandLine.size()));
 
 		//@author A0114411B
 		//This operator determine whether commandLine is a Delete operation
 		if(_taskCommand.compare(commandDelete)==0){
-			taskReference.setIndexToBeDeleted(getItemInInteger(commandLine));
+			commandReference.setIndexToBeDeleted(getItemInInteger(commandLine));
 		}
 	}
 }
@@ -110,6 +110,6 @@ std::string parser::getTaskCommand(){
 	return _taskCommand;
 }
 
-taskRef parser::getTaskRef(){
-	return taskReference;
+commandRef parser::getCommandRef(){
+	return commandReference;
 }

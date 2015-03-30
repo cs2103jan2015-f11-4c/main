@@ -22,13 +22,16 @@
     <ClCompile Include="taskDelete.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="taskRef.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="taskEdit.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="storageSort.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="task.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commandRef.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,9 +51,6 @@
     <ClInclude Include="taskDelete.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="taskRef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="parser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -58,6 +58,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="storageSort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="task.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commandRef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

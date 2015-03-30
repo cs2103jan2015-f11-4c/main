@@ -67,10 +67,11 @@
     <ClInclude Include="parser.h" />
     <ClInclude Include="storage.h" />
     <ClInclude Include="storageSort.h" />
+    <ClInclude Include="task.h" />
     <ClInclude Include="taskAdd.h" />
     <ClInclude Include="taskDelete.h" />
     <ClInclude Include="taskEdit.h" />
-    <ClInclude Include="taskRef.h" />
+    <ClInclude Include="commandRef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Calendified.cpp" />
@@ -79,10 +80,11 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="storage.cpp" />
     <ClCompile Include="storageSort.cpp" />
+    <ClCompile Include="task.cpp" />
     <ClCompile Include="taskAdd.cpp" />
     <ClCompile Include="taskDelete.cpp" />
     <ClCompile Include="taskEdit.cpp" />
-    <ClCompile Include="taskRef.cpp" />
+    <ClCompile Include="commandRef.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

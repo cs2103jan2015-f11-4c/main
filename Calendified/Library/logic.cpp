@@ -11,7 +11,7 @@ logic::~logic(void){
 std::string logic::readCommand(std::string commandLine){
 	parser temp(commandLine);
 	storage newStorage;
-	currentTaskReference = temp.getTaskRef().copyTo();
+	currentCommandReference = temp.getCommandRef().copyTo();
 	std::string stringDetails;
 	std::string commandAction = temp.getTaskCommand();
 
@@ -30,7 +30,7 @@ std::string logic::readCommand(std::string commandLine){
 	//Delete operation variables
 	taskDelete deleteItem;
 	taskEdit editItem;
-	taskRef editedTaskRef;
+	commandRef editedcommandRef;
 
 	std::string deleteResults = "";
 	//Display and View operation variables
@@ -42,10 +42,10 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD: //@author A0116027R
-		taskString = temp.getTaskRef().dataToString();
-		if(temp.getTaskRef().getTaskDateInString() != "" && temp.getTaskRef().getTaskTimeInString() != ""){
+		taskString = temp.getCommandRef().dataToString();
+		if(temp.getCommandRef().getTaskDateInString() != "" && temp.getCommandRef().getTaskTimeInString() != ""){
 			addTask.setTaskType(MAIN);
-		} else if(temp.getTaskRef().getTaskDateInString() == "" || temp.getTaskRef().getTaskTimeInString() == ""){ 
+		} else if(temp.getCommandRef().getTaskDateInString() == "" || temp.getCommandRef().getTaskTimeInString() == ""){ 
 			addTask.setTaskType(FLOAT);
 		}
 		addTask.setTask(taskString);
@@ -53,11 +53,11 @@ std::string logic::readCommand(std::string commandLine){
 		addResults = addTask.taskAddTask();
 		return addResults;
 	case DELETE:
-		deleteResults = deleteItem.executeDelete(temp.getTaskRef().getIndexToBeDeleted());
+		deleteResults = deleteItem.executeDelete(temp.getCommandRef().getIndexToBeDeleted());
 		return deleteResults;
 	case VIEW:
-		displayTodayResults = "Results:\n"+newStorage.searchFile(temp.getTaskRef().getSearchItem(),"main")+"\n";
-		displayTodayResults += "FLOAT\n"+newStorage.searchFile(temp.getTaskRef().getSearchItem(),"float");
+		displayTodayResults = "Results:\n"+newStorage.searchFile(temp.getCommandRef().getSearchItem(),"main")+"\n";
+		displayTodayResults += "FLOAT\n"+newStorage.searchFile(temp.getCommandRef().getSearchItem(),"float");
 		return displayTodayResults;
 	case DISPLAY:		
 		displayTodayResults = getTodayDate()+"\n";
@@ -73,8 +73,8 @@ std::string logic::readCommand(std::string commandLine){
 
 	case EDIT:
 		
-		editItem.setEditingRef(currentTaskReference);
-		editResults = editItem.executeEdit(currentTaskReference.getIndexToBeEdited());
+		editItem.setEditingRef(currentCommandReference);
+		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeEdited());
 
 		return editResults;
 	case UNDO:

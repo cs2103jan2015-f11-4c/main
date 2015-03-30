@@ -5,7 +5,7 @@
 #include "storage.h"
 #include "taskDelete.h"
 #include "taskAdd.h"
-#include "taskRef.h"
+#include "commandRef.h"
 
 
 #pragma once
@@ -24,16 +24,16 @@ const std::string MESSAGE_ERROR_EDIT_ITEM_NOT_FOUND =
 class taskEdit
 {
 private:
-	taskRef editingRef;
+	commandRef editingRef;
 	
 public:
 	taskEdit(void);
 	~taskEdit(void);
 	
 	std::string executeEdit(int indexToBeEdited);
-	taskRef editTaskRef(std::string taskDataString);
-	taskRef getEditingTaskData(std::string taskDataString);
-	void setEditingRef(taskRef currentTaskRef);
+	commandRef editCommandRef(std::string taskDataString);
+	commandRef getEditingTaskData(std::string taskDataString);
+	void setEditingRef(commandRef currentcommandRef);
 	
 };
 

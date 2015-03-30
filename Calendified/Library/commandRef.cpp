@@ -1,7 +1,7 @@
 //@author shijia
-#include "taskRef.h"
+#include "commandRef.h"
 
-taskRef::taskRef(void){
+commandRef::commandRef(void){
 	_taskTitle = "";
 	_taskLocation = "";
 	_taskDescription = "";
@@ -9,15 +9,15 @@ taskRef::taskRef(void){
 	_taskTime = "00:00";
 }
 
-taskRef::~taskRef(void){
+commandRef::~commandRef(void){
 }
 
-std::string taskRef::getTaskTitle(){
+std::string commandRef::getTaskTitle(){
 	return _taskTitle;
 }
 
-taskRef taskRef::copyTo(){
-	taskRef newRef;
+commandRef commandRef::copyTo(){
+	commandRef newRef;
 	newRef.setTaskDate(_taskDate);
 	newRef.setTaskDescription(_taskDescription);
 	newRef.setTaskLocation(_taskLocation);
@@ -28,16 +28,16 @@ taskRef taskRef::copyTo(){
 	return newRef;
 }
 
-std::string taskRef::getTaskLocation(){
+std::string commandRef::getTaskLocation(){
 	return _taskLocation;
 }
 
-std::string taskRef::getTaskDescription(){
+std::string commandRef::getTaskDescription(){
 	return _taskDescription;
 }
 
 //@author A0116027R
-std::string taskRef::getTaskDateInString(){
+std::string commandRef::getTaskDateInString(){
 	struct tm Date = {0};
 	char storeDate [20] = {0};
 	char ignore;
@@ -73,7 +73,7 @@ std::string taskRef::getTaskDateInString(){
 	}
 
 //@author A0116027R
-std::string taskRef::getTaskTimeInString(){
+std::string commandRef::getTaskTimeInString(){
 	struct tm Time = {0};
 	char storeTime [20] = {0};
 	char ignore;
@@ -103,47 +103,47 @@ std::string taskRef::getTaskTimeInString(){
 	}
 }
 
-std::string taskRef::getTaskTimeAndDateInString(){
+std::string commandRef::getTaskTimeAndDateInString(){
 	return getTaskDateInString() + " " + getTaskTimeInString();
 }
 
-int taskRef::getIndexToBeDeleted(){
+int commandRef::getIndexToBeDeleted(){
 	return _indexToBeDeleted;
 }
-int taskRef::getIndexToBeEdited(){
+int commandRef::getIndexToBeEdited(){
 	return _indexToBeEdited;
 }
 
-void taskRef::setTaskTitle(std::string taskTitle){
+void commandRef::setTaskTitle(std::string taskTitle){
 	_taskTitle = taskTitle;
 }
 
-void taskRef::setTaskLocation(std::string taskLocation){
+void commandRef::setTaskLocation(std::string taskLocation){
 	_taskLocation = taskLocation;
 }
 
-void taskRef::setTaskDescription(std::string taskDescription){
+void commandRef::setTaskDescription(std::string taskDescription){
 	_taskDescription = taskDescription;
 }
 
-void taskRef::setTaskDate(std::string taskDate){
+void commandRef::setTaskDate(std::string taskDate){
 	_taskDate = taskDate;
 }
 
-void taskRef::setTaskTime(std::string taskTime){
+void commandRef::setTaskTime(std::string taskTime){
 	_taskTime = taskTime;
 }
 
-void taskRef::setIndexToBeDeleted(int indexToBeDeleted){
+void commandRef::setIndexToBeDeleted(int indexToBeDeleted){
 	_indexToBeDeleted = indexToBeDeleted;
 }
 
-void taskRef::setIndexToBeEdited(int indexToBeEdited){
+void commandRef::setIndexToBeEdited(int indexToBeEdited){
 	_indexToBeEdited = indexToBeEdited;
 }
 
 //@author A0116027R
-std::string taskRef::dataToString(){
+std::string commandRef::dataToString(){
 	std::string taskDate = "";
 	std::string taskTime = "";
 	std::string taskTitle = "";
@@ -177,7 +177,7 @@ std::string taskRef::dataToString(){
 		   taskLocation;
 }
 
-void taskRef::stringTodata(std::string dataInString){
+void commandRef::stringTodata(std::string dataInString){
 	int cutBeginIndex = 0;
 	int cutEndIndex;
 	char cutSymbol = ' ';
@@ -202,15 +202,15 @@ void taskRef::stringTodata(std::string dataInString){
 	_taskLocation = dataInString.substr(cutBeginIndex);
 }
 
-std::string taskRef::getSearchItem(){
+std::string commandRef::getSearchItem(){
 	return _searchItem;
 }
 
-void taskRef::setSearchItem(std::string searchItem){
+void commandRef::setSearchItem(std::string searchItem){
 	_searchItem = searchItem;
 }
 
-taskRef taskRef::compareAndSetTaskData(taskRef oldTaskData){
+commandRef commandRef::compareAndSetTaskData(commandRef oldTaskData){
 	std::string temp;
 
 	temp = _taskDate;

@@ -11,7 +11,7 @@
 #include <sstream>
 #include "taskDelete.h"
 #include "parser.h"
-#include "taskRef.h"
+#include "commandRef.h"
 #include "taskAdd.h"
 #include "storage.h"
 #include "taskEdit.h"
@@ -34,7 +34,7 @@ class logic
 {
 private:
 	std::set <std::string> allTasks;
-	taskRef currentTaskReference;
+	commandRef currentCommandReference;
 	
 public:
 	logic(void);
