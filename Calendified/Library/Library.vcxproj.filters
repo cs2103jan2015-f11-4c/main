@@ -34,6 +34,9 @@
     <ClCompile Include="commandRef.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="timeAndDate.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendified.h">
@@ -64,6 +67,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="commandRef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="timeAndDate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
