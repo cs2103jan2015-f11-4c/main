@@ -39,8 +39,6 @@ parser::parser(std::string commandLine){
 		commandReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
 		commandReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
 		commandReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
-		commandReference.setTaskDate(getItemsInString(commandLine, symbolDate));
-		commandReference.setTaskTime(getItemsInString(commandLine, symbolTime));
 		
 	}else {
 		//@author A0125489U

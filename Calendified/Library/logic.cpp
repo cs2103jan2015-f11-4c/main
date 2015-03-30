@@ -42,7 +42,7 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(commandAction)){
 	case ADD: //@author A0116027R
-		taskString = temp.getCommandRef().dataToString();
+		/*taskString = temp.getCommandRef().dataToString();
 		if(temp.getCommandRef().getTaskDateInString() != "" && temp.getCommandRef().getTaskTimeInString() != ""){
 			addTask.setTaskType(MAIN);
 		} else if(temp.getCommandRef().getTaskDateInString() == "" || temp.getCommandRef().getTaskTimeInString() == ""){ 
@@ -50,7 +50,7 @@ std::string logic::readCommand(std::string commandLine){
 		}
 		addTask.setTask(taskString);
 
-		addResults = addTask.taskAddTask();
+		addResults = addTask.taskAddTask(); */
 		return addResults;
 	case DELETE:
 		deleteResults = deleteItem.executeDelete(temp.getCommandRef().getIndexToBeDeleted());
