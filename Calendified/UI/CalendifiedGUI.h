@@ -251,7 +251,7 @@ namespace UI {
 			this->lbLengend->Name = L"lbLengend";
 			this->lbLengend->Size = System::Drawing::Size(417, 20);
 			this->lbLengend->TabIndex = 8;
-			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location, # - Description";
+			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location";
 			// 
 			// toggleBox_Calendified
 			// 

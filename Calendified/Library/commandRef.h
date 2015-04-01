@@ -14,13 +14,12 @@
 class commandRef
 {
 private:
-	timeAndDate _timeAndDate;
+	std::string _taskType; //  FloatingTask, TimedTask, DeadLine
+	std::string _time;
+	std::string _date;
 	std::string _taskTitle;
 	std::string _taskLocation;
-	std::string _taskDescription;
 	std::string _searchItem;
-	int _indexToBeDeleted;
-	int _indexToBeEdited;
 	int _indexToBeActOn;
 	std::string _commandAction;
 	bool _isDone;
@@ -33,23 +32,25 @@ public:
 	//copy: copy all data into new same type object;
 	commandRef copyTo();
 	//get method: use this to retrive data;
-	timeAndDate getTimeAndDate();
+	std::string getTaskType();
+	std::string getTime();
+	std::string getDate();
 	std::string getTaskTitle();
 	std::string getTaskLocation();
-	std::string getTaskDescription();
-	int getIndexToBeDeleted();
-	int getIndexToBeEdited();
+	int getIndexToBeActOn();
 	std::string getSearchItem();
+	std::string getCommandAction();
 	bool getIsDone();
 
 	//set method: use this to assign value to data;
-	void setTimeAndDate(timeAndDate timeAndDate);
+	void setTaskType(std::string taskType);
+	void setTime(std::string time);
+	void setDate(std::string date);
 	void setTaskTitle(std::string taskTitle);
 	void setTaskLocation(std::string taskLocation);	
-	void setTaskDescription(std::string taskDescription);
-	void setIndexToBeDeleted(int indexToBeDeleted);
-	void setIndexToBeEdited(int indexTobeEdited);
+	void setIndexToBeActOn(int indexToBeActOn);
 	void setSearchItem(std::string searchItem);
+	void setCommandAction(std::string commandAction);
 	void setIsDone(bool isDone);
 
 	//toString: format the data in string to store in the file (the format can be changed if wish);

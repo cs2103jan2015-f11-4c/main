@@ -12,6 +12,7 @@
 #include "taskDelete.h"
 #include "parser.h"
 #include "commandRef.h"
+#include "task.h"
 #include "taskAdd.h"
 #include "storage.h"
 #include "taskEdit.h"
@@ -44,7 +45,6 @@ public:
 	void setCommand(std::string command);
 	void setTitle(std::string title);
 	void setLocation(std::string location);
-	void setDescription(std::string description);
 	void setDate(std::string date);
 	void setTime(std::string time);
 

@@ -7,7 +7,6 @@
 #include <time.h>
 #include <string>
 #include <sstream>
-#include "logic.h"
 #include "commandRef.h"
 
 class parser

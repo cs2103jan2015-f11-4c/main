@@ -19,13 +19,11 @@ namespace TaskRefTest
 			std::string testTaskTime1 = "00:00"; //boundary time case
 			std::string testTaskTime2 = "23:59"; //boundary time case
 			std::string testTaskTitle = "birthday party";
-			std::string testTaskDescription = "lunch";
 			std::string testTaskLocation = "town";
 
 			testTaskRef.setTaskDate(testTaskDate1);
 			testTaskRef.setTaskTime(testTaskTime1);
 			testTaskRef.setTaskTitle(testTaskTitle);
-			testTaskRef.setTaskDescription(testTaskDescription);
 			testTaskRef.setTaskLocation(testTaskLocation);
 
 			std::string expectedDateResult1 = "01/01/1900";

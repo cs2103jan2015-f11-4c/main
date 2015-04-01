@@ -1,7 +1,7 @@
 #include "logic.h"
 #include <iomanip>
 #include <ctime>
-// comments
+
 logic::logic(void){
 }
 
@@ -9,24 +9,53 @@ logic::~logic(void){
 }
 
 std::string logic::readCommand(std::string commandLine){
-	parser temp(commandLine);
+	parser newParser(commandLine);
 	storage newStorage;
-	currentCommandReference = temp.getCommandRef().copyTo();
-	std::string stringDetails;
-	std::string commandAction = temp.getTaskCommand();
+	currentCommandReference = newParser.getCommandRef().copyTo();
+
+	timeAndDate newTimeAndDate;
+	task newTask;
+	std::string TimedTask = "TimedTask";
+	std::string FloatingTask = "FloatingTask";
+	std::string DeadLine = "DeadLine";
+	// Floating Task:
+	// 1. Got date no time
+	// 2. No date no time
+	// Timed Task:
+	// 1. Got date got time
+	// DeadLine:
+	// 1. Got date got time 
+	/*if(newTimeAndDate.getTaskDate() != "" && newTimeAndDate.getTaskTime() == "" || newTimeAndDate.getTaskDate() == "" && newTimeAndDate.getTaskTime() == ""){
+	newTask.setTaskType(FloatingTask);
+	} else if(newTimeAndDate.getTaskDate() != "" && newTimeAndDate.getStartTime() != "" && newTimeAndDate.getEndTime() != ""){
+		newTask.setTaskType(TimedTask);
+	} else if( check deadline  ){
+		newTask.setTaskType(DeadLine);
+	}
+	*/	
+	
+	/* Testing rapid json
+	std::vector<task> commandVector;
+	newTask.setTitle(currentCommandReference.getTaskTitle());
+	newTask.setTaskType(TimedTask);
+	newTask.setLocation(currentCommandReference.getTaskLocation());
+	newTask.setCommandAction(currentCommandReference.getCommandAction());
+	commandVector.push_back(newTask);
+	*/
 
 	char symbolTitle = '&';
 	char symbolLocation = '@';
-	char symbolDescription = '#';
 	char symbolDate = '%';
 	char symbolTime = '$';
 
 	//Add operation variables
 	std::string addResults = "";
 	std::string taskString = "";
-	std::string MAIN = "main";
-	std::string FLOAT = "float";
+
+	// For Task Type
+
 	taskAdd addTask;
+
 	//Delete operation variables
 	taskDelete deleteItem;
 	taskEdit editItem;
@@ -34,30 +63,32 @@ std::string logic::readCommand(std::string commandLine){
 
 	std::string deleteResults = "";
 	//Display and View operation variables
+
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
 	std::string displayFloatResults = "FLOAT";
 	std::string s;
 	//@author A0125489U	
-	switch(hashCommandAction(commandAction)){
+	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD: //@author A0116027R
-		/*taskString = temp.getCommandRef().dataToString();
-		if(temp.getCommandRef().getTaskDateInString() != "" && temp.getCommandRef().getTaskTimeInString() != ""){
+		/*taskString = newParser.getCommandRef().dataToString();
+		if(newParser.getCommandRef().getTaskDateInString() != "" && newParser.getCommandRef().getTaskTimeInString() != ""){
 			addTask.setTaskType(MAIN);
-		} else if(temp.getCommandRef().getTaskDateInString() == "" || temp.getCommandRef().getTaskTimeInString() == ""){ 
+		} else if(newParser.getCommandRef().getTaskDateInString() == "" || newParser.getCommandRef().getTaskTimeInString() == ""){ 
 			addTask.setTaskType(FLOAT);
 		}
-		addTask.setTask(taskString);
+		addTask.setTask(taskString);*/
 
-		addResults = addTask.taskAddTask(); */
+		// Testing json : newStorage.writeFileJson(commandVector);
+		addResults = addTask.taskAddTask(); 
 		return addResults;
 	case DELETE:
-		deleteResults = deleteItem.executeDelete(temp.getCommandRef().getIndexToBeDeleted());
+		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());
 		return deleteResults;
 	case VIEW:
-		displayTodayResults = "Results:\n"+newStorage.searchFile(temp.getCommandRef().getSearchItem(),"main")+"\n";
-		displayTodayResults += "FLOAT\n"+newStorage.searchFile(temp.getCommandRef().getSearchItem(),"float");
+		displayTodayResults = "Results:\n"+newStorage.searchFile(newParser.getCommandRef().getSearchItem(),"main")+"\n";
+		displayTodayResults += "FLOAT\n"+newStorage.searchFile(newParser.getCommandRef().getSearchItem(),"float");
 		return displayTodayResults;
 	case DISPLAY:		
 		displayTodayResults = getTodayDate()+"\n";
@@ -74,7 +105,7 @@ std::string logic::readCommand(std::string commandLine){
 	case EDIT:
 		
 		editItem.setEditingRef(currentCommandReference);
-		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeEdited());
+		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
 
 		return editResults;
 	case UNDO:

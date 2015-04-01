@@ -6,14 +6,11 @@ parser::parser(void){
 parser::parser(std::string commandLine){
 	char symbolTitle = '&';
 	char symbolLocation = '@';
-	char symbolDescription = '#';
 	char symbolDate = '%';
 	char symbolTime = '$';
 	bool isSymbol = false;
 	bool isIndex = false;
 	unsigned int substringBegin = 0;
-	const std::string commandDelete = "delete";
-	const std::string commandEdit = "edit";
 
 	//@author A0125489U
 	//This method determine the 1st index of any non-alphanumeric character (exclude blankspace too)
@@ -31,27 +28,24 @@ parser::parser(std::string commandLine){
 	if(isSymbol){	
 		//@author A0083864U
 		if(isIndex){
-			commandReference.setIndexToBeEdited(getItemInInteger(commandLine));
+			commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 			_taskCommand = commandLine.substr(substringBegin, index - 1);
+			commandReference.setCommandAction(_taskCommand);
 		}else{
 			_taskCommand = getItemsInString(commandLine, NULL);
+			commandReference.setCommandAction(_taskCommand);
 		}
 		commandReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
 		commandReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
-		commandReference.setTaskDescription(getItemsInString(commandLine, symbolDescription));
-		
+		commandReference.setTime(getItemsInString(commandLine, symbolTime));
+		commandReference.setDate(getItemsInString(commandLine, symbolDate));
 	}else {
 		//@author A0125489U
 		//This method determine the 1st index of non-alpha character
 		found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz");
 		_taskCommand = commandLine.substr(substringBegin,found);
+		commandReference.setCommandAction(_taskCommand);
 		commandReference.setSearchItem(commandLine.substr(found+1, commandLine.size()));
-
-		//@author A0114411B
-		//This operator determine whether commandLine is a Delete operation
-		if(_taskCommand.compare(commandDelete)==0){
-			commandReference.setIndexToBeDeleted(getItemInInteger(commandLine));
-		}
 	}
 }
 

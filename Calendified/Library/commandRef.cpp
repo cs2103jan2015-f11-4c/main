@@ -2,61 +2,84 @@
 #include "commandRef.h"
 
 commandRef::commandRef(void){
-	_taskTitle = "";
-	_taskLocation = "";
-	_taskDescription = "";
+	_taskType = '\0';
+	_time = '\0';
+	_date = '\0';
+	_commandAction = '\0';
+	_taskTitle = '\0';
+	_taskLocation = '\0';
 	_searchItem = '\0';
-	_indexToBeDeleted = 0;
-	_indexToBeEdited = 0;
-	_indexToBeActOn = 0;
+	_indexToBeActOn = NULL;
 	_isDone = false;
 }
 
 commandRef::~commandRef(void){
 }
 
-std::string commandRef::getTaskTitle(){
-	return _taskTitle;
-}
-
 commandRef commandRef::copyTo(){
 	commandRef newRef;
-	newRef.setTimeAndDate(_timeAndDate);
-	newRef.setTaskDescription(_taskDescription);
+	newRef.setTaskType(_taskType);
+	newRef.setTime(_time);
+	newRef.setDate(_date);
 	newRef.setTaskLocation(_taskLocation);
 	newRef.setTaskTitle(_taskTitle);
-	newRef.setIndexToBeDeleted(_indexToBeDeleted);
-	newRef.setIndexToBeEdited(_indexToBeEdited);
+	newRef.setIndexToBeActOn(_indexToBeActOn);
 	newRef.setIsDone(false);
 	return newRef;
 }
 
-timeAndDate commandRef::getTimeAndDate(){
-	return _timeAndDate;
+// getters
+std::string commandRef::getTaskType(){
+	return _taskType;
+}
+
+std::string commandRef::getTaskTitle(){
+	return _taskTitle;
+}
+
+std::string commandRef::getCommandAction(){
+	return _commandAction;
+}
+
+std::string commandRef::getTime(){
+	return _time;
+}
+
+std::string commandRef::getDate(){
+	return _date;
 }
 
 std::string commandRef::getTaskLocation(){
 	return _taskLocation;
 }
 
-std::string commandRef::getTaskDescription(){
-	return _taskDescription;
+int commandRef::getIndexToBeActOn(){
+	return _indexToBeActOn;
 }
 
-
-int commandRef::getIndexToBeDeleted(){
-	return _indexToBeDeleted;
-}
-int commandRef::getIndexToBeEdited(){
-	return _indexToBeEdited;
+std::string commandRef::getSearchItem(){
+	return _searchItem;
 }
 
 bool commandRef::getIsDone(){
 	return _isDone;
 }
 
-void commandRef::setTimeAndDate(timeAndDate timeAndDate){
-	_timeAndDate = timeAndDate;
+// setters
+void commandRef::setTaskType(std::string taskType){
+	_taskType = taskType;
+}
+
+void commandRef::setCommandAction(std::string commandAction){
+	_commandAction = commandAction;
+}
+
+void commandRef::setTime(std::string time){
+	_time = time;
+}
+
+void commandRef::setDate(std::string date){
+	_date = date;
 }
 
 void commandRef::setTaskTitle(std::string taskTitle){
@@ -67,16 +90,12 @@ void commandRef::setTaskLocation(std::string taskLocation){
 	_taskLocation = taskLocation;
 }
 
-void commandRef::setTaskDescription(std::string taskDescription){
-	_taskDescription = taskDescription;
+void commandRef::setIndexToBeActOn(int indexToBeActOn){
+	_indexToBeActOn = indexToBeActOn;
 }
 
-void commandRef::setIndexToBeDeleted(int indexToBeDeleted){
-	_indexToBeDeleted = indexToBeDeleted;
-}
-
-void commandRef::setIndexToBeEdited(int indexToBeEdited){
-	_indexToBeEdited = indexToBeEdited;
+void commandRef::setSearchItem(std::string searchItem){
+	_searchItem = searchItem;
 }
 
 void commandRef::setIsDone(bool isDone){
@@ -86,15 +105,10 @@ void commandRef::setIsDone(bool isDone){
 //@author A0116027R
 std::string commandRef::dataToString(){
 	std::string taskTitle = "";
-	std::string taskDescription = "";
 	std::string taskLocation = "";
 
 	if(_taskTitle != ""){
 		taskTitle = _taskTitle + " ";
-	}
-
-	if(_taskDescription != ""){
-		taskDescription = "(" + _taskDescription + ") ";
 	}
 
 	if(_taskLocation != ""){
@@ -102,7 +116,6 @@ std::string commandRef::dataToString(){
 	}
 
 	return taskTitle +
-		   taskDescription +
 		   taskLocation;
 }
 
@@ -123,29 +136,11 @@ void commandRef::stringTodata(std::string dataInString){
 	_taskTitle = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
 	cutBeginIndex = cutEndIndex + 1;
 
-	cutSymbol = '@';
-	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
-	_taskDescription = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
-	cutBeginIndex = cutEndIndex + 1;
-
 	_taskLocation = dataInString.substr(cutBeginIndex);
-}
-
-std::string commandRef::getSearchItem(){
-	return _searchItem;
-}
-
-void commandRef::setSearchItem(std::string searchItem){
-	_searchItem = searchItem;
 }
 
 commandRef commandRef::compareAndSetTaskData(commandRef oldTaskData){
 	std::string temp;
-
-	temp = _taskDescription;
-	if( temp != ""){
-		oldTaskData.setTaskDescription(temp);
-	}
 
 	temp = _taskLocation;
 	if(temp != ""){

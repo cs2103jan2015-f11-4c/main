@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "storageSort.h"
+#include "task.h"
 
 const std::string FILE_NAME_FLOATING 
 	= "floatingTask.txt";
@@ -32,6 +33,9 @@ public:
 	std::string searchFile(std::string stringToBeSearched, std::string fileType);
 	void clearFile();
 	std::string successMessageClear();
+	
+	std::vector<task> storage::readFileJson();
+	void storage::writeFileJson(std::vector<task> commandVector);
 };
 
 #endif

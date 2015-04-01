@@ -21,3 +21,10 @@ std::vector<std::string> storageSort::sortData(std::vector<std::string> file){
 
 	return file;
 }
+
+
+std::vector<commandRef> storageSort::sortVector(std::vector<commandRef> commandVector){
+
+
+	return commandVector;
+}

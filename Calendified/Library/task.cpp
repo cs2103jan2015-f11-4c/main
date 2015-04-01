@@ -1,15 +1,15 @@
-/*#include "task.h"
+//author @a0114411b
 
-task::task(std::string timeString, std::string dateString, std::string title, std::string location, std::string descripion, int indexToBeAction)
+#include "task.h"
+
+task::task()
 {
-	_title = title;
-	_location = location;
-	_descripion = descripion;
-
-	time newTime;
-	startTime = newTime.getStartTime(timeString);
-	endTime = newTime.getEndTime(dateString);
-	_indexToBeAction = indexToBeAction;
+	_taskType = '\0';
+	_commandAction = '\0';
+	_title = '\0';
+	_location = '\0';
+	_isDone = false;
+	//_indexToBeActOn = NULL;
 }
 
 
@@ -17,11 +17,61 @@ task::~task(void)
 {
 }
 
-void task::setTaskType(taskType taskType){
+//setters
+void task::setTaskType(std::string taskType){
 	_taskType = taskType;
 }
 
-bool task::isOverlap(time t){
-	return t.compare(t);
+void task::setCommandAction(std::string commandAction){
+	_commandAction = commandAction;
 }
-*/
+
+void task::setTimeAndDate(timeAndDate timeAndDate){
+	_timeAndDate = timeAndDate;
+}
+
+void task::setTitle(std::string title){
+	_title = title;
+}
+
+void task::setLocation(std::string location){
+	_location = location;
+}
+
+void task::setIsDone(bool isDone){
+	_isDone = isDone;
+}
+
+//void task::setIndexToBeActOn(int indexToBeActOn){
+	//_indexToBeActOn = indexToBeActOn;
+//}
+
+
+//getters
+std::string task::getTaskType(){
+	return _taskType;
+}
+
+std::string task::getCommandAction(){
+	return _commandAction;
+}
+
+timeAndDate task::getTimeAndDate(){
+	return _timeAndDate;
+}
+
+std::string task::getTitle(){
+	return _title;
+}
+
+std::string task::getLocation(){
+	return _location;
+}
+
+bool task::getIsDone(){
+	return _isDone;
+}
+
+//int task::getIndexToBeActOn(){
+	//return _indexToBeActOn;
+//}
