@@ -67,6 +67,7 @@ std::string logic::readCommand(std::string commandLine){
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
+	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
 	std::string s;
 	//@author A0125489U	
@@ -108,6 +109,9 @@ std::string logic::readCommand(std::string commandLine){
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
 
 		return editResults;
+	case CHECKDONE:
+		checkDoneResults = "list below";
+		return checkDoneResults;
 	case UNDO:
 		return "";
 	case REPEAT:
@@ -118,6 +122,7 @@ std::string logic::readCommand(std::string commandLine){
 		return "";
 	case TOGGLE:
 		return "Toggled!";
+	
 	default:
 		return "";
 	return "";
@@ -188,6 +193,7 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandSpecify = "specify";
 	std::string commandRedo = "redo";
 	std::string commandToggle = "toggle";
+	std::string commandCheckDone = "checkdone";
 
 	transform(commandAction.begin(),commandAction.end(),commandAction.begin(),tolower);
 
@@ -223,5 +229,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandToggle) == 0){ 
 		return TOGGLE;
+	}
+	if(commandAction.compare(commandCheckDone) == 0){ 
+		return CHECKDONE;
 	}
 }

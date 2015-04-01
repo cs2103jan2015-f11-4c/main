@@ -28,7 +28,8 @@ enum commandType {
 	REPEAT, 
 	SPECIFY, 
 	REDO, 
-	TOGGLE 
+	TOGGLE,
+	CHECKDONE
 };
 
 class logic
