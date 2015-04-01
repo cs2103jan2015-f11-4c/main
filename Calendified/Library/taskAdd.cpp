@@ -7,23 +7,25 @@ taskAdd::taskAdd(){
 
 taskAdd::~taskAdd(void)
 {
-	_task = "";
-	_taskType = "";
 }
 
 std::string taskAdd::taskAddTask(){
 	storage storageFile;
-	std::vector<std::string> _taskStorage;
+	std::vector<task> _taskStorage;
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
 	if(storageFile.isFileExist()){
-		_taskStorage = storageFile.readFile(_taskType);
+		_taskStorage = storageFile.readFileJson();
 		_taskStorage.push_back(_task);		
-		if(storageFile.writeFile(_taskStorage, _taskType)){			
-			return successMessage;
-		} else {
+		try {
+		storageFile.writeFileJson(_taskStorage);
+		return successMessage;
+		} catch (const std::exception& e){
 			return failureMessage;
 		}
+		//} else {
+		//	return failureMessage;
+		//}
 	} else {
 		return failureMessage;
 	}
@@ -33,10 +35,6 @@ void taskAdd::taskAddRecurrent(){
 
 }
 
-void taskAdd::setTask(std::string taskString){
-	_task = taskString;
-}
-
-void taskAdd::setTaskType(std::string taskType){
-	_taskType = taskType;
+void taskAdd::setTask(task newTask){
+	_task = newTask;
 }

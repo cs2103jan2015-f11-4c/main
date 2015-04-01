@@ -7,16 +7,36 @@ private:
 	int _mday;
 	int _month;
 	int _year;
-	int _hour;
-	int _min;
+	int _startTimeHour;
+	int _startTimeMin;
+	int _endTimeHour;
+	int _endTimeMin;
+	std::string _day;
 
 public:
 	timeAndDate();
-	time_t getTaskDateInTimeT(std::string dateString, tm* Date);
-	std::string getTaskDateInString(std::string dateString);
-	time_t getTaskTimeInTimeT(std::string timeString, tm* Time);
+	timeAndDate(std::string dateString, std::string timeString);
+
+	bool isValid();
+
+	//setters
+	void setMDay(int taskMday);
+	void setMonth(int taskMonth);
+	void setYear(int taskYear);
+	void setStartTimeHour(int taskStartTimeHour);
+	void setStartTimeMin(int taskStartTimeMin);
+	void setEndTimeHour(int taskEndTimeHour);
+	void setEndTimeMin(int taskEndTimeMin);
+
+	//getters
+	time_t getTaskDateInTimeT();
+	std::string getTaskDateInString();
+	time_t getTaskStartTimeInTimeT();
+	time_t getTaskEndTimeInTimeT();
 	std::string getTaskTimeInString(std::string timeString);
-	std::string dateAndTimeInString(std::string dateString, std::string timeString);
+	std::string getTaskStartTimeInString();
+	std::string getTaskEndTimeInString();
+	std::string dateAndTimeInString();
 
 	~timeAndDate(void);
 };

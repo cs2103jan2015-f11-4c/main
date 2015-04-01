@@ -72,14 +72,14 @@ std::string logic::readCommand(std::string commandLine){
 	std::string s;
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
-	case ADD: //@author A0116027R
-		/*taskString = newParser.getCommandRef().dataToString();
-		if(newParser.getCommandRef().getTaskDateInString() != "" && newParser.getCommandRef().getTaskTimeInString() != ""){
-			addTask.setTaskType(MAIN);
-		} else if(newParser.getCommandRef().getTaskDateInString() == "" || newParser.getCommandRef().getTaskTimeInString() == ""){ 
-			addTask.setTaskType(FLOAT);
-		}
-		addTask.setTask(taskString);*/
+	case ADD:
+		//taskString = newParser.getCommandRef().dataToString();
+		/*if(newTask.getTimeAndDate().getTaskDateInString() != "" && newTask.getTimeAndDate().getTaskTimeInString != ""){
+			addTask.setTaskType(TimedTask);
+		} else if(newTask.getTimeAndDate().getTaskDateInString() == "" || newTask.getTimeAndDate().getTaskTimeInString == ""){ 
+			addTask.setTaskType(FloatingTask);
+		}*/
+		addTask.setTask(newTask);
 
 		// Testing json : newStorage.writeFileJson(commandVector);
 		addResults = addTask.taskAddTask(); 

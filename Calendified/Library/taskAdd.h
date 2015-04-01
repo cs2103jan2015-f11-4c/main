@@ -13,17 +13,15 @@
 class taskAdd
 {
 private:
-	std::string _task;
-	std::string _taskType;
-	std::vector<std::string> _taskStorage;
+	task _task;
+	//std::vector<task> _taskStorage;
 public:
 	taskAdd();
 	taskAdd(std::string taskString);
 	~taskAdd(void);
 	std::string taskAddTask();
 	void taskAddRecurrent();
-	void setTask(std::string taskString);
-	void setTaskType(std::string taskType);
+	void setTask(task taskString);
 };
 
 #endif
