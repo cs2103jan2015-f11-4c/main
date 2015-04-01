@@ -250,7 +250,6 @@ std::vector<task> storage::readFileJson(){
 				newTask.setIsDone(TaskObject["IsDone"].GetBool());
 
 				//Date
-				//Date
 				timeAndDate newTimeAndDate;
 				newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
 				newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
@@ -270,6 +269,9 @@ std::vector<task> storage::readFileJson(){
 }
 
 void storage::writeFileJson(std::vector<task> commandVector){
+
+	storageSort sort;
+	commandVector = sort.sortVector(commandVector);
 
 	Document document;
 	document.SetObject();
