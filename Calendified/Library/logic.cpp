@@ -11,13 +11,23 @@ logic::~logic(void){
 std::string logic::readCommand(std::string commandLine){
 	parser newParser(commandLine);
 	storage newStorage;
+	char symbolTitle = '&';
+	char symbolLocation = '@';
+	char symbolDate = '%';
+	char symbolTime = '$';
 	currentCommandReference = newParser.getCommandRef().copyTo();
 
-	timeAndDate newTimeAndDate;
+	timeAndDate newTimeAndDate(currentCommandReference.getDate(),currentCommandReference.getTime());
 	task newTask;
 	std::string TimedTask = "TimedTask";
 	std::string FloatingTask = "FloatingTask";
 	std::string DeadLine = "DeadLine";
+	newTask.setCommandAction(newParser.getTaskCommand());
+	newTask.setTimeAndDate(newTimeAndDate);
+	newTask.setLocation(newParser.getItemsInString(commandLine,symbolLocation));
+	newTask.setTitle(currentCommandReference.getTaskTitle());
+	newTask.setTaskType(TimedTask);
+	// Setting task type
 	// Floating Task:
 	// 1. Got date no time
 	// 2. No date no time
@@ -25,28 +35,15 @@ std::string logic::readCommand(std::string commandLine){
 	// 1. Got date got time
 	// DeadLine:
 	// 1. Got date got time 
-	/*if(newTimeAndDate.getTaskDate() != "" && newTimeAndDate.getTaskTime() == "" || newTimeAndDate.getTaskDate() == "" && newTimeAndDate.getTaskTime() == ""){
-	newTask.setTaskType(FloatingTask);
-	} else if(newTimeAndDate.getTaskDate() != "" && newTimeAndDate.getStartTime() != "" && newTimeAndDate.getEndTime() != ""){
+	/*if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() != "" && newTimeAndDate.getTaskEndTimeInString() != ""){
 		newTask.setTaskType(TimedTask);
-	} else if( check deadline  ){
+	} else if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() == "" && newTimeAndDate.getTaskEndTimeInString() == ""
+		|| newTimeAndDate.getTaskDateInString() == "" && newTimeAndDate.getTaskStartTimeInString() == "" && newTimeAndDate.getTaskEndTimeInString() == ""){
+		newTask.setTaskType(FloatingTask);
+	} else if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() != "" && newTimeAndDate.getTaskEndTimeInString() != ""){
 		newTask.setTaskType(DeadLine);
-	}
-	*/	
-	
-	/* Testing rapid json
-	std::vector<task> commandVector;
-	newTask.setTitle(currentCommandReference.getTaskTitle());
-	newTask.setTaskType(TimedTask);
-	newTask.setLocation(currentCommandReference.getTaskLocation());
-	newTask.setCommandAction(currentCommandReference.getCommandAction());
-	commandVector.push_back(newTask);
-	*/
-
-	char symbolTitle = '&';
-	char symbolLocation = '@';
-	char symbolDate = '%';
-	char symbolTime = '$';
+		//how to differentiate deadline from timed task?
+	}*/
 
 	//Add operation variables
 	std::string addResults = "";
@@ -73,15 +70,7 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
-		//taskString = newParser.getCommandRef().dataToString();
-		/*if(newTask.getTimeAndDate().getTaskDateInString() != "" && newTask.getTimeAndDate().getTaskTimeInString != ""){
-			addTask.setTaskType(TimedTask);
-		} else if(newTask.getTimeAndDate().getTaskDateInString() == "" || newTask.getTimeAndDate().getTaskTimeInString == ""){ 
-			addTask.setTaskType(FloatingTask);
-		}*/
 		addTask.setTask(newTask);
-
-		// Testing json : newStorage.writeFileJson(commandVector);
 		addResults = addTask.taskAddTask(); 
 		return addResults;
 	case DELETE:

@@ -24,6 +24,8 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <cstdio>
+
 
 using namespace rapidjson;
 
@@ -105,6 +107,20 @@ std::vector<std::string> storage::readFile(std::string fileType){
 	return file;
 }
 
+bool storage::isFileEmpty(){
+	std::string data;
+	std::ifstream extract(_filePath);
+	getline(extract,data);
+	extract.close();
+
+	if(data == ""){
+		return true;
+	} else{ 
+		return false;
+	}
+
+}
+
 bool storage::writeFile(std::vector<std::string> file, std::string fileType){
 	storageSort storageSort;
 	file = storageSort.sortData(file);
@@ -169,7 +185,8 @@ std::string storage::successMessageClear(){
 
 
 std::vector<task> storage::readFileJson(){
-	FILE* in = fopen(_filePath.c_str(), "r");
+	FILE* in = NULL;
+	in = fopen(_filePath.c_str(), "r");
 	char buffer[65536];
 	FileReadStream iss(in,buffer,sizeof(buffer));
 
@@ -177,76 +194,79 @@ std::vector<task> storage::readFileJson(){
 	document.ParseStream(iss);
 	assert(document != NULL);
 	fclose(in);
-
-	const Value& array = document["storage"];
 	std::vector<task> commandVector;
 	commandVector.clear();
+	
+		const Value& array = document["storage"];
 
-	for(auto i=0; i<array.Size(); i++){
-		const Value& TaskObject = array[i];
+		for(SizeType i=0; i<array.Size(); i++){
+			const Value& TaskObject = array[i];
+			std::string TaskType = TaskObject["TaskType"].GetString();
 
-		if(TaskObject["TaskType"].GetString() == "TimedTask"){
-			task newTask;
-			//standard
-			newTask.setTaskType(TaskObject["TaskType"].GetString());
-			newTask.setTitle(TaskObject["TaskTitle"].GetString());
-			newTask.setLocation(TaskObject["TaskLocation"].GetString());	
-			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
-			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			if(TaskType == "TimedTask"){
+				task newTask;
+				//standard
+				newTask.setTaskType(TaskObject["TaskType"].GetString());
+				newTask.setTitle(TaskObject["TaskTitle"].GetString());
+				newTask.setLocation(TaskObject["Location"].GetString());	
+				newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+				newTask.setIsDone(TaskObject["IsDone"].GetBool());
 
-			//Date
-			timeAndDate newTimeAndDate;
-			/*newTimeAndDate.setDay(TaskObject["Day"].GetInt());
-			newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
-			newTimeAndDate.setYear(TaskObject["Year"].GetInt());
+				//Date
+				timeAndDate newTimeAndDate;
+				newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
+				newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
+				newTimeAndDate.setYear(TaskObject["Year"].GetInt());
 
-			//Time
-			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
-			newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
-			newTimeAndDate.seEndTimeHour(TaskObject["EndHour"].GetInt());
-			newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());*/
+				//Time
+				newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
+				newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
+				newTimeAndDate.setEndTimeHour(TaskObject["EndHour"].GetInt());
+				newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());
 
-			newTask.setTimeAndDate(newTimeAndDate);
-			commandVector.push_back(newTask);
-		}
+				newTask.setTimeAndDate(newTimeAndDate);
+				commandVector.push_back(newTask);
+			}
 
-		else if(TaskObject["TaskType"].GetString() == "FloatingTask"){
-			task newTask;
-			//standard
-			newTask.setTaskType(TaskObject["TaskType"].GetString());
-			newTask.setTitle(TaskObject["TaskTitle"].GetString());
-			newTask.setLocation(TaskObject["TaskLocation"].GetString());	
-			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
-			newTask.setIsDone(TaskObject["IsDone"].GetBool());
-			commandVector.push_back(newTask);
-		}
 
-		else if(TaskObject["TaskType"].GetString() == "DeadLine"){
-			task newTask;
-			//standard
-			newTask.setTaskType(TaskObject["TaskType"].GetString());
-			newTask.setTitle(TaskObject["TaskTitle"].GetString());
-			newTask.setLocation(TaskObject["TaskLocation"].GetString());	
-			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
-			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			else if(TaskType == "FloatingTask"){
+				task newTask;
+				//standard
+				newTask.setTaskType(TaskObject["TaskType"].GetString());
+				newTask.setTitle(TaskObject["TaskTitle"].GetString());
+				newTask.setLocation(TaskObject["TaskLocation"].GetString());	
+				newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+				newTask.setIsDone(TaskObject["IsDone"].GetBool());
+				commandVector.push_back(newTask);
+			}
 
-			//Date
-			timeAndDate newTimeAndDate;
-			/*newTimeAndDate.setDay(TaskObject["Day"].GetInt());
-			newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
-			newTimeAndDate.setYear(TaskObject["Year"].GetInt());
+			else if(TaskType == "DeadLine"){
+				task newTask;
+				//standard
+				newTask.setTaskType(TaskObject["TaskType"].GetString());
+				newTask.setTitle(TaskObject["TaskTitle"].GetString());
+				newTask.setLocation(TaskObject["TaskLocation"].GetString());	
+				newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+				newTask.setIsDone(TaskObject["IsDone"].GetBool());
 
-			//Time
-			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
-			newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
-			newTimeAndDate.seEndTimeHour(TaskObject["EndHour"].GetInt());
-			newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());*/
+				//Date
+				//Date
+				timeAndDate newTimeAndDate;
+				newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
+				newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
+				newTimeAndDate.setYear(TaskObject["Year"].GetInt());
 
-			newTask.setTimeAndDate(newTimeAndDate);
-			commandVector.push_back(newTask);
-		}
-	}//for loop close
-	return commandVector;
+				//Time
+				newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
+				newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
+				newTimeAndDate.setEndTimeHour(TaskObject["EndHour"].GetInt());
+				newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());
+
+				newTask.setTimeAndDate(newTimeAndDate);
+				commandVector.push_back(newTask);
+			}
+		}//for loop close
+		return commandVector;
 }
 
 void storage::writeFileJson(std::vector<task> commandVector){
@@ -261,28 +281,32 @@ void storage::writeFileJson(std::vector<task> commandVector){
 
 		if(commandVector[i].getTaskType().compare("TimedTask") == 0 ){
 			//Standard
-			char buffer[10000];
-			sprintf(buffer, "%s", commandVector[i].getTitle().c_str());
-			Value TaskTitle(kStringType);
-			TaskTitle.SetString(buffer,strlen(buffer),document.GetAllocator());
-			obj.AddMember("TaskTitle",TaskTitle,document.GetAllocator());
 			obj.AddMember("TaskType","TimedTask",document.GetAllocator());
 
+			char title[10000];
+			sprintf(title, "%s", commandVector[i].getTitle().c_str());
+			Value TaskTitle(kStringType);
+			TaskTitle.SetString(title,strlen(title),document.GetAllocator());
+			obj.AddMember("TaskTitle",TaskTitle,document.GetAllocator());
+
+
 			//Converting Location
-			sprintf(buffer, "%s", commandVector[i].getLocation(),document.GetAllocator());
+			char location[99999];
+			sprintf(location, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
 			Value Location(kStringType);
-			Location.SetString(buffer, strlen(buffer), document.GetAllocator());
+			Location.SetString(location, strlen(location), document.GetAllocator());
 			obj.AddMember("Location", Location, document.GetAllocator());
 
 			//Converting CommandAction
-			sprintf(buffer, "%s", commandVector[i].getCommandAction(),document.GetAllocator());
+			char action[99999];
+			sprintf(action, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
 			Value CommandAction(kStringType);
-			CommandAction.SetString(buffer,strlen(buffer),document.GetAllocator());
+			CommandAction.SetString(action,strlen(action),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
-
+			
 			//Date
-			/*obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
+			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
 			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
 			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
 
@@ -290,66 +314,68 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
 			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
 			obj.AddMember("EndHour", commandVector[i].getTimeAndDate().getEndTimeHour(),document.GetAllocator());
-			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());*/
-		
+			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());
+				
 		}
 		else if(commandVector[i].getTaskType().compare("FloatingTask") == 0){
 			//Standard
 			char buffer[10000];
+			obj.AddMember("TaskType","FloatingTask",document.GetAllocator());
 			sprintf(buffer, "%s", commandVector[i].getTitle().c_str());
 			Value TaskTitle(kStringType);
 			TaskTitle.SetString(buffer,strlen(buffer),document.GetAllocator());
 			obj.AddMember("TaskTitle",TaskTitle,document.GetAllocator());
-			obj.AddMember("TaskType","FloatingTask",document.GetAllocator());
+
 
 			//Converting Location
-			sprintf(buffer, "%s", commandVector[i].getLocation(),document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
 			Value Location(kStringType);
 			Location.SetString(buffer, strlen(buffer), document.GetAllocator());
 			obj.AddMember("Location", Location, document.GetAllocator());
 
 			//Converting CommandAction
-			sprintf(buffer, "%s", commandVector[i].getCommandAction(),document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
 			Value CommandAction(kStringType);
 			CommandAction.SetString(buffer,strlen(buffer),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone", commandVector[i].getIsDone(),document.GetAllocator());
-			}
+		}
 
 		else if(commandVector[i].getTaskType().compare("DeadLine") == 0){
 			//Converting Title
 			char buffer[99999];
+			obj.AddMember("TaskType", "DeadLine", document.GetAllocator());
 			sprintf(buffer, "%s", commandVector[i].getTitle().c_str());
 			Value TaskTitle(kStringType);
 			TaskTitle.SetString(buffer, strlen(buffer), document.GetAllocator());
 			obj.AddMember("TaskTitle", TaskTitle, document.GetAllocator());
-			obj.AddMember("TaskType", "DeadLine", document.GetAllocator());
+
 			obj.AddMember("IsDone", commandVector[i].getIsDone(), document.GetAllocator());
 
 			//Converting Location
-			sprintf(buffer, "%s", commandVector[i].getLocation(),document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
 			Value Location(kStringType);
 			Location.SetString(buffer, strlen(buffer), document.GetAllocator());
 			obj.AddMember("Location", Location, document.GetAllocator());
 
 			//Converting CommandAction
-			sprintf(buffer, "%s", commandVector[i].getCommandAction(),document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
 			Value CommandAction(kStringType);
 			CommandAction.SetString(buffer,strlen(buffer),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 
-			
-			
+
+
 			//Date
-			/*obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
+			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
 			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
 			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
-			
+
 			//Time
 			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
 			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
 			obj.AddMember("EndHour", commandVector[i].getTimeAndDate().getEndTimeHour(),document.GetAllocator());
-			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());*/
+			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());
 		}
 
 		array.PushBack(obj,document.GetAllocator());

@@ -4,10 +4,10 @@
 
 task::task()
 {
-	_taskType = '\0';
-	_commandAction = '\0';
-	_title = '\0';
-	_location = '\0';
+	_taskType = "";
+	_commandAction = "";
+	_title = "";
+	_location = "";
 	_isDone = false;
 	//_indexToBeActOn = NULL;
 }

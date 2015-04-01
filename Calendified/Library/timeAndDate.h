@@ -29,6 +29,16 @@ public:
 	void setEndTimeMin(int taskEndTimeMin);
 
 	//getters
+	int getMDay();
+	int getMonth();
+	int getYear();
+	int getStartTimeHour();
+	int getStartTimeMin();
+	int getEndTimeHour();
+	int getEndTimeMin();
+	std::string getDay();
+
+
 	time_t getTaskDateInTimeT();
 	std::string getTaskDateInString();
 	time_t getTaskStartTimeInTimeT();

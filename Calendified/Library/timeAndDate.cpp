@@ -5,6 +5,38 @@
 #include <assert.h>
 #include <regex>
 
+int timeAndDate::getMDay(){
+	return _mday;
+}
+
+int timeAndDate::getMonth(){
+	return _month;
+}
+
+int timeAndDate::getYear(){
+	return _year;
+}
+
+int timeAndDate::getStartTimeHour(){
+	return _startTimeHour;
+}
+
+int timeAndDate::getStartTimeMin(){
+	return _startTimeMin;
+}
+
+int timeAndDate::getEndTimeHour(){
+	return _endTimeHour;
+}
+
+int timeAndDate::getEndTimeMin(){
+	return _endTimeMin;
+}
+
+std::string timeAndDate::getDay(){
+	return _day;
+}
+
 //checks if it's a valid date for months with 31 days
 bool isValid31(int mday, int month){
 	assert(mday>=1 && mday<= 31);
