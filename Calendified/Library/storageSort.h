@@ -13,10 +13,8 @@ public:
 	storageSort(void);
 	~storageSort(void);
 
-	std::vector<std::string> sortData(std::vector<std::string> file);
-	std::vector<task> sortVector(std::vector<task> commandVector);
 	std::vector<task> switchPlace(int i, int j, std::vector<task> commandVector);
-
+	std::vector<task> storageSort::sortvector(std::vector<task> commandVector);
 };
 
 #endif

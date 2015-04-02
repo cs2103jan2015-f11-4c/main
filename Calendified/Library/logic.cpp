@@ -82,7 +82,12 @@ std::string logic::readCommand(std::string commandLine){
 		undoTask.insertVector(newStorage.readFileJson());
 		return addResults;
 	case DELETE:
+
 		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());		
+
+		deleteResults = deleteItem.executeDelete(currentCommandReference.getIndexToBeActOn());
+		
+
 		undoTask.setSessionStack(undoTask.getCurrentStack());
 		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;

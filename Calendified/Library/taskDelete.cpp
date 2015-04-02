@@ -1,6 +1,7 @@
 //@author A0114411B
 
 #include "taskDelete.h"
+#include <assert.h>
 
 taskDelete::taskDelete(void)
 {
@@ -27,10 +28,10 @@ taskDelete::~taskDelete(void)
 // Add file type to parameter once the code is stable
 std::string taskDelete::executeDelete(int indexToBeDeleted){
 	char buffer[999];
-	std::vector<std::string> file;
+	std::vector<task> file;
 
 	storage newStorage;
-	file = newStorage.readFile("main");
+	file = newStorage.readFileJson();
 
 
 	if(file.empty()){
@@ -40,13 +41,17 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
-		std::string deleteString;
-		deleteString = file[indexToBeDeleted-1];
-		file.erase(file.begin()+indexToBeDeleted-1);
-		if(newStorage.writeFile(file,"main")){
+		assert(indexToBeDeleted >= 1);
+		task taskToBeDeleted;
+		taskToBeDeleted = file[indexToBeDeleted-1];
+		try{
+			file.erase(file.begin()+indexToBeDeleted-1);
+			newStorage.writeFileJson(file);
 			//updateSession(stringToBeDeleted); //a new function?
 			file.clear();
 			return MESSAGE_SUCCESS_DELETED;
+		}catch (const std::exception& e){
+			return MESSAGE_FAILURE;
 		}
 	}
 }

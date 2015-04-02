@@ -46,6 +46,9 @@ parser::parser(std::string commandLine){
 		_taskCommand = commandLine.substr(substringBegin,found);
 		commandReference.setCommandAction(_taskCommand);
 		commandReference.setSearchItem(commandLine.substr(found+1, commandLine.size()));
+	} 
+	if(_taskCommand == "delete"){
+		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 	}
 }
 
