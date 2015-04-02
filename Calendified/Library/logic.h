@@ -16,6 +16,7 @@
 #include "taskAdd.h"
 #include "storage.h"
 #include "taskEdit.h"
+#include "taskUndo.h"
 
 enum commandType {
 	ADD, 

@@ -67,14 +67,32 @@ std::string logic::readCommand(std::string commandLine){
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
 	std::string s;
+	//Undo operation variables
+	taskUndo undoTask;
+	std::string undoResults = "";
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
+		//taskString = newParser.getCommandRef().dataToString();
+		/*if(newTask.getTimeAndDate().getTaskDateInString() != "" && newTask.getTimeAndDate().getTaskTimeInString != ""){
+			addTask.setTaskType(TimedTask);
+		} else if(newTask.getTimeAndDate().getTaskDateInString() == "" || newTask.getTimeAndDate().getTaskTimeInString == ""){ 
+			addTask.setTaskType(FloatingTask);
+		}*/
 		addTask.setTask(newTask);
+
+		// Testing json : newStorage.writeFileJson(commandVector);
 		addResults = addTask.taskAddTask(); 
+		undoTask.setSessionStack(undoTask.getCurrentStack());
+		undoTask.insertVector(newStorage.readFileJson());
+
 		return addResults;
 	case DELETE:
 		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());
+		
+		undoTask.setSessionStack(undoTask.getCurrentStack());
+		undoTask.insertVector(newStorage.readFileJson());
+		
 		return deleteResults;
 	case VIEW:
 		displayTodayResults = "Results:\n"+newStorage.searchFile(newParser.getCommandRef().getSearchItem(),"main")+"\n";
@@ -96,13 +114,22 @@ std::string logic::readCommand(std::string commandLine){
 		
 		editItem.setEditingRef(currentCommandReference);
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
+		undoTask.setSessionStack(undoTask.getCurrentStack());
+		undoTask.insertVector(newStorage.readFileJson());
 
 		return editResults;
 	case CHECKDONE:
 		checkDoneResults = "list below";
 		return checkDoneResults;
 	case UNDO:
-		return "";
+		undoTask.setCurrentStack(undoTask.getSessionStack());
+		if(undoTask.isEmpty(undoTask.getSessionStack()) == false){
+		undoTask.getSessionStack().pop();
+		newStorage.writeFileJson(undoTask.getCurrentStack().top());
+		}
+		undoResults = undoTask.undoResults();
+		
+		return undoResults;
 	case REPEAT:
 		return "";
 	case SPECIFY:

@@ -73,6 +73,7 @@
     <ClInclude Include="taskDelete.h" />
     <ClInclude Include="taskEdit.h" />
     <ClInclude Include="commandRef.h" />
+    <ClInclude Include="taskUndo.h" />
     <ClInclude Include="timeAndDate.h" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +88,7 @@
     <ClCompile Include="taskDelete.cpp" />
     <ClCompile Include="taskEdit.cpp" />
     <ClCompile Include="commandRef.cpp" />
+    <ClCompile Include="taskUndo.cpp" />
     <ClCompile Include="timeAndDate.cpp" />
   </ItemGroup>
   <ItemGroup>
