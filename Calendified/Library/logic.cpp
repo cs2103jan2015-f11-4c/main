@@ -80,7 +80,6 @@ std::string logic::readCommand(std::string commandLine){
 			addTask.setTaskType(FloatingTask);
 		}*/
 		addTask.setTask(newTask);
-
 		// Testing json : newStorage.writeFileJson(commandVector);
 		addResults = addTask.taskAddTask(); 
 		undoTask.setSessionStack(undoTask.getCurrentStack());

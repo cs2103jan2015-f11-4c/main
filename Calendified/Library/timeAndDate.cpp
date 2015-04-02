@@ -111,17 +111,17 @@ bool isValidDate(std::string dateString, int* taskMDay, int* taskMonth, int* tas
 	in >> outNum;
 	int mday = outNum;
 	
-	in >> ignore;
+	in >> ignore; //'/'
 	
 	in >> outNum;
 	int month = outNum;
 
-	in >> ignore;
+	in >> ignore; //'/'
 
 	in >> outNum;
 	int year= outNum;
 
-	if(mday>=1 && mday>=31 && month>=1 && month<=12 && year>=1900 && year<=10000){ //check year
+	if(mday>=1 && mday<=31 && month>=1 && month<=12 && year>=1900 && year<=10000){ //check year
 		if(isLeapYear(year) && isValid29(mday)){ //checks leap year and valid date
 			*taskMDay = mday;
 			*taskMonth = month;
@@ -155,27 +155,29 @@ void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
 	Time->tm_min = startTimeMin;
 }
 
-bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin){
+bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin){
 	std::regex timeFormat1("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM
 	std::regex timeFormat2("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])-(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM-HH:MM
-	std::regex timeFormat3("^([1-9]|([1][0-2]))([[:upper:]pm]|[[:upper:]am])$"); //12pm, 9am
-	std::regex timeFormat4("^([1-9]|([1][0-2]))([[:upper:]pm]|[[:upper:]am])-([1-9]|([1][0-2]))([[:upper:]pm]|[[:upper:]am])$"); //12am-2pm
+	std::regex timeFormat3("^([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12pm, 9am
+	std::regex timeFormat4("^([1-9]|([1][0-2]))(am|pm|AM|PM)-([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12am-2pm
 
 	char ignore;
 	char t1;
 	char m;
+	std::string day;
 	int outNum;
 	int hour;
 
 	std::istringstream in(timeString);
 
-	if(std::regex_match(timeString, timeFormat1)){
+	if(std::regex_match(timeString, timeFormat1)){ //assumes timed tasks with only start time is 1 hour long
 		in >> outNum;
 		*taskStartTimeHour = outNum;
 		in >> ignore; //:
 		in >> outNum;
 		*taskStartTimeMin = outNum;
 		*taskEndTimeHour = (*taskStartTimeHour) + 1;
+		*taskEndTimeMin = *taskStartTimeMin;
 		return true;
 	} else if(std::regex_match(timeString, timeFormat2)){
 		in >> outNum;
@@ -193,17 +195,28 @@ bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartT
 	} else if(std::regex_match(timeString, timeFormat3)){
 		in >> outNum;
 		hour = outNum;
-		in >> t1; //a or p
-		in >> m; //m
-		if(t1 == 'a'){
-			*taskStartTimeHour = hour;
-		} else if(t1 == 'p'){
-			*taskStartTimeHour = hour + 12;
+		in >> day; //am or pm
+		if(day=="am" || day=="AM"){
+			if(hour == 12){
+				*taskStartTimeHour = 0;
+			} else {
+				*taskStartTimeHour = hour;
+			}
+		} else if(day=="pm" || day=="PM"){
+			if(hour == 12){
+				*taskStartTimeHour = 12;
+			} else {
+				*taskStartTimeHour = hour + 12;
+			}
 		} else {
 			return false;
 		}
 		*taskStartTimeMin = 0;
-		*taskEndTimeHour = *taskStartTimeHour + 1; //1h activity
+		*taskEndTimeHour = (*taskStartTimeHour) + 1; //1h activity
+		if((*taskEndTimeHour)/24>0){
+			*taskEndTimeHour = (*taskEndTimeHour)%12;
+			++_mday;
+		}
 		*taskEndTimeMin = *taskStartTimeMin;
 		return true;
 	} else if(std::regex_match(timeString, timeFormat4)){
@@ -211,10 +224,18 @@ bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartT
 		hour = outNum;
 		in >> t1; //a or p
 		in >> m; //m
-		if(t1 == 'a'){
-			*taskStartTimeHour = hour;
-		} else if(t1 == 'p'){
-			*taskStartTimeHour = hour + 12;
+		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskStartTimeHour = 0;
+			} else {
+				*taskStartTimeHour = hour;
+			}
+		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskStartTimeHour = 12;
+			} else {
+				*taskStartTimeHour = hour + 12;
+			}
 		} else {
 			return false;
 		}
@@ -224,10 +245,24 @@ bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartT
 		hour = outNum;
 		in >> t1; //a or p
 		in >> m; //m
-		if(t1 == 'a'){
-			*taskEndTimeHour = outNum;
-		} else if(t1 == 'p'){
-			*taskEndTimeHour = outNum + 12;
+		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 0;
+			} else {
+				*taskEndTimeHour = hour;
+			}
+			if(*taskEndTimeHour < *taskStartTimeHour){
+				++_mday;
+			}
+		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 12;
+			} else {
+				*taskEndTimeHour = hour + 12;
+			}
+			if(*taskEndTimeHour < *taskStartTimeHour){
+				++_mday;
+			}
 		} else {
 			return false;
 		}

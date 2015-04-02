@@ -14,7 +14,7 @@ std::string taskAdd::taskAddTask(){
 	std::vector<task> _taskStorage;
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
-	if(storageFile.isFileExist()){
+	if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
 		if(storageFile.isFileEmpty()){
 			storageFile.writeFileJson(_taskStorage);
 		}

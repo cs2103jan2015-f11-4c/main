@@ -47,6 +47,7 @@ public:
 	std::string getTaskStartTimeInString();
 	std::string getTaskEndTimeInString();
 	std::string dateAndTimeInString();
+	bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin);
 
 	~timeAndDate(void);
 };
