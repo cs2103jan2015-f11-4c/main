@@ -29,19 +29,19 @@ std::vector<task> storageSort::sortVector(std::vector<task> commandVector){
 		for(auto j=0; j<i; j++){
 			if(commandVector[j].getTimeAndDate().getYear() > commandVector[i].getTimeAndDate().getYear()){
 				commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getYear() == commandVector[i].getTimeAndDate().getYear()
-				&& commandVector[j].getTimeAndDate().getMonth() > commandVector[i].getTimeAndDate().getMonth()){
+			} else if(commandVector[j].getTimeAndDate().getYear() == commandVector[i].getTimeAndDate().getYear())
+				if(commandVector[j].getTimeAndDate().getMonth() > commandVector[i].getTimeAndDate().getMonth()){
 					commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getMonth() == commandVector[i].getTimeAndDate().getMonth()
-				&& commandVector[j].getTimeAndDate().getDay() > commandVector[i].getTimeAndDate().getDay()){
-					commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getDay() == commandVector[i].getTimeAndDate().getDay()
-				&& commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour()){
-					commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour()
-				&& commandVector[j].getTimeAndDate().getStartTimeMin() > commandVector[i].getTimeAndDate().getStartTimeMin()){
-					commandVector = switchPlace(i,j,commandVector);
-			}
+				} else if(commandVector[j].getTimeAndDate().getMonth() == commandVector[i].getTimeAndDate().getMonth())
+					if(commandVector[j].getTimeAndDate().getDay() > commandVector[i].getTimeAndDate().getDay()){
+						commandVector = switchPlace(i,j,commandVector);
+					} else if(commandVector[j].getTimeAndDate().getDay() == commandVector[i].getTimeAndDate().getDay())
+						if(commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour()){
+							commandVector = switchPlace(i,j,commandVector);
+						} else if(commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour())
+							if(commandVector[j].getTimeAndDate().getStartTimeMin() > commandVector[i].getTimeAndDate().getStartTimeMin()){
+								commandVector = switchPlace(i,j,commandVector);
+							}
 		}
 	}
 	return commandVector;
