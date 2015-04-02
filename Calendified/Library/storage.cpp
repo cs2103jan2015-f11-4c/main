@@ -123,7 +123,6 @@ bool storage::isFileEmpty(){
 
 bool storage::writeFile(std::vector<std::string> file, std::string fileType){
 	storageSort storageSort;
-	file = storageSort.sortData(file);
 	int i=0;
 	std::string fileName = "";
 	if(fileType.compare("main") == 0){
@@ -271,7 +270,7 @@ std::vector<task> storage::readFileJson(){
 void storage::writeFileJson(std::vector<task> commandVector){
 
 	storageSort sort;
-	commandVector = sort.sortVector(commandVector);
+	commandVector = sort.sortvector(commandVector);
 
 	Document document;
 	document.SetObject();

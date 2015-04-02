@@ -15,15 +15,7 @@ storageSort::~storageSort(void)
 {
 }
 
-std::vector<std::string> storageSort::sortData(std::vector<std::string> file){
-
-	sort(file.begin(),file.end());
-
-	return file;
-}
-
-
-std::vector<task> storageSort::sortVector(std::vector<task> commandVector){
+std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
 
 	for(auto i=1; i<commandVector.size(); i++){
 		for(auto j=0; j<i; j++){
