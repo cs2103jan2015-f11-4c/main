@@ -55,3 +55,9 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 		}
 	}
 }
+
+void taskDelete::undoDelete(taskUndo* taskToBeUndone){
+	storage storageFile;
+	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+	taskToBeUndone->insertVector(storageFile.readFileJson());
+}

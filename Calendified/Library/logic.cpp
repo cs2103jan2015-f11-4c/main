@@ -64,7 +64,7 @@ std::string logic::readCommand(std::string commandLine){
 	std::string displayFloatResults = "FLOAT";
 	int toggleCount;
 	//Undo operation variables
-	taskUndo undoTask;
+	static taskUndo undoTask;
 	std::string undoResults = "";
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
@@ -75,19 +75,17 @@ std::string logic::readCommand(std::string commandLine){
 		} else if(newTask.getTimeAndDate().getTaskDateInString() == "" || newTask.getTimeAndDate().getTaskTimeInString == ""){ 
 			addTask.setTaskType(FloatingTask);
 		}*/
-		addTask.setTask(newTask);
 		// Testing json : newStorage.writeFileJson(commandVector);
-		addResults = addTask.taskAddTask(); 
-		undoTask.setSessionStack(undoTask.getCurrentStack());
-		undoTask.insertVector(newStorage.readFileJson());
+		addTask.setTask(newTask);
+		addResults = addTask.executeAdd(); 
+		addTask.undoAdd(&undoTask);
 		return addResults;
 	case DELETE:
-
 		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());		
+		deleteItem.undoDelete(&undoTask);
 
 		deleteResults = deleteItem.executeDelete(currentCommandReference.getIndexToBeActOn());
 		
-
 		undoTask.setSessionStack(undoTask.getCurrentStack());
 		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;
@@ -112,12 +110,7 @@ std::string logic::readCommand(std::string commandLine){
 		checkDoneResults = "list below";
 		return checkDoneResults;
 	case UNDO:
-		undoTask.setCurrentStack(undoTask.getSessionStack());
-		if(undoTask.isEmpty(undoTask.getSessionStack()) == false){
-		undoTask.getSessionStack().pop();
-		newStorage.writeFileJson(undoTask.getCurrentStack().top());
-		}
-		undoResults = undoTask.undoResults();		
+		undoResults = undoTask.executeUndo();	
 		return undoResults;
 	case REPEAT:
 		return "";

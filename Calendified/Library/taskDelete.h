@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include "storage.h"
+#include "taskUndo.h"
 
 
 const std::string MESSAGE_SUCCESS_DELETED =
@@ -29,7 +30,7 @@ public:
 	~taskDelete(void);
 	
 	std::string executeDelete(int indexToBeDeleted);
-	
+	void undoDelete(taskUndo* taskToBeUndone);
 };
 
 #endif

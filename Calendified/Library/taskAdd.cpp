@@ -9,7 +9,7 @@ taskAdd::~taskAdd(void)
 {
 }
 
-std::string taskAdd::taskAddTask(){
+std::string taskAdd::executeAdd(){
 	storage storageFile;
 	std::vector<task> _taskStorage;
 	std::string successMessage = "Added succesfully!";
@@ -21,17 +21,20 @@ std::string taskAdd::taskAddTask(){
 		_taskStorage = storageFile.readFileJson();
 		_taskStorage.push_back(_task);		
 		try {
-		storageFile.writeFileJson(_taskStorage);
-		return successMessage;
+			storageFile.writeFileJson(_taskStorage);
+			return successMessage;
 		} catch (const std::exception& e){
 			return failureMessage;
 		}
-		//} else {
-		//	return failureMessage;
-		//}
 	} else {
 		return failureMessage;
 	}
+}
+
+void taskAdd::undoAdd(taskUndo* taskToBeUndone){
+	storage storageFile;
+	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+	taskToBeUndone->insertVector(storageFile.readFileJson());
 }
 
 void taskAdd::taskAddRecurrent(){

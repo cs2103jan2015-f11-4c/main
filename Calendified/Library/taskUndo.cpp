@@ -1,5 +1,5 @@
+//@author A0116027R
 #include "taskUndo.h"
-#include "logic.h"
 
 taskUndo::taskUndo(void){
 	std::vector<task> emptyVectorStack;
@@ -29,11 +29,11 @@ void taskUndo::insertVector(std::vector<task> vectorTasks){
 	_currentStack.push(vectorTasks);
 }
 
-bool taskUndo::isEmpty(std::stack<std::vector<task>> vectorTasks){
+bool taskUndo::isNotEmpty(std::stack<std::vector<task>> vectorTasks){
 	if (vectorTasks.empty()){
-		return true;
-	} else {
 		return false;
+	} else {
+		return true;
 	}
 }
 
@@ -57,5 +57,20 @@ std::string taskUndo::undoResults(){
 		return successMessage;
 	} else {
 		return failureMessage;
+	}
+}
+
+void taskUndo::popSessionStack(){
+	_sessionStack.pop();
+}
+
+std::string taskUndo::executeUndo(){
+	storage newStorage;
+
+	if(isNotEmpty(_sessionStack)){
+		_currentStack = _sessionStack;
+		popSessionStack();
+		newStorage.writeFileJson(_currentStack.top());
+		return undoResults();
 	}
 }

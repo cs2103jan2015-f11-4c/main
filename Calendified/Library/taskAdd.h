@@ -9,6 +9,7 @@
 #include <assert.h>
 #include "logic.h"
 #include "storage.h"
+#include "taskUndo.h"
 
 class taskAdd
 {
@@ -19,7 +20,8 @@ public:
 	taskAdd();
 	taskAdd(std::string taskString);
 	~taskAdd(void);
-	std::string taskAddTask();
+	std::string executeAdd();
+	void undoAdd(taskUndo* taskToBeUndone);
 	void taskAddRecurrent();
 	void setTask(task taskString);
 };
