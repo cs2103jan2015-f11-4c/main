@@ -17,6 +17,7 @@
 #include "storage.h"
 #include "taskEdit.h"
 #include "taskUndo.h"
+#include "taskDisplay.h"
 
 enum commandType {
 	ADD, 
@@ -50,11 +51,7 @@ public:
 	void setDate(std::string date);
 	void setTime(std::string time);
 
-	bool displayTasks();
-	std::string getTodayDate();
-	std::string getNextDayDate();
-	std::string getTodayDateDMY();
-	std::string getNextDayDateDMY();
+	std::vector<std::string> updateUI(std::string logicResult , int toggleIndex);
 };
 
 #endif

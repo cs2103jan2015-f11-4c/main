@@ -20,13 +20,13 @@ namespace CommandTestAdd
 			std::string testStringM = "13/03/2015 13:00 visit school @utown";
 			std::string testStringF = "visit school";
 
-			testTaskAdd.setTask(testStringM);
-			testTaskAdd.setTaskType(testTaskTypeM);
+			//commented by feng		testTaskAdd.setTask(testStringM); 
+			//commented by feng		testTaskAdd.setTaskType(testTaskTypeM);
 			std::string actualResult1 = testTaskAdd.taskAddTask();
 			Assert::AreEqual(fail, actualResult1); //storage cannnot find filepath
 			//test case 1
-			testTaskAdd.setTask(testStringF);
-			testTaskAdd.setTaskType(testTaskTypeF);
+			//commented by feng		testTaskAdd.setTask(testStringF);
+			//commented by feng		testTaskAdd.setTaskType(testTaskTypeF);
 			std::string actualResult2 = testTaskAdd.taskAddTask();
 			Assert::AreEqual(fail, actualResult2); //storage cannot find filepath
 			//test case 2

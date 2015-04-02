@@ -23,45 +23,53 @@ namespace UI {
 	{
 
 	public:
-		int toggleCount;
-		void toggle(){
-			if(toggleCount ==0){
-				toggleCount = 1;
-				toggleBox_Calendified->BorderStyle = BorderStyle::Fixed3D;
-				toggleBox_Calendified->Visible = false;
-				toggleBox_ListView->Visible = true;
-				richTextBox_CalendifiedViewL->Visible = false;
-				richTextBox_CalendifiedViewR->Visible = false;
-				mainBg->Visible=false;
-				mainBg2->Visible=true;
-				richTextBox_ListView->Visible = true;
-				updateRichTextBoxContent(richTextBox_ListView,"display");
-				//richTextBox_ListView->BackColor = System::Drawing::Color::White;	
-				label_status->Text = "List View Toggled!";
-			}else{
-				toggleCount = 0;
-				toggleBox_Calendified->BorderStyle =  BorderStyle::None;
-				toggleBox_Calendified->Visible = true;
-				toggleBox_ListView->Visible = false;
-				richTextBox_ListView->Visible = false;
-				mainBg2->Visible=false;
-				richTextBox_CalendifiedViewL->Visible = true;
-				richTextBox_CalendifiedViewR->Visible = true;
-				updateRichTextBoxContent(richTextBox_CalendifiedViewL,"display");
-				//richTextBox_ListView->BackColor = System::Drawing::Color::Red;
-				mainBg->Visible  = true;	
-				label_status->Text = "Calendified View Toggled!";
+		 int toggleCount;
+
+	public: void toggle(){
+				if(toggleCount ==0){
+					toggleCount = 1;
+					toggleBox_Calendified->BorderStyle = BorderStyle::Fixed3D;
+					toggleBox_Calendified->Visible = false;
+					toggleBox_ListView->Visible = true;
+					richTextBox_CalendifiedViewL->Visible = false;
+					richTextBox_CalendifiedViewR->Visible = false;
+					mainBg->Visible=false;
+					mainBg2->Visible=true;
+					richTextBox_ListView->Visible = true;
+					richTextBox_CalendifiedViewL->ResetText();
+					richTextBox_CalendifiedViewR->ResetText();
+					logic newLogic;
+					std::string logicResult = newLogic.readCommand("display");
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					updateListView(displayResults);
+					label_status->Text = "List View Toggled!";
+				}else{
+					toggleCount = 0;
+					toggleBox_Calendified->BorderStyle =  BorderStyle::None;
+					toggleBox_Calendified->Visible = true;
+					toggleBox_ListView->Visible = false;
+					richTextBox_ListView->Visible = false;
+					mainBg2->Visible=false;
+					richTextBox_CalendifiedViewL->Visible = true;
+					richTextBox_CalendifiedViewR->Visible = true;
+					richTextBox_ListView->ResetText();
+					logic newLogic;			
+					std::string logicResult = newLogic.readCommand("display");
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					updateCalendifiedView(displayResults);
+					mainBg->Visible  = true;	
+					label_status->Text = "Calendified View Toggled!";
+				}
 			}
-		}
-		CalendifiedGUI(void)
-		{
-			InitializeComponent();
-			toggleCount = 0;
-			currentTime->Start();
-			//
-			//TODO: Add the constructor code here
-			//
-		}	
+			CalendifiedGUI(void)
+			{
+				InitializeComponent();
+				toggleCount = 0;
+				currentTime->Start();
+				//
+				//TODO: Add the constructor code here
+				//
+			}	
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -450,9 +458,9 @@ namespace UI {
 		}
 #pragma endregion
 		//author A0125489U
-	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string day){
-				thisRichTextBox->Find(gcnew String(day.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
-				if(day.compare("FLOAT")==0){
+	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString){
+				thisRichTextBox->Find(gcnew String(searchString.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
+				if(searchString.compare("FLOAT")==0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Blue;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
@@ -464,13 +472,9 @@ namespace UI {
 				thisRichTextBox->Select(0,0);
 			}
 			//author A0125489U
-	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult){
-				logic newLogic;
-				std::string todayDate = newLogic.getTodayDate();
-				std::string nextDayDate = newLogic.getNextDayDate();
+	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate){
 				std::string floatDate = "FLOAT";
 				std::string viewResults ="Results:";
-
 				//Highlight Today
 				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str());
 				//Highlight NextDay 
@@ -483,76 +487,64 @@ namespace UI {
 				}
 			}
 			//author A0125489U
+	public: void CalendifiedGUI::updateCalendifiedView(std::vector<std::string> displayResults){
+				richTextBox_CalendifiedViewL->ResetText();
+				richTextBox_CalendifiedViewR->ResetText();
+				//Update CalendifiedView
+				if(displayResults.size() == 3){ // Operations for ADD, EDIT, DELETE
+					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[2].c_str());
+				}else { //Operations for DISPLAY, VIEW
+					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[2].c_str());
+					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[3].c_str());
+					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[2],displayResults[1],displayResults[0]);
+					updateRichTextBoxContent(richTextBox_CalendifiedViewR,displayResults[3],displayResults[1],displayResults[0]);
+				}
+			}
+			//author A0125489U
+	public: void CalendifiedGUI::updateListView(std::vector<std::string> displayResults){
+				//Update Listview
+				richTextBox_ListView->ResetText();
+				richTextBox_ListView->Text = gcnew String(displayResults[2].c_str());
+				updateRichTextBoxContent(richTextBox_ListView,displayResults[2],displayResults[1],displayResults[0]);
+			}
+			//author A0125489U
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
-			try {
-				 if(e->KeyCode==Keys::Enter){
-
-					 //system::string -> std::string
-					 char buffer[999];
-					 sprintf(buffer,"%s",commandBox->Text);
-					 std::string inputCommandBox(buffer);
-
-					 logic newLogic;
-					 std::string logicResult = newLogic.readCommand(inputCommandBox);
-					 std::string todayDate = newLogic.getTodayDate();
-					 std::string nextDayDate = newLogic.getNextDayDate();
-					 std::string logicResult2="";
-					 std::size_t pos;
-					 //check for non null result string
-					 if(logicResult.compare("")!=0)
-					 {
+				 try {
+					 if(e->KeyCode==Keys::Enter){
+						 //system::string -> std::string
+						 char buffer[999];
+						 sprintf(buffer,"%s",commandBox->Text);
+						 std::string inputCommandBox(buffer);
+						 logic newLogic;
+						 std::string logicResult = newLogic.readCommand(inputCommandBox);
+						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
-							 richTextBox_CalendifiedViewL->ResetText();
-							 richTextBox_CalendifiedViewR->ResetText();
-							 if(logicResult.substr(0,5).compare("Added")==0){ //check for add operation
-								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
-							 } else if(logicResult.substr(0,7).compare("Deleted")==0){ //check for delete operation
-								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
-							 } else if(logicResult.substr(0,7).compare("Edited.")==0){ //check for edit operation
-								 richTextBox_CalendifiedViewL->Text=gcnew String(logicResult.c_str());
-							 } else{
-								 if(logicResult.substr(0,8).compare("Results:")==0){ //check for view operation
-									 pos = logicResult.find("FLOAT");
-								 } else {
-									 pos = logicResult.find(nextDayDate); //check for display operation
-								 }
-								 logicResult2 = logicResult.substr(pos);
-								 logicResult = logicResult.substr(0,pos);
-								 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
-								 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
-								 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
-								 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
-							 }
+							 updateCalendifiedView(displayResults);
 						 }else{
-							 //Update Listview
-							 richTextBox_ListView->ResetText();
-							 richTextBox_ListView->Text = gcnew String(logicResult.c_str());
-							 updateRichTextBoxContent(richTextBox_ListView,logicResult);
+							 updateListView(displayResults);
 						 }
+						 commandBox->ResetText();				 				 				
+						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
+						 if(richTextBox_CalendifiedViewL->Text =="Toggled!" || richTextBox_ListView->Text == "Toggled!"){
+							 toggle();
+						 }
+						 /*MessageBoxShowTest
+						 std::string newString =newLogic.getDateAndTime(); 
+						 String^ str2 = gcnew String(newString.c_str());
+						 MessageBox::Show(str2);
+						 */
+
+						 /*
+						 //std::string ->system::string
+						 String^ systemString = gcnew String(inputCommandBox.c_str()); 
+						 MessageBox::Show(systemString); 
+						 */
+
 					 }
-
-					 commandBox->ResetText();				 				 				
-					 Windows::Forms::SendKeys::Send("{BACKSPACE}");
-					 if(richTextBox_CalendifiedViewL->Text =="Toggled!" || richTextBox_ListView->Text == "Toggled!"){
-						 toggle();
-					 }
-					 /*MessageBoxShowTest
-					 std::string newString =newLogic.getDateAndTime(); 
-					 String^ str2 = gcnew String(newString.c_str());
-					 MessageBox::Show(str2);
-					 */
-
-					 /*
-					 //std::string ->system::string
-					 String^ systemString = gcnew String(inputCommandBox.c_str()); 
-					 MessageBox::Show(systemString); 
-					 */
-
+				 } catch (const std::exception& e) {
+					 String^ systemString = gcnew String(e.what()); 
+					 MessageBox::Show(systemString);
 				 }
-				} catch (const std::exception& e) {
-					String^ systemString = gcnew String(e.what()); 
-					MessageBox::Show(systemString);
-					}
 			 }
 
 	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
@@ -617,30 +609,14 @@ namespace UI {
 	private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs^  e) {
 				 notifyBox->BorderStyle = BorderStyle::Fixed3D;
 				 _sleep(500);
-				 logic newLogic;
+				 logic newLogic;			
 				 std::string logicResult = newLogic.readCommand("display");
-				 std::string todayDate = newLogic.getTodayDate();
-				 std::string nextDayDate = newLogic.getNextDayDate();
-				 std::string logicResult2="";
-				 std::size_t pos;
-				 if(logicResult.compare("")!=0)
-				 {
-					 if(toggleCount == 0){
-						 richTextBox_CalendifiedViewL->ResetText();
-						 richTextBox_CalendifiedViewR->ResetText();
-						 pos = logicResult.find(nextDayDate);
-						 logicResult2 = logicResult.substr(pos);
-						 logicResult = logicResult.substr(0,pos);
-						 richTextBox_CalendifiedViewL->Text = gcnew String(logicResult.c_str());
-						 richTextBox_CalendifiedViewR->Text = gcnew String(logicResult2.c_str());
-						 updateRichTextBoxContent(richTextBox_CalendifiedViewL,logicResult);
-						 updateRichTextBoxContent(richTextBox_CalendifiedViewR,logicResult);
-					 }else{
-						 //Update Listview
-						 richTextBox_ListView->ResetText();
-						 richTextBox_ListView->Text = gcnew String(logicResult.c_str());
-						 updateRichTextBoxContent(richTextBox_ListView,logicResult);
-					 }
+				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+				 if(toggleCount == 0){ //check for mode [calendified/list] view 
+					 updateCalendifiedView(displayResults);
+				 }else{
+					 //Update Listview
+					 updateListView(displayResults);
 				 }
 				 notifyBox->BorderStyle = BorderStyle::None;			 
 			 }

@@ -48,25 +48,21 @@ std::string logic::readCommand(std::string commandLine){
 	//Add operation variables
 	std::string addResults = "";
 	std::string taskString = "";
-
 	// For Task Type
-
 	taskAdd addTask;
-
 	//Delete operation variables
 	taskDelete deleteItem;
 	taskEdit editItem;
 	commandRef editedcommandRef;
-
 	std::string deleteResults = "";
 	//Display and View operation variables
-
+	taskDisplay displayTask;
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
-	std::string s;
+	int toggleCount;
 	//Undo operation variables
 	taskUndo undoTask;
 	std::string undoResults = "";
@@ -84,38 +80,28 @@ std::string logic::readCommand(std::string commandLine){
 		addResults = addTask.taskAddTask(); 
 		undoTask.setSessionStack(undoTask.getCurrentStack());
 		undoTask.insertVector(newStorage.readFileJson());
-
 		return addResults;
 	case DELETE:
-		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());
-		
+		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());		
 		undoTask.setSessionStack(undoTask.getCurrentStack());
-		undoTask.insertVector(newStorage.readFileJson());
-		
+		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;
 	case VIEW:
-		displayTodayResults = "Results:\n"+newStorage.searchFile(newParser.getCommandRef().getSearchItem(),"main")+"\n";
-		displayTodayResults += "FLOAT\n"+newStorage.searchFile(newParser.getCommandRef().getSearchItem(),"float");
+		displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
 		return displayTodayResults;
-	case DISPLAY:		
-		displayTodayResults = getTodayDate()+"\n";
-		displayTodayResults += newStorage.searchFile(getTodayDateDMY().substr(0,5)+"/","main");
-		displayNextDayResults = getNextDayDate()+"\n";
-		displayNextDayResults += newStorage.searchFile(getNextDayDateDMY().substr(0,5)+"/","main");
-		displayFloatResults += "\n";
-		displayFloatResults += newStorage.searchFile("","float");
+	case DISPLAY:			
+		displayTodayResults = displayTask.displayToday();
+		displayNextDayResults = displayTask.displayNextDay();
+		displayFloatResults += displayTask.displayFloatDay();
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case CLEAR:
 		newStorage.clearFile();
 		return newStorage.successMessageClear();
-
-	case EDIT:
-		
+	case EDIT:	
 		editItem.setEditingRef(currentCommandReference);
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
 		undoTask.setSessionStack(undoTask.getCurrentStack());
 		undoTask.insertVector(newStorage.readFileJson());
-
 		return editResults;
 	case CHECKDONE:
 		checkDoneResults = "list below";
@@ -126,8 +112,7 @@ std::string logic::readCommand(std::string commandLine){
 		undoTask.getSessionStack().pop();
 		newStorage.writeFileJson(undoTask.getCurrentStack().top());
 		}
-		undoResults = undoTask.undoResults();
-		
+		undoResults = undoTask.undoResults();		
 		return undoResults;
 	case REPEAT:
 		return "";
@@ -136,64 +121,36 @@ std::string logic::readCommand(std::string commandLine){
 	case REDO:
 		return "";
 	case TOGGLE:
-		return "Toggled!";
-	
+		return "Toggled!";	
 	default:
 		return "";
 	return "";
 	}
 }
 
-//@author A0125489U
-//This operation returns current date- Day
-std::string logic::getTodayDate(){
-	time_t timev;
-	struct tm * timeinfo;
-	time(&timev);
-	timeinfo = localtime(&timev);
-	char output[30];
-	strftime(output,30,"%dth",timeinfo);
-	return std::string(output);
-}
-
-//@author A0125489U
-//This operation returns current date- Day
-std::string logic::getTodayDateDMY(){
-	time_t timev;
-	struct tm * timeinfo;
-	time(&timev);
-	timeinfo = localtime(&timev);
-	char output[30];
-	strftime(output,30,"%d/%m/%y",timeinfo);
-	return std::string(output);
-}
-
-//@author A0125489U
-//This operation returns current date- Day
-std::string logic::getNextDayDate(){
-	time_t timev;
-	struct tm * timeinfo;
-	time(&timev);
-	timev += 1 * 24 * 60 * 60;
-	timeinfo = localtime(&timev);
-	char output[30];
-	strftime(output,30,"%dth",timeinfo);
-	return std::string(output);
-	//return printf("%02d/%02d/%02d\n",timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_year %100);
-}
-
-//@author A0125489U
-//This operation returns current date- Day
-std::string logic::getNextDayDateDMY(){
-	time_t timev;
-	struct tm * timeinfo;
-	time(&timev);
-	timev += 1 * 24 * 60 * 60;
-	timeinfo = localtime(&timev);
-	char output[30];
-	strftime(output,30,"%d/%m/%y",timeinfo);
-	return std::string(output);
-	//return printf("%02d/%02d/%02d\n",timeinfo->tm_mon+1, timeinfo->tm_mday, timeinfo->tm_year %100);
+//author A0125489U
+std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex){
+	taskDisplay displayTask;
+	std::string displayLeft;
+	std::string displayRight;
+	std::vector<std::string> displayResults;
+	displayResults.push_back(displayTask.getTodayDate());
+	displayResults.push_back(displayTask.getNextDayDate());
+	int pos;
+	if(toggleIndex == 0){ // 0 for calendifiedView
+		pos = displayTask.configureCalendifedView(logicResult);
+		if(pos == -1){ // Operations for ADD, DELETE, EDIT
+			displayResults.push_back(logicResult);
+			return displayResults;
+		}
+		displayLeft = logicResult.substr(0,pos); //Operations for VIEW, DISPLAY
+		displayRight = logicResult.substr(pos);
+		displayResults.push_back(displayLeft);
+		displayResults.push_back(displayRight);
+	} else { //Operation for ListView
+		displayResults.push_back(displayTask.configureListView(logicResult));
+	}
+	return displayResults;
 }
 
 commandType logic::hashCommandAction(std::string commandAction){

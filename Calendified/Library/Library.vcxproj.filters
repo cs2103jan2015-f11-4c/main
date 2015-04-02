@@ -37,6 +37,10 @@
     <ClCompile Include="timeAndDate.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="taskUndo.cpp" />
+    <ClCompile Include="taskDisplay.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendified.h">
@@ -70,6 +74,10 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="timeAndDate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taskUndo.h" />
+    <ClInclude Include="taskDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

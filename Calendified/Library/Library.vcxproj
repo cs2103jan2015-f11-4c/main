@@ -71,6 +71,7 @@
     <ClInclude Include="task.h" />
     <ClInclude Include="taskAdd.h" />
     <ClInclude Include="taskDelete.h" />
+    <ClInclude Include="taskDisplay.h" />
     <ClInclude Include="taskEdit.h" />
     <ClInclude Include="commandRef.h" />
     <ClInclude Include="taskUndo.h" />
@@ -86,6 +87,7 @@
     <ClCompile Include="task.cpp" />
     <ClCompile Include="taskAdd.cpp" />
     <ClCompile Include="taskDelete.cpp" />
+    <ClCompile Include="taskDisplay.cpp" />
     <ClCompile Include="taskEdit.cpp" />
     <ClCompile Include="commandRef.cpp" />
     <ClCompile Include="taskUndo.cpp" />
