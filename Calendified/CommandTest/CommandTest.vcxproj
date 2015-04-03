@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="CommandTestDisplay.cpp" />
     <ClCompile Include="CommandTestUndocpp.cpp" />
+    <ClCompile Include="CommandTestView.cpp" />
     <ClCompile Include="TaskRefTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -98,7 +99,7 @@
     <ClCompile Include="CommandTestDelete.cpp" />
     <ClCompile Include="CommandTestEdit.cpp" />
     <ClCompile Include="CommandTestStorage.cpp" />
-    <ClCompile Include="CommandTestView.cpp" />
+    <ClCompile Include="CommandTestIntegration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.vcxproj">

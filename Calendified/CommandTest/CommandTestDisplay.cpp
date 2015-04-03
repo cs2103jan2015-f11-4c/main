@@ -16,9 +16,11 @@ namespace CommandTestDisplay
 			std::string sortType_today ="today";
 			std::string sortType_nextDay ="nextDay";
 			std::vector<task> emptyVector;
+			int expectedSize = emptyVector.size();
 			//testcase 1 empty storage file
-			std::vector<task> actualResults1 = displayTask.sortTaskList(sortType_float);
-			Assert::AreEqual(emptyVector, actualResults1);	
+			std::vector<task> actualResults = displayTask.sortTaskList(sortType_float);
+			int actualSize = actualResults.size();
+			Assert::AreEqual(expectedSize, actualSize);	
 		}
 
 	};
