@@ -147,7 +147,10 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
 			formatTimeTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
-			formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation()+KEYWORD_NEWLINE;
+			if(taskList[i].getLocation().compare("")!=0){
+				formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation();
+			}
+			formatTimeTaskResults+=KEYWORD_NEWLINE;
 		}
 	
 	return formatTimeTaskResults;
@@ -171,7 +174,10 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getYear())+KEYWORD_SPACE;
 			}
 			formatFloatTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
-			formatFloatTaskResults += KEYWORD_AT+taskList[i].getLocation()+KEYWORD_NEWLINE;
+			if(taskList[i].getLocation().compare("")!=0){
+				formatFloatTaskResults += KEYWORD_AT+taskList[i].getLocation();
+			}
+			formatFloatTaskResults+=KEYWORD_NEWLINE;
 	}
 	return formatFloatTaskResults;
 }
