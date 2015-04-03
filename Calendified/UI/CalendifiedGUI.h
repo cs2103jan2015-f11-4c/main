@@ -23,7 +23,7 @@ namespace UI {
 	{
 
 	public:
-		 int toggleCount;
+		int toggleCount;
 
 	public: void toggle(){
 				if(toggleCount ==0){
@@ -239,12 +239,12 @@ namespace UI {
 			// 
 			this->label_status->AutoSize = true;
 			this->label_status->BackColor = System::Drawing::Color::White;
-			this->label_status->Font = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 14.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
+			this->label_status->Font = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 17.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->label_status->ForeColor = System::Drawing::Color::Red;
 			this->label_status->Location = System::Drawing::Point(100, 481);
 			this->label_status->Name = L"label_status";
-			this->label_status->Size = System::Drawing::Size(197, 24);
+			this->label_status->Size = System::Drawing::Size(238, 29);
 			this->label_status->TabIndex = 7;
 			this->label_status->Text = L"Welcome to Calendified!";
 			// 
@@ -257,7 +257,7 @@ namespace UI {
 			this->lbLengend->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->lbLengend->Location = System::Drawing::Point(125, 396);
 			this->lbLengend->Name = L"lbLengend";
-			this->lbLengend->Size = System::Drawing::Size(417, 20);
+			this->lbLengend->Size = System::Drawing::Size(319, 20);
 			this->lbLengend->TabIndex = 8;
 			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location";
 			// 
@@ -306,7 +306,7 @@ namespace UI {
 			this->richTextBox_ListView->Location = System::Drawing::Point(53, 27);
 			this->richTextBox_ListView->Name = L"richTextBox_ListView";
 			this->richTextBox_ListView->ReadOnly = true;
-			this->richTextBox_ListView->Size = System::Drawing::Size(583, 389);
+			this->richTextBox_ListView->Size = System::Drawing::Size(583, 366);
 			this->richTextBox_ListView->TabIndex = 15;
 			this->richTextBox_ListView->Text = L"";
 			this->richTextBox_ListView->Visible = false;
@@ -322,6 +322,7 @@ namespace UI {
 			this->pictureBox_Undo->Size = System::Drawing::Size(45, 35);
 			this->pictureBox_Undo->TabIndex = 16;
 			this->pictureBox_Undo->TabStop = false;
+			this->pictureBox_Undo->Click += gcnew System::EventHandler(this, &CalendifiedGUI::pictureBox_Undo_Click);
 			// 
 			// pictureBox_Redo
 			// 
@@ -512,12 +513,13 @@ namespace UI {
 				 try {
 					 if(e->KeyCode==Keys::Enter){
 						 //system::string -> std::string
+						 logic newLogic;
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
-						 logic newLogic;
-						 std::string logicResult = newLogic.readCommand(inputCommandBox);
-						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+						 String^ updateStatus = gcnew String(newLogic.readCommand(inputCommandBox).c_str());
+						 label_status-> Text =  updateStatus;
+						 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
@@ -528,6 +530,7 @@ namespace UI {
 						 if(richTextBox_CalendifiedViewL->Text =="Toggled!" || richTextBox_ListView->Text == "Toggled!"){
 							 toggle();
 						 }
+
 						 /*MessageBoxShowTest
 						 std::string newString =newLogic.getDateAndTime(); 
 						 String^ str2 = gcnew String(newString.c_str());
@@ -572,6 +575,15 @@ namespace UI {
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
+						 logic newLogic;
+						 std::string logicResult = newLogic.readCommand("display");
+						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+							 updateCalendifiedView(displayResults);
+						 }else{
+							 //Update Listview
+							 updateListView(displayResults);
+						 }
 					 }
 				 }
 
@@ -636,6 +648,27 @@ namespace UI {
 	private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 DateTime datetime = DateTime::Now;
 				 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
+			 }
+
+	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
+				 try{
+					 logic newLogic;
+					 const std::string UNDO = "undo";
+					 const std::string DISPLAY = "display";
+					 std::string results = newLogic.readCommand(UNDO);
+					 String^ statusUpdate = gcnew String(results.c_str());
+					 label_status->Text = statusUpdate;
+					 std::string logicResult = newLogic.readCommand(DISPLAY);
+					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					 if(toggleCount == 0){ 
+						 updateCalendifiedView(displayResults);
+					 }else{
+						 updateListView(displayResults);
+					 }
+				 } catch(const std::exception& e) {
+					 String^ systemString = gcnew String(e.what()); 
+					 MessageBox::Show(systemString);
+				 }
 			 }
 	};
 }
