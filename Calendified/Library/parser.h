@@ -7,7 +7,20 @@
 #include <time.h>
 #include <string>
 #include <sstream>
+#include <vector>
 #include "commandRef.h"
+#include <algorithm>
+
+const std::string DATE_DEADLINE_BY =
+	"by";
+const std::string DATE_DEADLINE_DUE =
+	"due";
+const std::string DATE_DEADLINE_BEFORE =
+	"before";
+
+const std::string TimedTask = "TimedTask";
+const std::string FloatingTask = "FloatingTask";
+const std::string DeadLine = "DeadLine";
 
 class parser
 {
@@ -23,6 +36,8 @@ public:
 	std::string getItemsInString(std::string inputString, char itemType);
 	std::string getTaskCommand();
 	commandRef getCommandRef();
+	std::vector<std::string> detokenizeCommandLine(std::string);
+	void checkAndSetTaskType(std::string);
 
 };
 

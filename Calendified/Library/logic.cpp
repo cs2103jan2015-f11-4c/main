@@ -19,31 +19,12 @@ std::string logic::readCommand(std::string commandLine){
 
 	timeAndDate newTimeAndDate(currentCommandReference.getDate(),currentCommandReference.getTime());
 	task newTask;
-	std::string TimedTask = "TimedTask";
-	std::string FloatingTask = "FloatingTask";
-	std::string DeadLine = "DeadLine";
+
 	newTask.setCommandAction(newParser.getTaskCommand());
 	newTask.setTimeAndDate(newTimeAndDate);
 	newTask.setLocation(newParser.getItemsInString(commandLine,symbolLocation));
 	newTask.setTitle(currentCommandReference.getTaskTitle());
-	newTask.setTaskType(TimedTask);
-	// Setting task type
-	// Floating Task:
-	// 1. Got date no time
-	// 2. No date no time
-	// Timed Task:
-	// 1. Got date got time
-	// DeadLine:
-	// 1. Got date got time 
-	/*if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() != "" && newTimeAndDate.getTaskEndTimeInString() != ""){
-		newTask.setTaskType(TimedTask);
-	} else if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() == "" && newTimeAndDate.getTaskEndTimeInString() == ""
-		|| newTimeAndDate.getTaskDateInString() == "" && newTimeAndDate.getTaskStartTimeInString() == "" && newTimeAndDate.getTaskEndTimeInString() == ""){
-		newTask.setTaskType(FloatingTask);
-	} else if(newTimeAndDate.getTaskDateInString() != "" && newTimeAndDate.getTaskStartTimeInString() != "" && newTimeAndDate.getTaskEndTimeInString() != ""){
-		newTask.setTaskType(DeadLine);
-		//how to differentiate deadline from timed task?
-	}*/
+	newTask.setTaskType(currentCommandReference.getTaskType());
 
 	//Add operation variables
 	std::string addResults = "";

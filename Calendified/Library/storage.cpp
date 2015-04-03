@@ -233,7 +233,7 @@ std::vector<task> storage::readFileJson(){
 				//standard
 				newTask.setTaskType(TaskObject["TaskType"].GetString());
 				newTask.setTitle(TaskObject["TaskTitle"].GetString());
-				newTask.setLocation(TaskObject["TaskLocation"].GetString());	
+				newTask.setLocation(TaskObject["Location"].GetString());	
 				newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 				newTask.setIsDone(TaskObject["IsDone"].GetBool());
 				commandVector.push_back(newTask);
@@ -244,7 +244,7 @@ std::vector<task> storage::readFileJson(){
 				//standard
 				newTask.setTaskType(TaskObject["TaskType"].GetString());
 				newTask.setTitle(TaskObject["TaskTitle"].GetString());
-				newTask.setLocation(TaskObject["TaskLocation"].GetString());	
+				newTask.setLocation(TaskObject["Location"].GetString());	
 				newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 				newTask.setIsDone(TaskObject["IsDone"].GetBool());
 
