@@ -527,7 +527,7 @@ namespace UI {
 						 }
 						 commandBox->ResetText();				 				 				
 						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
-						 if(richTextBox_CalendifiedViewL->Text =="Toggled!" || richTextBox_ListView->Text == "Toggled!"){
+						 if(label_status->Text =="Toggled!"){ 
 							 toggle();
 						 }
 
