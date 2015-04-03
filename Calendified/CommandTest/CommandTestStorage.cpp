@@ -27,7 +27,7 @@ namespace CommandTestStorage
 			inputVector.push_back("CCC"); 
 			inputVector.push_back("BBB"); 
 			inputVector.push_back("AAA");
-
+			
 			inputVector = testStorageSort.sortData(inputVector);
 			std::ostringstream oss;
 			for(int i=0; i < inputVector.size(); i++){
