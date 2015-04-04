@@ -65,3 +65,8 @@ void taskEdit::setEditingRef(commandRef currentCommandRef){
 
 }
 
+void taskEdit::undoEdit(taskUndo* taskToBeUndone){
+	storage storageFile;
+	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+	taskToBeUndone->insertVector(storageFile.readFileJson());
+}

@@ -34,7 +34,7 @@ public:
 	commandRef editCommandRef(std::string taskDataString);
 	commandRef getEditingTaskData(std::string taskDataString);
 	void setEditingRef(commandRef currentcommandRef);
-	
+	void undoEdit(taskUndo* taskToBeUndone);
 };
 
 #endif

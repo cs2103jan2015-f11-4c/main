@@ -38,7 +38,6 @@ bool taskUndo::isNotEmpty(std::stack<std::vector<task>> vectorTasks){
 }
 
 bool taskUndo::isUndone(){
-
 	int sessionStackSize = _sessionStack.size();
 	int currentStackSize = _currentStack.size();
 	if (currentStackSize == sessionStackSize+1 || sessionStackSize == currentStackSize+1){

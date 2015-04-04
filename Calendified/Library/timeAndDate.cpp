@@ -391,11 +391,14 @@ time_t timeAndDate::getTaskDateInTimeT(){
 }
 
 std::string timeAndDate::getTaskDateInString(){
-	struct tm Date = {0};
+	struct tm *Date;
 	char storeDate [20] = {0};
 
 	if(getTaskDateInTimeT() != -1){
-	strftime(storeDate, 20, "%d/%m/%Y", &Date);
+		const time_t constDate = getTaskDateInTimeT();
+		Date = localtime(&constDate);
+		
+	strftime(storeDate, 20, "%d/%m/%Y", Date);
 	return storeDate;
 	} else {
 		return "";
@@ -406,7 +409,7 @@ time_t timeAndDate::getTaskStartTimeInTimeT(){
 	time_t timeInTimeT;
 	struct tm Time = {0};
 
-	if(_startTimeHour>0 && _startTimeMin>0){
+	if(_startTimeHour>=0 && _startTimeMin>=0){
 		taskTimeToStruct (_startTimeHour, _startTimeMin, &Time);
 		timeInTimeT = mktime(&Time);
 		return timeInTimeT;
@@ -419,7 +422,7 @@ time_t timeAndDate::getTaskEndTimeInTimeT(){
 	time_t timeInTimeT;
 	struct tm Time = {0};
 
-	if(_endTimeHour>0 && _endTimeMin>0){
+	if(_endTimeHour>=0 && _endTimeMin>=0){
 		taskTimeToStruct (_endTimeHour, _endTimeMin, &Time);
 		timeInTimeT = mktime(&Time);
 		return timeInTimeT;
@@ -429,11 +432,13 @@ time_t timeAndDate::getTaskEndTimeInTimeT(){
 }
 
 std::string timeAndDate::getTaskStartTimeInString(){
-	struct tm Time = {0};
+	struct tm *Time;
 	char storeTime [20] = {0};
 
 	if(getTaskStartTimeInTimeT() != -1){
-		strftime(storeTime, 20, "%H:%M", &Time);
+		const time_t constTime = getTaskStartTimeInTimeT();
+		Time = localtime(&constTime);
+		strftime(storeTime, 20, "%H:%M", Time);
 		return storeTime;
 	} else {
 		return "";
@@ -441,11 +446,13 @@ std::string timeAndDate::getTaskStartTimeInString(){
 }
 
 std::string timeAndDate::getTaskEndTimeInString(){
-	struct tm Time = {0};
+	struct tm *Time;
 	char storeTime [20] = {0};
 
 	if(getTaskEndTimeInTimeT() != -1){
-		strftime(storeTime, 20, "%H:%M", &Time);
+		const time_t constTime = getTaskEndTimeInTimeT();
+		Time = localtime(&constTime);
+		strftime(storeTime, 20, "%H:%M", Time);
 		return storeTime;
 	} else {
 		return "";

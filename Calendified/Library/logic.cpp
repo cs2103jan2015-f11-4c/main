@@ -84,8 +84,7 @@ std::string logic::readCommand(std::string commandLine){
 	case EDIT:	
 		editItem.setEditingRef(currentCommandReference);
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
-		undoTask.setSessionStack(undoTask.getCurrentStack());
-		undoTask.insertVector(newStorage.readFileJson());
+		editItem.undoEdit(&undoTask);
 		return editResults;
 	case CHECKDONE:
 		checkDoneResults = "list below";
