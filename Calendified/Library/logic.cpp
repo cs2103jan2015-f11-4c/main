@@ -84,7 +84,7 @@ std::string logic::readCommand(std::string commandLine){
 		newStorage.clearFile();
 		return newStorage.successMessageClear();
 	case EDIT:	
-		editItem.setEditingRef(currentCommandReference);
+		editItem.setEditingRef(newTask);
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
 		editItem.undoEdit(&undoTask);
 		return editResults;
