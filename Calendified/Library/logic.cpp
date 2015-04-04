@@ -54,13 +54,6 @@ std::string logic::readCommand(std::string commandLine){
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
-		//taskString = newParser.getCommandRef().dataToString();
-		/*if(newTask.getTimeAndDate().getTaskDateInString() != "" && newTask.getTimeAndDate().getTaskTimeInString != ""){
-			addTask.setTaskType(TimedTask);
-		} else if(newTask.getTimeAndDate().getTaskDateInString() == "" || newTask.getTimeAndDate().getTaskTimeInString == ""){ 
-			addTask.setTaskType(FloatingTask);
-		}*/
-		// Testing json : newStorage.writeFileJson(commandVector);
 		addTask.setTask(newTask);
 		addResults = addTask.executeAdd(); 
 		addTask.undoAdd(&undoTask);
@@ -68,7 +61,7 @@ std::string logic::readCommand(std::string commandLine){
 	case DELETE:
 		//get current DisplayIndex using displayTask.getStorageIndex
 		currentDisplayContent = displayTask.getDisplayContent();
-		indexToActOnDisplay = newParser.getCommandRef().getIndexToBeActOn();
+		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		deleteResults = deleteItem.executeDelete(indextoActOnStorage);		
 		deleteItem.undoDelete(&undoTask);

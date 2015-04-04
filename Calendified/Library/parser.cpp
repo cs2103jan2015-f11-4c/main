@@ -142,7 +142,8 @@ void parser::checkAndSetTaskType(std::string commandLine){
 	if(commandReference.getDate() != "" && commandReference.getTime() != ""){
 		commandReference.setTaskType(TimedTask);
 	} else if(commandReference.getDate() != "" && commandReference.getTime() == "" ||
-		commandReference.getDate() == "" && commandReference.getTime() == ""){
+		commandReference.getDate() == "" && commandReference.getTime() == "" ||
+		commandReference.getDate() == "" && commandReference.getTime() != ""){
 			commandReference.setTaskType(FloatingTask);
 	}
 }

@@ -340,6 +340,11 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			CommandAction.SetString(buffer,strlen(buffer),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone", commandVector[i].getIsDone(),document.GetAllocator());
+
+			//Date
+			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
+			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
+			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
 		}
 
 		else if(commandVector[i].getTaskType().compare("DeadLine") == 0){
