@@ -6,13 +6,66 @@ taskDisplay::taskDisplay(){
 }
 
 taskDisplay::taskDisplay(storage inputStorage){
-	currentStorage = inputStorage;
+	_currentStorage = inputStorage;
+	_displayIndex=0;
 }
 
 taskDisplay::~taskDisplay(void)
 {
-	storage *storagePointer = &currentStorage;
+	storage *storagePointer = &_currentStorage;
 	storagePointer = NULL;
+}
+
+std::vector<task> taskDisplay::getDisplayContent(){
+	return _displayContent;
+}
+void taskDisplay::setDisplayContent(std::vector<task> newDisplayContent){
+	_displayContent = newDisplayContent;
+}
+
+void taskDisplay::setDisplayIndex(int newDisplayIndex){
+	_displayIndex = newDisplayIndex;
+}
+
+int taskDisplay::getDisplayIndex(){
+	return _displayIndex;
+}
+
+//This operation keeps tracks of currently displayed content in a form of vectors
+void taskDisplay::updateDisplayContent(std::vector<task> newDisplayContent){
+	std::vector<task> currentDisplayContent = getDisplayContent();
+	for(int i=0 ; i < newDisplayContent.size(); i++){
+		currentDisplayContent.push_back(newDisplayContent[i]);
+	}
+	setDisplayContent(currentDisplayContent);
+}
+
+
+//This operation converts selectedIndex to StorageIndex
+int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex){
+	int storageIndex=-1;
+	selectedIndex = selectedIndex-1;
+	if(_currentStorage.isFileEmpty()){
+		return storageIndex;
+	}
+	std::vector<task> allTaskList = _currentStorage.readFileJson();
+	for(int i =0; i< allTaskList.size();i++){
+		if(currentDisplayContent[selectedIndex].getCommandAction().compare(allTaskList[i].getCommandAction()) ==0 &&
+			currentDisplayContent[selectedIndex].getIsDone() == allTaskList[i].getIsDone() &&
+			currentDisplayContent[selectedIndex].getLocation().compare(allTaskList[i].getLocation()) ==0 &&
+			currentDisplayContent[selectedIndex].getTaskType().compare(allTaskList[i].getTaskType()) ==0 &&
+			currentDisplayContent[selectedIndex].getTitle().compare(allTaskList[i].getTitle()) == 0 &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getMDay()==allTaskList[i].getTimeAndDate().getMDay() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getMonth()==allTaskList[i].getTimeAndDate().getMonth() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getYear()==allTaskList[i].getTimeAndDate().getYear() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getStartTimeHour()==allTaskList[i].getTimeAndDate().getStartTimeHour() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getStartTimeMin()==allTaskList[i].getTimeAndDate().getStartTimeMin() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getEndTimeHour()==allTaskList[i].getTimeAndDate().getEndTimeHour() &&
+			currentDisplayContent[selectedIndex].getTimeAndDate().getEndTimeMin()==allTaskList[i].getTimeAndDate().getEndTimeMin()){
+				storageIndex=i;
+			}
+	}
+	return storageIndex;
 }
 
 //This operation sort the list of task w.r.t. to given task list [FloatTaskList]
@@ -55,10 +108,10 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType){
 	std::string dateYear; 
 	std::string dateTime=TYPE_EMPTY;
 
-	if(currentStorage.isFileEmpty()){
-		currentStorage.writeFileJson(taskList);
+	if(_currentStorage.isFileEmpty()){
+		return taskList;
 	}
-	std::vector<task> allTaskList = currentStorage.readFileJson();
+	std::vector<task> allTaskList = _currentStorage.readFileJson();
 	if(sortType.compare(TYPE_FLOATTASK)==0){ //check if taskList is {float List}
 		for(int i =0;i < allTaskList.size();i++){
 			if(allTaskList[i].getTimeAndDate().getMDay() == 0 || 
@@ -68,6 +121,7 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType){
 					taskList.push_back(allTaskList[i]);
 			}
 		}
+		updateDisplayContent(taskList);
 		return taskList;
 	} else if(sortType.compare(TYPE_TODAY)==0){ //check if taskList is {today List}
 		dateDay = getTodayDate();
@@ -98,6 +152,7 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType){
 			taskList.push_back(allTaskList[i]);
 		}
 	}
+	updateDisplayContent(taskList);
 	return taskList;
 }
 //
@@ -132,9 +187,10 @@ std::string taskDisplay::displayFloatDay(){
 
 std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string presentationType){
 	std::string formatTimeTaskResults = "";
-	
+	int formatingIndex;
 	for(int i =0; i< taskList.size();i++){
-			formatTimeTaskResults += std::to_string(i+1)+KEYWORD_DOT+KEYWORD_SPACE;
+		formatingIndex = getDisplayIndex()+1;
+			formatTimeTaskResults += std::to_string(formatingIndex)+KEYWORD_DOT+KEYWORD_SPACE;
 			if(presentationType.compare(TYPE_VIEW)==0){
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getMDay())+KEYWORD_DATE_SEPARATOR;
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getMonth())+KEYWORD_DATE_SEPARATOR;
@@ -146,38 +202,48 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 			} else {
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
+			formatTimeTaskResults += KEYWORD_TILDE+KEYWORD_SPACE;
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeHour())+KEYWORD_COLON;
+			if(std::to_string(taskList[i].getTimeAndDate().getEndTimeMin()).length() == 1){
+				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
+			} else {
+				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
+			}
 			formatTimeTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
 			if(taskList[i].getLocation().compare("")!=0){
 				formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation();
 			}
 			formatTimeTaskResults+=KEYWORD_NEWLINE;
+			setDisplayIndex(formatingIndex);
 		}
-	
 	return formatTimeTaskResults;
 }
 
 std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 	std::string formatFloatTaskResults = "";
+	int formatingIndex;
 	for(int i =0; i< taskList.size();i++){
-			formatFloatTaskResults += std::to_string(i+1)+KEYWORD_DOT+KEYWORD_SPACE;
-			if(std::to_string(taskList[i].getTimeAndDate().getStartTimeHour()).compare(TYPE_EMPTY)!=0){
-				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
-				if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
-					formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
-				} else {
-					formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
-				}
+		formatingIndex = getDisplayIndex()+1;
+		formatFloatTaskResults += std::to_string(formatingIndex)+KEYWORD_DOT+KEYWORD_SPACE;
+		if(std::to_string(taskList[i].getTimeAndDate().getStartTimeHour()).compare(TYPE_EMPTY)!=0){
+			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
+			if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
+				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
+			} else {
+				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
-			if(std::to_string(taskList[i].getTimeAndDate().getMDay()).compare(TYPE_EMPTY)!=0){
-				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getMDay())+KEYWORD_DATE_SEPARATOR;
-				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getMonth())+KEYWORD_DATE_SEPARATOR;
-				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getYear())+KEYWORD_SPACE;
-			}
-			formatFloatTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
-			if(taskList[i].getLocation().compare("")!=0){
-				formatFloatTaskResults += KEYWORD_AT+taskList[i].getLocation();
-			}
-			formatFloatTaskResults+=KEYWORD_NEWLINE;
+		}
+		if(std::to_string(taskList[i].getTimeAndDate().getMDay()).compare(TYPE_EMPTY)!=0){
+			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getMDay())+KEYWORD_DATE_SEPARATOR;
+			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getMonth())+KEYWORD_DATE_SEPARATOR;
+			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getYear())+KEYWORD_SPACE;
+		}
+		formatFloatTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
+		if(taskList[i].getLocation().compare("")!=0){
+			formatFloatTaskResults += KEYWORD_AT+taskList[i].getLocation();
+		}
+		formatFloatTaskResults+=KEYWORD_NEWLINE;
+		setDisplayIndex(formatingIndex);
 	}
 	return formatFloatTaskResults;
 }
@@ -291,10 +357,10 @@ std::string taskDisplay::viewSearchList(std::string searchItem){
 	std::vector<task> searchList;
 	int searchResultsIndex=0;
 	std::string searchResults; 
-	if(currentStorage.isFileEmpty()){
-		currentStorage.writeFileJson(allTaskList);
+	if(_currentStorage.isFileEmpty()){
+		_currentStorage.writeFileJson(allTaskList);
 	}
-	allTaskList = currentStorage.readFileJson();
+	allTaskList = _currentStorage.readFileJson();
 	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
 		if(allTaskList[i].getTitle().find(searchItem) != std::string::npos || 
 			allTaskList[i].getLocation().find(searchItem) != std::string::npos || 

@@ -66,14 +66,18 @@ const std::string KEYWORD_DOT =
 const std::string KEYWORD_AT =
 	"@";
 
+const std::string KEYWORD_TILDE =
+	"~";
+
 const char KEYWORD_EMPTY_CHAR =
 	'0';
 
 class taskDisplay
 {
 private:
-	storage currentStorage;
-
+	storage _currentStorage;
+	std::vector<task> _displayContent;
+	int _displayIndex;
 public:
 	taskDisplay();
 	taskDisplay(storage currentStorage);
@@ -102,6 +106,12 @@ public:
 	std::vector<task> sortTimedTaskList(std::vector<task> givenTaskList);
 	std::vector<task> sortFloatTaskList(std::vector<task> givenTaskList);
 	std::string viewSearchList(std::string searchItem);
+	void updateDisplayContent(std::vector<task> newDisplayContent);
+	std::vector<task> getDisplayContent();
+	void setDisplayContent(std::vector<task> newDisplayContent);
+	int getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex);
+	void setDisplayIndex(int newDisplayIndex);
+	int getDisplayIndex();
 };
 
 #endif

@@ -40,11 +40,13 @@ private:
 	std::set <std::string> allTasks;
 	commandRef currentCommandReference;
 	
+	
 public:
 	logic(void);
 	~logic(void);
 	std::string readCommand(std::string commandLine);
     commandType hashCommandAction(std::string commandAction);
+	
 	void setCommand(std::string command);
 	void setTitle(std::string title);
 	void setLocation(std::string location);

@@ -36,13 +36,17 @@ std::string logic::readCommand(std::string commandLine){
 	taskEdit editItem;
 	commandRef editedcommandRef;
 	std::string deleteResults = "";
+	int indexToActOnDisplay;
+	int indextoActOnStorage;
+	std::vector<task> currentDisplayContent;
 	//Display and View operation variables
-	taskDisplay displayTask;
+	static taskDisplay displayTask;
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
+	std::vector<task> emptyTaskList;
 	int toggleCount;
 	//Undo operation variables
 	static taskUndo undoTask;
@@ -62,21 +66,24 @@ std::string logic::readCommand(std::string commandLine){
 		addTask.undoAdd(&undoTask);
 		return addResults;
 	case DELETE:
-		deleteResults = deleteItem.executeDelete(newParser.getCommandRef().getIndexToBeActOn());		
+		//get current DisplayIndex using displayTask.getStorageIndex
+		currentDisplayContent = displayTask.getDisplayContent();
+		indexToActOnDisplay = newParser.getCommandRef().getIndexToBeActOn();
+		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		deleteResults = deleteItem.executeDelete(indextoActOnStorage);		
 		deleteItem.undoDelete(&undoTask);
-
-		deleteResults = deleteItem.executeDelete(currentCommandReference.getIndexToBeActOn());
-		
 		undoTask.setSessionStack(undoTask.getCurrentStack());
 		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;
 	case VIEW:
 		displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
 		return displayTodayResults;
-	case DISPLAY:			
+	case DISPLAY:		
+		displayTask.setDisplayContent(emptyTaskList);
 		displayTodayResults = displayTask.displayToday();
 		displayNextDayResults = displayTask.displayNextDay();
 		displayFloatResults += displayTask.displayFloatDay();
+		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case CLEAR:
 		newStorage.clearFile();
@@ -130,6 +137,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 	}
 	return displayResults;
 }
+
 
 commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";

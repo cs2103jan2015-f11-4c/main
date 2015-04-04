@@ -518,7 +518,9 @@ namespace UI {
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
 						 String^ updateStatus = gcnew String(newLogic.readCommand(inputCommandBox).c_str());
-						 label_status-> Text =  updateStatus;
+						 if(!updateStatus->Contains("FLOAT")){
+							 label_status-> Text =  updateStatus;
+						 }
 						 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
