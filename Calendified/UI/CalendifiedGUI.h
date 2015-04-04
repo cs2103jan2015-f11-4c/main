@@ -514,14 +514,18 @@ namespace UI {
 					 if(e->KeyCode==Keys::Enter){
 						 //system::string -> std::string
 						 logic newLogic;
+						 std::vector<std::string> displayResults;
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
-						 String^ updateStatus = gcnew String(newLogic.readCommand(inputCommandBox).c_str());
+						 std::string displayResult = newLogic.readCommand(inputCommandBox);
+						 String^ updateStatus = gcnew String(displayResult.c_str());
 						 if(!updateStatus->Contains("FLOAT")){
 							 label_status-> Text =  updateStatus;
+							 displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
+						 }else {
+							 displayResults = newLogic.updateUI(displayResult,toggleCount);
 						 }
-						 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{

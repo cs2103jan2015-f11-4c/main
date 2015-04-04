@@ -76,7 +76,9 @@ std::string logic::readCommand(std::string commandLine){
 		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;
 	case VIEW:
+		displayTask.setDisplayContent(emptyTaskList);
 		displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
+		displayTask.setDisplayIndex(0);
 		return displayTodayResults;
 	case DISPLAY:		
 		displayTask.setDisplayContent(emptyTaskList);

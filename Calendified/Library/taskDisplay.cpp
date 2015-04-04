@@ -79,6 +79,7 @@ std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList
 				taskList.push_back(givenTaskList[i]);
 		}
 	}
+	updateDisplayContent(taskList);
 	return taskList;
 }
 
@@ -93,6 +94,7 @@ std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList
 				taskList.push_back(givenTaskList[i]);
 		}
 	}
+	updateDisplayContent(taskList);
 	return taskList;
 }
 
@@ -358,7 +360,7 @@ std::string taskDisplay::viewSearchList(std::string searchItem){
 	int searchResultsIndex=0;
 	std::string searchResults; 
 	if(_currentStorage.isFileEmpty()){
-		_currentStorage.writeFileJson(allTaskList);
+		return searchItem;
 	}
 	allTaskList = _currentStorage.readFileJson();
 	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
