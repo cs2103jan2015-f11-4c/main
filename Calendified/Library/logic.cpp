@@ -40,7 +40,7 @@ std::string logic::readCommand(std::string commandLine){
 	int indextoActOnStorage;
 	std::vector<task> currentDisplayContent;
 	//Display and View operation variables
-	taskDisplay displayTask;
+	static taskDisplay displayTask;
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";
@@ -60,6 +60,7 @@ std::string logic::readCommand(std::string commandLine){
 		return addResults;
 	case DELETE:
 		//get current DisplayIndex using displayTask.getStorageIndex
+		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
@@ -69,11 +70,13 @@ std::string logic::readCommand(std::string commandLine){
 		undoTask.insertVector(newStorage.readFileJson());		
 		return deleteResults;
 	case VIEW:
+		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults;
 	case DISPLAY:		
+		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		displayTodayResults = displayTask.displayToday();
 		displayNextDayResults = displayTask.displayNextDay();

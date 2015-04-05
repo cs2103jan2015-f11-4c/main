@@ -112,6 +112,7 @@ public:
 	int getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex);
 	void setDisplayIndex(int newDisplayIndex);
 	int getDisplayIndex();
+	void updateStorageSource();
 };
 
 #endif

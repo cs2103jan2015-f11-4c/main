@@ -3,6 +3,7 @@
 
 
 taskDisplay::taskDisplay(){
+	
 }
 
 taskDisplay::taskDisplay(storage inputStorage){
@@ -29,6 +30,11 @@ void taskDisplay::setDisplayIndex(int newDisplayIndex){
 
 int taskDisplay::getDisplayIndex(){
 	return _displayIndex;
+}
+
+void taskDisplay::updateStorageSource(){
+	std::string newFilePath = _currentStorage.retrieveFilePath();
+	_currentStorage.setFilePath(newFilePath);
 }
 
 //This operation keeps tracks of currently displayed content in a form of vectors
@@ -360,6 +366,7 @@ std::string taskDisplay::viewSearchList(std::string searchItem){
 	int searchResultsIndex=0;
 	std::string searchResults; 
 	if(_currentStorage.isFileEmpty()){
+		searchItem ="";
 		return searchItem;
 	}
 	allTaskList = _currentStorage.readFileJson();

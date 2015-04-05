@@ -46,7 +46,7 @@ public:
 	storage newStorage;
 	std::string readCommand(std::string commandLine);
     commandType hashCommandAction(std::string commandAction);
-	
+
 	void setCommand(std::string command);
 	void setTitle(std::string title);
 	void setLocation(std::string location);
