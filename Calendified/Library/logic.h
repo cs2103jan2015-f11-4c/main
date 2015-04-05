@@ -24,7 +24,6 @@ enum commandType {
 	DELETE, 
 	VIEW,
 	DISPLAY,
-	CLEAR,
 	EDIT, 
 	UNDO, 
 	REPEAT, 

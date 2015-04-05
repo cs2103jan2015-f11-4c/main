@@ -80,9 +80,6 @@ std::string logic::readCommand(std::string commandLine){
 		displayFloatResults += displayTask.displayFloatDay();
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
-	case CLEAR:
-		newStorage.clearFile();
-		return newStorage.successMessageClear();
 	case EDIT:	
 		editItem.setEditingRef(newTask);
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
@@ -139,7 +136,6 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandDelete = "delete";
 	std::string commandView = "view";
 	std::string commandDisplay = "display";
-	std::string commandClear = "clear";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
 	std::string commandRepeat = "repeat";
@@ -161,9 +157,6 @@ commandType logic::hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
 		return DISPLAY;
-	}
-	if(commandAction.compare(commandClear) == 0){
-		return CLEAR;
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
 		return EDIT;
