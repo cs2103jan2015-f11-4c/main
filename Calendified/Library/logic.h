@@ -44,6 +44,7 @@ private:
 public:
 	logic(void);
 	~logic(void);
+	storage newStorage;
 	std::string readCommand(std::string commandLine);
     commandType hashCommandAction(std::string commandAction);
 	

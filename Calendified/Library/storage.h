@@ -25,10 +25,14 @@ private:
 public:
 	storage(void);
 	~storage(void);
-
+	
+	void setFilePath(std::string filePath);
+	
 	void saveInformation(std::string filename);
 	std::string retrieveFilePath();
 	void createFile(std::string fileName);
+	void transferDatabase(std::string newFileName);
+
 	std::vector<std::string> readFile(std::string fileType);
 	bool writeFile(std::vector<std::string> file, std::string fileType);
 	bool isFileExist();

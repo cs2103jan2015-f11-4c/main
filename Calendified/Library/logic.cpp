@@ -40,7 +40,7 @@ std::string logic::readCommand(std::string commandLine){
 	int indextoActOnStorage;
 	std::vector<task> currentDisplayContent;
 	//Display and View operation variables
-	static taskDisplay displayTask;
+	taskDisplay displayTask;
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
 	std::string editResults = "";

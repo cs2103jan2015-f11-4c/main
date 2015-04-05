@@ -39,6 +39,10 @@ storage::~storage(void)
 {
 }
 
+void storage::setFilePath(std::string filePath){
+	_filePath = filePath;
+}
+
 void storage::saveInformation(std::string filename){
 	std::ofstream writeFile("storageInformation.txt");
 	writeFile << filename;
@@ -52,9 +56,24 @@ std::string storage::retrieveFilePath(){
 	return directory;
 }
 
+
+
 void storage::createFile(std::string fileName){
 	std::ofstream writeFile(fileName);
 	writeFile.close();
+}
+
+void storage::transferDatabase(std::string newFileName){
+	std::vector<task> oldFiles;
+	std::vector<task> blankVector;
+	std::string oldFileName = _filePath;
+	createFile(newFileName);
+	oldFiles = readFileJson();
+	saveInformation(newFileName);
+	_filePath = retrieveFilePath();
+	writeFileJson(blankVector);
+	writeFileJson(oldFiles);
+	remove(oldFileName.c_str());
 }
 
 // This function is to check if the user is a new user

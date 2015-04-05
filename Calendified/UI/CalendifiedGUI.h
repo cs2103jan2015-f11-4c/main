@@ -121,6 +121,7 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
 	private: System::Windows::Forms::Timer^  currentTime;
 	private: System::Windows::Forms::Label^  label_currentTime;
+	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem;
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -169,6 +170,7 @@ namespace UI {
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label_currentTime = (gcnew System::Windows::Forms::Label());
+			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -351,28 +353,28 @@ namespace UI {
 			// 
 			// contextMenuStrip_HelpContent
 			// 
-			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->commandHelpToolStripMenuItem, 
-				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
+			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {this->commandHelpToolStripMenuItem, 
+				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem, this->changeDatabaseLocationToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(190, 70);
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 114);
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// commandHelpToolStripMenuItem
 			// 
 			this->commandHelpToolStripMenuItem->Name = L"commandHelpToolStripMenuItem";
-			this->commandHelpToolStripMenuItem->Size = System::Drawing::Size(189, 22);
+			this->commandHelpToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->commandHelpToolStripMenuItem->Text = L"Getting Started";
 			// 
 			// typingAToolStripMenuItem
 			// 
 			this->typingAToolStripMenuItem->Name = L"typingAToolStripMenuItem";
-			this->typingAToolStripMenuItem->Size = System::Drawing::Size(189, 22);
+			this->typingAToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->typingAToolStripMenuItem->Text = L"Entering a Command";
 			// 
 			// commandGuidelinesToolStripMenuItem
 			// 
 			this->commandGuidelinesToolStripMenuItem->Name = L"commandGuidelinesToolStripMenuItem";
-			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(189, 22);
+			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->commandGuidelinesToolStripMenuItem->Text = L"Command Guidelines";
 			// 
 			// mainBg2
@@ -413,6 +415,13 @@ namespace UI {
 			this->label_currentTime->Size = System::Drawing::Size(97, 17);
 			this->label_currentTime->TabIndex = 21;
 			this->label_currentTime->Text = L"Current Time: ";
+			// 
+			// changeDatabaseLocationToolStripMenuItem
+			// 
+			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
+			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
+			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
+			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
 			// 
 			// CalendifiedGUI
 			// 
@@ -559,9 +568,8 @@ namespace UI {
 	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 
-				 storage newStorage;
-				 std::string directory;
-				 directory = newStorage.retrieveFilePath();
+				 logic newLogic;
+				 std::string directory = newLogic.newStorage.retrieveFilePath();
 				 if(directory == ""){
 					 IO::Stream^ mystream;
 					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
@@ -576,18 +584,16 @@ namespace UI {
 					 {
 						 char fileName[999];
 						 sprintf(fileName,"%s",saveFileDialog1->FileName);
-						 newStorage.saveInformation(fileName);
-						 newStorage.createFile(fileName);
+						 newLogic.newStorage.saveInformation(fileName);
+						 newLogic.newStorage.createFile(fileName);
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
-						 logic newLogic;
 						 std::string logicResult = newLogic.readCommand("display");
 						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
-							 //Update Listview
 							 updateListView(displayResults);
 						 }
 					 }
@@ -674,6 +680,28 @@ namespace UI {
 				 } catch(const std::exception& e) {
 					 String^ systemString = gcnew String(e.what()); 
 					 MessageBox::Show(systemString);
+				 }
+			 }
+	private: System::Void changeDatabaseLocationToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 logic newLogic; 
+				 IO::Stream^ mystream;
+				 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
+
+				 saveFileDialog1->InitialDirectory = "c://";
+				 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
+				 saveFileDialog1->FilterIndex = 2;
+				 saveFileDialog1->RestoreDirectory = true;
+				 saveFileDialog1->FileName = "";
+
+				 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
+				 {
+					 char newFileName[999];
+					 sprintf(newFileName,"%s",saveFileDialog1->FileName);
+					 newLogic.newStorage.transferDatabase(newFileName);
+					 newLogic.newStorage.setFilePath(newFileName);
+					 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
+					 //file->WriteLine("Calendified Database.");
+					 //file->Close();
 				 }
 			 }
 	};
