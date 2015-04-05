@@ -94,8 +94,8 @@ std::string logic::readCommand(std::string commandLine){
 	case UNDO:
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
-	case REPEAT:
-		return "";
+	case FLIP:
+		return "Flipped!";
 	case SPECIFY:
 		return "";
 	case REDO:
@@ -119,7 +119,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 	int pos;
 	if(toggleIndex == 0){ // 0 for calendifiedView
 		pos = displayTask.configureCalendifedView(logicResult);
-		if(pos == -1){ // Operations for ADD, DELETE, EDIT
+		if(pos == -1){ // Operations for ADD, DELETE, EDIT, FLIP
 			displayResults.push_back(logicResult);
 			return displayResults;
 		}
@@ -141,7 +141,7 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandDisplay = "display";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
-	std::string commandRepeat = "repeat";
+	std::string commandFlip = "flip";
 	std::string commandSpecify = "specify";
 	std::string commandRedo = "redo";
 	std::string commandToggle = "toggle";
@@ -167,8 +167,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	if(commandAction.compare(commandUndo) == 0){ 
 		return UNDO;
 	}
-	if(commandAction.compare(commandRepeat) == 0){ 
-		return REPEAT;
+	if(commandAction.compare(commandFlip) == 0){ 
+		return FLIP;
 	}
 	if(commandAction.compare(commandSpecify) == 0){ 
 		return SPECIFY;

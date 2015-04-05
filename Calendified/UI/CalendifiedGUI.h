@@ -122,6 +122,12 @@ namespace UI {
 	private: System::Windows::Forms::Timer^  currentTime;
 	private: System::Windows::Forms::Label^  label_currentTime;
 	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem;
+	private: System::Windows::Forms::PictureBox^  pictureBox_CalendifiedFlipping;
+
+	private: System::Windows::Forms::Timer^  timerCalendifiedFlip;
+	private: System::Windows::Forms::PictureBox^  pictureBox_ListViewFlipping;
+	private: System::Windows::Forms::Timer^  timerListViewFlip;
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -166,11 +172,15 @@ namespace UI {
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label_currentTime = (gcnew System::Windows::Forms::Label());
-			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->pictureBox_CalendifiedFlipping = (gcnew System::Windows::Forms::PictureBox());
+			this->timerCalendifiedFlip = (gcnew System::Windows::Forms::Timer(this->components));
+			this->pictureBox_ListViewFlipping = (gcnew System::Windows::Forms::PictureBox());
+			this->timerListViewFlip = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -180,6 +190,8 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_CalendifiedFlipping))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_ListViewFlipping))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// richTextBox_CalendifiedViewL
@@ -236,6 +248,7 @@ namespace UI {
 			this->button_enter->TabIndex = 1;
 			this->button_enter->Text = L"Enter";
 			this->button_enter->UseVisualStyleBackColor = false;
+			this->button_enter->Click += gcnew System::EventHandler(this, &CalendifiedGUI::button_enter_Click);
 			// 
 			// label_status
 			// 
@@ -356,7 +369,7 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {this->commandHelpToolStripMenuItem, 
 				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem, this->changeDatabaseLocationToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 114);
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 92);
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// commandHelpToolStripMenuItem
@@ -376,6 +389,13 @@ namespace UI {
 			this->commandGuidelinesToolStripMenuItem->Name = L"commandGuidelinesToolStripMenuItem";
 			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->commandGuidelinesToolStripMenuItem->Text = L"Command Guidelines";
+			// 
+			// changeDatabaseLocationToolStripMenuItem
+			// 
+			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
+			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
+			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
+			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
 			// 
 			// mainBg2
 			// 
@@ -416,12 +436,33 @@ namespace UI {
 			this->label_currentTime->TabIndex = 21;
 			this->label_currentTime->Text = L"Current Time: ";
 			// 
-			// changeDatabaseLocationToolStripMenuItem
+			// pictureBox_CalendifiedFlipping
 			// 
-			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
-			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
-			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
+			this->pictureBox_CalendifiedFlipping->Location = System::Drawing::Point(22, 74);
+			this->pictureBox_CalendifiedFlipping->Name = L"pictureBox_CalendifiedFlipping";
+			this->pictureBox_CalendifiedFlipping->Size = System::Drawing::Size(623, 326);
+			this->pictureBox_CalendifiedFlipping->TabIndex = 22;
+			this->pictureBox_CalendifiedFlipping->TabStop = false;
+			this->pictureBox_CalendifiedFlipping->Visible = false;
+			// 
+			// timerCalendifiedFlip
+			// 
+			this->timerCalendifiedFlip->Interval = 1;
+			this->timerCalendifiedFlip->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::timerCalendifiedFlip_Tick);
+			// 
+			// pictureBox_ListViewFlipping
+			// 
+			this->pictureBox_ListViewFlipping->Location = System::Drawing::Point(52, 29);
+			this->pictureBox_ListViewFlipping->Name = L"pictureBox_ListViewFlipping";
+			this->pictureBox_ListViewFlipping->Size = System::Drawing::Size(593, 366);
+			this->pictureBox_ListViewFlipping->TabIndex = 23;
+			this->pictureBox_ListViewFlipping->TabStop = false;
+			this->pictureBox_ListViewFlipping->Visible = false;
+			// 
+			// timerListViewFlip
+			// 
+			this->timerListViewFlip->Interval = 1;
+			this->timerListViewFlip->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::timerListViewFlip_Tick);
 			// 
 			// CalendifiedGUI
 			// 
@@ -429,6 +470,8 @@ namespace UI {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
 			this->ClientSize = System::Drawing::Size(659, 546);
+			this->Controls->Add(this->pictureBox_ListViewFlipping);
+			this->Controls->Add(this->pictureBox_CalendifiedFlipping);
 			this->Controls->Add(this->label_currentTime);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->richTextBox_CalendifiedViewL);
@@ -462,6 +505,8 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_CalendifiedFlipping))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_ListViewFlipping))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -531,14 +576,18 @@ namespace UI {
 						 String^ updateStatus = gcnew String(displayResult.c_str());
 						 if(!updateStatus->Contains("FLOAT")){
 							 label_status-> Text =  updateStatus;
-							 displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
+							 displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);	 
 						 }else {
 							 displayResults = newLogic.updateUI(displayResult,toggleCount);
 						 }
-						 if(toggleCount == 0){ //check for mode [calendified/list] view 
-							 updateCalendifiedView(displayResults);
-						 }else{
-							 updateListView(displayResults);
+						 if(updateStatus=="Flipped!"){
+							 flip();
+						 } else {
+							 if(toggleCount == 0){ //check for mode [calendified/list] view 
+								 updateCalendifiedView(displayResults);
+							 }else{
+								 updateListView(displayResults);
+							 }
 						 }
 						 commandBox->ResetText();				 				 				
 						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
@@ -703,6 +752,61 @@ namespace UI {
 					 //file->WriteLine("Calendified Database.");
 					 //file->Close();
 				 }
+			 }
+	private: System::Void button_enter_Click(System::Object^  sender, System::EventArgs^  e) {
+
+			 }
+
+			 //@author A0125489U
+	public: void flip(){
+				if(toggleCount ==0){
+					Graphics^ gfx = mainBg->CreateGraphics();
+					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+40, richTextBox_ListView->Height-40);
+					gfx = gfx->FromImage(bmp);
+					gfx->CopyFromScreen(this->Location.X+30,this->Location.Y+105,0,0,this->Size);
+					pictureBox_CalendifiedFlipping->Image=bmp;
+					pictureBox_CalendifiedFlipping->Visible=true;
+					timerCalendifiedFlip->Start();
+				} else if(toggleCount==1){
+					Graphics^ gfx = mainBg2->CreateGraphics();
+					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+10, richTextBox_ListView->Height);
+					gfx = gfx->FromImage(bmp);
+					gfx->CopyFromScreen(this->Location.X+60,this->Location.Y+60,0,0,this->Size);
+					pictureBox_ListViewFlipping->Image=bmp;
+					pictureBox_ListViewFlipping->Visible=true;
+					timerListViewFlip->Start();
+				}
+			}
+
+			//@author A0125489U
+			int timerCount;
+	private: System::Void timerCalendifiedFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 pictureBox_CalendifiedFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
+				 pictureBox_CalendifiedFlipping->Top -= 1;
+				 pictureBox_CalendifiedFlipping->Height-=11;
+				 timerCount++;
+				 if(timerCount==30){
+					 timerCalendifiedFlip->Stop();
+					 pictureBox_CalendifiedFlipping->Top += 30;
+					 pictureBox_CalendifiedFlipping->Height += 330;
+					 timerCount =0;
+					 pictureBox_CalendifiedFlipping->Visible=false;
+				 }
+			 }
+			 //@author A0125489U
+	private: System::Void timerListViewFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 pictureBox_ListViewFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
+				 pictureBox_ListViewFlipping->Left -= 1;
+				 pictureBox_ListViewFlipping->Width-=20;
+				 timerCount++;
+				 if(timerCount==30){
+					 timerListViewFlip->Stop();
+					 pictureBox_ListViewFlipping->Left += 30;
+					 pictureBox_ListViewFlipping->Width += 600;
+					 timerCount =0;
+					 pictureBox_ListViewFlipping->Visible=false;
+				 }
+
 			 }
 	};
 }

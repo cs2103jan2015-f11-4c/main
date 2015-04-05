@@ -26,7 +26,7 @@ enum commandType {
 	DISPLAY,
 	EDIT, 
 	UNDO, 
-	REPEAT, 
+	FLIP, 
 	SPECIFY, 
 	REDO, 
 	TOGGLE,
