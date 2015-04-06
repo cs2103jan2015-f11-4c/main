@@ -6,6 +6,60 @@
 #include "storage.h"
 
 
+std::string const REQUEST_CHANGE_LOCATION =
+	"/change location";
+
+int const MAX_PATH = 999999;
+std::string const HELP_MAIN_MENU =
+	"/Help/Help_Main_Menu.html";
+std::string const HELP_ADD =
+	"/Help/Help_Add.html";
+std::string const HELP_DELETE =
+	"/Help/Help_Delete.html";
+std::string const HELP_SEARCH =
+	"/Help/Help_Search.html";
+std::string const HELP_EDIT =
+	"/Help/Help_Edit.html";
+std::string const HELP_DONE =
+	"/Help/Help_Done.html";
+std::string const HELP_UNDO_REDO =
+	"/Help/Help_Undo_Redo.html";
+std::string const HELP_LOCATION_DATABASE = 
+	"/Help/Help_Location.html";
+std::string const HELP_BUTTONS =
+	"/Help/Help_Buttons.html";
+/*
+1.	Add
+2.	Delete
+3.	View / Search
+4.	Edit
+5.	Mark Task as Done
+6.	Undo / Redo
+7.	Changing Location of Database
+8.	Buttons
+*/
+std::string const HELP_COMMAND_BACK =
+	"/back";
+std::string const HELP_COMMAND_ADD =
+	"/1";
+std::string const HELP_COMMAND_DELETE =
+	"/2";
+std::string const HELP_COMMAND_VIEW_SEARCH =
+	"/3";
+std::string const HELP_COMMAND_EDIT =
+	"/4";
+std::string const HELP_COMMAND_DONE =
+	"/5";
+std::string const HELP_COMMAND_UNDO_OR_REDO =
+	"/6";
+std::string const HELP_COMMAND_LOCATION_DATABASE =
+	"/7";
+std::string const HELP_COMMAND_BUTTONS =
+	"/8";
+std::string const HELP_COMMAND_HELP =
+	"/help";
+
+
 
 namespace UI {
 
@@ -69,6 +123,8 @@ namespace UI {
 				//
 				//TODO: Add the constructor code here
 				//
+				String^ getHTMLFilePath(std::string action);
+				void changeDirectory();
 			}	
 	protected:
 		/// <summary>
@@ -121,7 +177,11 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
 	private: System::Windows::Forms::Timer^  currentTime;
 	private: System::Windows::Forms::Label^  label_currentTime;
-	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem1;
+	private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator2;
+	private: System::Windows::Forms::WebBrowser^  webBrowser_Help;
+
+
 
 	private: System::ComponentModel::IContainer^  components;
 
@@ -163,6 +223,8 @@ namespace UI {
 			this->pictureBox_Redo = (gcnew System::Windows::Forms::PictureBox());
 			this->pictureBox_Help = (gcnew System::Windows::Forms::PictureBox());
 			this->contextMenuStrip_HelpContent = (gcnew System::Windows::Forms::ContextMenuStrip(this->components));
+			this->changeDatabaseLocationToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
@@ -170,7 +232,7 @@ namespace UI {
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label_currentTime = (gcnew System::Windows::Forms::Label());
-			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->webBrowser_Help = (gcnew System::Windows::Forms::WebBrowser());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -353,11 +415,23 @@ namespace UI {
 			// 
 			// contextMenuStrip_HelpContent
 			// 
-			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {this->commandHelpToolStripMenuItem, 
-				this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem, this->changeDatabaseLocationToolStripMenuItem});
+			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->changeDatabaseLocationToolStripMenuItem1, 
+				this->toolStripSeparator2, this->commandHelpToolStripMenuItem, this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 114);
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 120);
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
+			// 
+			// changeDatabaseLocationToolStripMenuItem1
+			// 
+			this->changeDatabaseLocationToolStripMenuItem1->Name = L"changeDatabaseLocationToolStripMenuItem1";
+			this->changeDatabaseLocationToolStripMenuItem1->Size = System::Drawing::Size(215, 22);
+			this->changeDatabaseLocationToolStripMenuItem1->Text = L"Change Database Location";
+			this->changeDatabaseLocationToolStripMenuItem1->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem1_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this->toolStripSeparator2->Name = L"toolStripSeparator2";
+			this->toolStripSeparator2->Size = System::Drawing::Size(212, 6);
 			// 
 			// commandHelpToolStripMenuItem
 			// 
@@ -416,19 +490,21 @@ namespace UI {
 			this->label_currentTime->TabIndex = 21;
 			this->label_currentTime->Text = L"Current Time: ";
 			// 
-			// changeDatabaseLocationToolStripMenuItem
+			// webBrowser_Help
 			// 
-			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
-			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
-			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
+			this->webBrowser_Help->Location = System::Drawing::Point(12, 49);
+			this->webBrowser_Help->MinimumSize = System::Drawing::Size(20, 20);
+			this->webBrowser_Help->Name = L"webBrowser_Help";
+			this->webBrowser_Help->Size = System::Drawing::Size(639, 344);
+			this->webBrowser_Help->TabIndex = 22;
 			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
-			this->ClientSize = System::Drawing::Size(659, 546);
+			this->ClientSize = System::Drawing::Size(663, 546);
+			this->Controls->Add(this->webBrowser_Help);
 			this->Controls->Add(this->label_currentTime);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->richTextBox_CalendifiedViewL);
@@ -522,11 +598,52 @@ namespace UI {
 				 try {
 					 if(e->KeyCode==Keys::Enter){
 						 //system::string -> std::string
-						 logic newLogic;
-						 std::vector<std::string> displayResults;
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
+
+						 if(inputCommandBox.substr(0,1) == "/"){
+							 if(inputCommandBox == HELP_COMMAND_BACK){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_ADD){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_ADD));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_DELETE){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_DELETE));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_SEARCH));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_EDIT){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_EDIT));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_DONE){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_DONE));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_UNDO_OR_REDO){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_UNDO_REDO));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_LOCATION_DATABASE));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_BUTTONS){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_BUTTONS));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_HELP){
+								 webBrowser_Help->Show();
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
+							 }
+						 }else {
+							 webBrowser_Help->Hide();
+						 }
+
+						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
+							 changeDirectory();
+						 }
+
+						 logic newLogic;
+						 std::vector<std::string> displayResults;
 						 std::string displayResult = newLogic.readCommand(inputCommandBox);
 						 String^ updateStatus = gcnew String(displayResult.c_str());
 						 if(!updateStatus->Contains("FLOAT")){
@@ -540,6 +657,7 @@ namespace UI {
 						 }else{
 							 updateListView(displayResults);
 						 }
+
 						 commandBox->ResetText();				 				 				
 						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 						 if(label_status->Text =="Toggled!"){ 
@@ -597,31 +715,21 @@ namespace UI {
 							 updateListView(displayResults);
 						 }
 					 }
+					 webBrowser_Help->Show();
+					 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
+				 } else{
+					 webBrowser_Help->Hide();
+					 logic newLogic;			
+					 std::string logicResult = newLogic.readCommand("display");
+					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					 if(toggleCount == 0){ //check for mode [calendified/list] view 
+						 updateCalendifiedView(displayResults);
+					 }else{
+						 //Update Listview
+						 updateListView(displayResults);
+					 }
 				 }
-
-
-
 				 notifyBox->Text="0!";//need storage return num file;
-
-				 //Own notes
-				 /*
-				 IO::Stream^ myStream;
-				 OpenFileDialog^ openFileDialog1 = gcnew OpenFileDialog;
-
-				 openFileDialog1->InitialDirectory = "c:\\";
-				 openFileDialog1->Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
-				 openFileDialog1->FilterIndex = 2;
-				 openFileDialog1->RestoreDirectory = true;
-
-				 if ( openFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK )
-				 {
-				 if ( (myStream = openFileDialog1->OpenFile()) != nullptr )
-				 {
-				 // Insert code to read the stream here.
-				 myStream->Close();
-				 }
-				 }
-				 */
 			 }
 	private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
 				 this->commandBox->Text="<Enter Your Command Here>";
@@ -682,7 +790,24 @@ namespace UI {
 					 MessageBox::Show(systemString);
 				 }
 			 }
-	private: System::Void changeDatabaseLocationToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	private: System::Void changeDatabaseLocationToolStripMenuItem1_Click(System::Object^  sender, System::EventArgs^  e) {
+				 changeDirectory();
+			 }
+
+
+			 String^ getHTMLFilePath(std::string htmlHelpDirectory){
+
+				 char path[MAX_PATH];
+				 _fullpath(path, ":\\" , MAX_PATH);
+				 std::string directoryOfFolder(path);
+				 int const size = directoryOfFolder.size();
+				 directoryOfFolder = directoryOfFolder.substr(0,size-3);
+				 std::string htmlDirectory = directoryOfFolder + htmlHelpDirectory;
+				 return gcnew String(htmlDirectory.c_str());
+			 }
+
+			 void changeDirectory(){
 				 logic newLogic; 
 				 IO::Stream^ mystream;
 				 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
@@ -699,10 +824,8 @@ namespace UI {
 					 sprintf(newFileName,"%s",saveFileDialog1->FileName);
 					 newLogic.newStorage.transferDatabase(newFileName);
 					 newLogic.newStorage.setFilePath(newFileName);
-					 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
-					 //file->WriteLine("Calendified Database.");
-					 //file->Close();
 				 }
 			 }
+
 	};
 }
