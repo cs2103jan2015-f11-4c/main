@@ -1,4 +1,4 @@
-//author @a0114411b
+//@author a0114411b
 
 #include "task.h"
 

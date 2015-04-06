@@ -41,6 +41,7 @@
     <ClCompile Include="taskDisplay.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="taskDone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendified.h">
@@ -80,6 +81,7 @@
     <ClInclude Include="taskDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="taskDone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -86,7 +86,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
 		editItem.undoEdit(&undoTask);
 		return editResults;
-	case CHECKDONE:
+	case DONE:
 		checkDoneResults = "list below";
 		return checkDoneResults;
 	case UNDO:
@@ -178,6 +178,6 @@ commandType logic::hashCommandAction(std::string commandAction){
 		return TOGGLE;
 	}
 	if(commandAction.compare(commandCheckDone) == 0){ 
-		return CHECKDONE;
+		return DONE;
 	}
 }

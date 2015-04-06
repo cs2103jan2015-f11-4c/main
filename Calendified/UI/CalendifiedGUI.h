@@ -27,8 +27,9 @@ std::string const HELP_UNDO_REDO =
 	"/Help/Help_Undo_Redo.html";
 std::string const HELP_LOCATION_DATABASE = 
 	"/Help/Help_Location.html";
-std::string const HELP_BUTTONS =
-	"/Help/Help_Buttons.html";
+std::string const HELP_HOTKEYS =
+	"/Help/Help_HotKeys.html";
+
 /*
 1.	Add
 2.	Delete
@@ -55,7 +56,7 @@ std::string const HELP_COMMAND_UNDO_OR_REDO =
 	"/6";
 std::string const HELP_COMMAND_LOCATION_DATABASE =
 	"/7";
-std::string const HELP_COMMAND_BUTTONS =
+std::string const HELP_COMMAND_HOTKEYS =
 	"/8";
 std::string const HELP_COMMAND_HELP =
 	"/help";
@@ -644,9 +645,8 @@ namespace UI {
 							 }
 							 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_LOCATION_DATABASE));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_BUTTONS){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_BUTTONS));
+							 }							 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
+								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_HOTKEYS));
 							 }
 							 if(inputCommandBox == HELP_COMMAND_HELP){
 								 if(toggleCount == 0){ //Calendified 

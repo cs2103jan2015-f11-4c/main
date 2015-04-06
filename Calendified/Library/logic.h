@@ -30,7 +30,7 @@ enum commandType {
 	SPECIFY, 
 	REDO, 
 	TOGGLE,
-	CHECKDONE
+	DONE
 };
 
 class logic
