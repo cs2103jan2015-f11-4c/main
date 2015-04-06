@@ -17,7 +17,7 @@ const std::string MESSAGE_FAILURE =
 	"Fail to delete.";
 
 const std::string MESSAGE_ERROR_FILE_IS_EMPTY =
-	"Error: File is empty. There is nothing to delete.\n";
+	"Error: File is empty.\n";
 
 const std::string MESSAGE_ERROR_INVALID_INDEX =
 	"Error: Invalid index.";

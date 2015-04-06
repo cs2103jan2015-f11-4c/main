@@ -7,6 +7,9 @@
 std::string const REQUEST_CHANGE_LOCATION =
 	"/change location";
 
+std::string const MESSAGE_ERROR_INVALID_INPUT =
+	"Invalid command input, type '/help' to access the help page!";
+
 int const MAX_PATH = 999999;
 std::string const HELP_MAIN_MENU =
 	"/Help/Help_Main_Menu.html";
@@ -96,6 +99,7 @@ namespace UI {
 					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateListView(displayResults);
 					label_status->Text = "List View Toggled!";
+					webBrowser_Help->Hide();
 				}else{
 					toggleCount = 0;
 					toggleBox_Calendified->BorderStyle =  BorderStyle::None;
@@ -112,6 +116,7 @@ namespace UI {
 					updateCalendifiedView(displayResults);
 					mainBg->Visible  = true;	
 					label_status->Text = "Calendified View Toggled!";
+					webBrowser_Help->Hide();
 				}
 			}
 			CalendifiedGUI(void)
@@ -296,12 +301,12 @@ namespace UI {
 			// 
 			this->label_status->AutoSize = true;
 			this->label_status->BackColor = System::Drawing::Color::White;
-			this->label_status->Font = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 17.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
+			this->label_status->Font = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 14.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->label_status->ForeColor = System::Drawing::Color::Red;
 			this->label_status->Location = System::Drawing::Point(100, 481);
 			this->label_status->Name = L"label_status";
-			this->label_status->Size = System::Drawing::Size(238, 29);
+			this->label_status->Size = System::Drawing::Size(197, 24);
 			this->label_status->TabIndex = 7;
 			this->label_status->Text = L"Welcome to Calendified!";
 			// 
@@ -645,18 +650,22 @@ namespace UI {
 							 }
 							 if(inputCommandBox == HELP_COMMAND_HELP){
 								 if(toggleCount == 0){ //Calendified 
-									 this->webBrowser_Help->Location = System::Drawing::Point(38, 73);
-									 this->webBrowser_Help->Size = System::Drawing::Size(610, 320);
+									 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
+									 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
 									 webBrowser_Help->Show();
 								 }else{ //Listview
-									 this->webBrowser_Help->Location = System::Drawing::Point(30, 73);
-									 this->webBrowser_Help->Size = System::Drawing::Size(615, 280);
+									 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
+									 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);
 									 webBrowser_Help->Show();
 								 }
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
 							 }
-							 if(inputCommandBox == HELP_COMMAND_BACK){
+							 if(inputCommandBox == HELP_COMMAND_CLOSE){
 								 webBrowser_Help->Hide();
+							 }
+							 else{
+								 String^ statusUpdate = gcnew String(MESSAGE_ERROR_INVALID_INPUT.c_str());
+								 label_status->Text = statusUpdate;
 							 }
 						 }else {
 							 webBrowser_Help->Hide();
@@ -747,6 +756,15 @@ namespace UI {
 						 }else{
 							 updateListView(displayResults);
 						 }
+					 }
+
+					 if(toggleCount == 0){ //Calendified 
+						 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
+						 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
+					 }else{ //Listview
+						 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
+						 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);
+
 					 }
 					 webBrowser_Help->Show();
 					 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
