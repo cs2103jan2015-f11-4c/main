@@ -56,7 +56,8 @@ std::string const HELP_COMMAND_BUTTONS =
 	"/8";
 std::string const HELP_COMMAND_HELP =
 	"/help";
-
+std::string const HELP_COMMAND_CLOSE =
+	"/close";
 
 
 namespace UI {
@@ -169,8 +170,8 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  pictureBox_Help;
 	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip_HelpContent;
 	private: System::Windows::Forms::ToolStripMenuItem^  commandHelpToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  typingAToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^  commandGuidelinesToolStripMenuItem;
+
+
 	private: System::Windows::Forms::PictureBox^  mainBg2;
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
 	private: System::Windows::Forms::Timer^  currentTime;
@@ -227,8 +228,6 @@ namespace UI {
 			this->changeDatabaseLocationToolStripMenuItem1 = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->toolStripSeparator2 = (gcnew System::Windows::Forms::ToolStripSeparator());
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
@@ -409,10 +408,10 @@ namespace UI {
 			// 
 			// contextMenuStrip_HelpContent
 			// 
-			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->changeDatabaseLocationToolStripMenuItem1, 
-				this->toolStripSeparator2, this->commandHelpToolStripMenuItem, this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
+			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {this->changeDatabaseLocationToolStripMenuItem1, 
+				this->toolStripSeparator2, this->commandHelpToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 98);
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 54);
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// changeDatabaseLocationToolStripMenuItem1
@@ -431,19 +430,8 @@ namespace UI {
 			// 
 			this->commandHelpToolStripMenuItem->Name = L"commandHelpToolStripMenuItem";
 			this->commandHelpToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->commandHelpToolStripMenuItem->Text = L"Getting Started";
-			// 
-			// typingAToolStripMenuItem
-			// 
-			this->typingAToolStripMenuItem->Name = L"typingAToolStripMenuItem";
-			this->typingAToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->typingAToolStripMenuItem->Text = L"Entering a Command";
-			// 
-			// commandGuidelinesToolStripMenuItem
-			// 
-			this->commandGuidelinesToolStripMenuItem->Name = L"commandGuidelinesToolStripMenuItem";
-			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->commandGuidelinesToolStripMenuItem->Text = L"Command Guidelines";
+			this->commandHelpToolStripMenuItem->Text = L"Help";
+			this->commandHelpToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::commandHelpToolStripMenuItem_Click);
 			// 
 			// mainBg2
 			// 
@@ -486,10 +474,10 @@ namespace UI {
 			// 
 			// webBrowser_Help
 			// 
-			this->webBrowser_Help->Location = System::Drawing::Point(12, 49);
+			this->webBrowser_Help->Location = System::Drawing::Point(38, 73);
 			this->webBrowser_Help->MinimumSize = System::Drawing::Size(20, 20);
 			this->webBrowser_Help->Name = L"webBrowser_Help";
-			this->webBrowser_Help->Size = System::Drawing::Size(639, 344);
+			this->webBrowser_Help->Size = System::Drawing::Size(607, 320);
 			this->webBrowser_Help->TabIndex = 22;
 			// 
 			// pictureBox_CalendifiedFlipping
@@ -656,8 +644,19 @@ namespace UI {
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_BUTTONS));
 							 }
 							 if(inputCommandBox == HELP_COMMAND_HELP){
-								 webBrowser_Help->Show();
+								 if(toggleCount == 0){ //Calendified 
+									 this->webBrowser_Help->Location = System::Drawing::Point(38, 73);
+									 this->webBrowser_Help->Size = System::Drawing::Size(610, 320);
+									 webBrowser_Help->Show();
+								 }else{ //Listview
+									 this->webBrowser_Help->Location = System::Drawing::Point(30, 73);
+									 this->webBrowser_Help->Size = System::Drawing::Size(615, 280);
+									 webBrowser_Help->Show();
+								 }
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
+							 }
+							 if(inputCommandBox == HELP_COMMAND_BACK){
+								 webBrowser_Help->Hide();
 							 }
 						 }else {
 							 webBrowser_Help->Hide();
@@ -669,7 +668,7 @@ namespace UI {
 
 						 logic newLogic;
 						 std::vector<std::string> displayResults;
-						
+
 						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
 							 flipCount=0;
 						 }
@@ -913,6 +912,10 @@ namespace UI {
 					 pictureBox_ListViewFlipping->Visible=false;
 				 }
 
+			 }
+	private: System::Void commandHelpToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+				 webBrowser_Help->Show();
+				 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
 			 }
 	};
 }
