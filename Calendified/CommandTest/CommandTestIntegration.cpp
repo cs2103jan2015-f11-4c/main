@@ -63,13 +63,14 @@ namespace CommandTestIntegration
 			Assert::AreEqual(expectedSize,actualSize);
 
 			//Display test empty results - Assuming Storage file is empty
-			std::string expectedDisplayResult = displayTask.getTodayDate()+KEYWORD_NEWLINE;
-			std::string actualDisplayResult = displayTask.displayToday();
+			int flipCount;
+			std::string expectedDisplayResult = displayTask.getTodayDate(flipCount)+KEYWORD_NEWLINE;
+			std::string actualDisplayResult = displayTask.displayToday(flipCount);
 			Assert::AreEqual(expectedDisplayResult, actualDisplayResult);
 
 			//Logic test to ensure accurate results passed back to UI interface
-			std::string expectedResultsToUI = displayTask.getTodayDate()+KEYWORD_NEWLINE+KEYWORD_NEWLINE+displayTask.getNextDayDate()+KEYWORD_NEWLINE+KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
-			std::string actualResultsToUI = newLogic.readCommand(inputCommand);
+			std::string expectedResultsToUI = displayTask.getTodayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+displayTask.getNextDayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
+			std::string actualResultsToUI = newLogic.readCommand(inputCommand,flipCount);
 			Assert::AreEqual(expectedResultsToUI,actualResultsToUI);
 		}
 	};

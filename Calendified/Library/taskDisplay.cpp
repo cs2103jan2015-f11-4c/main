@@ -105,7 +105,7 @@ std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList
 }
 
 //This operation sort the list of task w.r.t. to sort type [float|today|nextDay]
-std::vector<task> taskDisplay::sortTaskList(std::string sortType){
+std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount){
 	std::vector<task> taskList;
 	std::string taskDateDay;
 	std::string taskDateMonth;
@@ -132,13 +132,13 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType){
 		updateDisplayContent(taskList);
 		return taskList;
 	} else if(sortType.compare(TYPE_TODAY)==0){ //check if taskList is {today List}
-		dateDay = getTodayDate();
-		dateMonth = getTodayDateMonth();
-		dateYear = getTodayDateYear();
+		dateDay = getTodayDate(flipCount);
+		dateMonth = getTodayDateMonth(flipCount);
+		dateYear = getTodayDateYear(flipCount);
 	} else if(sortType.compare(TYPE_NEXTDAY)==0){ //check if taskList is {nextDay List}
-		dateDay = getNextDayDate();
-		dateMonth = getNextDayDateMonth();
-		dateYear = getNextDayDateYear();
+		dateDay = getNextDayDate(flipCount);
+		dateMonth = getNextDayDateMonth(flipCount);
+		dateYear = getNextDayDateYear(flipCount);
 	}
 	dateDay = dateDay.substr(0,2);
 	if(dateDay[0] ==KEYWORD_EMPTY_CHAR){
@@ -164,9 +164,10 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType){
 	return taskList;
 }
 //
-std::string taskDisplay::displayToday(){
-	std::string displayTodayResults = getTodayDate()+KEYWORD_NEWLINE;
-	std::vector<task> todayTaskList = sortTaskList(TYPE_TODAY);
+std::string taskDisplay::displayToday(int flipCount){
+	std::string displayTodayResults = getTodayDate(flipCount)+KEYWORD_SPACE;
+	displayTodayResults += getTodayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
+	std::vector<task> todayTaskList = sortTaskList(TYPE_TODAY,flipCount);
 	if(!todayTaskList.size()==0){
 		displayTodayResults += formatDisplayResults(todayTaskList,TYPE_TIMEDTASK);
 	}
@@ -174,9 +175,10 @@ std::string taskDisplay::displayToday(){
 }
 
 //
-std::string taskDisplay::displayNextDay(){
-	std::string displayNextDayResults = getNextDayDate()+KEYWORD_NEWLINE;
-	std::vector<task> nextDayTaskList = sortTaskList(TYPE_NEXTDAY);
+std::string taskDisplay::displayNextDay(int flipCount){
+	std::string displayNextDayResults = getNextDayDate(flipCount)+KEYWORD_SPACE;
+	displayNextDayResults +=  getTodayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
+	std::vector<task> nextDayTaskList = sortTaskList(TYPE_NEXTDAY,flipCount);
 	if(!nextDayTaskList.size()==0){
 		displayNextDayResults += formatDisplayResults(nextDayTaskList,TYPE_TIMEDTASK);
 	}
@@ -184,9 +186,9 @@ std::string taskDisplay::displayNextDay(){
 }
 
 //
-std::string taskDisplay::displayFloatDay(){
+std::string taskDisplay::displayFloatDay(int flipCount){
 	std::string displayFloatResults= KEYWORD_NEWLINE;
-	std::vector<task> floatTaskList = sortTaskList(TYPE_FLOATTASK);
+	std::vector<task> floatTaskList = sortTaskList(TYPE_FLOATTASK,flipCount);
 	if(!floatTaskList.size()==0){
 		displayFloatResults += formatDisplayResults(floatTaskList,TYPE_FLOATTASK);
 	}
@@ -268,10 +270,13 @@ std::string taskDisplay::formatDisplayResults(std::vector<task> taskList, std::s
 }
 
 //This operation returns current date- Day
-std::string taskDisplay::getTodayDate(){
+std::string taskDisplay::getTodayDate(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timeinfo = localtime(&timev);
 	char output[30];
 	strftime(output,30,"%dth",timeinfo);
@@ -279,21 +284,41 @@ std::string taskDisplay::getTodayDate(){
 }
 
 //This operation returns current date- Month
-std::string taskDisplay::getTodayDateMonth(){
+std::string taskDisplay::getTodayDateMonth(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timeinfo = localtime(&timev);
 	char output[30];
 	strftime(output,30,"%m",timeinfo);
 	return std::string(output);
 }
 
-//This operation returns current date- Year
-std::string taskDisplay::getTodayDateYear(){
+//This operation returns current date- Month_Abbreviated eg. Apr, May
+std::string taskDisplay::getTodayDateMonth_Abbreviated(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%b",timeinfo);
+	return std::string(output);
+}
+
+//This operation returns current date- Year
+std::string taskDisplay::getTodayDateYear(int flipCount){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timeinfo = localtime(&timev);
 	char output[30];
 	strftime(output,30,"%Y",timeinfo);
@@ -301,10 +326,13 @@ std::string taskDisplay::getTodayDateYear(){
 }
 
 //This operation returns current date- Day Month Year
-std::string taskDisplay::getTodayDateDMY(){
+std::string taskDisplay::getTodayDateDMY(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timeinfo = localtime(&timev);
 	char output[30];
 	strftime(output,30,"%d/%m/%y",timeinfo);
@@ -312,10 +340,13 @@ std::string taskDisplay::getTodayDateDMY(){
 }
 
 //This operation returns next date- Day
-std::string taskDisplay::getNextDayDate(){
+std::string taskDisplay::getNextDayDate(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timev += 1 * 24 * 60 * 60;
 	timeinfo = localtime(&timev);
 	char output[30];
@@ -324,10 +355,13 @@ std::string taskDisplay::getNextDayDate(){
 }
 
 //This operation returns next date- Month
-std::string taskDisplay::getNextDayDateMonth(){
+std::string taskDisplay::getNextDayDateMonth(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timev += 1 * 24 * 60 * 60;
 	timeinfo = localtime(&timev);
 	char output[30];
@@ -335,11 +369,29 @@ std::string taskDisplay::getNextDayDateMonth(){
 	return std::string(output);
 }
 
-//This operation returns next date- Year
-std::string taskDisplay::getNextDayDateYear(){
+//This operation returns next date- Month_Abbreviated eg. Apr, May
+std::string taskDisplay::getNextDayDateMonth_Abbreviated(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
+	timev += 1 * 24 * 60 * 60;
+	timeinfo = localtime(&timev);
+	char output[30];
+	strftime(output,30,"%b",timeinfo);
+	return std::string(output);
+}
+
+//This operation returns next date- Year
+std::string taskDisplay::getNextDayDateYear(int flipCount){
+	time_t timev;
+	struct tm * timeinfo;
+	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timev += 1 * 24 * 60 * 60;
 	timeinfo = localtime(&timev);
 	char output[30];
@@ -348,10 +400,13 @@ std::string taskDisplay::getNextDayDateYear(){
 }
 
 //This operation returns next date- Day Month Year
-std::string taskDisplay::getNextDayDateDMY(){
+std::string taskDisplay::getNextDayDateDMY(int flipCount){
 	time_t timev;
 	struct tm * timeinfo;
 	time(&timev);
+	if(flipCount !=0){
+		timev += flipCount * 24 * 60 * 60;
+	}
 	timev += 1 * 24 * 60 * 60;
 	timeinfo = localtime(&timev);
 	char output[30];
@@ -388,7 +443,7 @@ std::string taskDisplay::viewSearchList(std::string searchItem){
 
 
 //This operation helps to render UI display results in Calendified View
-int taskDisplay::configureCalendifedView(std::string logicResult){
+int taskDisplay::configureCalendifedView(std::string logicResult, int flipCount){
 	int pos;
 	if(logicResult.substr(0,5).compare(TYPE_ADD)==0){ //check for add operation
 		pos = -1;
@@ -401,7 +456,7 @@ int taskDisplay::configureCalendifedView(std::string logicResult){
 	} else if(logicResult.substr(0,8).compare(TYPE_RESULTS)==0){ //check for view operation
 		pos = logicResult.find(TYPE_FLOAT);
 	}else {
-		pos = logicResult.find(getNextDayDate()); //check for display operation
+		pos = logicResult.find(getNextDayDate(flipCount)); //check for display operation
 	}
 	return pos;
 }

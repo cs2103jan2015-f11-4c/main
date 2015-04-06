@@ -78,7 +78,7 @@ namespace UI {
 
 	public:
 		int toggleCount;
-
+		int flipCount;
 	public: void toggle(){
 				if(toggleCount ==0){
 					toggleCount = 1;
@@ -93,8 +93,8 @@ namespace UI {
 					richTextBox_CalendifiedViewL->ResetText();
 					richTextBox_CalendifiedViewR->ResetText();
 					logic newLogic;
-					std::string logicResult = newLogic.readCommand("display");
-					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateListView(displayResults);
 					label_status->Text = "List View Toggled!";
 				}else{
@@ -108,8 +108,8 @@ namespace UI {
 					richTextBox_CalendifiedViewR->Visible = true;
 					richTextBox_ListView->ResetText();
 					logic newLogic;			
-					std::string logicResult = newLogic.readCommand("display");
-					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateCalendifiedView(displayResults);
 					mainBg->Visible  = true;	
 					label_status->Text = "Calendified View Toggled!";
@@ -177,10 +177,19 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
 	private: System::Windows::Forms::Timer^  currentTime;
 	private: System::Windows::Forms::Label^  label_currentTime;
+<<<<<<< HEAD
 	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem1;
 	private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator2;
 	private: System::Windows::Forms::WebBrowser^  webBrowser_Help;
 
+=======
+	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem;
+	private: System::Windows::Forms::PictureBox^  pictureBox_CalendifiedFlipping;
+
+	private: System::Windows::Forms::Timer^  timerCalendifiedFlip;
+	private: System::Windows::Forms::PictureBox^  pictureBox_ListViewFlipping;
+	private: System::Windows::Forms::Timer^  timerListViewFlip;
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 
 
 	private: System::ComponentModel::IContainer^  components;
@@ -228,11 +237,19 @@ namespace UI {
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label_currentTime = (gcnew System::Windows::Forms::Label());
+<<<<<<< HEAD
 			this->webBrowser_Help = (gcnew System::Windows::Forms::WebBrowser());
+=======
+			this->pictureBox_CalendifiedFlipping = (gcnew System::Windows::Forms::PictureBox());
+			this->timerCalendifiedFlip = (gcnew System::Windows::Forms::Timer(this->components));
+			this->pictureBox_ListViewFlipping = (gcnew System::Windows::Forms::PictureBox());
+			this->timerListViewFlip = (gcnew System::Windows::Forms::Timer(this->components));
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -242,6 +259,8 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_CalendifiedFlipping))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_ListViewFlipping))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// richTextBox_CalendifiedViewL
@@ -298,6 +317,7 @@ namespace UI {
 			this->button_enter->TabIndex = 1;
 			this->button_enter->Text = L"Enter";
 			this->button_enter->UseVisualStyleBackColor = false;
+			this->button_enter->Click += gcnew System::EventHandler(this, &CalendifiedGUI::button_enter_Click);
 			// 
 			// label_status
 			// 
@@ -418,7 +438,11 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->changeDatabaseLocationToolStripMenuItem1, 
 				this->toolStripSeparator2, this->commandHelpToolStripMenuItem, this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
+<<<<<<< HEAD
 			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 120);
+=======
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 92);
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// changeDatabaseLocationToolStripMenuItem1
@@ -450,6 +474,13 @@ namespace UI {
 			this->commandGuidelinesToolStripMenuItem->Name = L"commandGuidelinesToolStripMenuItem";
 			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->commandGuidelinesToolStripMenuItem->Text = L"Command Guidelines";
+			// 
+			// changeDatabaseLocationToolStripMenuItem
+			// 
+			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
+			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
+			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
+			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
 			// 
 			// mainBg2
 			// 
@@ -490,6 +521,7 @@ namespace UI {
 			this->label_currentTime->TabIndex = 21;
 			this->label_currentTime->Text = L"Current Time: ";
 			// 
+<<<<<<< HEAD
 			// webBrowser_Help
 			// 
 			this->webBrowser_Help->Location = System::Drawing::Point(12, 49);
@@ -497,14 +529,49 @@ namespace UI {
 			this->webBrowser_Help->Name = L"webBrowser_Help";
 			this->webBrowser_Help->Size = System::Drawing::Size(639, 344);
 			this->webBrowser_Help->TabIndex = 22;
+=======
+			// pictureBox_CalendifiedFlipping
+			// 
+			this->pictureBox_CalendifiedFlipping->Location = System::Drawing::Point(22, 74);
+			this->pictureBox_CalendifiedFlipping->Name = L"pictureBox_CalendifiedFlipping";
+			this->pictureBox_CalendifiedFlipping->Size = System::Drawing::Size(623, 326);
+			this->pictureBox_CalendifiedFlipping->TabIndex = 22;
+			this->pictureBox_CalendifiedFlipping->TabStop = false;
+			this->pictureBox_CalendifiedFlipping->Visible = false;
+			// 
+			// timerCalendifiedFlip
+			// 
+			this->timerCalendifiedFlip->Interval = 1;
+			this->timerCalendifiedFlip->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::timerCalendifiedFlip_Tick);
+			// 
+			// pictureBox_ListViewFlipping
+			// 
+			this->pictureBox_ListViewFlipping->Location = System::Drawing::Point(52, 29);
+			this->pictureBox_ListViewFlipping->Name = L"pictureBox_ListViewFlipping";
+			this->pictureBox_ListViewFlipping->Size = System::Drawing::Size(593, 366);
+			this->pictureBox_ListViewFlipping->TabIndex = 23;
+			this->pictureBox_ListViewFlipping->TabStop = false;
+			this->pictureBox_ListViewFlipping->Visible = false;
+			// 
+			// timerListViewFlip
+			// 
+			this->timerListViewFlip->Interval = 1;
+			this->timerListViewFlip->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::timerListViewFlip_Tick);
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
+<<<<<<< HEAD
 			this->ClientSize = System::Drawing::Size(663, 546);
 			this->Controls->Add(this->webBrowser_Help);
+=======
+			this->ClientSize = System::Drawing::Size(659, 546);
+			this->Controls->Add(this->pictureBox_ListViewFlipping);
+			this->Controls->Add(this->pictureBox_CalendifiedFlipping);
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			this->Controls->Add(this->label_currentTime);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->richTextBox_CalendifiedViewL);
@@ -538,6 +605,8 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg2))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_ListView))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_CalendifiedFlipping))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->pictureBox_ListViewFlipping))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -601,6 +670,7 @@ namespace UI {
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
+<<<<<<< HEAD
 
 						 if(inputCommandBox.substr(0,1) == "/"){
 							 if(inputCommandBox == HELP_COMMAND_BACK){
@@ -645,12 +715,22 @@ namespace UI {
 						 logic newLogic;
 						 std::vector<std::string> displayResults;
 						 std::string displayResult = newLogic.readCommand(inputCommandBox);
+=======
+						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
+							 flipCount=0;
+						 }
+						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 						 String^ updateStatus = gcnew String(displayResult.c_str());
-						 if(!updateStatus->Contains("FLOAT")){
+						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
 							 label_status-> Text =  updateStatus;
-							 displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);
-						 }else {
-							 displayResults = newLogic.updateUI(displayResult,toggleCount);
+							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
+								 flip();
+								 flipCount++;
+							 }
+							 displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);	 
+						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
+							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
@@ -707,8 +787,8 @@ namespace UI {
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
-						 std::string logicResult = newLogic.readCommand("display");
-						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+						 std::string logicResult = newLogic.readCommand("display",flipCount);
+						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
@@ -742,8 +822,9 @@ namespace UI {
 				 notifyBox->BorderStyle = BorderStyle::Fixed3D;
 				 _sleep(500);
 				 logic newLogic;			
-				 std::string logicResult = newLogic.readCommand("display");
-				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+				 flipCount=0;
+				 std::string logicResult = newLogic.readCommand("display",flipCount);
+				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 				 if(toggleCount == 0){ //check for mode [calendified/list] view 
 					 updateCalendifiedView(displayResults);
 				 }else{
@@ -775,11 +856,12 @@ namespace UI {
 					 logic newLogic;
 					 const std::string UNDO = "undo";
 					 const std::string DISPLAY = "display";
-					 std::string results = newLogic.readCommand(UNDO);
+					 flipCount=0;
+					 std::string results = newLogic.readCommand(UNDO,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
-					 std::string logicResult = newLogic.readCommand(DISPLAY);
-					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					 if(toggleCount == 0){ 
 						 updateCalendifiedView(displayResults);
 					 }else{
@@ -826,6 +908,64 @@ namespace UI {
 					 newLogic.newStorage.setFilePath(newFileName);
 				 }
 			 }
+<<<<<<< HEAD
 
+=======
+	private: System::Void button_enter_Click(System::Object^  sender, System::EventArgs^  e) {
+
+			 }
+
+			 //@author A0125489U
+	public: void flip(){
+				if(toggleCount ==0){
+					Graphics^ gfx = mainBg->CreateGraphics();
+					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+40, richTextBox_ListView->Height-40);
+					gfx = gfx->FromImage(bmp);
+					gfx->CopyFromScreen(this->Location.X+30,this->Location.Y+105,0,0,this->Size);
+					pictureBox_CalendifiedFlipping->Image=bmp;
+					pictureBox_CalendifiedFlipping->Visible=true;
+					timerCalendifiedFlip->Start();
+				} else if(toggleCount==1){
+					Graphics^ gfx = mainBg2->CreateGraphics();
+					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+10, richTextBox_ListView->Height);
+					gfx = gfx->FromImage(bmp);
+					gfx->CopyFromScreen(this->Location.X+60,this->Location.Y+60,0,0,this->Size);
+					pictureBox_ListViewFlipping->Image=bmp;
+					pictureBox_ListViewFlipping->Visible=true;
+					timerListViewFlip->Start();
+				}
+			}
+
+			//@author A0125489U
+			int timerCount;
+	private: System::Void timerCalendifiedFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 pictureBox_CalendifiedFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
+				 pictureBox_CalendifiedFlipping->Top -= 1;
+				 pictureBox_CalendifiedFlipping->Height-=11;
+				 timerCount++;
+				 if(timerCount==30){
+					 timerCalendifiedFlip->Stop();
+					 pictureBox_CalendifiedFlipping->Top += 30;
+					 pictureBox_CalendifiedFlipping->Height += 330;
+					 timerCount =0;
+					 pictureBox_CalendifiedFlipping->Visible=false;
+				 }
+			 }
+			 //@author A0125489U
+	private: System::Void timerListViewFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
+				 pictureBox_ListViewFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
+				 pictureBox_ListViewFlipping->Left -= 1;
+				 pictureBox_ListViewFlipping->Width-=20;
+				 timerCount++;
+				 if(timerCount==30){
+					 timerListViewFlip->Stop();
+					 pictureBox_ListViewFlipping->Left += 30;
+					 pictureBox_ListViewFlipping->Width += 600;
+					 timerCount =0;
+					 pictureBox_ListViewFlipping->Visible=false;
+				 }
+
+			 }
+>>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 	};
 }

@@ -8,7 +8,7 @@ logic::logic(void){
 logic::~logic(void){
 }
 
-std::string logic::readCommand(std::string commandLine){
+std::string logic::readCommand(std::string commandLine, int flipCount){
 	parser newParser(commandLine);
 	storage newStorage;
 	char symbolTitle = '&';
@@ -78,9 +78,9 @@ std::string logic::readCommand(std::string commandLine){
 	case DISPLAY:		
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
-		displayTodayResults = displayTask.displayToday();
-		displayNextDayResults = displayTask.displayNextDay();
-		displayFloatResults += displayTask.displayFloatDay();
+		displayTodayResults = displayTask.displayToday(flipCount);
+		displayNextDayResults = displayTask.displayNextDay(flipCount);
+		displayFloatResults += displayTask.displayFloatDay(flipCount);
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case EDIT:	
@@ -94,8 +94,8 @@ std::string logic::readCommand(std::string commandLine){
 	case UNDO:
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
-	case REPEAT:
-		return "";
+	case FLIP:
+		return "Flipped!";
 	case SPECIFY:
 		return "";
 	case REDO:
@@ -109,17 +109,17 @@ std::string logic::readCommand(std::string commandLine){
 }
 
 //author A0125489U
-std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex){
+std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex, int flipCount){
 	taskDisplay displayTask;
 	std::string displayLeft;
 	std::string displayRight;
 	std::vector<std::string> displayResults;
-	displayResults.push_back(displayTask.getTodayDate());
-	displayResults.push_back(displayTask.getNextDayDate());
+	displayResults.push_back(displayTask.getTodayDate(flipCount));
+	displayResults.push_back(displayTask.getNextDayDate(flipCount));
 	int pos;
 	if(toggleIndex == 0){ // 0 for calendifiedView
-		pos = displayTask.configureCalendifedView(logicResult);
-		if(pos == -1){ // Operations for ADD, DELETE, EDIT
+		pos = displayTask.configureCalendifedView(logicResult, flipCount);
+		if(pos == -1){ // Operations for ADD, DELETE, EDIT, FLIP
 			displayResults.push_back(logicResult);
 			return displayResults;
 		}
@@ -141,7 +141,7 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandDisplay = "display";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
-	std::string commandRepeat = "repeat";
+	std::string commandFlip = "flip";
 	std::string commandSpecify = "specify";
 	std::string commandRedo = "redo";
 	std::string commandToggle = "toggle";
@@ -167,8 +167,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	if(commandAction.compare(commandUndo) == 0){ 
 		return UNDO;
 	}
-	if(commandAction.compare(commandRepeat) == 0){ 
-		return REPEAT;
+	if(commandAction.compare(commandFlip) == 0){ 
+		return FLIP;
 	}
 	if(commandAction.compare(commandSpecify) == 0){ 
 		return SPECIFY;
