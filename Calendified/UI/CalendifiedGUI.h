@@ -24,7 +24,7 @@ namespace UI {
 
 	public:
 		int toggleCount;
-
+		int flipCount;
 	public: void toggle(){
 				if(toggleCount ==0){
 					toggleCount = 1;
@@ -39,8 +39,8 @@ namespace UI {
 					richTextBox_CalendifiedViewL->ResetText();
 					richTextBox_CalendifiedViewR->ResetText();
 					logic newLogic;
-					std::string logicResult = newLogic.readCommand("display");
-					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateListView(displayResults);
 					label_status->Text = "List View Toggled!";
 				}else{
@@ -54,8 +54,8 @@ namespace UI {
 					richTextBox_CalendifiedViewR->Visible = true;
 					richTextBox_ListView->ResetText();
 					logic newLogic;			
-					std::string logicResult = newLogic.readCommand("display");
-					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateCalendifiedView(displayResults);
 					mainBg->Visible  = true;	
 					label_status->Text = "Calendified View Toggled!";
@@ -572,23 +572,27 @@ namespace UI {
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
-						 std::string displayResult = newLogic.readCommand(inputCommandBox);
+						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
+							 flipCount=0;
+						 }
+						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
 						 String^ updateStatus = gcnew String(displayResult.c_str());
-						 if(!updateStatus->Contains("FLOAT")){
+						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
 							 label_status-> Text =  updateStatus;
-							 displayResults = newLogic.updateUI(newLogic.readCommand("display"),toggleCount);	 
-						 }else {
-							 displayResults = newLogic.updateUI(displayResult,toggleCount);
-						 }
-						 if(updateStatus=="Flipped!"){
-							 flip();
-						 } else {
-							 if(toggleCount == 0){ //check for mode [calendified/list] view 
-								 updateCalendifiedView(displayResults);
-							 }else{
-								 updateListView(displayResults);
+							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
+								 flip();
+								 flipCount++;
 							 }
+							 displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);	 
+						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
+							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
+						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+							 updateCalendifiedView(displayResults);
+						 }else{
+							 updateListView(displayResults);
+						 }
+
 						 commandBox->ResetText();				 				 				
 						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 						 if(label_status->Text =="Toggled!"){ 
@@ -638,8 +642,8 @@ namespace UI {
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
-						 std::string logicResult = newLogic.readCommand("display");
-						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+						 std::string logicResult = newLogic.readCommand("display",flipCount);
+						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
@@ -683,8 +687,9 @@ namespace UI {
 				 notifyBox->BorderStyle = BorderStyle::Fixed3D;
 				 _sleep(500);
 				 logic newLogic;			
-				 std::string logicResult = newLogic.readCommand("display");
-				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+				 flipCount=0;
+				 std::string logicResult = newLogic.readCommand("display",flipCount);
+				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 				 if(toggleCount == 0){ //check for mode [calendified/list] view 
 					 updateCalendifiedView(displayResults);
 				 }else{
@@ -716,11 +721,12 @@ namespace UI {
 					 logic newLogic;
 					 const std::string UNDO = "undo";
 					 const std::string DISPLAY = "display";
-					 std::string results = newLogic.readCommand(UNDO);
+					 flipCount=0;
+					 std::string results = newLogic.readCommand(UNDO,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
-					 std::string logicResult = newLogic.readCommand(DISPLAY);
-					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					 if(toggleCount == 0){ 
 						 updateCalendifiedView(displayResults);
 					 }else{

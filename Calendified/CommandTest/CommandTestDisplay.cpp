@@ -18,7 +18,8 @@ namespace CommandTestDisplay
 			std::vector<task> emptyVector;
 			int expectedSize = emptyVector.size();
 			//testcase 1 empty storage file
-			std::vector<task> actualResults = displayTask.sortTaskList(sortType_float);
+			int flipCount;
+			std::vector<task> actualResults = displayTask.sortTaskList(sortType_float,flipCount);
 			int actualSize = actualResults.size();
 			Assert::AreEqual(expectedSize, actualSize);	
 		}

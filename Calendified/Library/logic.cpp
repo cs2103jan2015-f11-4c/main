@@ -8,7 +8,7 @@ logic::logic(void){
 logic::~logic(void){
 }
 
-std::string logic::readCommand(std::string commandLine){
+std::string logic::readCommand(std::string commandLine, int flipCount){
 	parser newParser(commandLine);
 	storage newStorage;
 	char symbolTitle = '&';
@@ -78,9 +78,9 @@ std::string logic::readCommand(std::string commandLine){
 	case DISPLAY:		
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
-		displayTodayResults = displayTask.displayToday();
-		displayNextDayResults = displayTask.displayNextDay();
-		displayFloatResults += displayTask.displayFloatDay();
+		displayTodayResults = displayTask.displayToday(flipCount);
+		displayNextDayResults = displayTask.displayNextDay(flipCount);
+		displayFloatResults += displayTask.displayFloatDay(flipCount);
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case EDIT:	
@@ -109,16 +109,16 @@ std::string logic::readCommand(std::string commandLine){
 }
 
 //author A0125489U
-std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex){
+std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex, int flipCount){
 	taskDisplay displayTask;
 	std::string displayLeft;
 	std::string displayRight;
 	std::vector<std::string> displayResults;
-	displayResults.push_back(displayTask.getTodayDate());
-	displayResults.push_back(displayTask.getNextDayDate());
+	displayResults.push_back(displayTask.getTodayDate(flipCount));
+	displayResults.push_back(displayTask.getNextDayDate(flipCount));
 	int pos;
 	if(toggleIndex == 0){ // 0 for calendifiedView
-		pos = displayTask.configureCalendifedView(logicResult);
+		pos = displayTask.configureCalendifedView(logicResult, flipCount);
 		if(pos == -1){ // Operations for ADD, DELETE, EDIT, FLIP
 			displayResults.push_back(logicResult);
 			return displayResults;

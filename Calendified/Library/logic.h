@@ -44,7 +44,7 @@ public:
 	logic(void);
 	~logic(void);
 	storage newStorage;
-	std::string readCommand(std::string commandLine);
+	std::string readCommand(std::string commandLine, int flipCount);
     commandType hashCommandAction(std::string commandAction);
 
 	void setCommand(std::string command);
@@ -53,7 +53,7 @@ public:
 	void setDate(std::string date);
 	void setTime(std::string time);
 
-	std::vector<std::string> updateUI(std::string logicResult , int toggleIndex);
+	std::vector<std::string> updateUI(std::string logicResult , int toggleIndex, int flipCount);
 };
 
 #endif
