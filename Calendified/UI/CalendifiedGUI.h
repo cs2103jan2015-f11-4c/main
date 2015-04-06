@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Calendified.h"
 #include "logic.h"
-#include "parser.h"
-#include "storage.h"
 
 
 std::string const REQUEST_CHANGE_LOCATION =
@@ -148,7 +146,7 @@ namespace UI {
 
 
 
-	private: System::Windows::Forms::Button^  button_enter;
+
 	private: System::Windows::Forms::Label^  label_status;
 
 
@@ -177,19 +175,14 @@ namespace UI {
 	private: System::Windows::Forms::PictureBox^  toggleBox_ListView;
 	private: System::Windows::Forms::Timer^  currentTime;
 	private: System::Windows::Forms::Label^  label_currentTime;
-<<<<<<< HEAD
 	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem1;
 	private: System::Windows::Forms::ToolStripSeparator^  toolStripSeparator2;
 	private: System::Windows::Forms::WebBrowser^  webBrowser_Help;
-
-=======
-	private: System::Windows::Forms::ToolStripMenuItem^  changeDatabaseLocationToolStripMenuItem;
 	private: System::Windows::Forms::PictureBox^  pictureBox_CalendifiedFlipping;
-
 	private: System::Windows::Forms::Timer^  timerCalendifiedFlip;
 	private: System::Windows::Forms::PictureBox^  pictureBox_ListViewFlipping;
 	private: System::Windows::Forms::Timer^  timerListViewFlip;
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
+
 
 
 	private: System::ComponentModel::IContainer^  components;
@@ -220,7 +213,6 @@ namespace UI {
 			this->richTextBox_CalendifiedViewL = (gcnew System::Windows::Forms::RichTextBox());
 			this->richTextBox_CalendifiedViewR = (gcnew System::Windows::Forms::RichTextBox());
 			this->commandBox = (gcnew System::Windows::Forms::RichTextBox());
-			this->button_enter = (gcnew System::Windows::Forms::Button());
 			this->label_status = (gcnew System::Windows::Forms::Label());
 			this->lbLengend = (gcnew System::Windows::Forms::Label());
 			this->saveFileDialog1 = (gcnew System::Windows::Forms::SaveFileDialog());
@@ -237,19 +229,15 @@ namespace UI {
 			this->commandHelpToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->typingAToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->commandGuidelinesToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->changeDatabaseLocationToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->mainBg2 = (gcnew System::Windows::Forms::PictureBox());
 			this->toggleBox_ListView = (gcnew System::Windows::Forms::PictureBox());
 			this->currentTime = (gcnew System::Windows::Forms::Timer(this->components));
 			this->label_currentTime = (gcnew System::Windows::Forms::Label());
-<<<<<<< HEAD
 			this->webBrowser_Help = (gcnew System::Windows::Forms::WebBrowser());
-=======
 			this->pictureBox_CalendifiedFlipping = (gcnew System::Windows::Forms::PictureBox());
 			this->timerCalendifiedFlip = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pictureBox_ListViewFlipping = (gcnew System::Windows::Forms::PictureBox());
 			this->timerListViewFlip = (gcnew System::Windows::Forms::Timer(this->components));
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->toggleBox_Calendified))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->notifyBox))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^  >(this->mainBg))->BeginInit();
@@ -298,26 +286,12 @@ namespace UI {
 			this->commandBox->Location = System::Drawing::Point(104, 424);
 			this->commandBox->Name = L"commandBox";
 			this->commandBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Horizontal;
-			this->commandBox->Size = System::Drawing::Size(430, 51);
+			this->commandBox->Size = System::Drawing::Size(487, 51);
 			this->commandBox->TabIndex = 0;
 			this->commandBox->Text = L"<Insert Your Command Here>";
 			this->commandBox->Enter += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Enter);
 			this->commandBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &CalendifiedGUI::commandBox_KeyDown);
 			this->commandBox->Leave += gcnew System::EventHandler(this, &CalendifiedGUI::commandBox_Leave);
-			// 
-			// button_enter
-			// 
-			this->button_enter->BackColor = System::Drawing::Color::White;
-			this->button_enter->Font = (gcnew System::Drawing::Font(L"Arial", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
-				static_cast<System::Byte>(0)));
-			this->button_enter->ForeColor = System::Drawing::Color::Red;
-			this->button_enter->Location = System::Drawing::Point(531, 424);
-			this->button_enter->Name = L"button_enter";
-			this->button_enter->Size = System::Drawing::Size(60, 51);
-			this->button_enter->TabIndex = 1;
-			this->button_enter->Text = L"Enter";
-			this->button_enter->UseVisualStyleBackColor = false;
-			this->button_enter->Click += gcnew System::EventHandler(this, &CalendifiedGUI::button_enter_Click);
 			// 
 			// label_status
 			// 
@@ -438,11 +412,7 @@ namespace UI {
 			this->contextMenuStrip_HelpContent->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(5) {this->changeDatabaseLocationToolStripMenuItem1, 
 				this->toolStripSeparator2, this->commandHelpToolStripMenuItem, this->typingAToolStripMenuItem, this->commandGuidelinesToolStripMenuItem});
 			this->contextMenuStrip_HelpContent->Name = L"contextMenuStrip1";
-<<<<<<< HEAD
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 120);
-=======
-			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 92);
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
+			this->contextMenuStrip_HelpContent->Size = System::Drawing::Size(216, 98);
 			this->contextMenuStrip_HelpContent->MouseLeave += gcnew System::EventHandler(this, &CalendifiedGUI::contextMenuStrip_HelpContent_MouseLeave);
 			// 
 			// changeDatabaseLocationToolStripMenuItem1
@@ -474,13 +444,6 @@ namespace UI {
 			this->commandGuidelinesToolStripMenuItem->Name = L"commandGuidelinesToolStripMenuItem";
 			this->commandGuidelinesToolStripMenuItem->Size = System::Drawing::Size(215, 22);
 			this->commandGuidelinesToolStripMenuItem->Text = L"Command Guidelines";
-			// 
-			// changeDatabaseLocationToolStripMenuItem
-			// 
-			this->changeDatabaseLocationToolStripMenuItem->Name = L"changeDatabaseLocationToolStripMenuItem";
-			this->changeDatabaseLocationToolStripMenuItem->Size = System::Drawing::Size(215, 22);
-			this->changeDatabaseLocationToolStripMenuItem->Text = L"Change Database Location";
-			this->changeDatabaseLocationToolStripMenuItem->Click += gcnew System::EventHandler(this, &CalendifiedGUI::changeDatabaseLocationToolStripMenuItem_Click);
 			// 
 			// mainBg2
 			// 
@@ -521,7 +484,6 @@ namespace UI {
 			this->label_currentTime->TabIndex = 21;
 			this->label_currentTime->Text = L"Current Time: ";
 			// 
-<<<<<<< HEAD
 			// webBrowser_Help
 			// 
 			this->webBrowser_Help->Location = System::Drawing::Point(12, 49);
@@ -529,7 +491,7 @@ namespace UI {
 			this->webBrowser_Help->Name = L"webBrowser_Help";
 			this->webBrowser_Help->Size = System::Drawing::Size(639, 344);
 			this->webBrowser_Help->TabIndex = 22;
-=======
+			// 
 			// pictureBox_CalendifiedFlipping
 			// 
 			this->pictureBox_CalendifiedFlipping->Location = System::Drawing::Point(22, 74);
@@ -557,21 +519,16 @@ namespace UI {
 			// 
 			this->timerListViewFlip->Interval = 1;
 			this->timerListViewFlip->Tick += gcnew System::EventHandler(this, &CalendifiedGUI::timerListViewFlip_Tick);
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			// 
 			// CalendifiedGUI
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonFace;
-<<<<<<< HEAD
 			this->ClientSize = System::Drawing::Size(663, 546);
 			this->Controls->Add(this->webBrowser_Help);
-=======
-			this->ClientSize = System::Drawing::Size(659, 546);
 			this->Controls->Add(this->pictureBox_ListViewFlipping);
 			this->Controls->Add(this->pictureBox_CalendifiedFlipping);
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 			this->Controls->Add(this->label_currentTime);
 			this->Controls->Add(this->notifyBox);
 			this->Controls->Add(this->richTextBox_CalendifiedViewL);
@@ -584,7 +541,6 @@ namespace UI {
 			this->Controls->Add(this->pictureBox_Undo);
 			this->Controls->Add(this->lbLengend);
 			this->Controls->Add(this->label_status);
-			this->Controls->Add(this->button_enter);
 			this->Controls->Add(this->commandBox);
 			this->Controls->Add(this->mainBg);
 			this->Controls->Add(this->mainBg2);
@@ -670,7 +626,6 @@ namespace UI {
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
-<<<<<<< HEAD
 
 						 if(inputCommandBox.substr(0,1) == "/"){
 							 if(inputCommandBox == HELP_COMMAND_BACK){
@@ -714,13 +669,12 @@ namespace UI {
 
 						 logic newLogic;
 						 std::vector<std::string> displayResults;
-						 std::string displayResult = newLogic.readCommand(inputCommandBox);
-=======
+						
 						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
 							 flipCount=0;
 						 }
 						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
+
 						 String^ updateStatus = gcnew String(displayResult.c_str());
 						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
 							 label_status-> Text =  updateStatus;
@@ -800,8 +754,8 @@ namespace UI {
 				 } else{
 					 webBrowser_Help->Hide();
 					 logic newLogic;			
-					 std::string logicResult = newLogic.readCommand("display");
-					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount);
+					 std::string logicResult = newLogic.readCommand("display",flipCount);
+					 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);
 					 if(toggleCount == 0){ //check for mode [calendified/list] view 
 						 updateCalendifiedView(displayResults);
 					 }else{
@@ -908,12 +862,6 @@ namespace UI {
 					 newLogic.newStorage.setFilePath(newFileName);
 				 }
 			 }
-<<<<<<< HEAD
-
-=======
-	private: System::Void button_enter_Click(System::Object^  sender, System::EventArgs^  e) {
-
-			 }
 
 			 //@author A0125489U
 	public: void flip(){
@@ -966,6 +914,5 @@ namespace UI {
 				 }
 
 			 }
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
 	};
 }
