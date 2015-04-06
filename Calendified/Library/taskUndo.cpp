@@ -50,7 +50,7 @@ bool taskUndo::isUndone(){
 
 std::string taskUndo::undoResults(){
 	std::string successMessage = "Undone successfully.";
-	std::string failureMessage = "Task not undone. Please try again.";
+	std::string failureMessage = "Fail to undo.";
 
 	if(isUndone()){
 		return successMessage;
@@ -65,11 +65,14 @@ void taskUndo::popSessionStack(){
 
 std::string taskUndo::executeUndo(){
 	storage newStorage;
+	std::string errorMessage = "Error: Cannot be undone.";
 
 	if(isNotEmpty(_sessionStack)){
 		_currentStack = _sessionStack;
 		popSessionStack();
 		newStorage.writeFileJson(_currentStack.top());
 		return undoResults();
+	} else {
+		return errorMessage;
 	}
 }

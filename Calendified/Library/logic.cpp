@@ -65,9 +65,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		deleteResults = deleteItem.executeDelete(indextoActOnStorage);		
-		deleteItem.undoDelete(&undoTask);
-		undoTask.setSessionStack(undoTask.getCurrentStack());
-		undoTask.insertVector(newStorage.readFileJson());		
+		deleteItem.undoDelete(&undoTask);		
 		return deleteResults;
 	case VIEW:
 		displayTask.updateStorageSource();
