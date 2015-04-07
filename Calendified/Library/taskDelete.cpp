@@ -37,12 +37,11 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 	if(file.empty()){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeDeleted <= 0 || indexToBeDeleted > file.size() || indexToBeDeleted == NULL){
+	else if(indexToBeDeleted < 0 || indexToBeDeleted > file.size()){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
-		assert(indexToBeDeleted > 0);
-		assert(indexToBeDeleted != NULL);
+		assert(indexToBeDeleted >= 0);
 		task taskToBeDeleted;
 		taskToBeDeleted = file[indexToBeDeleted];
 		try{

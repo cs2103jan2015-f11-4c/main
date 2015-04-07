@@ -645,7 +645,8 @@ namespace UI {
 							 }
 							 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_LOCATION_DATABASE));
-							 }							 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
+							 }							
+							 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_HOTKEYS));
 							 }
 							 if(inputCommandBox == HELP_COMMAND_HELP){
