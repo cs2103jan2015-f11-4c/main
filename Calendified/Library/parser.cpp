@@ -113,6 +113,7 @@ commandRef parser::getCommandRef(){
 	return commandReference;
 }
 
+//@author A0114411B
 std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 	std::string buffer; 
 	std::stringstream ss(commandLine);
@@ -127,6 +128,7 @@ std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 	return tokens;
 }
 
+//@author A0114411B
 void parser::checkAndSetTaskType(std::string commandLine){
 	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
 

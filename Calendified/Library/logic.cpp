@@ -46,10 +46,13 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	std::string editResults = "";
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
+	std::string doneResults = "";
 	std::vector<task> emptyTaskList;
 	int toggleCount;
 	//Undo operation variables
 	static taskUndo undoTask;
+	//Done operation variables
+	taskDone newTaskDone;
 	std::string undoResults = "";
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
@@ -87,8 +90,16 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		editItem.undoEdit(&undoTask);
 		return editResults;
 	case DONE:
-		checkDoneResults = "list below";
-		return checkDoneResults;
+		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
+		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		doneResults = newTaskDone.markDone(indextoActOnStorage);		
+		//Add undo operation here
+		return doneResults;
+	case UNDONE:
+		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
+		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		doneResults = newTaskDone.markUndone(indextoActOnStorage);		
+		//Add undo operation here
 	case UNDO:
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
@@ -137,6 +148,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandDelete = "delete";
 	std::string commandView = "view";
 	std::string commandDisplay = "display";
+	std::string commandDone = "done";
+	std::string commandUndone = "undone";
 	std::string commandEdit = "edit";
 	std::string commandUndo = "undo";
 	std::string commandFlip = "flip";
@@ -161,6 +174,12 @@ commandType logic::hashCommandAction(std::string commandAction){
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
 		return EDIT;
+	}
+	if(commandAction.compare(commandDone) == 0){
+		return DONE;
+	}
+	if(commandAction.compare(commandUndone) == 0){
+		return UNDONE;
 	}
 	if(commandAction.compare(commandUndo) == 0){ 
 		return UNDO;

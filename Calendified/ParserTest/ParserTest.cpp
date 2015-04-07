@@ -10,7 +10,7 @@ namespace ParserTest
 	{
 	public:
 
-		//author @a0114411b
+		//@author A0114411B
 		TEST_METHOD(ParserTest_ReadCommand)
 		{
 			std::string inputCommandString = 

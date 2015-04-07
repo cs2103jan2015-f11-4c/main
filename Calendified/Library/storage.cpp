@@ -1,4 +1,4 @@
-//author @a0114411b
+//@author A0114411B
 //
 //***************************************************************
 //              Storage.cpp										*
@@ -153,9 +153,12 @@ std::vector<task> storage::readFileJson(){
 
 			//Date
 			timeAndDate newTimeAndDate;
-			newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
-			newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
-			newTimeAndDate.setYear(TaskObject["Year"].GetInt());
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
 
 			//Time
 			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
@@ -179,9 +182,12 @@ std::vector<task> storage::readFileJson(){
 
 			//Date
 			timeAndDate newTimeAndDate;
-			newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
-			newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
-			newTimeAndDate.setYear(TaskObject["Year"].GetInt());
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
 
 			newTask.setTimeAndDate(newTimeAndDate);
 			commandVector.push_back(newTask);
@@ -198,9 +204,12 @@ std::vector<task> storage::readFileJson(){
 
 			//Date
 			timeAndDate newTimeAndDate;
-			newTimeAndDate.setMDay(TaskObject["Day"].GetInt());
-			newTimeAndDate.setMonth(TaskObject["Month"].GetInt());
-			newTimeAndDate.setYear(TaskObject["Year"].GetInt());
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
 
 			//Time
 			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
@@ -255,10 +264,13 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
 
 			//Date
-			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
-			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
-			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
-
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
+	
 			//Time
 			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
 			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
@@ -292,9 +304,12 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
 
 			//Date
-			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
-			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
-			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
 		}
 
 		else if(commandVector[i].getTaskType().compare("DeadLine") == 0){
@@ -324,9 +339,12 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
 
 			//Date
-			obj.AddMember("Day", commandVector[i].getTimeAndDate().getMDay(),document.GetAllocator());
-			obj.AddMember("Month", commandVector[i].getTimeAndDate().getMonth(),document.GetAllocator());
-			obj.AddMember("Year", commandVector[i].getTimeAndDate().getYear(),document.GetAllocator());
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
 
 			//Time
 			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());

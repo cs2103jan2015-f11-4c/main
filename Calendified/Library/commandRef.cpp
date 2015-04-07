@@ -28,6 +28,8 @@ commandRef commandRef::copyTo(){
 	return newRef;
 }
 
+
+//@author A0114411B
 // getters
 std::string commandRef::getTaskType(){
 	return _taskType;
@@ -65,6 +67,8 @@ bool commandRef::getIsDone(){
 	return _isDone;
 }
 
+
+//@author A0114411B
 // setters
 void commandRef::setTaskType(std::string taskType){
 	_taskType = taskType;

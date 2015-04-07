@@ -612,7 +612,7 @@ namespace UI {
 				richTextBox_ListView->Text = gcnew String(displayResults[2].c_str());
 				updateRichTextBoxContent(richTextBox_ListView,displayResults[2],displayResults[1],displayResults[0]);
 			}
-			//author A0125489U
+			
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 try {
 					 if(e->KeyCode==Keys::Enter){
@@ -620,7 +620,7 @@ namespace UI {
 						 char buffer[999];
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
-
+						 //@author A0114411B
 						 if(inputCommandBox.substr(0,1) == "/"){
 							 if(inputCommandBox == HELP_COMMAND_BACK){
 								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
@@ -676,6 +676,7 @@ namespace UI {
 							 changeDirectory();
 						 }
 
+						 //author A0125489U
 						 logic newLogic;
 						 std::vector<std::string> displayResults;
 
@@ -725,7 +726,7 @@ namespace UI {
 					 MessageBox::Show(systemString);
 				 }
 			 }
-
+	//@author A0114411B
 	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 
@@ -783,6 +784,8 @@ namespace UI {
 				 }
 				 notifyBox->Text="0!";//need storage return num file;
 			 }
+
+	//@author A0114411B
 	private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
 				 this->commandBox->Text="<Enter Your Command Here>";
 			 }
@@ -808,21 +811,23 @@ namespace UI {
 	private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
 				 toggle();
 			 }
-
+	//@author A0114411B
 	private: System::Void pictureBox_Help_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
 				 contextMenuStrip_HelpContent->Show(pictureBox_Help,0,pictureBox_Help->Height);
 			 }
 	private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 toggle();
 			 }
+	//@author A0114411B
 	private: System::Void contextMenuStrip_HelpContent_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 				 contextMenuStrip_HelpContent->Hide();
 			 }
+	//@author A0114411B
 	private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 DateTime datetime = DateTime::Now;
 				 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
 			 }
-
+	//@author A0114411B
 	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
@@ -844,12 +849,12 @@ namespace UI {
 					 MessageBox::Show(systemString);
 				 }
 			 }
-
+	//@author A0114411B
 	private: System::Void changeDatabaseLocationToolStripMenuItem1_Click(System::Object^  sender, System::EventArgs^  e) {
 				 changeDirectory();
 			 }
 
-
+			//@author A0114411B
 			 String^ getHTMLFilePath(std::string htmlHelpDirectory){
 
 				 char path[MAX_PATH];
@@ -860,7 +865,7 @@ namespace UI {
 				 std::string htmlDirectory = directoryOfFolder + htmlHelpDirectory;
 				 return gcnew String(htmlDirectory.c_str());
 			 }
-
+			//@author A0114411B
 			 void changeDirectory(){
 				 logic newLogic; 
 				 IO::Stream^ mystream;
@@ -881,7 +886,7 @@ namespace UI {
 				 }
 			 }
 
-			 //@author A0125489U
+	//@author A0125489U
 	public: void flip(){
 				if(toggleCount ==0){
 					Graphics^ gfx = mainBg->CreateGraphics();
@@ -932,6 +937,7 @@ namespace UI {
 				 }
 
 			 }
+	//@author A0114411B
 	private: System::Void commandHelpToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 				 webBrowser_Help->Show();
 				 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));

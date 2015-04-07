@@ -18,6 +18,7 @@
 #include "taskEdit.h"
 #include "taskUndo.h"
 #include "taskDisplay.h"
+#include "taskDone.h"
 
 enum commandType {
 	ADD, 
@@ -25,12 +26,13 @@ enum commandType {
 	VIEW,
 	DISPLAY,
 	EDIT, 
+	DONE,
+	UNDONE,
 	UNDO, 
 	FLIP, 
 	SPECIFY, 
 	REDO, 
 	TOGGLE,
-	DONE
 };
 
 class logic
