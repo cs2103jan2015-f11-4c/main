@@ -6,16 +6,76 @@
 #include <assert.h>
 #include <regex>
 
-int timeAndDate::getMDay(){
-	return _mday;
+void timeAndDate::setStartMDay(int taskMday){
+	_startMDay = taskMday;
 }
 
-int timeAndDate::getMonth(){
-	return _month;
+void timeAndDate::setStartMonth(int taskMonth){
+	_startMonth = taskMonth;
 }
 
-int timeAndDate::getYear(){
-	return _year;
+void timeAndDate::setStartYear(int taskYear){
+	_startYear = taskYear;
+}
+
+void timeAndDate::setEndMDay(int taskMday){
+	_endMDay = taskMday;
+}
+
+void timeAndDate::setEndMonth(int taskMonth){
+	_endMonth = taskMonth;
+}
+
+void timeAndDate::setEndYear(int taskYear){
+	_endYear = taskYear;
+}
+
+void timeAndDate::setStartTimeHour(int taskStartTimeHour){
+	_startTimeHour = taskStartTimeHour;
+}
+
+void timeAndDate::setStartTimeMin(int taskStartTimeMin){
+	_startTimeMin = taskStartTimeMin;
+}
+
+void timeAndDate::setEndTimeHour(int taskEndTimeHour){
+	_endTimeHour = taskEndTimeHour;
+}
+
+void timeAndDate::setEndTimeMin(int taskEndTimeMin){
+	_endTimeMin = taskEndTimeMin;
+}
+
+void timeAndDate::setStartDay(std::string taskStartDay){
+	_startDay = taskStartDay;
+}
+
+void timeAndDate::setEndDay(std::string taskEndDay){
+
+}
+
+int timeAndDate::getStartMDay(){
+	return _startMDay;
+}
+
+int timeAndDate::getStartMonth(){
+	return _startMonth;
+}
+
+int timeAndDate::getStartYear(){
+	return _startYear;
+}
+
+int timeAndDate::getEndMDay(){
+	return _endMDay;
+}
+
+int timeAndDate::getEndMonth(){
+	return _endMonth;
+}
+
+int timeAndDate::getEndYear(){
+	return _endYear;
 }
 
 int timeAndDate::getStartTimeHour(){
@@ -34,9 +94,14 @@ int timeAndDate::getEndTimeMin(){
 	return _endTimeMin;
 }
 
-std::string timeAndDate::getDay(){
-	return _day;
+std::string timeAndDate::getStartDay(){
+	return _startDay;
 }
+
+std::string timeAndDate::getEndDay(){
+	return _endDay;
+}
+
 
 //checks if it's a valid date for months with 31 days
 bool isValid31(int mday, int month){
@@ -216,7 +281,7 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 		*taskEndTimeHour = (*taskStartTimeHour) + 1; //1h activity
 		if((*taskEndTimeHour)/24>0){
 			*taskEndTimeHour = (*taskEndTimeHour)%12;
-			++_mday;
+			++_endMDay;
 		}
 		*taskEndTimeMin = *taskStartTimeMin;
 		return true;
@@ -253,7 +318,7 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 				*taskEndTimeHour = hour;
 			}
 			if(*taskEndTimeHour < *taskStartTimeHour){
-				++_mday;
+				++_endMDay;
 			}
 		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
 			if(hour == 12){
@@ -262,7 +327,7 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 				*taskEndTimeHour = hour + 12;
 			}
 			if(*taskEndTimeHour < *taskStartTimeHour){
-				++_mday;
+				++_endMDay;
 			}
 		} else {
 			return false;
@@ -285,14 +350,14 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 }
 
 timeAndDate::timeAndDate(){
-	_mday = 0;
-	_month = 0;
-	_year = 0;
+	_startMDay = 0;
+	_startMonth = 0;
+	_startYear = 0;
 	_startTimeHour = 0;
 	_startTimeMin = 0;
 	_endTimeHour = 0;
 	_endTimeMin = 0;
-	_day = "";
+	_startDay = "";
 }
 
 timeAndDate::timeAndDate(std::string dateString, std::string timeString){
@@ -308,17 +373,17 @@ timeAndDate::timeAndDate(std::string dateString, std::string timeString){
 	std::string time = timeString;
 
 	if(date == ""){
-		_mday = 0;
-		_month = 0;
-		_year = 0;
+		_startMDay = 0;
+		_startMonth = 0;
+		_startYear = 0;
 	} else if(isValidDate(date, &taskMDay, &taskMonth, &taskYear)){
-		_mday = taskMDay;
-		_month = taskMonth;
-		_year = taskYear;
+		_startMDay = taskMDay;
+		_startMonth = taskMonth;
+		_startYear = taskYear;
 	} else {
-		_mday = -1;
-		_month = -1;
-		_year = -1;
+		_startMDay = -1;
+		_startMonth = -1;
+		_startYear = -1;
 	}
 		
 	if(time == ""){
@@ -340,7 +405,7 @@ timeAndDate::timeAndDate(std::string dateString, std::string timeString){
 }
 
 bool timeAndDate::isValid(){
-	if(_mday==-1 || _month==-1 || _year==-1 || 
+	if(_startMDay==-1 || _startMonth==-1 || _startYear==-1 || 
 		_startTimeHour==-1 || _startTimeMin==-1 ||
 		_endTimeHour==-1 || _endTimeHour==-1){
 		return false;
@@ -349,40 +414,12 @@ bool timeAndDate::isValid(){
 	}
 }
 
-void timeAndDate::setMDay(int taskMday){
-	_mday = taskMday;
-}
-
-void timeAndDate::setMonth(int taskMonth){
-	_month = taskMonth;
-}
-
-void timeAndDate::setYear(int taskYear){
-	_year = taskYear;
-}
-
-void timeAndDate::setStartTimeHour(int taskStartTimeHour){
-	_startTimeHour = taskStartTimeHour;
-}
-
-void timeAndDate::setStartTimeMin(int taskStartTimeMin){
-	_startTimeMin = taskStartTimeMin;
-}
-
-void timeAndDate::setEndTimeHour(int taskEndTimeHour){
-	_endTimeHour = taskEndTimeHour;
-}
-
-void timeAndDate::setEndTimeMin(int taskEndTimeMin){
-	_endTimeMin = taskEndTimeMin;
-}
-
-time_t timeAndDate::getTaskDateInTimeT(){
+time_t timeAndDate::getStartDateInTimeT(){
 	time_t dateInTimeT;
 	struct tm Date = {0};
 
-	if(_mday>0 && _month>0 && _year>0){
-		taskDateToStruct (_mday, _month, _year, &Date);
+	if(_startMDay>0 && _startMonth>0 && _startYear>0){
+		taskDateToStruct (_startMDay, _startMonth, _startYear, &Date);
 		dateInTimeT = mktime(&Date);
 		return dateInTimeT;
 	} else {
@@ -390,12 +427,12 @@ time_t timeAndDate::getTaskDateInTimeT(){
 	}
 }
 
-std::string timeAndDate::getTaskDateInString(){
+std::string timeAndDate::getStartDateInString(){
 	struct tm *Date;
 	char storeDate [20] = {0};
 
-	if(getTaskDateInTimeT() != -1){
-		const time_t constDate = getTaskDateInTimeT();
+	if(getStartDateInTimeT() != -1){
+		const time_t constDate = getStartDateInTimeT();
 		Date = localtime(&constDate);
 		
 	strftime(storeDate, 20, "%d/%m/%Y", Date);
@@ -405,7 +442,7 @@ std::string timeAndDate::getTaskDateInString(){
 	} 
 }
 
-time_t timeAndDate::getTaskStartTimeInTimeT(){
+time_t timeAndDate::getStartTimeInTimeT(){
 	time_t timeInTimeT;
 	struct tm Time = {0};
 
@@ -418,7 +455,7 @@ time_t timeAndDate::getTaskStartTimeInTimeT(){
 	}
 }
 
-time_t timeAndDate::getTaskEndTimeInTimeT(){
+time_t timeAndDate::getEndTimeInTimeT(){
 	time_t timeInTimeT;
 	struct tm Time = {0};
 
@@ -431,12 +468,12 @@ time_t timeAndDate::getTaskEndTimeInTimeT(){
 	}
 }
 
-std::string timeAndDate::getTaskStartTimeInString(){
+std::string timeAndDate::getStartTimeInString(){
 	struct tm *Time;
 	char storeTime [20] = {0};
 
-	if(getTaskStartTimeInTimeT() != -1){
-		const time_t constTime = getTaskStartTimeInTimeT();
+	if(getStartTimeInTimeT() != -1){
+		const time_t constTime = getStartTimeInTimeT();
 		Time = localtime(&constTime);
 		strftime(storeTime, 20, "%H:%M", Time);
 		return storeTime;
@@ -445,12 +482,12 @@ std::string timeAndDate::getTaskStartTimeInString(){
 	}
 }
 
-std::string timeAndDate::getTaskEndTimeInString(){
+std::string timeAndDate::getEndTimeInString(){
 	struct tm *Time;
 	char storeTime [20] = {0};
 
-	if(getTaskEndTimeInTimeT() != -1){
-		const time_t constTime = getTaskEndTimeInTimeT();
+	if(getEndTimeInTimeT() != -1){
+		const time_t constTime = getEndTimeInTimeT();
 		Time = localtime(&constTime);
 		strftime(storeTime, 20, "%H:%M", Time);
 		return storeTime;
@@ -461,9 +498,9 @@ std::string timeAndDate::getTaskEndTimeInString(){
 
 std::string timeAndDate::dateAndTimeInString(){
 	std::string dateAndTime = "";
-	std::string date = getTaskDateInString();
-	std::string startTime = getTaskStartTimeInString();
-	std::string endTime = getTaskEndTimeInString();
+	std::string date = getStartDateInString();
+	std::string startTime = getStartTimeInString();
+	std::string endTime = getEndTimeInString();
 
 	dateAndTime = date + startTime + '-' + endTime;
 	return dateAndTime;
