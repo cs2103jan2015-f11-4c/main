@@ -9,16 +9,18 @@ task::task()
 	_title = "";
 	_location = "";
 	_isDone = false;
+	_isClash = false;
 	//_indexToBeActOn = NULL;
 }
 
-task::task(std::string taskType, std::string commandAction, timeAndDate timeAndDate, std::string title, std::string location, bool isDone){
+task::task(std::string taskType, std::string commandAction, timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash){
 	_taskType = taskType;
 	_commandAction = commandAction;
 	_timeAndDate = timeAndDate;
 	_title = title;
 	_location = location;
 	_isDone = isDone;
+	_isClash = isClash;
 }
 
 
@@ -51,6 +53,10 @@ void task::setIsDone(bool isDone){
 	_isDone = isDone;
 }
 
+void task::setIsClash(bool isClash){
+	_isClash = isClash;
+}
+
 //void task::setIndexToBeActOn(int indexToBeActOn){
 	//_indexToBeActOn = indexToBeActOn;
 //}
@@ -79,6 +85,10 @@ std::string task::getLocation(){
 
 bool task::getIsDone(){
 	return _isDone;
+}
+
+bool task::getIsClash(){
+	return _isClash;
 }
 
 //int task::getIndexToBeActOn(){

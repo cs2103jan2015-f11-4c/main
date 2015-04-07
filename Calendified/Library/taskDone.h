@@ -6,6 +6,7 @@
 
 #include "task.h"
 #include "assert.h"
+#include "taskDelete.h"
 #include <vector>
 #include <iostream>
 
@@ -15,8 +16,6 @@ std::string const MESSAGE_SUCCESS_UNDONE =
 	"Marked as undone!";
 std::string const MESSAGE_ERROR_FILE_EMPTY =
 	"Error: File is empty!";
-std::string const MESSAGE_ERROR_INVALID_INDEX =
-	"Error: Invalid index!";
 std::string const MESSAGE_ERROR_NO_TASK_DONE =
 	"Error: No task done!";
 std::string const MESSAGE_ERROR_NO_TASK_UNDONE =

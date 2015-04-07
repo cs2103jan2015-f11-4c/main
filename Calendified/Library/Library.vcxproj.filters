@@ -7,9 +7,6 @@
     <ClCompile Include="logic.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Resource Files</Filter>
-    </ClCompile>
     <ClCompile Include="parser.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
@@ -37,11 +34,15 @@
     <ClCompile Include="timeAndDate.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="taskUndo.cpp" />
     <ClCompile Include="taskDisplay.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="taskDone.cpp" />
+    <ClCompile Include="taskDone.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="taskUndo.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calendified.h">
@@ -77,11 +78,15 @@
     <ClInclude Include="timeAndDate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="taskUndo.h" />
     <ClInclude Include="taskDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="taskDone.h" />
+    <ClInclude Include="taskDone.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taskUndo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

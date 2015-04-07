@@ -20,15 +20,15 @@ std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
 
 	for(auto i=1; i<commandVector.size(); i++){
 		for(auto j=0; j<i; j++){
-			if(commandVector[j].getTimeAndDate().getYear() > commandVector[i].getTimeAndDate().getYear()){
+			if(commandVector[j].getTimeAndDate().getStartYear() > commandVector[i].getTimeAndDate().getStartYear()){
 				commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getYear() == commandVector[i].getTimeAndDate().getYear())
-				if(commandVector[j].getTimeAndDate().getMonth() > commandVector[i].getTimeAndDate().getMonth()){
+			} else if(commandVector[j].getTimeAndDate().getStartYear() == commandVector[i].getTimeAndDate().getStartYear())
+				if(commandVector[j].getTimeAndDate().getStartMonth() > commandVector[i].getTimeAndDate().getStartMonth()){
 					commandVector = switchPlace(i,j,commandVector);
-				} else if(commandVector[j].getTimeAndDate().getMonth() == commandVector[i].getTimeAndDate().getMonth())
-					if(commandVector[j].getTimeAndDate().getDay() > commandVector[i].getTimeAndDate().getDay()){
+				} else if(commandVector[j].getTimeAndDate().getStartMonth() == commandVector[i].getTimeAndDate().getStartMonth())
+					if(commandVector[j].getTimeAndDate().getStartDay() > commandVector[i].getTimeAndDate().getStartDay()){
 						commandVector = switchPlace(i,j,commandVector);
-					} else if(commandVector[j].getTimeAndDate().getDay() == commandVector[i].getTimeAndDate().getDay())
+					} else if(commandVector[j].getTimeAndDate().getStartDay() == commandVector[i].getTimeAndDate().getStartDay())
 						if(commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour()){
 							commandVector = switchPlace(i,j,commandVector);
 						} else if(commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour())

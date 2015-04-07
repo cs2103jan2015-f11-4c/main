@@ -19,12 +19,13 @@ private:
 	std::string _title;
 	std::string _location;
 	bool _isDone;
+	bool _isClash;
 	//int _indexToBeActOn;
 
 
 public:
 	task();
-	task::task(std::string taskType, std::string commandAction,timeAndDate timeAndDate, std::string title, std::string location, bool isDone);
+	task::task(std::string taskType, std::string commandAction,timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash);
 	~task(void);
 
 	//setters
@@ -34,6 +35,7 @@ public:
 	void setTitle(std::string title);
 	void setLocation(std::string location);
 	void setIsDone(bool isDone);
+	void setIsClash(bool isClash);
 	//void setIndexToBeActOn(int indexToBeActOn);
 
 
@@ -44,6 +46,7 @@ public:
 	std::string getTitle();
 	std::string getLocation();
 	bool getIsDone();
+	bool getIsClash();
 	//int getIndexToBeActOn();	
 };
 

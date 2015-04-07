@@ -35,9 +35,6 @@
     <ClCompile Include="CommandTestDelete.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CommandTestClear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CommandTestAdd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

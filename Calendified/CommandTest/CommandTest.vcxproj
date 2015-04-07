@@ -95,7 +95,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="CommandTestAdd.cpp" />
-    <ClCompile Include="CommandTestClear.cpp" />
     <ClCompile Include="CommandTestDelete.cpp" />
     <ClCompile Include="CommandTestEdit.cpp" />
     <ClCompile Include="CommandTestStorage.cpp" />

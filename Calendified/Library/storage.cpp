@@ -150,6 +150,7 @@ std::vector<task> storage::readFileJson(){
 			newTask.setLocation(TaskObject["Location"].GetString());	
 			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
 
 			//Date
 			timeAndDate newTimeAndDate;
@@ -179,6 +180,7 @@ std::vector<task> storage::readFileJson(){
 			newTask.setLocation(TaskObject["Location"].GetString());	
 			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
 
 			//Date
 			timeAndDate newTimeAndDate;
@@ -201,7 +203,8 @@ std::vector<task> storage::readFileJson(){
 			newTask.setLocation(TaskObject["Location"].GetString());	
 			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 			newTask.setIsDone(TaskObject["IsDone"].GetBool());
-
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
+			
 			//Date
 			timeAndDate newTimeAndDate;
 			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
@@ -262,6 +265,7 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			CommandAction.SetString(action,strlen(action),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
 
 			//Date
 			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
@@ -302,6 +306,7 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			CommandAction.SetString(action,strlen(action),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
 
 			//Date
 			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
@@ -337,6 +342,7 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			CommandAction.SetString(action,strlen(action),document.GetAllocator());
 			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
 			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
 
 			//Date
 			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());

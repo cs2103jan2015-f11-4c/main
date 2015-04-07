@@ -81,7 +81,6 @@
   <ItemGroup>
     <ClCompile Include="Calendified.cpp" />
     <ClCompile Include="logic.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="storage.cpp" />
     <ClCompile Include="storageSort.cpp" />
