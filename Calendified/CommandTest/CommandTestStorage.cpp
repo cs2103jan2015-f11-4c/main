@@ -17,26 +17,20 @@ namespace CommandTestStorage
 
 		TEST_METHOD(CommandTestStorage_storageSort)
 		{
-<<<<<<< HEAD
-=======
-			std::vector<std::string> inputVector;
-			inputVector.push_back("ccc"); 
-			inputVector.push_back("bbb"); 
-			inputVector.push_back("aaa"); 
-			inputVector.push_back("333"); 
-			inputVector.push_back("222"); 
-			inputVector.push_back("111"); 
-			inputVector.push_back("CCC"); 
-			inputVector.push_back("BBB"); 
-			inputVector.push_back("AAA");
+			//Testing sort in days
+			std::vector<task> inputVector;
+
+			std::string dateString1 = "5/5/2015";
+			std::string dateString2 = "4/5/2015";
+			std::string timeStringConst = "16:00";
+
+			timeAndDate newTimeAndDate1(dateString1,timeStringConst);
+			timeAndDate newTimeAndDate2(dateString2,timeStringConst);
+			task newTask1(TimedTask,"add",newTimeAndDate1,"","",false);
+			task newTask2(TimedTask,"add",newTimeAndDate2,"","",false);
 			
-//error causing, commented by feng			inputVector = testStorageSort.sortData(inputVector); 
-			std::ostringstream oss;
-			for(int i=0; i < inputVector.size(); i++){
-				oss << inputVector[i] << "\n";
-			}
-			std::string inputString = oss.str();
->>>>>>> efa35a88759e8b70cbcfceb2e10fbb29faab7408
+			inputVector.push_back(newTask1);
+			inputVector.push_back(newTask2);
 
 
 		}

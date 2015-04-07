@@ -14,9 +14,12 @@ namespace CommandTestDelete
 			// Boundary Testing
 			// Assumption : File is not empty.
 			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(-1));
+			
 			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(0));
 			// Assuming file size would not exceed 10000
 			Assert::AreEqual(MESSAGE_ERROR_INVALID_INDEX, testTaskDelete.executeDelete(10000));
+
+
 		}
 
 	};

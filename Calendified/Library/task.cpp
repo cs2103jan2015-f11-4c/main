@@ -12,6 +12,15 @@ task::task()
 	//_indexToBeActOn = NULL;
 }
 
+task::task(std::string taskType, std::string commandAction, timeAndDate timeAndDate, std::string title, std::string location, bool isDone){
+	_taskType = taskType;
+	_commandAction = commandAction;
+	_timeAndDate = timeAndDate;
+	_title = title;
+	_location = location;
+	_isDone = isDone;
+}
+
 
 task::~task(void)
 {

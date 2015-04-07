@@ -23,6 +23,7 @@ private:
 
 public:
 	task();
+	task::task(std::string taskType, std::string commandAction,timeAndDate timeAndDate, std::string title, std::string location, bool isDone);
 	~task(void);
 
 	//setters
