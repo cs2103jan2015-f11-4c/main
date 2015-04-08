@@ -10,7 +10,6 @@
 #include <string>
 #include <iostream>
 
-
 class task
 {
 private:

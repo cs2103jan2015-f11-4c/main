@@ -20,11 +20,15 @@ std::string taskAdd::executeAdd(){
 			storageFile.writeFileJson(taskStorage);
 		}
 		taskStorage = storageFile.readFileJson();
+
 		taskStorage.push_back(_task);
 
 		try {
 			storageFile.writeFileJson(taskStorage);
-			return successMessage;
+			if(isClash(taskStorage)){
+				return "clash!";
+			}else{
+				return successMessage;}
 		} catch (const std::exception& e){
 			return failureMessage;
 		}

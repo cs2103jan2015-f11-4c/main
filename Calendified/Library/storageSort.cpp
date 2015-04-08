@@ -3,10 +3,6 @@
 #include <algorithm>
 #include <string>
 
-const int INDEX_TIME = 11;
-const int INDEX_YEAR = 6;
-const int INDEX_MONTH = 2;
-
 storageSort::storageSort(void)
 {
 }
@@ -20,19 +16,19 @@ std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
 
 	for(auto i=1; i<commandVector.size(); i++){
 		for(auto j=0; j<i; j++){
-			if(commandVector[j].getTimeAndDate().getStartYear() > commandVector[i].getTimeAndDate().getStartYear()){
+			if(isStartYearLarger(i,j,commandVector)){
 				commandVector = switchPlace(i,j,commandVector);
-			} else if(commandVector[j].getTimeAndDate().getStartYear() == commandVector[i].getTimeAndDate().getStartYear())
-				if(commandVector[j].getTimeAndDate().getStartMonth() > commandVector[i].getTimeAndDate().getStartMonth()){
+			} else if(isStartYearEqual(i, j, commandVector))
+				if(isStartMonthLarger(i, j, commandVector)){
 					commandVector = switchPlace(i,j,commandVector);
-				} else if(commandVector[j].getTimeAndDate().getStartMonth() == commandVector[i].getTimeAndDate().getStartMonth())
-					if(commandVector[j].getTimeAndDate().getStartDay() > commandVector[i].getTimeAndDate().getStartDay()){
+				} else if(isStartMonthEqual(i, j, commandVector))
+					if(isStartDayLarger(i, j, commandVector)){
 						commandVector = switchPlace(i,j,commandVector);
-					} else if(commandVector[j].getTimeAndDate().getStartDay() == commandVector[i].getTimeAndDate().getStartDay())
-						if(commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour()){
+					} else if(isStartDayEqual(i, j, commandVector))
+						if(isStartTimeHourLarger(i, j, commandVector)){
 							commandVector = switchPlace(i,j,commandVector);
-						} else if(commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour())
-							if(commandVector[j].getTimeAndDate().getStartTimeMin() > commandVector[i].getTimeAndDate().getStartTimeMin()){
+						} else if(isStartTimeHourEqual(i, j, commandVector))
+							if(isStartTimeMinLarger(i, j, commandVector)){
 								commandVector = switchPlace(i,j,commandVector);
 							}
 		}
@@ -48,4 +44,40 @@ std::vector<task> storageSort::switchPlace(int i, int j, std::vector<task> comma
 	commandVector[j] = temporaryTask;
 
 	return commandVector;
+}
+
+bool storageSort::isStartYearLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartYear() > commandVector[i].getTimeAndDate().getStartYear());
+}
+
+bool storageSort::isStartYearEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartYear() == commandVector[i].getTimeAndDate().getStartYear());
+}
+
+bool storageSort::isStartMonthLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMonth() > commandVector[i].getTimeAndDate().getStartMonth());
+}
+
+bool storageSort::isStartMonthEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMonth() == commandVector[i].getTimeAndDate().getStartMonth());
+}
+
+bool storageSort::isStartDayLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartDay() > commandVector[i].getTimeAndDate().getStartDay());
+}
+
+bool storageSort::isStartDayEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartDay() == commandVector[i].getTimeAndDate().getStartDay());
+}
+
+bool storageSort::isStartTimeHourLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour());
+}
+
+bool storageSort::isStartTimeHourEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour());
+}
+
+bool storageSort::isStartTimeMinLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeMin() > commandVector[i].getTimeAndDate().getStartTimeMin());
 }

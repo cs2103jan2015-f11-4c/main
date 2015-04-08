@@ -13,14 +13,8 @@
 const std::string MESSAGE_SUCCESS_DELETED =
 	"Deleted!";
 
-const std::string MESSAGE_FAILURE = 
+const std::string MESSAGE_FAILURE_DELETE = 
 	"Fail to delete.";
-
-const std::string MESSAGE_ERROR_FILE_IS_EMPTY =
-	"Error: File is empty.\n";
-
-const std::string MESSAGE_ERROR_INVALID_INDEX =
-	"Error: Invalid index.";
 
 class taskDelete
 {

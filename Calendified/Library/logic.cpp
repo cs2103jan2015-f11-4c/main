@@ -37,7 +37,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	commandRef editedcommandRef;
 	std::string deleteResults = "";
 	int indexToActOnDisplay;
-	int indextoActOnStorage;
+	int indexToActOnStorage;
 	std::vector<task> currentDisplayContent;
 	//Display and View operation variables
 	static taskDisplay displayTask;
@@ -66,8 +66,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		deleteResults = deleteItem.executeDelete(indextoActOnStorage);		
+		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
 		deleteItem.undoDelete(&undoTask);		
 		return deleteResults;
 	case VIEW:
@@ -88,21 +88,25 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		editItem.setEditingRef(newTask);
-		editResults = editItem.executeEdit(indextoActOnStorage);
+		editResults = editItem.executeEdit(indexToActOnStorage);
 		editItem.undoEdit(&undoTask);
 		return editResults;
 	case DONE:
+		displayTask.updateStorageSource();
+		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markDone(indextoActOnStorage);		
+		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		doneResults = newTaskDone.markDone(indexToActOnStorage);		
 		//Add undo operation here
 		return doneResults;
 	case UNDONE:
+		displayTask.updateStorageSource();
+		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markUndone(indextoActOnStorage);		
+		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		doneResults = newTaskDone.markUndone(indexToActOnStorage);		
 		//Add undo operation here
 	case UNDO:
 		undoResults = undoTask.executeUndo();	

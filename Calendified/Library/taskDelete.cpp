@@ -51,7 +51,7 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 			file.clear();
 			return MESSAGE_SUCCESS_DELETED;
 		}catch (const std::exception& e){
-			return MESSAGE_FAILURE;
+			return MESSAGE_FAILURE_DELETE;
 		}
 	}
 }

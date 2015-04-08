@@ -9,12 +9,11 @@
 #include "task.h"
 #include "timeAndDate.h"
 
-const std::string FILE_NAME_FLOATING 
-	= "floatingTask.txt";
-const std::string MESSAGE_FILE_EMPTY =
-	"File is empty!";
-const std::string MESSAGE_FILE_CLEAR =
-	"File cleared!";
+const std::string MESSAGE_ERROR_FILE_IS_EMPTY =
+	"Error: File is empty.";
+
+const std::string MESSAGE_ERROR_INVALID_INDEX =
+	"Error: Invalid index.";
 
 class storage
 {

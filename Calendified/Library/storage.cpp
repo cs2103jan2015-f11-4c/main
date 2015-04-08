@@ -56,8 +56,6 @@ std::string storage::retrieveFilePath(){
 	return directory;
 }
 
-
-
 void storage::createFile(std::string fileName){
 	std::ofstream writeFile(fileName);
 	writeFile.close();
@@ -67,6 +65,7 @@ void storage::transferDatabase(std::string newFileName){
 	std::vector<task> oldFiles;
 	std::vector<task> blankVector;
 	std::string oldFileName = _filePath;
+
 	createFile(newFileName);
 	oldFiles = readFileJson();
 	saveInformation(newFileName);
@@ -76,9 +75,6 @@ void storage::transferDatabase(std::string newFileName){
 	remove(oldFileName.c_str());
 }
 
-// This function is to check if the user is a new user
-// If the user is a new user, the function returns false
-// Hence creating a new file to store the user's calendar
 bool storage::isFileExist(){
 
 	if(retrieveFilePath() == "")
@@ -204,7 +200,7 @@ std::vector<task> storage::readFileJson(){
 			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
 			newTask.setIsDone(TaskObject["IsDone"].GetBool());
 			newTask.setIsClash(TaskObject["IsClash"].GetBool());
-			
+
 			//Date
 			timeAndDate newTimeAndDate;
 			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
@@ -274,7 +270,7 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
 			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
 			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
-	
+
 			//Time
 			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
 			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
