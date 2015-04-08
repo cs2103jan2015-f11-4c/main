@@ -85,8 +85,12 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 	case EDIT:	
+		displayTask.updateStorageSource();
+		currentDisplayContent = displayTask.getDisplayContent();
+		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
+		indextoActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		editItem.setEditingRef(newTask);
-		editResults = editItem.executeEdit(currentCommandReference.getIndexToBeActOn());
+		editResults = editItem.executeEdit(indextoActOnStorage);
 		editItem.undoEdit(&undoTask);
 		return editResults;
 	case DONE:

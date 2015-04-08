@@ -1,12 +1,13 @@
 //@author A0114411B
 
+#pragma once
 #ifndef TASK_H
 #define TASK_H
-#pragma once
+
 
 #include "timeAndDate.h"
-#include "storage.h"
 #include <ctime>
+#include <string>
 #include <iostream>
 
 
@@ -25,7 +26,7 @@ private:
 
 public:
 	task();
-	task::task(std::string taskType, std::string commandAction,timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash);
+	task(std::string taskType, std::string commandAction,timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash);
 	~task(void);
 
 	//setters

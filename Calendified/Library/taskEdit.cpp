@@ -62,7 +62,7 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 				changingTaskData.setTitle(editingRef.getTitle());
 			}
 
-			file[indexToBeEdited] = changingTaskData;
+			file[indexToBeEdited-1] = changingTaskData;
 			try {
 				newStorage.writeFileJson(file);
 				return "Edited.";

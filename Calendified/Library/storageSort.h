@@ -14,7 +14,7 @@ public:
 	~storageSort(void);
 
 	std::vector<task> switchPlace(int i, int j, std::vector<task> commandVector);
-	std::vector<task> storageSort::sortvector(std::vector<task> commandVector);
+	std::vector<task> sortvector(std::vector<task> commandVector);
 };
 
 #endif

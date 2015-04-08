@@ -1,9 +1,8 @@
 //@author A0114411B
+#pragma once
 
 #ifndef TASKDONE_H
 #define TASKDONE_H
-#pragma once
-
 #include "task.h"
 #include "assert.h"
 #include "taskDelete.h"

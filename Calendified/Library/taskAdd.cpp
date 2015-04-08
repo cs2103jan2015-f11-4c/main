@@ -47,44 +47,108 @@ void taskAdd::setTask(task newTask){
 	_task = newTask;
 }
 
-bool taskAdd::isClash(std::vector<task> taskStorage){
-	for(auto i=0; i<taskStorage.size(); i++){
-		if(_task.getTimeAndDate().getStartMDay() == taskStorage[i].getTimeAndDate().getStartMDay()
-			&& _task.getTimeAndDate().getStartMonth() == taskStorage[i].getTimeAndDate().getStartMonth()
-			&& _task.getTimeAndDate().getStartYear() == taskStorage[i].getTimeAndDate().getStartYear()
-			&& _task.getTimeAndDate().getEndMDay() == taskStorage[i].getTimeAndDate().getEndMDay()
-			&& _task.getTimeAndDate().getEndMonth() == taskStorage[i].getTimeAndDate().getEndMonth()
-			&& _task.getTimeAndDate().getEndYear() == taskStorage[i].getTimeAndDate().getEndYear()
-			&& _task.getTimeAndDate().getStartTimeHour() != 0
-			&& _task.getTimeAndDate().getEndTimeHour() != 0
-			&& taskStorage[i].getTaskType() != FloatingTask
-			&& !taskStorage[i].getIsDone()
-			&& !_task.getIsDone()){
+bool isValidConditions(task newTask, task storedTask){
+	if(storedTask.getTaskType() != FloatingTask
+		&& !storedTask.getIsDone()
+		&& !storedTask.getIsDone()){
+			return true;
+	} else {
+		return false;
+	}
+}
 
-				if(_task.getTimeAndDate().getEndTimeHour() >= taskStorage[i].getTimeAndDate().getStartTimeHour()
-					&& _task.getTimeAndDate().getEndTimeMin() > taskStorage[i].getTimeAndDate().getStartTimeMin()
-					&& _task.getTimeAndDate().getEndTimeHour() <= taskStorage[i].getTimeAndDate().getEndTimeHour()
-					&& _task.getTimeAndDate().getEndTimeMin() <= taskStorage[i].getTimeAndDate().getEndTimeMin()){
+bool isEndDateClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndMDay() >= storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getEndMonth() >= storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getEndYear() >= storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getEndMDay() <= storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getEndMonth() <= storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getEndYear() <= storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isEndTimeClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndTimeHour() >= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() > storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getEndTimeHour() <= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() <= storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isStartDateClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartMDay() >= storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getStartMonth() >= storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getStartYear() >= storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getStartMDay() <= storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getStartMonth() <= storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getStartYear() <= storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isStartTimeClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartTimeHour() >= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() >= storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getStartTimeHour() <= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() < storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isBothDatesClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartMDay() <= storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getStartMonth() <= storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getStartYear() <= storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getEndMDay() >= storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getEndMonth() >= storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getEndYear() >= storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isBothTimesClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartTimeHour() <= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() <= storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getEndTimeHour() >= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() >= storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool taskAdd::isClash(std::vector<task> taskStorage){
+	for(int i=0; i<taskStorage.size(); i++){
+		if(isValidConditions(_task, taskStorage[i])){
+				if(isEndDateClash(_task, taskStorage[i]) && isEndTimeClash(_task, taskStorage[i])){
 						_task.setIsClash(true);
 						taskStorage[i].setIsClash(true);
 						return true;
-				} else if(_task.getTimeAndDate().getStartTimeHour() >= taskStorage[i].getTimeAndDate().getStartTimeHour()
-					&& _task.getTimeAndDate().getStartTimeMin() >= taskStorage[i].getTimeAndDate().getStartTimeMin()
-					&& _task.getTimeAndDate().getStartTimeHour() <= taskStorage[i].getTimeAndDate().getEndTimeHour()
-					&& _task.getTimeAndDate().getStartTimeMin() < taskStorage[i].getTimeAndDate().getEndTimeMin()){
+				} else if(isStartDateClash(_task, taskStorage[i]) && isStartTimeClash(_task, taskStorage[i])){
 						_task.setIsClash(true);
 						taskStorage[i].setIsClash(true);
 						return true;
-				} else if(_task.getTimeAndDate().getStartTimeHour() <= taskStorage[i].getTimeAndDate().getStartTimeHour()
-					&& _task.getTimeAndDate().getStartTimeMin() < taskStorage[i].getTimeAndDate().getStartTimeMin()
-					&& _task.getTimeAndDate().getEndTimeHour() >= taskStorage[i].getTimeAndDate().getEndTimeHour()
-					&& _task.getTimeAndDate().getEndTimeMin() > taskStorage[i].getTimeAndDate().getEndTimeMin()){
+				} else if(isBothDatesClash(_task, taskStorage[i]) && isBothTimesClash(_task, taskStorage[i])){
 						_task.setIsClash(true);
 						taskStorage[i].setIsClash(true);
 						return true;
 				} else {
 					return false;
 				}
+		} else {
+			return false;
 		}
 	}
 }
