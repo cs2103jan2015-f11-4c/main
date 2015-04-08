@@ -14,6 +14,7 @@ std::string taskAdd::executeAdd(){
 	std::vector<task> taskStorage;
 	std::string successMessage = "Added succesfully!";
 	std::string failureMessage = "Task not added. Please try again.";
+	
 
 	if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
 		if(storageFile.isFileEmpty()){
@@ -21,11 +22,12 @@ std::string taskAdd::executeAdd(){
 		}
 		taskStorage = storageFile.readFileJson();
 
-		taskStorage.push_back(_task);
-
+		
+		bool clash = isClash(taskStorage);
 		try {
+			taskStorage.push_back(_task);
 			storageFile.writeFileJson(taskStorage);
-			if(isClash(taskStorage)){
+			if(clash){
 				return "clash!";
 			}else{
 				return successMessage;}
@@ -54,7 +56,7 @@ void taskAdd::setTask(task newTask){
 bool isValidConditions(task newTask, task storedTask){
 	if(storedTask.getTaskType() != FloatingTask
 		&& !storedTask.getIsDone()
-		&& !storedTask.getIsDone()){
+		&& !newTask.getIsDone()){
 			return true;
 	} else {
 		return false;
@@ -133,26 +135,23 @@ bool isBothTimesClash(task newTask, task storedTask){
 	}
 }
 
-bool taskAdd::isClash(std::vector<task> taskStorage){
+bool taskAdd::isClash(std::vector<task> &taskStorage){
 	for(int i=0; i<taskStorage.size(); i++){
 		if(isValidConditions(_task, taskStorage[i])){
-				if(isEndDateClash(_task, taskStorage[i]) && isEndTimeClash(_task, taskStorage[i])){
-						_task.setIsClash(true);
-						taskStorage[i].setIsClash(true);
-						return true;
-				} else if(isStartDateClash(_task, taskStorage[i]) && isStartTimeClash(_task, taskStorage[i])){
-						_task.setIsClash(true);
-						taskStorage[i].setIsClash(true);
-						return true;
-				} else if(isBothDatesClash(_task, taskStorage[i]) && isBothTimesClash(_task, taskStorage[i])){
-						_task.setIsClash(true);
-						taskStorage[i].setIsClash(true);
-						return true;
-				} else {
-					return false;
-				}
-		} else {
-			return false;
+			if(isEndDateClash(_task, taskStorage[i]) && isEndTimeClash(_task, taskStorage[i])){
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} else if(isStartDateClash(_task, taskStorage[i]) && isStartTimeClash(_task, taskStorage[i])){
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} else if(isBothDatesClash(_task, taskStorage[i]) && isBothTimesClash(_task, taskStorage[i])){
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} 
 		}
 	}
+	return false;
 }

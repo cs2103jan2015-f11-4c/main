@@ -23,7 +23,7 @@ public:
 	void undoAdd(taskUndo* taskToBeUndone);
 	void taskAddRecurrent();
 	void setTask(task taskString);
-	bool isClash(std::vector<task> storageVector);
+	bool isClash(std::vector<task> &storageVector);
 };
 
 #endif
