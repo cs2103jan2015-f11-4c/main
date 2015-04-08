@@ -88,7 +88,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent, indexToActOnDisplay);
 		editItem.setEditingRef(newTask);
 		editResults = editItem.executeEdit(indexToActOnStorage);
 		editItem.undoEdit(&undoTask);

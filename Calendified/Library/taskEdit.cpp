@@ -6,115 +6,172 @@ taskEdit::taskEdit(void){
 taskEdit::~taskEdit(void){
 }
 
+bool isDoneEdited(task editingReference, task originalTask){
+	if(editingReference.getIsDone() == true && editingReference.getIsDone() != originalTask.getIsDone()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isLocationEdited(task editingReference, task originalTask){
+	if(!editingReference.getLocation().empty() && (editingReference.getLocation() != originalTask.getLocation())){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isNotEmptyTime(task editingReference){
+	if(editingReference.getTimeAndDate().getStartTimeHour() == 0
+		&& editingReference.getTimeAndDate().getStartTimeMin() == 0
+		&& editingReference.getTimeAndDate().getEndTimeHour() == 0
+		&& editingReference.getTimeAndDate().getEndTimeMin() == 0){
+			return false;
+	} else {
+		return true;
+	}
+}
+
+bool isTimeEdited(task editingReference, task originalTask){
+	if(isNotEmptyTime(editingReference)
+		&& (editingReference.getTimeAndDate().getStartTimeHour() != originalTask.getTimeAndDate().getStartTimeHour()
+		|| editingReference.getTimeAndDate().getStartTimeMin() != originalTask.getTimeAndDate().getStartTimeMin()
+		|| editingReference.getTimeAndDate().getEndTimeHour() != originalTask.getTimeAndDate().getEndTimeHour()
+		|| editingReference.getTimeAndDate().getEndTimeMin() != originalTask.getTimeAndDate().getEndTimeMin())){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+timeAndDate editedTime(task editingReference, task taskToBeEdited){
+	timeAndDate tempTimeAndDate;
+	tempTimeAndDate.setStartTimeHour(editingReference.getTimeAndDate().getStartTimeHour());
+	tempTimeAndDate.setStartTimeMin(editingReference.getTimeAndDate().getStartTimeMin());
+	tempTimeAndDate.setEndTimeHour(editingReference.getTimeAndDate().getEndTimeHour());
+	tempTimeAndDate.setEndTimeMin(editingReference.getTimeAndDate().getEndTimeMin());
+	tempTimeAndDate.setStartMDay(taskToBeEdited.getTimeAndDate().getStartMDay());
+	tempTimeAndDate.setStartMonth(taskToBeEdited.getTimeAndDate().getStartMonth());
+	tempTimeAndDate.setStartYear(taskToBeEdited.getTimeAndDate().getStartYear());
+	tempTimeAndDate.setEndMDay(taskToBeEdited.getTimeAndDate().getEndMDay());
+	tempTimeAndDate.setEndMonth(taskToBeEdited.getTimeAndDate().getEndMonth());
+	tempTimeAndDate.setEndYear(taskToBeEdited.getTimeAndDate().getEndYear());
+
+	return tempTimeAndDate;
+}
+
+bool isNotEmptyDate(task editingReference){
+	if(editingReference.getTimeAndDate().getStartMDay() <= 0
+		&& editingReference.getTimeAndDate().getStartMonth() <= 0
+		&& editingReference.getTimeAndDate().getStartYear() <= 0
+		&& editingReference.getTimeAndDate().getEndMDay() <= 0
+		&& editingReference.getTimeAndDate().getEndMonth() <= 0
+		&& editingReference.getTimeAndDate().getEndYear() <= 0){
+			return false;
+	} else {
+		return true;
+	}
+}
+bool isDateEdited(task editingReference, task originalTask){
+	if(isNotEmptyDate(editingReference)
+		&& (editingReference.getTimeAndDate().getStartMDay() != originalTask.getTimeAndDate().getStartMDay()
+		|| editingReference.getTimeAndDate().getStartMonth() != originalTask.getTimeAndDate().getStartMonth()
+		|| editingReference.getTimeAndDate().getStartYear() != originalTask.getTimeAndDate().getStartYear()
+		|| editingReference.getTimeAndDate().getEndMDay() != originalTask.getTimeAndDate().getEndMDay()
+		|| editingReference.getTimeAndDate().getEndMonth() != originalTask.getTimeAndDate().getEndMonth()
+		|| editingReference.getTimeAndDate().getEndYear() != originalTask.getTimeAndDate().getEndYear())){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+timeAndDate editedDate(task editingReference, task taskToBeEdited){
+	timeAndDate tempTimeAndDate;
+	tempTimeAndDate.setStartMDay(editingReference.getTimeAndDate().getStartMDay());
+	tempTimeAndDate.setStartMonth(editingReference.getTimeAndDate().getStartMonth());
+	tempTimeAndDate.setStartYear(editingReference.getTimeAndDate().getStartYear());
+	tempTimeAndDate.setEndMDay(editingReference.getTimeAndDate().getEndMDay());
+	tempTimeAndDate.setEndMonth(editingReference.getTimeAndDate().getEndMonth());
+	tempTimeAndDate.setEndYear(editingReference.getTimeAndDate().getEndYear());
+	tempTimeAndDate.setStartTimeHour(taskToBeEdited.getTimeAndDate().getStartTimeHour());
+	tempTimeAndDate.setStartTimeMin(taskToBeEdited.getTimeAndDate().getStartTimeMin());
+	tempTimeAndDate.setEndTimeHour(taskToBeEdited.getTimeAndDate().getEndTimeHour());
+	tempTimeAndDate.setEndTimeMin(taskToBeEdited.getTimeAndDate().getEndTimeMin());
+	
+	return tempTimeAndDate;
+}
+
+void taskTypeEdited(task* originalTask){
+	if(originalTask->getTimeAndDate().getStartMDay() > 0
+		&& originalTask->getTimeAndDate().getStartMonth() > 0
+		&& originalTask->getTimeAndDate().getStartYear() > 0){
+			originalTask->setTaskType("TimedTask");
+	} else if(originalTask->getTimeAndDate().getEndMDay() > 0
+		&& originalTask->getTimeAndDate().getEndMonth() > 0
+		&& originalTask->getTimeAndDate().getEndYear() > 0){
+			originalTask->setTaskType("DeadLine");
+	} else {
+		originalTask->setTaskType("FloatingTask");
+	}
+}
+
+bool isTitleEdited(task editingReference, task originalTask){
+	if((!editingReference.getTitle().empty()) && editingReference.getTitle() != originalTask.getTitle()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
 std::string taskEdit::executeEdit(int indexToBeEdited){
-	std::vector<task> file;
-		storage newStorage;
-	//commandRef newCommandRef;
+	std::vector<task> storageTasks;
+	storage newStorage;
 
-	if(newStorage.isFileExist()){
-		
-		file = newStorage.readFileJson();
-		
-		if(file.empty()){
+	if(newStorage.isFileExist()){	
+		storageTasks = newStorage.readFileJson();
+		if(storageTasks.empty()){
 			return MESSAGE_ERROR_EDIT_FILE_IS_EMPTY;
-		}else if(indexToBeEdited > file.size()){
+		} else if(indexToBeEdited > storageTasks.size()){
 			return MESSAGE_ERROR_EDIT_ITEM_NOT_FOUND;
-		}else{
-			task changingTaskData;
-			//std::string taskDataString;
-			//changingTaskData = file[indexToBeEdited-1];
-			int totalFileSize = file.size();
-			int timedTasksSize = 0;
-			int floatTaskSize = 0;
-
-			for(int i=0; i<file.size(); i++){
-				if(file[i].getTaskType() == "TimedTask"){
-					++timedTasksSize;
-				}
-			}
-
-			floatTaskSize = totalFileSize - timedTasksSize;
-
-			if(indexToBeEdited>=timedTasksSize){ //floating task
-				indexToBeEdited = indexToBeEdited - timedTasksSize -1;
-				changingTaskData = file[indexToBeEdited];
-			} else if(indexToBeEdited<timedTasksSize){ //timed task
-				indexToBeEdited = indexToBeEdited + floatTaskSize - 1;
-				changingTaskData = file[indexToBeEdited];
-			}
+		} else {
+			assert(indexToBeEdited>=0);
+			task taskToBeEdited = storageTasks[indexToBeEdited];
 				
-			if((!editingRef.getCommandAction().empty()) && editingRef.getCommandAction() != changingTaskData.getCommandAction()){
-				changingTaskData.setCommandAction(editingRef.getCommandAction());
+			if(isDoneEdited(_editingReference, taskToBeEdited)){
+				taskToBeEdited.setIsDone(_editingReference.getIsDone());
+			} //only edits undone to done
+			if(isLocationEdited(_editingReference, taskToBeEdited)){
+				taskToBeEdited.setLocation(_editingReference.getLocation());
 			}
-			if((!editingRef.getIsDone()) && editingRef.getIsDone() != changingTaskData.getIsDone()){
-				changingTaskData.setIsDone(editingRef.getIsDone());
-			} 
-			if((!editingRef.getLocation().empty()) && editingRef.getLocation() != changingTaskData.getLocation()){
-				changingTaskData.setLocation(editingRef.getLocation());
+			if(isTimeEdited(_editingReference, taskToBeEdited)){
+				timeAndDate tempTimeAndDate = editedTime(_editingReference, taskToBeEdited);
+				taskToBeEdited.setTimeAndDate(tempTimeAndDate);
 			}
-			if(editingRef.getTaskType() != changingTaskData.getTaskType()){ //depends on the thing
-				changingTaskData.setTaskType(editingRef.getTaskType());
+			if(isDateEdited(_editingReference, taskToBeEdited)){
+				timeAndDate tempTimeAndDate1 = editedDate(_editingReference, taskToBeEdited);
+				taskToBeEdited.setTimeAndDate(tempTimeAndDate1);
 			}
-			if((!editingRef.getTimeAndDate().dateAndTimeInString().empty()) && editingRef.getTimeAndDate().dateAndTimeInString() != changingTaskData.getTimeAndDate().dateAndTimeInString()){
-				changingTaskData.setTimeAndDate(editingRef.getTimeAndDate());
+			if(isTitleEdited(_editingReference, taskToBeEdited)){
+				taskToBeEdited.setTitle(_editingReference.getTitle());
 			}
-			if((!editingRef.getTitle().empty()) && editingRef.getTitle() != changingTaskData.getTitle()){
-				changingTaskData.setTitle(editingRef.getTitle());
-			}
-
-			file[indexToBeEdited-1] = changingTaskData;
+			taskTypeEdited(&taskToBeEdited);
+			storageTasks[indexToBeEdited] = taskToBeEdited;
 			try {
-				newStorage.writeFileJson(file);
+				newStorage.writeFileJson(storageTasks);
 				return "Edited.";
 			} catch (const std::exception& e){
 				return "Not edited successfully.";
 			}
-
-			//taskDataString = file[indexToBeEdited-1];
-		    //newCommandRef = editCommandRef(taskDataString);
-			/*task newTaskRef = editCommandRef(taskData);
-
-			taskDataString = newCommandRef.dataToString();
-			file[indexToBeEdited-1] = taskDataString;
-			if(newStorage.writeFile(file,"main")){
-				return "Edited.";
-			}else{
-				return "Not edited successfully.";
-			}
-			*/
 		}
-	}else{
-		return "File does not exit.";
+	} else {
+		return "File does not exist.";
 	}
 }
-/*task taskEdit::editCommandRef(task taskDataString){
 
-	commandRef oldTaskData;
-	oldTaskData = getEditingTaskData(taskDataString).copyTo();	
-	oldTaskData = editingRef.compareAndSetTaskData(oldTaskData);
-
-	task oldTask;
-	oldTask = getEditingTaskData();
-	
-	return oldTaskData;
-}
-
-task taskEdit::getEditingTaskData(task taskDataString){
-
-	commandRef oldTaskData;
-	oldTaskData.stringTodata(taskDataString);
-	return oldTaskData;
-
-	task oldTask;
-	
-}
-*/
-
-void taskEdit::setEditingRef(task currentCommandRef){
-	
-	editingRef = currentCommandRef;
-	//return currentCommandRef.getIndexToBeActOn();
-
+void taskEdit::setEditingRef(task currentTaskData){
+	_editingReference = currentTaskData;
 }
 
 void taskEdit::undoEdit(taskUndo* taskToBeUndone){
