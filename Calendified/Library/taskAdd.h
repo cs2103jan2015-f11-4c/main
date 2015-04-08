@@ -15,7 +15,6 @@ class taskAdd
 {
 private:
 	task _task;
-	//std::vector<task> _taskStorage;
 public:
 	taskAdd();
 	taskAdd(std::string taskString);
@@ -24,10 +23,7 @@ public:
 	void undoAdd(taskUndo* taskToBeUndone);
 	void taskAddRecurrent();
 	void setTask(task taskString);
-
-	bool checkIsClash(task newTask, std::vector<task> storageVector);
-
-
+	bool isClash(std::vector<task> storageVector);
 };
 
 #endif
