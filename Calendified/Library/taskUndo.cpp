@@ -2,8 +2,9 @@
 #include "taskUndo.h"
 
 taskUndo::taskUndo(void){
-	std::vector<task> emptyVectorStack;
-	_currentStack.push(emptyVectorStack);
+	storage readStorage;
+	std::vector<task> vectorStack = readStorage.readFileJson();
+	_currentStack.push(vectorStack);
 }
 
 taskUndo::~taskUndo(void){

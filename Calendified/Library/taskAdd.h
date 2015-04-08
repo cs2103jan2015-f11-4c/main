@@ -11,6 +11,10 @@
 #include "storage.h"
 #include "taskUndo.h"
 
+const std::string MESSAGE_SUCCESS_ADD = "Added succesfully!";
+const std::string MESSAGE_FAILURE_ADD = "Task not added. Please try again.";
+const std::string MESSAGE_CLASH_ADD = "Warning: Clash! Added accordingly.";
+
 class taskAdd
 {
 private:

@@ -1,5 +1,4 @@
 //@author A0116027R
-
 #include "taskAdd.h"
 
 taskAdd::taskAdd(){
@@ -12,30 +11,27 @@ taskAdd::~taskAdd(void)
 std::string taskAdd::executeAdd(){
 	storage storageFile;
 	std::vector<task> taskStorage;
-	std::string successMessage = "Added succesfully!";
-	std::string failureMessage = "Task not added. Please try again.";
 	
-
 	if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
 		if(storageFile.isFileEmpty()){
 			storageFile.writeFileJson(taskStorage);
 		}
 		taskStorage = storageFile.readFileJson();
 
-		
 		bool clash = isClash(taskStorage);
 		try {
 			taskStorage.push_back(_task);
 			storageFile.writeFileJson(taskStorage);
 			if(clash){
-				return "clash!";
-			}else{
-				return successMessage;}
+				return MESSAGE_CLASH_ADD;
+			}else {
+				return MESSAGE_SUCCESS_ADD;
+			}
 		} catch (const std::exception& e){
-			return failureMessage;
+			return MESSAGE_FAILURE_ADD;
 		}
 	} else {
-		return failureMessage;
+		return MESSAGE_FAILURE_ADD;
 	}
 }
 
@@ -55,6 +51,7 @@ void taskAdd::setTask(task newTask){
 
 bool isValidConditions(task newTask, task storedTask){
 	if(storedTask.getTaskType() != FloatingTask
+		&& newTask.getTaskType() != FloatingTask
 		&& !storedTask.getIsDone()
 		&& !newTask.getIsDone()){
 			return true;
