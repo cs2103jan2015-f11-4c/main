@@ -47,6 +47,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
 	std::string doneResults = "";
+	std::string searchItem ="";
 	std::vector<task> emptyTaskList;
 	int toggleCount;
 	//Undo operation variables
@@ -75,16 +76,28 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	case SEARCH:
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
-		if(newParser.getCommandRef().getSearchItem().compare("done")==0
-			|| newParser.getCommandRef().getSearchItem().compare("taskdone")==0){
-				displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListDone()),"view");
-				displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListDone()));
-		} else if(newParser.getCommandRef().getSearchItem().compare("undone")==0
-			|| newParser.getCommandRef().getSearchItem().compare("taskundone")==0){
+		searchItem = newParser.getCommandRef().getSearchItem();
+		if(searchItem.compare("done")==0 || searchItem.compare("taskdone")==0){
+			displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListDone()),"view");
+			displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListDone()));
+		} else if(searchItem.compare("undone")==0 || searchItem.compare("taskundone")==0){
 			displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListUndone()),"view");
-				displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListUndone()));
-		} else{ 
-			displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
+			displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListUndone()));
+		} else if(searchItem.substr(0,1).compare("\"")==0 && searchItem.substr(searchItem.length()-1,1).compare("\"")==0){
+			displayTodayResults = displayTask.formatSearchResults(displayTask.searchExact(searchItem));
+		} else if(searchItem.length() > 6){
+			if(searchItem.substr(0,6).compare("after ")==0){//check for after:
+				searchItem = searchItem.substr(6);
+				displayTodayResults = displayTask.searchAfter(searchItem);
+			} else if(searchItem.substr(0,6).compare("before")==0){//check for before
+				searchItem = searchItem.substr(7);
+				displayTodayResults = displayTask.searchBefore(searchItem);
+			} else{
+				displayTodayResults = displayTask.searchPower(searchItem);
+			}
+		}
+		else{ 
+			displayTodayResults = displayTask.searchPower(searchItem);
 		}
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults;

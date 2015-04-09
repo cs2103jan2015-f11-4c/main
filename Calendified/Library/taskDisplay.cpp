@@ -271,6 +271,16 @@ std::string taskDisplay::formatDisplayResults(std::vector<task> taskList, std::s
 	return formatResults;
 }
 
+//This operation formats the search results
+std::string taskDisplay::formatSearchResults(std::vector<task> searchList){
+	std::string searchResults;
+	searchResults += TYPE_RESULTS+KEYWORD_NEWLINE;
+	searchResults += formatTimedTask(sortTimedTaskList(searchList),TYPE_VIEW);
+	searchResults += KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
+	searchResults += formatFloatTask(sortFloatTaskList(searchList));
+	return searchResults;
+}
+
 //This operation returns current date- Day
 std::string taskDisplay::getTodayDate(int flipCount){
 	time_t timev;
@@ -416,15 +426,133 @@ std::string taskDisplay::getNextDayDateDMY(int flipCount){
 	return std::string(output);
 }
 
+//This operation search the all existing data OLDER THAN the search Item input
+std::string taskDisplay::searchPower(std::string searchItem){
+	std::string searchResults;
+	std::string searchBuffer; 
+	std::stringstream ss(searchItem);
+	std::vector<task> searchList;
+	std::vector<task> tempSearchList;
+	std::vector<std::string> searchItems; 
+	while (ss >> searchBuffer){
+		std::transform(searchBuffer.begin(), searchBuffer.end(), searchBuffer.begin(), ::tolower);
+		searchItems.push_back(searchBuffer);
+	}
+	for(int i=0; i<searchItems.size();i++){
+		tempSearchList= searchExact(searchItems[i]);
+		for(int j=0; j<tempSearchList.size();j++){
+			if(!checkSameTask(tempSearchList[j],searchList)){
+				searchList.push_back(tempSearchList[j]);
+			}
+		}
+	}
+	searchResults = formatSearchResults(searchList);
+	return searchResults;
+}
+bool taskDisplay::checkSameTask(task tempSearchItem , std::vector<task> currenetSearchList){
+	bool isSame = false;
+	for(int i =0; i <currenetSearchList.size();i++){
+		if(currenetSearchList[i].getCommandAction()==tempSearchItem.getCommandAction() &&
+			currenetSearchList[i].getIsClash()==tempSearchItem.getIsClash() &&
+			currenetSearchList[i].getIsDone()==tempSearchItem.getIsDone() &&
+			currenetSearchList[i].getLocation()==tempSearchItem.getLocation() &&
+			currenetSearchList[i].getTaskType()==tempSearchItem.getTaskType() &&
+			currenetSearchList[i].getTimeAndDate().getStartMDay()==tempSearchItem.getTimeAndDate().getStartMDay() &&
+			currenetSearchList[i].getTimeAndDate().getStartMonth()==tempSearchItem.getTimeAndDate().getStartMonth() &&
+			currenetSearchList[i].getTimeAndDate().getStartYear()==tempSearchItem.getTimeAndDate().getStartYear() &&
+			currenetSearchList[i].getTitle()==tempSearchItem.getTitle()){
+				isSame=true;
+				break;
+		}
+	}
+	return isSame;
+}
+
+//This operation search the all existing data OLDER THAN the search Item input
+std::string taskDisplay::searchBefore(std::string searchItem){
+	std::vector<task> allTaskList;
+	std::vector<task> searchList;
+	int searchResultsIndex=0;
+	std::string searchResults;
+	int searchDateYear = atoi(searchItem.substr(4).c_str());
+	int searchDateMonth = atoi(searchItem.substr(2,2).c_str());
+	int searchDateDay = atoi(searchItem.substr(0,2).c_str());
+	int taskListYear;
+	int taskListMonth;
+	int taskListDay;
+	if(_currentStorage.isFileEmpty()){
+		searchItem ="";
+		return searchItem;
+	}
+	allTaskList = _currentStorage.readFileJson();
+	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
+
+		taskListDay = allTaskList[i].getTimeAndDate().getStartMDay();
+		taskListMonth = allTaskList[i].getTimeAndDate().getStartMonth();
+		taskListYear = allTaskList[i].getTimeAndDate().getStartYear();
+		if(taskListYear!=0 && taskListYear< searchDateYear){
+			searchList.push_back(allTaskList[i]);
+		}else if(taskListYear!=0 && taskListYear == searchDateYear){
+			if(taskListYear!=0 && taskListMonth<searchDateMonth){
+				searchList.push_back(allTaskList[i]);
+			}else if(taskListYear!=0 && taskListMonth==searchDateMonth){
+				if(taskListYear!=0 && taskListDay<searchDateDay){
+					searchList.push_back(allTaskList[i]);
+				}
+			}
+		}
+	}
+		searchResults = formatSearchResults(searchList);
+		return searchResults;	
+}
+
+
+//This operation search the all existing data OLDER THAN the search Item input
+std::string taskDisplay::searchAfter(std::string searchItem){
+	std::vector<task> allTaskList;
+	std::vector<task> searchList;
+	int searchResultsIndex=0;
+	std::string searchResults;
+	int searchDateYear = atoi(searchItem.substr(4).c_str());
+	int searchDateMonth = atoi(searchItem.substr(2,2).c_str());
+	int searchDateDay = atoi(searchItem.substr(0,2).c_str());
+	int taskListYear;
+	int taskListMonth;
+	int taskListDay;
+	if(_currentStorage.isFileEmpty()){
+		searchItem ="";
+		return searchItem;
+	}
+	allTaskList = _currentStorage.readFileJson();
+	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
+
+		taskListDay = allTaskList[i].getTimeAndDate().getStartMDay();
+		taskListMonth = allTaskList[i].getTimeAndDate().getStartMonth();
+		taskListYear = allTaskList[i].getTimeAndDate().getStartYear();
+		if(taskListYear> searchDateYear){
+			searchList.push_back(allTaskList[i]);
+		}else if(taskListYear==searchDateYear){
+			if(taskListMonth>searchDateMonth){
+				searchList.push_back(allTaskList[i]);
+			}else if(taskListMonth==searchDateMonth){
+				if(taskListDay>searchDateDay){
+					searchList.push_back(allTaskList[i]);
+				}
+			}
+		}
+	}
+		searchResults = formatSearchResults(searchList);
+		return searchResults;
+}
 //This operation search the all existing data w.r.t. the search Item input
-std::string taskDisplay::viewSearchList(std::string searchItem){
+std::vector<task> taskDisplay::searchExact(std::string searchItem){
 	std::vector<task> allTaskList;
 	std::vector<task> searchList;
 	int searchResultsIndex=0;
 	std::string searchResults; 
 	if(_currentStorage.isFileEmpty()){
 		searchItem ="";
-		return searchItem;
+		return searchList;
 	}
 	allTaskList = _currentStorage.readFileJson();
 	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
@@ -436,11 +564,7 @@ std::string taskDisplay::viewSearchList(std::string searchItem){
 				searchList.push_back(allTaskList[i]);
 			}
 	}
-	searchResults += TYPE_RESULTS+KEYWORD_NEWLINE;
-	searchResults += formatTimedTask(sortTimedTaskList(searchList),TYPE_VIEW);
-	searchResults += KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
-	searchResults += formatFloatTask(sortFloatTaskList(searchList));
-	return searchResults;
+	return searchList;
 }
 
 

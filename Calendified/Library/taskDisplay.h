@@ -104,10 +104,15 @@ public:
 	std::string formatDisplayResults(std::vector<task> taskList, std::string formatType);
 	std::string formatTimedTask(std::vector<task> taskList, std::string presentationType);
 	std::string formatFloatTask(std::vector<task> taskList);
+	std::string formatSearchResults(std::vector<task> searchList);
 	std::vector<task> sortTaskList(std::string sortType, int flipCount);
 	std::vector<task> sortTimedTaskList(std::vector<task> givenTaskList);
 	std::vector<task> sortFloatTaskList(std::vector<task> givenTaskList);
-	std::string viewSearchList(std::string searchItem);
+	std::vector<task> searchExact(std::string searchItem);
+	std::string searchAfter(std::string searchItem);
+	std::string searchBefore(std::string searchItem);
+	std::string searchPower(std::string searchItem);
+	bool taskDisplay::checkSameTask(task tempSearchItem , std::vector<task> currenetSearchList);
 	void updateDisplayContent(std::vector<task> newDisplayContent);
 	std::vector<task> getDisplayContent();
 	void setDisplayContent(std::vector<task> newDisplayContent);
