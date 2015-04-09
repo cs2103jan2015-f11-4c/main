@@ -708,8 +708,25 @@ namespace UI {
 					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
 						 commandBox->Text = "delete";
 					 } else if(e->Control && e->KeyCode==Keys::F){//Shortcut for CTRL + F
-						 flip();
-						 flipCount++;
+						 logic newLogic;
+						 std::vector<std::string> displayResults;
+						 std::string displayResult = newLogic.readCommand("flip",flipCount);
+						 String^ updateStatus = gcnew String(displayResult.c_str());
+						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
+							 label_status-> Text =  updateStatus;
+							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
+								 flip();
+								 flipCount++;
+							 }
+							 displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);	 
+						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
+							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
+						 }
+						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+							 updateCalendifiedView(displayResults);
+						 }else{
+							 updateListView(displayResults);
+						 }
 					 } else if(e->Control && e->KeyCode==Keys::A){//Shortcut for CTRL + A
 						 commandBox->Text = "add";
 					 } else if(e->Control && e->KeyCode==Keys::T){//Shortcut for CTRL + T
