@@ -78,11 +78,10 @@ std::vector<task> taskDone::getListDone(){
 	if(doneVector.empty()){
 		throw MESSAGE_ERROR_FILE_IS_EMPTY;
 	} else {
-		std::vector<task>::iterator iter;
 		int i;
-		for(iter=doneVector.begin(),i=0; iter<doneVector.end(); iter++,i++){
+		for(i=0; i<doneVector.size();i++){
 			if(doneVector[i].getIsDone() == false){
-				doneVector.erase(iter);
+				doneVector.erase(doneVector.begin()+i);
 			}
 		}
 		if(doneVector.empty()){
@@ -102,11 +101,10 @@ std::vector<task> taskDone::getListUndone(){
 	if(undoneVector.empty()){
 		throw MESSAGE_ERROR_FILE_IS_EMPTY;
 	} else {
-		std::vector<task>::iterator iter;
 		int i;
-		for(iter=undoneVector.begin(),i=0; iter<undoneVector.end(); iter++,i++){
+		for(i=0; i<undoneVector.size();i++){
 			if(undoneVector[i].getIsDone() == false){
-				undoneVector.erase(iter);
+				undoneVector.erase(undoneVector.begin()+i);
 			}
 		}
 		if(undoneVector.empty()){

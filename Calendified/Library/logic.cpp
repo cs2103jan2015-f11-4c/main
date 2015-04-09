@@ -73,7 +73,17 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	case VIEW:
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
-		displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
+		if(newParser.getCommandRef().getSearchItem().compare("done")==0
+			|| newParser.getCommandRef().getSearchItem().compare("taskdone")==0){
+				displayTodayResults = "RESULTS: \n" + displayTask.formatDisplayResults(newTaskDone.getListDone(),"timed!")
+					+ "FLOAT: \n"+displayTask.formatDisplayResults(newTaskDone.getListDone(),"float");
+		} else if(newParser.getCommandRef().getSearchItem().compare("undone")==0
+			|| newParser.getCommandRef().getSearchItem().compare("taskundone")==0){
+				displayTodayResults = "RESULTS: \n" + displayTask.formatDisplayResults(newTaskDone.getListUndone(),"timed!")
+					+ "FLOAT: \n"+displayTask.formatDisplayResults(newTaskDone.getListUndone(),"float");
+		} else{ 
+			displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
+		}
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults;
 	case DISPLAY:		

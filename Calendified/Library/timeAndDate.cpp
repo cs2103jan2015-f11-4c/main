@@ -170,8 +170,8 @@ bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth
 	assert(dateString != "");
 	std::regex dateFormat1("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015 or 03/04/2015 or 3-4-2015
 	std::regex dateFormat2("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])-(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015-4/4/2015
-	//std::regex dateFormat3("^\d{1,2}\/\d{1,2}\/\d{2}$"); //3/4/15
-	//std::regex dateFormat4("^(\d{1,2}\/\d{1,2}\/\d{2})-(\d{1,2}\/\d{1,2}\/\d{2})$"); //3/4/15-4/4/15
+	std::regex dateFormat3("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])$"); //3/4/15
+	std::regex dateFormat4("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])-(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])$"); //3/4/15-4/4/15
 	//std::regex dateFormat5("^((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})$"); //10 Feb 2015
 	//std::regex dateFormat6("^((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})-((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})$"); //10 Feb 2015-11 Feb 2015
 	
@@ -258,10 +258,96 @@ bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth
 		} else {
 			return false;
 		}
-	} else {
+	} else if(std::regex_match(dateString, dateFormat3)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+		
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskStartMDay = mday;
+			*taskStartMonth = month;
+			if(year>=0 && year<=50){
+			*taskStartYear = year + 2000;
+			} else if(year>50 && year<=99){
+				*taskStartYear = year + 1900;
+			}
+			*taskEndMDay = *taskStartMDay;
+			*taskEndMonth = *taskStartMonth;
+			*taskEndYear = *taskStartYear;
+			return true;
+			}
+		} 
 		return false;
+	} else if(std::regex_match(dateString, dateFormat4)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	//mday>=1 && mday<=31 && month>=1 && month<=12 && 
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+				*taskStartMDay = mday;
+				*taskStartMonth = month;
+				if(year>=0 && year<=50){
+					*taskStartYear = year + 2000;
+				} else if(year>50 && year<=99){
+					*taskStartYear = year + 1900;
+				}
+			}
+		} else {
+			return false;
+		}
+		in >> ignore; // '-'
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskEndMDay = mday;
+			*taskEndMonth = month;
+			if(year>=0 && year<=50){
+				*taskStartYear = year + 2000;
+			} else if(year>50 && year<=99){
+				*taskStartYear = year + 1900;
+			}
+			return true;
+			}
+		} else {
+			return false;
+		}
 	}
-	return false;
+		
 /*
 	if(mday>=1 && mday<=31 && month>=1 && month<=12 && year>=1900 && year<=10000){
 		if(isLeapYear(year) && isValid29(mday)){ //checks leap year and valid date
@@ -299,13 +385,32 @@ void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
 	Time->tm_min = startTimeMin;
 }
 
+bool isAmOrPm(int hour, int* timeHour, char day, char m){
+	if((day=='a' || day=='A') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 0;
+		} else {
+			*timeHour = hour;
+		}
+	} else if((day=='p' || day=='P') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 12;
+		} else {
+			*timeHour = hour + 12;
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
+
 bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin){
 	std::regex timeFormat1("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM or H:M
 	std::regex timeFormat2("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])-(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM-HH:MM
 	std::regex timeFormat3("^([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12pm, 9am
 	std::regex timeFormat4("^([1-9]|([1][0-2]))(am|pm|AM|PM)-([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12am-2pm
-	//std::regex timeFormat5("^([1-9]|([1][0-2])(.|:)([0-5]?[0-9])(am|pm|AM|PM)$"); //12.30pm or 12:30pm
-	//std::regex timeFormat6("^([1-9]|([1][0-2])(.|:)([0-5]?[0-9])(am|pm|AM|PM)-([1-9]|([1][0-2])(.|:)([0-5]?[0-9])(am|pm|AM|PM)$"); //12.30pm-2.00pm
+	std::regex timeFormat5("^([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)$"); //12.30pm or 12:30pm
+	std::regex timeFormat6("^([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)-([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)$"); //12.30pm-2.00pm
 
 	char ignore;
 	char t1;
@@ -325,7 +430,6 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 		*taskStartTimeMin = outNum;
 		*taskEndTimeHour = (*taskStartTimeHour) + 1;
 		*taskEndTimeMin = *taskStartTimeMin;
-		return true;
 	} else if(std::regex_match(timeString, timeFormat2)){
 		in >> outNum;
 		*taskStartTimeHour = outNum;
@@ -338,7 +442,6 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 		in >> ignore; //:
 		in >> outNum;
 		*taskEndTimeMin = outNum;
-		return true;
 	} else if(std::regex_match(timeString, timeFormat3)){
 		in >> outNum;
 		hour = outNum;
@@ -365,25 +468,12 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			++_endMDay;
 		}*/
 		*taskEndTimeMin = *taskStartTimeMin;
-		return true;
 	} else if(std::regex_match(timeString, timeFormat4)){
 		in >> outNum;
 		hour = outNum;
 		in >> t1; //a or p
 		in >> m; //m
-		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
-			if(hour == 12){
-				*taskStartTimeHour = 0;
-			} else {
-				*taskStartTimeHour = hour;
-			}
-		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
-			if(hour == 12){
-				*taskStartTimeHour = 12;
-			} else {
-				*taskStartTimeHour = hour + 12;
-			}
-		} else {
+		if(isAmOrPm(hour, taskStartTimeHour, t1, m) == false){
 			return false;
 		}
 		*taskStartTimeMin = 0;
@@ -398,9 +488,6 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			} else {
 				*taskEndTimeHour = hour;
 			}
-			if(*taskEndTimeHour < *taskStartTimeHour){
-				++_endMDay;
-			}
 		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
 			if(hour == 12){
 				*taskEndTimeHour = 12;
@@ -414,12 +501,7 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			return false;
 		}
 		*taskEndTimeMin = *taskStartTimeMin;
-		return true;
-	} else {
-		return false;
-	}
-		/*
-		if(std::regex_match(timeString, timeFormat5)){
+	} else if(std::regex_match(timeString, timeFormat5)){
 		in >> outNum;
 		hour = outNum;
 		in >> ignore; //. or :
@@ -442,12 +524,8 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			return false;
 		}
 		*taskStartTimeMin = min;
-		/*if((*taskEndTimeHour)/24>0){
-			*taskEndTimeHour = (*taskEndTimeHour)%12;
-			++_endMDay;
-		}*//*
+		*taskEndTimeHour = (*taskStartTimeHour) + 1;
 		*taskEndTimeMin = *taskStartTimeMin;
-		return true;
 	} else if(std::regex_match(timeString, timeFormat6)){
 		in >> outNum;
 		hour = outNum;
@@ -485,9 +563,9 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			} else {
 				*taskEndTimeHour = hour;
 			}
-			if(*taskEndTimeHour < *taskStartTimeHour){
+			/*if(*taskEndTimeHour < *taskStartTimeHour){
 				++_endMDay;
-			}
+			}*/
 		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
 			if(hour == 12){
 				*taskEndTimeHour = 12;
@@ -496,29 +574,22 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			}
 			/*if(*taskEndTimeHour < *taskStartTimeHour){
 				++_endMDay;
-			}*//*
+			}*/
 		} else {
 			return false;
 		}
 		*taskEndTimeMin = min;
 		return true;
-	} 
-	
-	else {
+	} else {
 		return false;
 	}
-
-	*/
-	
-	/*if(hour>=0 && hour<=12 && min>=0 && min<=59){
-		Time->tm_hour = hour;
-		Time->tm_min = min;
-		timeInT = mktime(Time);
-		return timeInT;
-	} else {
-		return -1;
+	if((_startMDay == _endMDay)
+		&& (_startMonth == _endMonth)
+		&& (_startYear == _endYear)
+		&& (*taskEndTimeHour < *taskStartTimeHour)){
+			++_endMDay;
 	}
-	*/
+	return true;
 }
 
 timeAndDate::timeAndDate(){

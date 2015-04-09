@@ -210,14 +210,14 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 			}
 			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
 			if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
+				formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			} else {
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
 			formatTimeTaskResults += KEYWORD_TILDE+KEYWORD_SPACE;
 			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeHour())+KEYWORD_COLON;
 			if(std::to_string(taskList[i].getTimeAndDate().getEndTimeMin()).length() == 1){
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
+				formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
 			} else {
 				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
 			}
@@ -240,7 +240,7 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 		if(std::to_string(taskList[i].getTimeAndDate().getStartTimeHour()).compare(TYPE_EMPTY)!=0){
 			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
 			if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
-				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+TYPE_EMPTY+KEYWORD_SPACE;
+				formatFloatTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			} else {
 				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
