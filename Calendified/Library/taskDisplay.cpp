@@ -96,8 +96,8 @@ std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
 		if(givenTaskList[i].getTimeAndDate().getStartMDay() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartMonth() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartYear() != 0 && 
+			givenTaskList[i].getTimeAndDate().getStartMonth() != 0 & 
+			givenTaskList[i].getTimeAndDate().getStartYear() != 0 & 
 			givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){
 				taskList.push_back(givenTaskList[i]);
 		}

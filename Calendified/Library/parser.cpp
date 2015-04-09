@@ -75,6 +75,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 	std::string symbols = "&@#%$";
 	std::string itemString;
 
+
 	if(itemType == '\0'){
 		// @author A0125489U
 		//This operator determine whether inputString contains any symbol
