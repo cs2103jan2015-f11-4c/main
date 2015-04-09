@@ -685,7 +685,67 @@ namespace UI {
 						 MessageBox::Show(systemString); 
 						 */
 
+					 } else if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
+						 try{
+							 logic newLogic;
+							 const std::string UNDO = "undo";
+							 const std::string DISPLAY = "display";
+							 flipCount=0;
+							 std::string results = newLogic.readCommand(UNDO,flipCount);
+							 String^ statusUpdate = gcnew String(results.c_str());
+							 label_status->Text = statusUpdate;
+							 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+							 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
+							 if(toggleCount == 0){ 
+								 updateCalendifiedView(displayResults);
+							 }else{
+								 updateListView(displayResults);
+							 }
+						 } catch(const std::exception& e) {
+							 String^ systemString = gcnew String(e.what()); 
+							 MessageBox::Show(systemString);
+						 }
+					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
+						 commandBox->Text = "delete";
+					 } else if(e->Control && e->KeyCode==Keys::F){//Shortcut for CTRL + F
+						 flip();
+						 flipCount++;
+					 } else if(e->Control && e->KeyCode==Keys::A){//Shortcut for CTRL + A
+						 commandBox->Text = "add";
+					 } else if(e->Control && e->KeyCode==Keys::T){//Shortcut for CTRL + T
+						 toggle();
+					 } else if(e->Control && e->KeyCode==Keys::S){//Shortcut for CTRL + S
+						 commandBox->Text = "search";
+					 } else if(e->Control && e->KeyCode==Keys::Y){//Shortcut for CTRL + Y
+						//REDO not implemented yet
+						 /* try{
+							 logic newLogic;
+							 const std::string UNDO = "redo";
+							 const std::string DISPLAY = "display";
+							 flipCount=0;
+							 std::string results = newLogic.readCommand(UNDO,flipCount);
+							 String^ statusUpdate = gcnew String(results.c_str());
+							 label_status->Text = statusUpdate;
+							 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+							 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
+							 if(toggleCount == 0){ 
+								 updateCalendifiedView(displayResults);
+							 }else{
+								 updateListView(displayResults);
+							 }
+						 } catch(const std::exception& e) {
+							 String^ systemString = gcnew String(e.what()); 
+							 MessageBox::Show(systemString);
+						 }*/
+					 } else if(e->Control && e->KeyCode==Keys::E){//Shortcut for CTRL + E
+						 commandBox->Text = "edit";
+					 } else if(e->Control && e->KeyCode==Keys::H){//Shortcut for CTRL + H
+						 commandBox->Text = "help";
 					 }
+
+
+				 
+
 				 } catch (const std::exception& e) {
 					 String^ systemString = gcnew String(e.what()); 
 					 MessageBox::Show(systemString);
