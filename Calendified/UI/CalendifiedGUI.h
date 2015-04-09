@@ -1,6 +1,5 @@
 #pragma once
 #include <iostream>
-#include "Calendified.h"
 #include "logic.h"
 
 std::string const WELCOME_MESSAGE =
@@ -760,14 +759,12 @@ namespace UI {
 						 commandBox->Text = "help";
 					 }
 
-
-				 
-
 				 } catch (const std::exception& e) {
 					 String^ systemString = gcnew String(e.what()); 
 					 MessageBox::Show(systemString);
 				 }
 			 }
+
 			 //@author A0114411B
 			 bool isValidInput(std::string inputCommandBox){
 				 if(inputCommandBox == HELP_COMMAND_ADD
@@ -791,37 +788,27 @@ namespace UI {
 			 std::string getHelpType(std::string inputCommandBox){
 				 if(inputCommandBox == HELP_COMMAND_BACK){
 					 return HELP_MAIN_MENU;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_ADD){
+				 } else	if(inputCommandBox == HELP_COMMAND_ADD){
 					 return HELP_ADD;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_DELETE){
+				 } else if(inputCommandBox == HELP_COMMAND_DELETE){
 					 return HELP_DELETE;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
+				 } else if(inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
 					 return HELP_SEARCH;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_EDIT){
+				 } else if(inputCommandBox == HELP_COMMAND_EDIT){
 					 return HELP_EDIT;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_DONE){
+				 } else if(inputCommandBox == HELP_COMMAND_DONE){
 					 return HELP_DONE;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_UNDO_OR_REDO){
+				 } else if(inputCommandBox == HELP_COMMAND_UNDO_OR_REDO){
 					 return HELP_UNDO_REDO;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
+				 } else if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
 					 return HELP_LOCATION_DATABASE;
-				 }							
-				 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
+				 } else if(inputCommandBox == HELP_COMMAND_HOTKEYS){
 					 return HELP_HOTKEYS;
-				 }
-				 if(inputCommandBox == HELP_COMMAND_HELP){
+				 } else if(inputCommandBox == HELP_COMMAND_HELP){
 					 if(toggleCount == 0){ //Calendified 
 						 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
 						 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
 						 webBrowser_Help->Show();
-
 					 }else{ //Listview
 						 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
 						 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);

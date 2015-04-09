@@ -1,14 +1,11 @@
-#pragma once
+
 #ifndef LOGIC_H
 #define LOGIC_H
+#pragma once
 
 #include <iostream>
 #include <set>
-#include <iostream>
-#include <fstream>
-#include <string>
 #include <algorithm>
-#include <sstream>
 #include "taskDelete.h"
 #include "parser.h"
 #include "commandRef.h"

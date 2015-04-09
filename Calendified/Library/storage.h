@@ -5,8 +5,8 @@
 #define STORAGE_H
 #include <iostream>
 #include <vector>
-#include "storageSort.h"
 #include "task.h"
+#include "storageSort.h"
 #include "timeAndDate.h"
 
 const std::string STORAGE_INFORMATION =

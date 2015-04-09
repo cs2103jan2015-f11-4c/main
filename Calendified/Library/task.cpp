@@ -10,7 +10,6 @@ task::task()
 	_location = "";
 	_isDone = false;
 	_isClash = false;
-	//_indexToBeActOn = NULL;
 }
 
 task::task(std::string taskType, std::string commandAction, timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash){
@@ -57,10 +56,6 @@ void task::setIsClash(bool isClash){
 	_isClash = isClash;
 }
 
-//void task::setIndexToBeActOn(int indexToBeActOn){
-	//_indexToBeActOn = indexToBeActOn;
-//}
-
 
 //getters
 std::string task::getTaskType(){
@@ -91,6 +86,3 @@ bool task::getIsClash(){
 	return _isClash;
 }
 
-//int task::getIndexToBeActOn(){
-	//return _indexToBeActOn;
-//}

@@ -1,14 +1,15 @@
 //@author A0114411B
-#pragma once
 
 #ifndef TASKDONE_H
 #define TASKDONE_H
+#pragma once
+
+#include <iostream>
+#include <vector>
 #include "task.h"
 #include "assert.h"
 #include "storage.h"
 #include "taskUndo.h"
-#include <vector>
-#include <iostream>
 
 std::string const MESSAGE_SUCCESS_DONE =
 	"Marked as done!";

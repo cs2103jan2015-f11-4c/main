@@ -1,15 +1,17 @@
-#pragma once
+
 #ifndef PARSER_H
 #define PARSER_H
+#pragma once
 
 #include <iostream>
+#include <sstream>
 #include <ctype.h>
 #include <time.h>
 #include <string>
-#include <sstream>
 #include <vector>
-#include "commandRef.h"
 #include <algorithm>
+#include "commandRef.h"
+
 
 const std::string DATE_DEADLINE_BY =
 	"by";

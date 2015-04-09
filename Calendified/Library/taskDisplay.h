@@ -1,8 +1,8 @@
 //author A0125489U
 #ifndef TASKDISPLAY_H
 #define TASKDISPLAY_H
-
 #pragma once
+
 #include <iostream>
 #include <vector>
 #include <assert.h>

@@ -1,7 +1,8 @@
 //@author shijia
-#pragma once
+
 #ifndef commandRef_H
 #define commandRef_H
+#pragma once
 
 #include <iostream>
 #include <string>
@@ -9,7 +10,6 @@
 #include <ctime>
 #include <sstream>
 #include <assert.h>
-#include "timeAndDate.h"
 
 class commandRef
 {

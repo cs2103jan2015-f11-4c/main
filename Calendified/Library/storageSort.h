@@ -3,8 +3,8 @@
 
 #ifndef STORAGESORT_H
 #define STORAGESORT_H
-#include <vector>
 #include <iostream>
+#include <vector>
 #include "task.h"
 
 class storageSort

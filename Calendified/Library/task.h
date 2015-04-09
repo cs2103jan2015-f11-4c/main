@@ -3,12 +3,9 @@
 #pragma once
 #ifndef TASK_H
 #define TASK_H
-
-
-#include "timeAndDate.h"
-#include <ctime>
-#include <string>
 #include <iostream>
+#include <string>
+#include "timeAndDate.h"
 
 class task
 {
@@ -20,7 +17,6 @@ private:
 	std::string _location;
 	bool _isDone;
 	bool _isClash;
-	//int _indexToBeActOn;
 
 
 public:
@@ -36,8 +32,6 @@ public:
 	void setLocation(std::string location);
 	void setIsDone(bool isDone);
 	void setIsClash(bool isClash);
-	//void setIndexToBeActOn(int indexToBeActOn);
-
 
 	//getters
 	std::string getTaskType();
@@ -47,7 +41,6 @@ public:
 	std::string getLocation();
 	bool getIsDone();
 	bool getIsClash();
-	//int getIndexToBeActOn();	
 };
 
 #endif
