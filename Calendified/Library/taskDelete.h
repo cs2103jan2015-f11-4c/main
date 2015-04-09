@@ -24,6 +24,9 @@ public:
 	~taskDelete(void);
 	
 	std::string executeDelete(int indexToBeDeleted);
+	bool isEmpty(std::vector<task> file);
+	bool isNotValidIndex(int indexToBeDeleted);
+	std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted);
 	void undoDelete(taskUndo* taskToBeUndone);
 };
 

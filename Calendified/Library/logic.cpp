@@ -98,16 +98,16 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markDone(indexToActOnStorage);		
-		//Add undo operation here
+		doneResults = newTaskDone.markDone(indexToActOnStorage);
+		newTaskDone.undoDone(&undoTask);
 		return doneResults;
 	case UNDONE:
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markUndone(indexToActOnStorage);		
-		//Add undo operation here
+		doneResults = newTaskDone.markUndone(indexToActOnStorage);	
+		newTaskDone.undoUndone(&undoTask);
 	case UNDO:
 		undoResults = undoTask.executeUndo();	
 		return undoResults;

@@ -3,7 +3,11 @@
 
 taskUndo::taskUndo(void){
 	storage readStorage;
-	std::vector<task> vectorStack = readStorage.readFileJson();
+	std::vector<task> vectorStack;
+	if(readStorage.isFileEmpty()){
+		readStorage.writeFileJson(vectorStack);
+	}
+	vectorStack = readStorage.readFileJson();
 	_currentStack.push(vectorStack);
 }
 

@@ -6,6 +6,7 @@
 #include "task.h"
 #include "assert.h"
 #include "storage.h"
+#include "taskUndo.h"
 #include <vector>
 #include <iostream>
 
@@ -29,7 +30,8 @@ public:
 	std::string markUndone(int indexToBeActOn);
 	std::vector<task> getListDone();
 	std::vector<task> getListUndone();
-
+	void undoDone(taskUndo* taskToBeUndone);
+	void undoUndone(taskUndo* taskToBeUndone);
 };
 
 #endif

@@ -34,26 +34,38 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 	file = newStorage.readFileJson();
 
 
-	if(file.empty()){
+	if(isEmpty(file)){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeDeleted < 0 || indexToBeDeleted > file.size()){
+	else if(isNotValidIndex(indexToBeDeleted)){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
 		assert(indexToBeDeleted >= 0);
-		task taskToBeDeleted;
-		taskToBeDeleted = file[indexToBeDeleted];
+		//task taskToBeDeleted;
+		//taskToBeDeleted = file[indexToBeDeleted];
 		try{
-			file.erase(file.begin()+indexToBeDeleted);
+			file = performDeleteTask(file,indexToBeDeleted);
 			newStorage.writeFileJson(file);
-			//updateSession(stringToBeDeleted); //a new function?
 			file.clear();
 			return MESSAGE_SUCCESS_DELETED;
 		}catch (const std::exception& e){
 			return MESSAGE_FAILURE_DELETE;
 		}
 	}
+}
+
+std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted){
+	file.erase(file.begin()+indexToBeDeleted);
+	return file;
+}
+
+bool taskDelete::isEmpty(std::vector<task> file){
+	return file.empty();
+}
+
+bool taskDelete::isNotValidIndex(int indexToBeDeleted){
+	return (indexToBeDeleted < 0);
 }
 
 void taskDelete::undoDelete(taskUndo* taskToBeUndone){

@@ -117,3 +117,15 @@ std::vector<task> taskDone::getListUndone(){
 		}
 	}
 }
+
+void taskDone::undoDone(taskUndo* taskToBeUndone){
+	storage storageFile;
+	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+	taskToBeUndone->insertVector(storageFile.readFileJson());
+}
+
+void taskDone::undoUndone(taskUndo* taskToBeUndone){
+	storage storageFile;
+	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+	taskToBeUndone->insertVector(storageFile.readFileJson());
+}
