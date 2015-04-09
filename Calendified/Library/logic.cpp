@@ -77,12 +77,12 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.setDisplayContent(emptyTaskList);
 		if(newParser.getCommandRef().getSearchItem().compare("done")==0
 			|| newParser.getCommandRef().getSearchItem().compare("taskdone")==0){
-				displayTodayResults = "RESULTS: \n" + displayTask.formatDisplayResults(newTaskDone.getListDone(),"timed!")
-					+ "FLOAT: \n"+displayTask.formatDisplayResults(newTaskDone.getListDone(),"float");
+				displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListDone()),"view");
+				displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListDone()));
 		} else if(newParser.getCommandRef().getSearchItem().compare("undone")==0
 			|| newParser.getCommandRef().getSearchItem().compare("taskundone")==0){
-				displayTodayResults = "RESULTS: \n" + displayTask.formatDisplayResults(newTaskDone.getListUndone(),"timed!")
-					+ "FLOAT: \n"+displayTask.formatDisplayResults(newTaskDone.getListUndone(),"float");
+			displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListUndone()),"view");
+				displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListUndone()));
 		} else{ 
 			displayTodayResults = displayTask.viewSearchList(newParser.getCommandRef().getSearchItem());
 		}
@@ -167,7 +167,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
 	std::string commandDelete = "delete";
-	std::string commandSearch = "Search";
+	std::string commandSearch = "search";
 	std::string commandDisplay = "display";
 	std::string commandDone = "done";
 	std::string commandUndone = "undone";
