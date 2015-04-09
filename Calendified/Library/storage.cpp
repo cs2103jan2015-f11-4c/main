@@ -1,16 +1,24 @@
 //@author A0114411B
 //
-//***************************************************************
-//              Storage.cpp										*
-//																*			
-// Description :												*
-// Storage class governs the creating and storing of the		*
-// folder of user's choice. It allows the reading and writing	*
-// of the storage text file. It will create a text file			*
-// if there is no storage to begin with. It also provide		* 
-// functions such as clear and search.							*
-//																*
-//***************************************************************
+//*******************************************************************************
+//                         Storage.cpp										
+//																			
+// Description :
+// Storage uses addtional library such as RapidJson to store information of the user. 
+// RapidJson allows the storing and retrieving of task objects in the text file. 
+//
+// Storage class is responsible for these actions:
+// 1) Creating text file from a specific path passed in.
+// 2) Setting and storing the current file path in a separate text file
+//    in the UI folder represented by "storageInformation.txt".
+// 3) Retrieving of the current file path from the storageInformation.txt
+//    for reading and writing of the current text file.
+// 4) Transferring of the text file from 1 location to another location,
+//    by creating a new textfile, moving of data and removing the old
+//    text file in the process. 
+// 5) Checks for exisiting database whenever the user opens the application.
+//
+//*******************************************************************************
 //
 #include "storage.h"
 #include "rapidjson/document.h"
@@ -26,14 +34,12 @@
 #include <fstream>
 #include <cstdio>
 
-
 using namespace rapidjson;
 
 storage::storage(void)
 {
 	_filePath = storage::retrieveFilePath();
 }
-
 
 storage::~storage(void)
 {
@@ -44,13 +50,13 @@ void storage::setFilePath(std::string filePath){
 }
 
 void storage::saveInformation(std::string filename){
-	std::ofstream writeFile("storageInformation.txt");
+	std::ofstream writeFile(STORAGE_INFORMATION);
 	writeFile << filename;
 	writeFile.close();
 }
 
 std::string storage::retrieveFilePath(){
-	std::ifstream retrieve("storageInformation.txt");
+	std::ifstream retrieve(STORAGE_INFORMATION);
 	std::string directory;
 	getline(retrieve,directory);
 	return directory;
@@ -77,11 +83,9 @@ void storage::transferDatabase(std::string newFileName){
 
 bool storage::isFileExist(){
 
-	if(retrieveFilePath() == "")
-	{
+	if(retrieveFilePath() == ""){
 		return false;
-	}
-	else {
+	} else {
 		return true;
 	}
 }
@@ -94,30 +98,10 @@ bool storage::isFileEmpty(){
 
 	if(data == ""){
 		return true;
-	} else{ 
+	} else { 
 		return false;
 	}
-
 }
-/*
-std::string storage::searchFile(std::string stringToBeSearched){
-std::vector<task> file;
-task taskInsideFile;
-std::ostringstream oss;
-file = readFileJson();
-if(file.empty()){
-return MESSAGE_FILE_EMPTY;
-}else{
-for(int i=0; i<file.size() ; i++){
-taskInsideFile = file[i];
-if(taskInsideFile.find(stringToBeSearched) != stringInsideFile.npos){
-oss << i+1 << ". " << stringInsideFile << std::endl;
-}
-}
-return oss.str();
-}
-}*/
-
 
 std::vector<task> storage::readFileJson(){
 	FILE* in = NULL;

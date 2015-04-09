@@ -9,6 +9,9 @@
 #include "task.h"
 #include "timeAndDate.h"
 
+const std::string STORAGE_INFORMATION =
+	"storageInformation.txt";
+
 const std::string MESSAGE_ERROR_FILE_IS_EMPTY =
 	"Error: File is empty.";
 
@@ -35,7 +38,6 @@ public:
 
 	std::vector<task> readFileJson();
 	void writeFileJson(std::vector<task> commandVector);
-	//std::string searchFile(std::string stringToBeSearched);
 
 	
 };

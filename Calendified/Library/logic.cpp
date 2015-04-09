@@ -54,6 +54,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	//Done operation variables
 	taskDone newTaskDone;
 	std::string undoResults = "";
+	//Undone operation variables
+	std::string undoneResults ="";
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
@@ -116,8 +118,9 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markUndone(indexToActOnStorage);	
+		undoneResults = newTaskDone.markUndone(indexToActOnStorage);	
 		newTaskDone.undoUndone(&undoTask);
+		return undoneResults;
 	case UNDO:
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
@@ -164,7 +167,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
 	std::string commandDelete = "delete";
-	std::string commandSearch = "search";
+	std::string commandSearch = "Search";
 	std::string commandDisplay = "display";
 	std::string commandDone = "done";
 	std::string commandUndone = "undone";

@@ -3,12 +3,18 @@
 #include "Calendified.h"
 #include "logic.h"
 
+std::string const WELCOME_MESSAGE =
+	"  **********************Welcome to Calendified!**********************\n"
+	"         To Start, first input your desired location of your database,\n "
+	"             or you can just click ok to save it in the default folder.\n"
+	"  Note: you can change your location of storage anytime you want.\n"
+	"  ***********************************************************************";
 
 std::string const REQUEST_CHANGE_LOCATION =
 	"/change location";
 
 std::string const MESSAGE_ERROR_INVALID_INPUT =
-	"Invalid command input, type '/help' to access the help page!";
+	"Invalid input - '/help' for Help Menu!";
 
 int const MAX_PATH = 999999;
 std::string const HELP_MAIN_MENU =
@@ -128,6 +134,8 @@ namespace UI {
 				//
 				//TODO: Add the constructor code here
 				//
+				std::string getHelpType(std::string inputCommandBox);
+				bool isValidInput(std::string inputCommandBox);
 				String^ getHTMLFilePath(std::string action);
 				void changeDirectory();
 			}	
@@ -612,7 +620,7 @@ namespace UI {
 				richTextBox_ListView->Text = gcnew String(displayResults[2].c_str());
 				updateRichTextBoxContent(richTextBox_ListView,displayResults[2],displayResults[1],displayResults[0]);
 			}
-			
+
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 try {
 					 if(e->KeyCode==Keys::Enter){
@@ -621,55 +629,12 @@ namespace UI {
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
 						 //@author A0114411B
-						 if(inputCommandBox.substr(0,1) == "/"){
-							 if(inputCommandBox == HELP_COMMAND_BACK){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_ADD){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_ADD));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_DELETE){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_DELETE));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_SEARCH));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_EDIT){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_EDIT));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_DONE){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_DONE));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_UNDO_OR_REDO){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_UNDO_REDO));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_LOCATION_DATABASE));
-							 }							
-							 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_HOTKEYS));
-							 }
-							 if(inputCommandBox == HELP_COMMAND_HELP){
-								 if(toggleCount == 0){ //Calendified 
-									 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
-									 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
-									 webBrowser_Help->Show();
-								 }else{ //Listview
-									 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
-									 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);
-									 webBrowser_Help->Show();
-								 }
-								 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
-							 }
+						 if(isValidInput(inputCommandBox)){
 							 if(inputCommandBox == HELP_COMMAND_CLOSE){
 								 webBrowser_Help->Hide();
+							 } else {
+								 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(inputCommandBox)));
 							 }
-							 else{
-								 String^ statusUpdate = gcnew String(MESSAGE_ERROR_INVALID_INPUT.c_str());
-								 label_status->Text = statusUpdate;
-							 }
-						 }else {
-							 webBrowser_Help->Hide();
 						 }
 
 						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
@@ -726,13 +691,78 @@ namespace UI {
 					 MessageBox::Show(systemString);
 				 }
 			 }
-	//@author A0114411B
+			 //@author A0114411B
+			 bool isValidInput(std::string inputCommandBox){
+				 if(inputCommandBox == HELP_COMMAND_ADD
+					 || inputCommandBox == HELP_COMMAND_BACK
+					 || inputCommandBox == HELP_COMMAND_CLOSE
+					 || inputCommandBox == HELP_COMMAND_DELETE
+					 || inputCommandBox == HELP_COMMAND_DONE
+					 || inputCommandBox == HELP_COMMAND_EDIT
+					 || inputCommandBox == HELP_COMMAND_HELP
+					 || inputCommandBox == HELP_COMMAND_HOTKEYS
+					 || inputCommandBox == HELP_COMMAND_LOCATION_DATABASE
+					 || inputCommandBox == HELP_COMMAND_UNDO_OR_REDO
+					 || inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
+						 return true;
+				 }else {
+					 return false;
+				 }
+			 }
+
+			 //@author A0114411B
+			 std::string getHelpType(std::string inputCommandBox){
+				 if(inputCommandBox == HELP_COMMAND_BACK){
+					 return HELP_MAIN_MENU;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_ADD){
+					 return HELP_ADD;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_DELETE){
+					 return HELP_DELETE;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_VIEW_SEARCH){
+					 return HELP_SEARCH;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_EDIT){
+					 return HELP_EDIT;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_DONE){
+					 return HELP_DONE;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_UNDO_OR_REDO){
+					 return HELP_UNDO_REDO;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_LOCATION_DATABASE){
+					 return HELP_LOCATION_DATABASE;
+				 }							
+				 if(inputCommandBox == HELP_COMMAND_HOTKEYS){
+					 return HELP_HOTKEYS;
+				 }
+				 if(inputCommandBox == HELP_COMMAND_HELP){
+					 if(toggleCount == 0){ //Calendified 
+						 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
+						 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
+						 webBrowser_Help->Show();
+
+					 }else{ //Listview
+						 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
+						 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);
+						 webBrowser_Help->Show();
+					 }
+					 return HELP_MAIN_MENU;
+				 }
+			 }
+
+			 //@author A0114411B
 	private: System::Void CalendifiedGUI_Load(System::Object^  sender, System::EventArgs^  e) {
 				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 
 				 logic newLogic;
 				 std::string directory = newLogic.newStorage.retrieveFilePath();
 				 if(directory == ""){
+					 String^ welcomeMessage = gcnew String(WELCOME_MESSAGE.c_str());
+					 MessageBox::Show(welcomeMessage);
 					 IO::Stream^ mystream;
 					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
 
@@ -740,7 +770,7 @@ namespace UI {
 					 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
 					 saveFileDialog1->FilterIndex = 2;
 					 saveFileDialog1->RestoreDirectory = true;
-					 saveFileDialog1->FileName = "";
+					 saveFileDialog1->FileName = "Calendified Storage";
 
 					 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 					 {
@@ -785,7 +815,7 @@ namespace UI {
 				 notifyBox->Text="0!";//need storage return num file;
 			 }
 
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void commandBox_Leave(System::Object^  sender, System::EventArgs^  e) {
 				 this->commandBox->Text="<Enter Your Command Here>";
 			 }
@@ -811,23 +841,23 @@ namespace UI {
 	private: System::Void toggleBox_Click(System::Object^  sender, System::EventArgs^  e) {
 				 toggle();
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void pictureBox_Help_MouseEnter(System::Object^  sender, System::EventArgs^  e) {
 				 contextMenuStrip_HelpContent->Show(pictureBox_Help,0,pictureBox_Help->Height);
 			 }
 	private: System::Void toggleBox_ListView_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 				 toggle();
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void contextMenuStrip_HelpContent_MouseLeave(System::Object^  sender, System::EventArgs^  e) {
 				 contextMenuStrip_HelpContent->Hide();
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void currentTime_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 DateTime datetime = DateTime::Now;
 				 this->label_currentTime->Text = "Current Time: " + datetime.ToString();
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
@@ -849,12 +879,12 @@ namespace UI {
 					 MessageBox::Show(systemString);
 				 }
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void changeDatabaseLocationToolStripMenuItem1_Click(System::Object^  sender, System::EventArgs^  e) {
 				 changeDirectory();
 			 }
 
-			//@author A0114411B
+			 //@author A0114411B
 			 String^ getHTMLFilePath(std::string htmlHelpDirectory){
 
 				 char path[MAX_PATH];
@@ -865,7 +895,7 @@ namespace UI {
 				 std::string htmlDirectory = directoryOfFolder + htmlHelpDirectory;
 				 return gcnew String(htmlDirectory.c_str());
 			 }
-			//@author A0114411B
+			 //@author A0114411B
 			 void changeDirectory(){
 				 logic newLogic; 
 				 IO::Stream^ mystream;
@@ -886,7 +916,7 @@ namespace UI {
 				 }
 			 }
 
-	//@author A0125489U
+			 //@author A0125489U
 	public: void flip(){
 				if(toggleCount ==0){
 					Graphics^ gfx = mainBg->CreateGraphics();
@@ -937,7 +967,7 @@ namespace UI {
 				 }
 
 			 }
-	//@author A0114411B
+			 //@author A0114411B
 	private: System::Void commandHelpToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 				 webBrowser_Help->Show();
 				 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
