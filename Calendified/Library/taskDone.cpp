@@ -103,7 +103,7 @@ std::vector<task> taskDone::getListUndone(){
 	} else {
 		int i;
 		for(i=0; i<undoneVector.size();i++){
-			if(undoneVector[i].getIsDone() == false){
+			if(undoneVector[i].getIsDone() == true){
 				undoneVector.erase(undoneVector.begin()+i);
 			}
 		}
