@@ -23,7 +23,7 @@
 enum commandType {
 	ADD, 
 	DELETE, 
-	VIEW,
+	SEARCH,
 	DISPLAY,
 	EDIT, 
 	DONE,

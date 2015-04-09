@@ -70,7 +70,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
 		deleteItem.undoDelete(&undoTask);		
 		return deleteResults;
-	case VIEW:
+	case SEARCH:
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		if(newParser.getCommandRef().getSearchItem().compare("done")==0
@@ -164,7 +164,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 commandType logic::hashCommandAction(std::string commandAction){
 	std::string commandAdd = "add";
 	std::string commandDelete = "delete";
-	std::string commandView = "view";
+	std::string commandSearch = "search";
 	std::string commandDisplay = "display";
 	std::string commandDone = "done";
 	std::string commandUndone = "undone";
@@ -184,8 +184,8 @@ commandType logic::hashCommandAction(std::string commandAction){
 	if(commandAction.compare(commandDelete) == 0){ 
 		return DELETE;
 	}
-	if(commandAction.compare(commandView) == 0){ 
-		return VIEW;
+	if(commandAction.compare(commandSearch) == 0){ 
+		return SEARCH;
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
 		return DISPLAY;
