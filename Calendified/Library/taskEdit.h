@@ -1,15 +1,16 @@
-#pragma once
+
 #ifndef TASKEDIT_H
 #define TASKEDIT_H
+#pragma once
 
-#include <string>
-#include <string>
 #include <iostream>
+#include <string>
 #include <vector>
+#include <assert.h>
 #include "storage.h"
 #include "taskUndo.h"
 #include "task.h"
-#include <assert.h>
+
 
 const std::string MESSAGE_SUCCESS_EDIT =
 	"Edited!";

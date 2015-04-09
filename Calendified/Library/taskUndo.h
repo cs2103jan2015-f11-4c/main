@@ -1,7 +1,9 @@
 //@author A0116027R
-#pragma once
+
 #ifndef TASKUNDO_H
 #define TASKUNDO_H
+#pragma once
+
 #include <stack>
 #include <vector>
 #include "task.h"
