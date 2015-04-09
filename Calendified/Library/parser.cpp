@@ -51,6 +51,12 @@ parser::parser(std::string commandLine){
 	if(_taskCommand == "delete"){
 		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 	}
+	if(_taskCommand == "done"){
+		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
+	}
+	if(_taskCommand == "undone"){
+		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
+	}
 
 	checkAndSetTaskType(commandLine);
 }
