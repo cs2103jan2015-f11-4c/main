@@ -80,10 +80,11 @@ int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int se
 std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList){
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
-		if(givenTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
+		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
 			givenTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
 			givenTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-			givenTaskList[i].getTimeAndDate().getStartTimeHour() == 0){
+			givenTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
+		if(givenTaskList[i].getTaskType().compare("FloatingTask")==0){
 				taskList.push_back(givenTaskList[i]);
 		}
 	}
@@ -95,10 +96,11 @@ std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList
 std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList){
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
-		if(givenTaskList[i].getTimeAndDate().getStartMDay() != 0 && 
+		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() != 0 && 
 			givenTaskList[i].getTimeAndDate().getStartMonth() != 0 && 
 			givenTaskList[i].getTimeAndDate().getStartYear() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){
+			givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){*/
+		if(givenTaskList[i].getTaskType().compare("TimedTask")==0){
 				taskList.push_back(givenTaskList[i]);
 		}
 	}
@@ -124,10 +126,11 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 	std::vector<task> allTaskList = _currentStorage.readFileJson();
 	if(sortType.compare(TYPE_FLOATTASK)==0){ //check if taskList is {float List}
 		for(int i =0;i < allTaskList.size();i++){
-			if(allTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
+			/*if(allTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
 				allTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
 				allTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-				allTaskList[i].getTimeAndDate().getStartTimeHour() == 0){
+				allTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
+			if(allTaskList[i].getTaskType().compare("FloatingTask")==0){
 					taskList.push_back(allTaskList[i]);
 			}
 		}
