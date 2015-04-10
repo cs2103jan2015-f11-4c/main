@@ -669,8 +669,7 @@ namespace UI {
 							 updateListView(displayResults);
 						 }
 
-						 commandBox->ResetText();				 				 				
-						 Windows::Forms::SendKeys::Send("{BACKSPACE}");
+						 commandBox->ResetText();				 				 										 Windows::Forms::SendKeys::Send("{BACKSPACE}");
 						 if(label_status->Text =="Toggled!"){ 
 							 toggle();
 						 }

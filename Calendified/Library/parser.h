@@ -11,6 +11,7 @@
 #include <vector>
 #include <algorithm>
 #include "commandRef.h"
+#include "timeAndDate.h"
 
 
 const std::string DATE_DEADLINE_BY =
@@ -35,12 +36,13 @@ public:
 	parser::parser(std::string commandLine);
 	~parser(void);
 	int getItemInInteger(std::string inputString);
-	std::string getItemsInString(std::string inputString, char itemType);
+	//std::string getItemsInString(std::string inputString, char itemType);
 	std::string getTaskCommand();
 	commandRef getCommandRef();
 	std::vector<std::string> detokenizeCommandLine(std::string);
 	void checkAndSetTaskType(std::string);
-
+	std::string constructItem(std::vector<std::string> dataContainor,int startPosition, int endPosition);
+	std::vector<std::string> parser::getCommandlineItem(std::string commandLine);
 };
 
 #endif

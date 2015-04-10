@@ -8,6 +8,7 @@ logic::logic(void){
 logic::~logic(void){
 }
 
+
 std::string logic::readCommand(std::string commandLine, int flipCount){
 	parser newParser(commandLine);
 	storage newStorage;
@@ -22,7 +23,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 
 	newTask.setCommandAction(newParser.getTaskCommand());
 	newTask.setTimeAndDate(newTimeAndDate);
-	newTask.setLocation(newParser.getItemsInString(commandLine,symbolLocation));
+	newTask.setLocation(currentCommandReference.getTaskLocation());
 	newTask.setTitle(currentCommandReference.getTaskTitle());
 	newTask.setTaskType(currentCommandReference.getTaskType());
 

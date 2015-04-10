@@ -348,6 +348,7 @@ bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth
 			return false;
 		}
 	}
+	return false;
 		
 /*
 	if(mday>=1 && mday<=31 && month>=1 && month<=12 && year>=1900 && year<=10000){
