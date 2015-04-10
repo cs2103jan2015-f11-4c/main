@@ -9,6 +9,9 @@ std::string const WELCOME_MESSAGE =
 	"  Note: you can change your location of storage anytime you want.\n"
 	"  ***********************************************************************";
 
+const std::string TYPE_UNDO 
+	= "undo";
+
 std::string const REQUEST_CHANGE_LOCATION =
 	"/change location";
 
@@ -101,7 +104,7 @@ namespace UI {
 					richTextBox_CalendifiedViewL->ResetText();
 					richTextBox_CalendifiedViewR->ResetText();
 					logic newLogic;
-					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateListView(displayResults);
 					label_status->Text = "List View Toggled!";
@@ -117,7 +120,7 @@ namespace UI {
 					richTextBox_CalendifiedViewR->Visible = true;
 					richTextBox_ListView->ResetText();
 					logic newLogic;			
-					std::string logicResult = newLogic.readCommand("display",flipCount);
+					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateCalendifiedView(displayResults);
 					mainBg->Visible  = true;	
@@ -650,14 +653,14 @@ namespace UI {
 						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
 
 						 String^ updateStatus = gcnew String(displayResult.c_str());
-						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
+						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {TYPE_DISPLAY,VIEW}
 							 label_status-> Text =  updateStatus;
 							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
 								 flip();
 								 flipCount++;
 							 }
-							 displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);	 
-						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
+							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);	 
+						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
@@ -687,13 +690,11 @@ namespace UI {
 					 } else if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
 						 try{
 							 logic newLogic;
-							 const std::string UNDO = "undo";
-							 const std::string DISPLAY = "display";
 							 flipCount=0;
-							 std::string results = newLogic.readCommand(UNDO,flipCount);
+							 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
 							 String^ statusUpdate = gcnew String(results.c_str());
 							 label_status->Text = statusUpdate;
-							 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+							 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 							 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 							 if(toggleCount == 0){ 
 								 updateCalendifiedView(displayResults);
@@ -717,7 +718,7 @@ namespace UI {
 								 flip();
 								 flipCount++;
 							 }
-							 displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);	 
+							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);	 
 						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
@@ -733,31 +734,30 @@ namespace UI {
 					 } else if(e->Control && e->KeyCode==Keys::S){//Shortcut for CTRL + S
 						 commandBox->Text = "search " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::Y){//Shortcut for CTRL + Y
-						//REDO not implemented yet
+						 //REDO not implemented yet
 						 /* try{
-							 logic newLogic;
-							 const std::string UNDO = "redo";
-							 const std::string DISPLAY = "display";
-							 flipCount=0;
-							 std::string results = newLogic.readCommand(UNDO,flipCount);
-							 String^ statusUpdate = gcnew String(results.c_str());
-							 label_status->Text = statusUpdate;
-							 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
-							 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
-							 if(toggleCount == 0){ 
-								 updateCalendifiedView(displayResults);
-							 }else{
-								 updateListView(displayResults);
-							 }
+						 logic newLogic;
+						 const std::string TYPE_REDO = "redo";
+						 flipCount=0;
+						 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
+						 String^ statusUpdate = gcnew String(results.c_str());
+						 label_status->Text = statusUpdate;
+						 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
+						 if(toggleCount == 0){ 
+						 updateCalendifiedView(displayResults);
+						 }else{
+						 updateListView(displayResults);
+						 }
 						 } catch(const std::exception& e) {
-							 String^ systemString = gcnew String(e.what()); 
-							 MessageBox::Show(systemString);
+						 String^ systemString = gcnew String(e.what()); 
+						 MessageBox::Show(systemString);
 						 }*/
 					 } else if(e->Control && e->KeyCode==Keys::E){//Shortcut for CTRL + E
 						 commandBox->Text = "edit " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::H){//Shortcut for CTRL + H
 						 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(HELP_COMMAND_HELP)));
-					 } else if(e->Control && e->KeyCode==Keys::W){//Shortcut for CTRL + W
+					 } else if(e->Control && e->KeyCode==Keys::W){//Shortcut for CTRL + W // exit
 						 Application::Exit();
 					 }
 
@@ -847,7 +847,7 @@ namespace UI {
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
-						 std::string logicResult = newLogic.readCommand("display",flipCount);
+						 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
@@ -869,8 +869,8 @@ namespace UI {
 				 } else{
 					 webBrowser_Help->Hide();
 					 logic newLogic;			
-					 std::string logicResult = newLogic.readCommand("display",flipCount);
-					 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand("display",flipCount),toggleCount,flipCount);
+					 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+					 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);
 					 if(toggleCount == 0){ //check for mode [calendified/list] view 
 						 updateCalendifiedView(displayResults);
 					 }else{
@@ -894,7 +894,7 @@ namespace UI {
 				 _sleep(500);
 				 logic newLogic;			
 				 flipCount=0;
-				 std::string logicResult = newLogic.readCommand("display",flipCount);
+				 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 				 if(toggleCount == 0){ //check for mode [calendified/list] view 
 					 updateCalendifiedView(displayResults);
@@ -927,13 +927,12 @@ namespace UI {
 	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
-					 const std::string UNDO = "undo";
-					 const std::string DISPLAY = "display";
+
 					 flipCount=0;
-					 std::string results = newLogic.readCommand(UNDO,flipCount);
+					 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
-					 std::string logicResult = newLogic.readCommand(DISPLAY,flipCount);
+					 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
 					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					 if(toggleCount == 0){ 
 						 updateCalendifiedView(displayResults);
