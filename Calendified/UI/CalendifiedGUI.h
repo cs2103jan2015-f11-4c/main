@@ -705,7 +705,7 @@ namespace UI {
 							 MessageBox::Show(systemString);
 						 }
 					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
-						 commandBox->Text = "delete";
+						 commandBox->Text = "delete " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::F){//Shortcut for CTRL + F
 						 logic newLogic;
 						 std::vector<std::string> displayResults;
@@ -727,11 +727,11 @@ namespace UI {
 							 updateListView(displayResults);
 						 }
 					 } else if(e->Control && e->KeyCode==Keys::A){//Shortcut for CTRL + A
-						 commandBox->Text = "add";
+						 commandBox->Text = "add " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::T){//Shortcut for CTRL + T
 						 toggle();
 					 } else if(e->Control && e->KeyCode==Keys::S){//Shortcut for CTRL + S
-						 commandBox->Text = "search";
+						 commandBox->Text = "search " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::Y){//Shortcut for CTRL + Y
 						//REDO not implemented yet
 						 /* try{
@@ -754,9 +754,11 @@ namespace UI {
 							 MessageBox::Show(systemString);
 						 }*/
 					 } else if(e->Control && e->KeyCode==Keys::E){//Shortcut for CTRL + E
-						 commandBox->Text = "edit";
+						 commandBox->Text = "edit " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::H){//Shortcut for CTRL + H
-						 commandBox->Text = "help";
+						 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(HELP_COMMAND_HELP)));
+					 } else if(e->Control && e->KeyCode==Keys::W){//Shortcut for CTRL + W
+						 Application::Exit();
 					 }
 
 				 } catch (const std::exception& e) {
