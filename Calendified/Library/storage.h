@@ -2,14 +2,22 @@
 
 #ifndef STORAGE_H
 #define STORAGE_H
+#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 
 #include <iostream>
 #include <vector>
+#include "rapidjson/document.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/filereadstream.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/filestream.h"
+#include "rapidjson/filewritestream.h"
 #include "easylogging++.h"
-#include "task.h"
 #include "storageSort.h"
 #include "timeAndDate.h"
+#include "task.h"
 
 const std::string STORAGE_INFORMATION =
 	"storageInformation.txt";

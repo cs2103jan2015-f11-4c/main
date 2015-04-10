@@ -4,7 +4,7 @@
 
 
 taskDisplay::taskDisplay(){
-	
+
 }
 
 taskDisplay::taskDisplay(storage inputStorage){
@@ -51,6 +51,10 @@ void taskDisplay::updateDisplayContent(std::vector<task> newDisplayContent){
 //This operation converts selectedIndex to StorageIndex
 int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex){
 	int storageIndex=-1;
+	if(selectedIndex > currentDisplayContent.size()
+		|| selectedIndex < 0){
+		return storageIndex;
+	}
 	assert(selectedIndex != NULL);
 	assert(selectedIndex >0);
 	selectedIndex = selectedIndex-1;
@@ -72,7 +76,7 @@ int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int se
 			currentDisplayContent[selectedIndex].getTimeAndDate().getEndTimeHour()==allTaskList[i].getTimeAndDate().getEndTimeHour() &&
 			currentDisplayContent[selectedIndex].getTimeAndDate().getEndTimeMin()==allTaskList[i].getTimeAndDate().getEndTimeMin()){
 				storageIndex=i;
-			}
+		}
 	}
 	return storageIndex;
 }
@@ -82,11 +86,11 @@ std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
 		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
-			givenTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
-			givenTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-			givenTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
+		givenTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
+		givenTaskList[i].getTimeAndDate().getStartYear() == 0 || 
+		givenTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
 		if(givenTaskList[i].getTaskType().compare("FloatingTask")==0){
-				taskList.push_back(givenTaskList[i]);
+			taskList.push_back(givenTaskList[i]);
 		}
 	}
 	updateDisplayContent(taskList);
@@ -98,11 +102,11 @@ std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
 		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartMonth() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartYear() != 0 && 
-			givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){*/
+		givenTaskList[i].getTimeAndDate().getStartMonth() != 0 && 
+		givenTaskList[i].getTimeAndDate().getStartYear() != 0 && 
+		givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){*/
 		if(givenTaskList[i].getTaskType().compare("TimedTask")==0){
-				taskList.push_back(givenTaskList[i]);
+			taskList.push_back(givenTaskList[i]);
 		}
 	}
 	updateDisplayContent(taskList);
@@ -128,11 +132,11 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 	if(sortType.compare(TYPE_FLOATTASK)==0){ //check if taskList is {float List}
 		for(int i =0;i < allTaskList.size();i++){
 			/*if(allTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
-				allTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
-				allTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-				allTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
+			allTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
+			allTaskList[i].getTimeAndDate().getStartYear() == 0 || 
+			allTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
 			if(allTaskList[i].getTaskType().compare("FloatingTask")==0){
-					taskList.push_back(allTaskList[i]);
+				taskList.push_back(allTaskList[i]);
 			}
 		}
 		updateDisplayContent(taskList);
@@ -163,7 +167,7 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 			taskDateMonth.compare(dateMonth)==0 &&
 			taskDateYear.compare(dateYear)==0 &&
 			taskDateTime.compare(dateTime)!=0){
-			taskList.push_back(allTaskList[i]);
+				taskList.push_back(allTaskList[i]);
 		}
 	}
 	updateDisplayContent(taskList);
@@ -206,32 +210,32 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 	int formatingIndex;
 	for(int i =0; i< taskList.size();i++){
 		formatingIndex = getDisplayIndex()+1;
-			formatTimeTaskResults += std::to_string(formatingIndex)+KEYWORD_DOT+KEYWORD_SPACE;
-			if(presentationType.compare(TYPE_VIEW)==0){
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMDay())+KEYWORD_DATE_SEPARATOR;
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMonth())+KEYWORD_DATE_SEPARATOR;
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartYear())+KEYWORD_SPACE;
-			}
-			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
-			if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
-				formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
-			} else {
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
-			}
-			formatTimeTaskResults += KEYWORD_TILDE+KEYWORD_SPACE;
-			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeHour())+KEYWORD_COLON;
-			if(std::to_string(taskList[i].getTimeAndDate().getEndTimeMin()).length() == 1){
-				formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
-			} else {
-				formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
-			}
-			formatTimeTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
-			if(taskList[i].getLocation().compare("")!=0){
-				formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation();
-			}
-			formatTimeTaskResults+=KEYWORD_NEWLINE;
-			setDisplayIndex(formatingIndex);
+		formatTimeTaskResults += std::to_string(formatingIndex)+KEYWORD_DOT+KEYWORD_SPACE;
+		if(presentationType.compare(TYPE_VIEW)==0){
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMDay())+KEYWORD_DATE_SEPARATOR;
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMonth())+KEYWORD_DATE_SEPARATOR;
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartYear())+KEYWORD_SPACE;
 		}
+		formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeHour())+KEYWORD_COLON;
+		if(std::to_string(taskList[i].getTimeAndDate().getStartTimeMin()).length() == 1){
+			formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
+		} else {
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
+		}
+		formatTimeTaskResults += KEYWORD_TILDE+KEYWORD_SPACE;
+		formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeHour())+KEYWORD_COLON;
+		if(std::to_string(taskList[i].getTimeAndDate().getEndTimeMin()).length() == 1){
+			formatTimeTaskResults += TYPE_EMPTY+std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
+		} else {
+			formatTimeTaskResults += std::to_string(taskList[i].getTimeAndDate().getEndTimeMin())+KEYWORD_SPACE;
+		}
+		formatTimeTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
+		if(taskList[i].getLocation().compare("")!=0){
+			formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation();
+		}
+		formatTimeTaskResults+=KEYWORD_NEWLINE;
+		setDisplayIndex(formatingIndex);
+	}
 	return formatTimeTaskResults;
 }
 
@@ -506,8 +510,8 @@ std::string taskDisplay::searchBefore(std::string searchItem){
 			}
 		}
 	}
-		searchResults = formatSearchResults(searchList);
-		return searchResults;	
+	searchResults = formatSearchResults(searchList);
+	return searchResults;	
 }
 
 
@@ -545,8 +549,8 @@ std::string taskDisplay::searchAfter(std::string searchItem){
 			}
 		}
 	}
-		searchResults = formatSearchResults(searchList);
-		return searchResults;
+	searchResults = formatSearchResults(searchList);
+	return searchResults;
 }
 //This operation search the all existing data w.r.t. the search Item input
 std::vector<task> taskDisplay::searchExact(std::string searchItem){
@@ -584,7 +588,7 @@ std::vector<task> taskDisplay::searchExact(std::string searchItem){
 			std::to_string(allTaskListLower[i].getTimeAndDate().getStartMonth()).find(searchItem) != std::string::npos || 
 			std::to_string(allTaskListLower[i].getTimeAndDate().getStartYear()).find(searchItem) != std::string::npos){
 				searchList.push_back(allTaskList[i]);
-			}
+		}
 	}
 	return searchList;
 }

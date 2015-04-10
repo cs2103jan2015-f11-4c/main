@@ -62,7 +62,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	//Redo operation variables
 	static taskRedo redoTask;
 	std::string redoResults = "";
-	
+
 	//@author A0125489U	
 
 	switch(hashCommandAction(newParser.getTaskCommand())){
@@ -79,9 +79,13 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
-		deleteItem.undoDelete(&undoTask);		
-		return deleteResults;
+		if(indexToActOnStorage < 0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		} else { 
+			deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
+			deleteItem.undoDelete(&undoTask);		
+			return deleteResults;
+		}
 	case COMMAND_SEARCH:
 		LOG(INFO) << "Entered COMMAND_SEARCH";
 		displayTask.updateStorageSource();
@@ -126,10 +130,14 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent, indexToActOnDisplay);
-		editItem.setEditingRef(newTask);
-		editResults = editItem.executeEdit(indexToActOnStorage);
-		editItem.undoEdit(&undoTask);
-		return editResults;
+		if(indexToActOnStorage < 0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		} else {
+			editItem.setEditingRef(newTask);
+			editResults = editItem.executeEdit(indexToActOnStorage);
+			editItem.undoEdit(&undoTask);
+			return editResults;
+		}
 	case COMMAND_DONE:
 		LOG(INFO) << "Entered COMMAND_DONE";
 		displayTask.updateStorageSource();
@@ -169,7 +177,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	default:
 		LOG(INFO) << "Entered COMMAND_DEFAULT";
 		return "";
-	return "";
+		return "";
 	}
 }
 

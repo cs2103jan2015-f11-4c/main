@@ -134,9 +134,10 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 	if(newStorage.isFileExist()){	
 		storageTasks = newStorage.readFileJson();
 		if(storageTasks.empty()){
-			return MESSAGE_ERROR_EDIT_FILE_IS_EMPTY;
-		} else if(indexToBeEdited > storageTasks.size()){
-			return MESSAGE_ERROR_EDIT_ITEM_NOT_FOUND;
+			return MESSAGE_ERROR_FILE_IS_EMPTY;
+		} else if(indexToBeEdited > storageTasks.size()
+			|| indexToBeEdited < 0){
+			return MESSAGE_ERROR_INVALID_INDEX;
 		} else {
 			assert(indexToBeEdited>=0);
 			task taskToBeEdited = storageTasks[indexToBeEdited];

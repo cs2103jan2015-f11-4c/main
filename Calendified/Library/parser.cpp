@@ -59,7 +59,9 @@ parser::parser(std::string commandLine){
 	if(_taskCommand == "undone"){
 		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 	}
-
+	if(_taskCommand == "edit"){
+		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
+	}
 	checkAndSetTaskType(commandLine);
 }
 

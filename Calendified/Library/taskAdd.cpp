@@ -13,8 +13,10 @@ std::string taskAdd::executeAdd(){
 	LOG(INFO) << "Entered class: taskAdd. Function: executeAdd";
 	storage storageFile;
 	std::vector<task> taskStorage;
-	
-	if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
+
+	if(_task.getTitle() == ""){
+		return MESSAGE_FAILURE_ADD;
+	}else if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
 		if(storageFile.isFileEmpty()){
 			storageFile.writeFileJson(taskStorage);
 		}
