@@ -10,6 +10,7 @@ taskAdd::~taskAdd(void)
 }
 
 std::string taskAdd::executeAdd(){
+	LOG(INFO) << "Entered class: taskAdd. Function: executeAdd";
 	storage storageFile;
 	std::vector<task> taskStorage;
 	
@@ -20,6 +21,7 @@ std::string taskAdd::executeAdd(){
 		taskStorage = storageFile.readFileJson();
 
 		bool clash = isClash(taskStorage);
+		LOG_IF(clash,INFO) << "Is Clash detected!";
 		try {
 			taskStorage.push_back(_task);
 			storageFile.writeFileJson(taskStorage);
@@ -40,10 +42,6 @@ void taskAdd::undoAdd(taskUndo* taskToBeUndone){
 	storage storageFile;
 	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
 	taskToBeUndone->insertVector(storageFile.readFileJson());
-}
-
-void taskAdd::taskAddRecurrent(){
-
 }
 
 void taskAdd::setTask(task newTask){
@@ -134,6 +132,7 @@ bool isBothTimesClash(task newTask, task storedTask){
 }
 
 bool taskAdd::isClash(std::vector<task> &taskStorage){
+	LOG(INFO) << "Entered class: taskAdd. Function: isClash";
 	for(int i=0; i<taskStorage.size(); i++){
 		if(isValidConditions(_task, taskStorage[i])){
 			if(isEndDateClash(_task, taskStorage[i]) && isEndTimeClash(_task, taskStorage[i])){

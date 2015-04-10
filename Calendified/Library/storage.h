@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include "easylogging++.h"
 #include "task.h"
 #include "storageSort.h"
 #include "timeAndDate.h"
@@ -27,7 +28,7 @@ private:
 public:
 	storage(void);
 	~storage(void);
-	
+
 	void setFilePath(std::string filePath);
 	void saveInformation(std::string filename);
 	std::string retrieveFilePath();
@@ -40,7 +41,7 @@ public:
 	std::vector<task> readFileJson();
 	void writeFileJson(std::vector<task> commandVector);
 
-	
+
 };
 
 #endif

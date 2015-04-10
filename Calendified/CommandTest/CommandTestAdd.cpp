@@ -13,10 +13,9 @@ namespace CommandTestAdd
 
 		TEST_METHOD(CommandTestAdd_taskAddTask)
 		{
-			std::string expectedResult = "Added succesfully!";
-			std::string fail = "Task not added. Please try again.";
-			std::string testTaskTypeM = "main";
-			std::string testTaskTypeF = "float"; 
+			std::string expectedResult = MESSAGE_SUCCESS_ADD;
+			std::string expectedFail = MESSAGE_FAILURE_ADD;
+			std::string inputTaskType = TIMED_TASK;
 			std::string testStringM = "13/03/2015 13:00 visit school @utown";
 			std::string testStringF = "visit school";
 

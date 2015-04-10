@@ -7,6 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <assert.h>
+#include "easylogging++.h"
 #include "logic.h"
 #include "storage.h"
 #include "taskUndo.h"
@@ -30,7 +31,6 @@ public:
 	~taskAdd(void);
 	std::string executeAdd();
 	void undoAdd(taskUndo* taskToBeUndone);
-	void taskAddRecurrent();
 	void setTask(task taskString);
 	bool isClash(std::vector<task> &storageVector);
 };

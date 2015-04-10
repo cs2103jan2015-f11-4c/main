@@ -5,6 +5,7 @@
 #pragma once
 
 #include <vector>
+#include "easylogging++.h"
 #include "storage.h"
 #include "taskUndo.h"
 

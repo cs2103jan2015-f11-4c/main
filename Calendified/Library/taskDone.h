@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <vector>
+#include "easylogging++.h"
 #include "task.h"
 #include "assert.h"
 #include "storage.h"

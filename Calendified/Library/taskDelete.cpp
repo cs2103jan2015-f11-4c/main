@@ -27,13 +27,14 @@ taskDelete::~taskDelete(void)
 
 // Add file type to parameter once the code is stable
 std::string taskDelete::executeDelete(int indexToBeDeleted){
+	LOG(INFO) << "Entered class: taskDelete. Function: executeDelete";
 	char buffer[999];
 	std::vector<task> file;
 
 	storage newStorage;
 	file = newStorage.readFileJson();
 
-
+	LOG_IF(file.empty(),INFO) << MESSAGE_ERROR_FILE_IS_EMPTY;
 	if(isEmpty(file)){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
@@ -42,8 +43,6 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 	}
 	else{
 		assert(indexToBeDeleted >= 0);
-		//task taskToBeDeleted;
-		//taskToBeDeleted = file[indexToBeDeleted];
 		try{
 			file = performDeleteTask(file,indexToBeDeleted);
 			newStorage.writeFileJson(file);

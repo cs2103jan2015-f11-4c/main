@@ -3,9 +3,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace CommandTestView
+namespace CommandTestSearch
 {		
-	TEST_CLASS(CommandTestView)
+	TEST_CLASS(CommandTestSearch)
 	{
 	public:
 		

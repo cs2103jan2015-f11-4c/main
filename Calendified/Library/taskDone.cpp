@@ -14,6 +14,7 @@ taskDone::~taskDone(void)
 
 
 std::string taskDone::markDone(int indexToBeActOn){
+	LOG(INFO) << "Entered class: taskDone. Function: markDone";
 	std::vector<task> storageVector;
 	storage newStorage;
 
@@ -46,6 +47,7 @@ std::string taskDone::markDone(int indexToBeActOn){
 }
 
 std::string taskDone::markUndone(int indexToBeActOn){
+	LOG(INFO) << "Entered class: taskDone. Function: markUndone";
 	std::vector<task> storageVector;
 	storage newStorage;
 
@@ -78,6 +80,7 @@ std::string taskDone::markUndone(int indexToBeActOn){
 }
 
 std::vector<task> taskDone::getListDone(){
+	LOG(INFO) << "Entered class: taskDone. Function: getListDone";
 	std::vector<task> doneVector;
 	storage newStorage;
 	doneVector = newStorage.readFileJson();
@@ -102,6 +105,7 @@ std::vector<task> taskDone::getListDone(){
 }
 
 std::vector<task> taskDone::getListUndone(){
+	LOG(INFO) << "Entered class: taskDone. Function: getListUndone";
 	std::vector<task> undoneVector;
 	storage newStorage;
 	undoneVector = newStorage.readFileJson();

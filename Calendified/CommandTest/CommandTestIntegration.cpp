@@ -39,11 +39,11 @@ namespace CommandTestIntegration
 			Assert::AreEqual(expectedTaskCommandAction,actualTaskCommandAction);
 			
 			//commandType test to identify the expected commandType DISPLAY
-			commandType expectedCommandType = DISPLAY;
+			commandType expectedCommandType = COMMAND_DISPLAY;
 			std::string expectedCommandTypeString = expectedCommandAction.c_str();
 			commandType actualCommandType = newLogic.hashCommandAction(newParser.getTaskCommand());
 			std::string actualCommandTypeString;
-			if(actualCommandType == DISPLAY){
+			if(actualCommandType == COMMAND_DISPLAY){
 				actualCommandTypeString="display";
 			}
 			Assert::AreEqual(expectedCommandTypeString,actualCommandTypeString);

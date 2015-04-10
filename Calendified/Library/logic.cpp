@@ -66,13 +66,15 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	//@author A0125489U	
 
 	switch(hashCommandAction(newParser.getTaskCommand())){
-	case ADD:
+	case COMMAND_ADD:
+		LOG(INFO) << "Entered COMMAND_ADD";
 		addTask.setTask(newTask);
 		addResults = addTask.executeAdd(); 
 		addTask.undoAdd(&undoTask);
 		return addResults;
-	case DELETE:
+	case COMMAND_DELETE:
 		//get current DisplayIndex using displayTask.getStorageIndex
+		LOG(INFO) << "Entered COMMAND_DELETE";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -80,7 +82,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
 		deleteItem.undoDelete(&undoTask);		
 		return deleteResults;
-	case SEARCH:
+	case COMMAND_SEARCH:
+		LOG(INFO) << "Entered COMMAND_SEARCH";
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		searchItem = newParser.getCommandRef().getSearchItem();
@@ -108,7 +111,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		}
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults;
-	case DISPLAY:		
+	case COMMAND_DISPLAY:
+		LOG(INFO) << "Entered COMMAND_DISPLAY";
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		displayTodayResults = displayTask.displayToday(flipCount);
@@ -116,7 +120,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayFloatResults += displayTask.displayFloatDay(flipCount);
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
-	case EDIT:	
+	case COMMAND_EDIT:	
+		LOG(INFO) << "Entered COMMAND_EDIT";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -125,7 +130,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		editResults = editItem.executeEdit(indexToActOnStorage);
 		editItem.undoEdit(&undoTask);
 		return editResults;
-	case DONE:
+	case COMMAND_DONE:
+		LOG(INFO) << "Entered COMMAND_DONE";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -133,7 +139,8 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		doneResults = newTaskDone.markDone(indexToActOnStorage);
 		newTaskDone.undoDone(&undoTask);
 		return doneResults;
-	case UNDONE:
+	case COMMAND_UNDONE:
+		LOG(INFO) << "Entered COMMAND_UNDONE";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -141,20 +148,26 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		undoneResults = newTaskDone.markUndone(indexToActOnStorage);	
 		newTaskDone.undoUndone(&undoTask);
 		return undoneResults;
-	case UNDO:
+	case COMMAND_UNDO:
+		LOG(INFO) << "Entered COMMAND_UNDO";
 		redoTask.redo(undoTask);
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
-	case FLIP:
+	case COMMAND_FLIP:
+		LOG(INFO) << "Entered COMMAND_FLIP";
 		return "Flipped!";
-	case SPECIFY:
+	case COMMAND_SPECIFY:
+		LOG(INFO) << "Entered COMMAND_SPECIFY";
 		return "";
-	case REDO:
+	case COMMAND_REDO:
+		LOG(INFO) << "Entered COMMAND_REDO";
 		redoResults = redoTask.executeRedo(&undoTask);
 		return "";
-	case TOGGLE:
+	case COMMAND_TOGGLE:
+		LOG(INFO) << "Entered COMMAND_TOGGLE";
 		return "Toggled!";	
 	default:
+		LOG(INFO) << "Entered COMMAND_DEFAULT";
 		return "";
 	return "";
 	}
@@ -163,6 +176,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 //author A0125489U
 
 std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex, int flipCount){
+	LOG(INFO) << "Entered updateUI";
 	taskDisplay displayTask;
 	std::string displayLeft;
 	std::string displayRight;
@@ -205,42 +219,42 @@ commandType logic::hashCommandAction(std::string commandAction){
 	transform(commandAction.begin(),commandAction.end(),commandAction.begin(),tolower);
 
 	if(commandAction.compare(commandAdd) == 0){ 
-		return ADD;
+		return COMMAND_ADD;
 	}
 	if(commandAction.compare(commandDelete) == 0){ 
-		return DELETE;
+		return COMMAND_DELETE;
 	}
 	if(commandAction.compare(commandSearch) == 0){ 
-		return SEARCH;
+		return COMMAND_SEARCH;
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
-		return DISPLAY;
+		return COMMAND_DISPLAY;
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
-		return EDIT;
+		return COMMAND_EDIT;
 	}
 	if(commandAction.compare(commandDone) == 0){
-		return DONE;
+		return COMMAND_DONE;
 	}
 	if(commandAction.compare(commandUndone) == 0){
-		return UNDONE;
+		return COMMAND_UNDONE;
 	}
 	if(commandAction.compare(commandUndo) == 0){ 
-		return UNDO;
+		return COMMAND_UNDO;
 	}
 	if(commandAction.compare(commandFlip) == 0){ 
-		return FLIP;
+		return COMMAND_FLIP;
 	}
 	if(commandAction.compare(commandSpecify) == 0){ 
-		return SPECIFY;
+		return COMMAND_SPECIFY;
 	}
 	if(commandAction.compare(commandRedo) == 0){ 
-		return REDO;
+		return COMMAND_REDO;
 	}
 	if(commandAction.compare(commandToggle) == 0){ 
-		return TOGGLE;
+		return COMMAND_TOGGLE;
 	}
 	if(commandAction.compare(commandCheckDone) == 0){ 
-		return DONE;
+		return COMMAND_DONE;
 	}
 }

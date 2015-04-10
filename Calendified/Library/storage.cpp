@@ -51,6 +51,7 @@ void storage::setFilePath(std::string filePath){
 }
 
 void storage::saveInformation(std::string filename){
+	LOG(INFO) << "Entered class: storage. Remarks: new file path is being saved.";
 	std::ofstream writeFile(STORAGE_INFORMATION);
 	writeFile << filename;
 	writeFile.close();
@@ -105,6 +106,7 @@ bool storage::isFileEmpty(){
 }
 
 std::vector<task> storage::readFileJson(){
+	LOG(INFO) << "Entered class: storage. Function: readFileJson";
 	FILE* in = NULL;
 	in = fopen(_filePath.c_str(), "r");
 	char buffer[65536];
@@ -209,7 +211,7 @@ std::vector<task> storage::readFileJson(){
 }
 
 void storage::writeFileJson(std::vector<task> commandVector){
-
+	LOG(INFO) << "Entered class: storage. Function: writeFileJson";
 	storageSort sort;
 	commandVector = sort.sortvector(commandVector);
 
