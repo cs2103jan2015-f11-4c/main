@@ -1,8 +1,9 @@
 //@author A0114411B
 
-#pragma once
 #ifndef STORAGE_H
 #define STORAGE_H
+#pragma once
+
 #include <iostream>
 #include <vector>
 #include "task.h"
