@@ -40,6 +40,9 @@
     <ClCompile Include="taskUndo.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="taskRedo.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="logic.h">
@@ -79,6 +82,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="taskUndo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taskRedo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

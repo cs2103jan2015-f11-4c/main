@@ -551,20 +551,38 @@ std::string taskDisplay::searchAfter(std::string searchItem){
 //This operation search the all existing data w.r.t. the search Item input
 std::vector<task> taskDisplay::searchExact(std::string searchItem){
 	std::vector<task> allTaskList;
+	std::vector<task> allTaskListLower;
 	std::vector<task> searchList;
 	int searchResultsIndex=0;
 	std::string searchResults; 
+	std::string tempLowerStr;
 	if(_currentStorage.isFileEmpty()){
 		searchItem ="";
 		return searchList;
 	}
 	allTaskList = _currentStorage.readFileJson();
-	for(int i =0; i< allTaskList.size();i++){ //populate the the vector with revelant search results
-		if(allTaskList[i].getTitle().find(searchItem) != std::string::npos || 
-			allTaskList[i].getLocation().find(searchItem) != std::string::npos || 
-			std::to_string(allTaskList[i].getTimeAndDate().getStartMDay()).find(searchItem) != std::string::npos || 
-			std::to_string(allTaskList[i].getTimeAndDate().getStartMonth()).find(searchItem) != std::string::npos || 
-			std::to_string(allTaskList[i].getTimeAndDate().getStartYear()).find(searchItem) != std::string::npos){
+	allTaskListLower = allTaskList;
+	//Transform to lower case
+	for(int i =0; i < allTaskList.size(); i++){
+		tempLowerStr = allTaskList[i].getLocation();
+		std::transform(tempLowerStr.begin(), tempLowerStr.end(), tempLowerStr.begin(), ::tolower);
+		allTaskListLower[i].setLocation(tempLowerStr);
+		tempLowerStr = allTaskList[i].getTitle();
+		std::transform(tempLowerStr.begin(), tempLowerStr.end(), tempLowerStr.begin(), ::tolower);
+		allTaskListLower[i].setTitle(tempLowerStr);
+	}
+	for(int i =0; i< allTaskListLower.size();i++){ //populate the the vector with revelant search results
+		std::string tempTitle = allTaskListLower[i].getTitle();
+		std::string tempLocation = allTaskListLower[i].getLocation();
+		int tempDay = allTaskListLower[i].getTimeAndDate().getStartMDay();
+		int tempMonth = allTaskListLower[i].getTimeAndDate().getStartMonth();
+		int tempYear = allTaskListLower[i].getTimeAndDate().getStartYear();
+
+		if(allTaskListLower[i].getTitle().find(searchItem) != std::string::npos || 
+			allTaskListLower[i].getLocation().find(searchItem) != std::string::npos || 
+			std::to_string(allTaskListLower[i].getTimeAndDate().getStartMDay()).find(searchItem) != std::string::npos || 
+			std::to_string(allTaskListLower[i].getTimeAndDate().getStartMonth()).find(searchItem) != std::string::npos || 
+			std::to_string(allTaskListLower[i].getTimeAndDate().getStartYear()).find(searchItem) != std::string::npos){
 				searchList.push_back(allTaskList[i]);
 			}
 	}

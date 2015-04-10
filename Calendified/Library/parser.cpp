@@ -17,7 +17,7 @@ parser::parser(std::string commandLine){
 
 	//A0125489U
 	//This method determine the 1st index of any non-alphanumeric character (exclude blankspace too)
-	std::size_t found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz1234567890 ");
+	std::size_t found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890 ");
 	//This operator determine whether the commandLine contains any symbol
 	std::size_t index = commandLine.find_first_of("1234567890");
 	if(found != std::string::npos){
