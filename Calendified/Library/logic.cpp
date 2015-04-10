@@ -43,7 +43,9 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	static taskDisplay displayTask;
 	std::string displayTodayResults = "";
 	std::string displayNextDayResults = "";
+	//Edit operation variables
 	std::string editResults = "";
+	//Done and Undone operation variables
 	std::string checkDoneResults = "";
 	std::string displayFloatResults = "FLOAT";
 	std::string doneResults = "";
@@ -56,7 +58,11 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	taskDone newTaskDone;
 	std::string undoResults = "";
 	//Undone operation variables
-	std::string undoneResults ="";
+	std::string undoneResults = "";
+	//Redo operation variables
+	static taskRedo redoTask;
+	std::string redoResults = "";
+	
 	//@author A0125489U	
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
@@ -135,6 +141,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		newTaskDone.undoUndone(&undoTask);
 		return undoneResults;
 	case UNDO:
+		redoTask.redo(undoTask);
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
 	case FLIP:
@@ -142,6 +149,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	case SPECIFY:
 		return "";
 	case REDO:
+		redoResults = redoTask.executeRedo(&undoTask);
 		return "";
 	case TOGGLE:
 		return "Toggled!";	

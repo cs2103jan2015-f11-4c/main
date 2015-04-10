@@ -34,6 +34,10 @@ void taskUndo::insertVector(std::vector<task> vectorTasks){
 	_currentStack.push(vectorTasks);
 }
 
+void taskUndo::insertSessionVector(std::vector<task> vectorTasks){
+	_sessionStack.push(vectorTasks);
+}
+
 bool taskUndo::isNotEmpty(std::stack<std::vector<task>> vectorTasks){
 	if (vectorTasks.empty()){
 		return false;
@@ -54,7 +58,7 @@ bool taskUndo::isUndone(){
 }
 
 std::string taskUndo::undoResults(){
-	std::string successMessage = "Undone successfully.";
+	std::string successMessage = "Undo successfully.";
 	std::string failureMessage = "Fail to undo.";
 
 	if(isUndone()){

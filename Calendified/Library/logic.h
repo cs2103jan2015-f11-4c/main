@@ -16,6 +16,7 @@
 #include "taskUndo.h"
 #include "taskDisplay.h"
 #include "taskDone.h"
+#include "taskRedo.h"
 
 enum commandType {
 	ADD, 
