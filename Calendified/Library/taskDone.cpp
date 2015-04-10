@@ -30,10 +30,14 @@ std::string taskDone::markDone(int indexToBeActOn){
 		try{
 			task newTask;
 			newTask = storageVector[indexToBeActOn];
-			newTask.setIsDone(true);
-			storageVector[indexToBeActOn] = newTask;
-			newStorage.writeFileJson(storageVector);
-			return MESSAGE_SUCCESS_DONE;
+			if(newTask.getIsDone() == true){
+				return MESSAGE_ERROR_ALREADY_DONE;
+			} else {
+				newTask.setIsDone(true);
+				storageVector[indexToBeActOn] = newTask;
+				newStorage.writeFileJson(storageVector);
+				return MESSAGE_SUCCESS_DONE;
+			}
 
 		} catch (const std::exception& e){
 			throw(e.what());
@@ -58,16 +62,19 @@ std::string taskDone::markUndone(int indexToBeActOn){
 		try{
 			task newTask;
 			newTask = storageVector[indexToBeActOn];
-			newTask.setIsDone(false);
-			storageVector[indexToBeActOn] = newTask;
-			newStorage.writeFileJson(storageVector);
-			return MESSAGE_SUCCESS_DONE;
+			if(newTask.getIsDone() == false){
+				return MESSAGE_ERROR_ALREADY_UNDONE;
+			} else {
+				newTask.setIsDone(false);
+				storageVector[indexToBeActOn] = newTask;
+				newStorage.writeFileJson(storageVector);
+				return MESSAGE_SUCCESS_UNDONE;
+			}
 
 		} catch (const std::exception& e){
 			throw(e.what());
 		}
 	}
-
 }
 
 std::vector<task> taskDone::getListDone(){
@@ -76,16 +83,17 @@ std::vector<task> taskDone::getListDone(){
 	doneVector = newStorage.readFileJson();
 
 	if(doneVector.empty()){
-		throw MESSAGE_ERROR_FILE_IS_EMPTY;
+		return doneVector;
 	} else {
 		int i;
-		for(i=0; i<doneVector.size();i++){
-			if(doneVector[i].getIsDone() == false){
-				doneVector.erase(doneVector.begin()+i);
+		for(i=1; i<=doneVector.size(); i++){
+			if(doneVector[i-1].getIsDone() == false){
+				doneVector.erase(doneVector.begin()+i-1);
+				i=0;
 			}
 		}
 		if(doneVector.empty()){
-			throw MESSAGE_ERROR_NO_TASK_DONE;
+			return doneVector;
 		} else{
 			assert(!doneVector.empty());
 			return doneVector;
@@ -99,16 +107,16 @@ std::vector<task> taskDone::getListUndone(){
 	undoneVector = newStorage.readFileJson();
 
 	if(undoneVector.empty()){
-		throw MESSAGE_ERROR_FILE_IS_EMPTY;
+		return undoneVector;
 	} else {
 		int i;
-		for(i=0; i<undoneVector.size();i++){
-			if(undoneVector[i].getIsDone() == true){
-				undoneVector.erase(undoneVector.begin()+i);
+		for(i=1; i<=undoneVector.size();i++){
+			if(undoneVector[i-1].getIsDone() == true){
+				undoneVector.erase(undoneVector.begin()+i-1);
 			}
 		}
 		if(undoneVector.empty()){
-			throw MESSAGE_ERROR_NO_TASK_UNDONE;
+			return undoneVector;
 		} else{
 			assert(!undoneVector.empty());
 			return undoneVector;

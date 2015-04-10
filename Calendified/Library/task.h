@@ -1,8 +1,9 @@
 //@author A0114411B
 
-#pragma once
 #ifndef TASK_H
 #define TASK_H
+#pragma once
+
 #include <iostream>
 #include <string>
 #include "timeAndDate.h"

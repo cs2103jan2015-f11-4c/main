@@ -23,6 +23,12 @@ std::string const MESSAGE_ERROR_NO_TASK_DONE =
 std::string const MESSAGE_ERROR_NO_TASK_UNDONE =
 	"Error: No task undone.";
 
+std::string const MESSAGE_ERROR_ALREADY_DONE =
+	"Error: Task already done!";
+
+std::string const MESSAGE_ERROR_ALREADY_UNDONE =
+	"Error: Task already undone!";
+
 class taskDone
 {
 public:
