@@ -20,9 +20,9 @@ const std::string DATE_DEADLINE_DUE =
 const std::string DATE_DEADLINE_BEFORE =
 	"before";
 
-const std::string TimedTask = "TimedTask";
-const std::string FloatingTask = "FloatingTask";
-const std::string DeadLine = "DeadLine";
+const std::string TIMED_TASK = "TimedTask";
+const std::string FLOATING_TASK = "FloatingTask";
+const std::string DEAD_LINE = "DeadLine";
 
 class parser
 {

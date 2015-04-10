@@ -1,4 +1,5 @@
 //@author A0116027R
+
 #include "taskEdit.h"
 
 taskEdit::taskEdit(void){
@@ -161,9 +162,9 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 			storageTasks[indexToBeEdited] = taskToBeEdited;
 			try {
 				newStorage.writeFileJson(storageTasks);
-				return "Edited.";
+				return MESSAGE_SUCCESS_EDIT;
 			} catch (const std::exception& e){
-				return "Not edited successfully.";
+				return MESSAGE_FAILURE_EDIT;
 			}
 		}
 	} else {

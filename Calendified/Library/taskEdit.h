@@ -12,15 +12,17 @@
 #include "taskUndo.h"
 #include "task.h"
 
+const std::string MESSAGE_ERROR_EDIT_FILE_IS_EMPTY =
+	"Error: File is empty.";
+
+const std::string MESSAGE_ERROR_EDIT_ITEM_NOT_FOUND =
+	"Error: Invalid index.";
 
 const std::string MESSAGE_SUCCESS_EDIT =
 	"Edited!";
 
-const std::string MESSAGE_ERROR_EDIT_FILE_IS_EMPTY =
-	"Error: File is empty. There is nothing to edit.";
-
-const std::string MESSAGE_ERROR_EDIT_ITEM_NOT_FOUND =
-	"Error: Item to be edited not found";
+const std::string MESSAGE_FAILURE_EDIT =
+	"Fail to edit.";
 
 class taskEdit
 {

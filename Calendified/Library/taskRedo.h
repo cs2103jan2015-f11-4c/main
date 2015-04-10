@@ -10,9 +10,11 @@
 #include "storage.h"
 #include "taskUndo.h"
 
-const std::string MESSAGE_SUCCESS_REDO = "Redo successfully!";
+const std::string MESSAGE_SUCCESS_REDO = 
+	"Redo success!";
 
-const std::string MESSAGE_FAILURE_REDO = "Fail to redo.";
+const std::string MESSAGE_FAILURE_REDO = 
+	"Fail to redo.";
 
 class taskRedo
 {

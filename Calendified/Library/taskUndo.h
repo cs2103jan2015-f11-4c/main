@@ -9,6 +9,15 @@
 #include "task.h"
 #include "storage.h"
 
+const std::string MESSAGE_ERROR_CANNOT_UNDO = 
+	"Error: Cannot undo.";
+
+const std::string MESSAGE_SUCCESS_UNDO = 
+	"Undo success!";
+
+const std::string MESSAGE_FAILURE_UNDO = 
+	"Fail to undo.";
+
 class taskUndo
 {
 private:

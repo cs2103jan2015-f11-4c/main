@@ -1,4 +1,5 @@
 //@author shijia
+
 #include "commandRef.h"
 
 commandRef::commandRef(void){
@@ -30,6 +31,7 @@ commandRef commandRef::copyTo(){
 
 
 //@author A0114411B
+
 // getters
 std::string commandRef::getTaskType(){
 	return _taskType;
@@ -69,6 +71,7 @@ bool commandRef::getIsDone(){
 
 
 //@author A0114411B
+
 // setters
 void commandRef::setTaskType(std::string taskType){
 	_taskType = taskType;
@@ -107,6 +110,7 @@ void commandRef::setIsDone(bool isDone){
 }
 
 //@author A0116027R
+
 std::string commandRef::dataToString(){
 	std::string taskTitle = "";
 	std::string taskLocation = "";

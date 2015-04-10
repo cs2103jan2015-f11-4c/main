@@ -1,4 +1,5 @@
 //@author A0116027R
+
 #include "taskAdd.h"
 
 taskAdd::taskAdd(){
@@ -23,7 +24,7 @@ std::string taskAdd::executeAdd(){
 			taskStorage.push_back(_task);
 			storageFile.writeFileJson(taskStorage);
 			if(clash){
-				return MESSAGE_CLASH_ADD;
+				return MESSAGE_WARNING_ADD_CLASH;
 			}else {
 				return MESSAGE_SUCCESS_ADD;
 			}
@@ -50,8 +51,8 @@ void taskAdd::setTask(task newTask){
 }
 
 bool isValidConditions(task newTask, task storedTask){
-	if(storedTask.getTaskType() != FloatingTask
-		&& newTask.getTaskType() != FloatingTask
+	if(storedTask.getTaskType() != FLOATING_TASK
+		&& newTask.getTaskType() != FLOATING_TASK
 		&& !storedTask.getIsDone()
 		&& !newTask.getIsDone()){
 			return true;

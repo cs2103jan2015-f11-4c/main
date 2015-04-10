@@ -1,4 +1,5 @@
 //@author A0116027R
+
 #include "taskUndo.h"
 
 taskUndo::taskUndo(void){
@@ -58,13 +59,10 @@ bool taskUndo::isUndone(){
 }
 
 std::string taskUndo::undoResults(){
-	std::string successMessage = "Undo successfully.";
-	std::string failureMessage = "Fail to undo.";
-
 	if(isUndone()){
-		return successMessage;
+		return MESSAGE_SUCCESS_UNDO;
 	} else {
-		return failureMessage;
+		return MESSAGE_FAILURE_UNDO;
 	}
 }
 
@@ -74,7 +72,6 @@ void taskUndo::popSessionStack(){
 
 std::string taskUndo::executeUndo(){
 	storage newStorage;
-	std::string errorMessage = "Error: Cannot be undone.";
 
 	if(isNotEmpty(_sessionStack)){
 		_currentStack = _sessionStack;
@@ -82,6 +79,6 @@ std::string taskUndo::executeUndo(){
 		newStorage.writeFileJson(_currentStack.top());
 		return undoResults();
 	} else {
-		return errorMessage;
+		return MESSAGE_ERROR_CANNOT_UNDO;
 	}
 }

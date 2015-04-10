@@ -64,6 +64,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	std::string redoResults = "";
 	
 	//@author A0125489U	
+
 	switch(hashCommandAction(newParser.getTaskCommand())){
 	case ADD:
 		addTask.setTask(newTask);
@@ -160,6 +161,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 }
 
 //author A0125489U
+
 std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex, int flipCount){
 	taskDisplay displayTask;
 	std::string displayLeft;

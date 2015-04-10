@@ -13,13 +13,15 @@
 
 std::string const MESSAGE_SUCCESS_DONE =
 	"Marked as done!";
+
 std::string const MESSAGE_SUCCESS_UNDONE =
 	"Marked as undone!";
-std::string const MESSAGE_ERROR_NO_TASK_DONE =
-	"Error: No task done!";
-std::string const MESSAGE_ERROR_NO_TASK_UNDONE =
-	"Error: No task undone!";
 
+std::string const MESSAGE_ERROR_NO_TASK_DONE =
+	"Error: No task done.";
+
+std::string const MESSAGE_ERROR_NO_TASK_UNDONE =
+	"Error: No task undone.";
 
 class taskDone
 {

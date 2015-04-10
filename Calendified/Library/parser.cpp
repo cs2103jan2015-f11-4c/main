@@ -3,6 +3,8 @@
 parser::parser(void){
 }
 
+//@author A0083864U
+
 parser::parser(std::string commandLine){
 	char symbolTitle = '&';
 	char symbolLocation = '@';
@@ -13,7 +15,7 @@ parser::parser(std::string commandLine){
 	unsigned int substringBegin = 0;
 
 
-	//@author A0125489U
+	//A0125489U
 	//This method determine the 1st index of any non-alphanumeric character (exclude blankspace too)
 	std::size_t found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz1234567890 ");
 	//This operator determine whether the commandLine contains any symbol
@@ -27,7 +29,7 @@ parser::parser(std::string commandLine){
 
 	//If commandLine has symbols
 	if(isSymbol){	
-		//@author A0083864U
+		//A0083864U
 		if(isIndex){
 			commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 			_taskCommand = commandLine.substr(substringBegin, index - 1);
@@ -41,7 +43,7 @@ parser::parser(std::string commandLine){
 		commandReference.setTime(getItemsInString(commandLine, symbolTime));
 		commandReference.setDate(getItemsInString(commandLine, symbolDate));
 	}else {
-		//@author A0125489U
+		//A0125489U
 		//This method determine the 1st index of non-alpha character
 		found = commandLine.find_first_not_of("abcdefghijklmnopqrstuvwxyz");
 		_taskCommand = commandLine.substr(substringBegin,found);
@@ -73,6 +75,8 @@ int parser::getItemInInteger(std::string inputString){
 	return indexToBeDeleted;
 }
 
+// @author A0125489U
+
 std::string parser::getItemsInString(std::string inputString, char itemType){
 	unsigned int substringBegin;
 	unsigned int substringEnd;
@@ -81,9 +85,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 	std::string symbols = "&@#%$";
 	std::string itemString;
 
-
 	if(itemType == '\0'){
-		// @author A0125489U
 		//This operator determine whether inputString contains any symbol
 		if(!inputString.find("&") && !inputString.find("@") && !inputString.find("#") && !inputString.find("%") && !inputString.find("$")!= std::string::npos){
 			return inputString;
@@ -102,7 +104,7 @@ std::string parser::getItemsInString(std::string inputString, char itemType){
 		}
 	}
 	itemString = inputString.substr(substringBegin,substringEnd - substringBegin);
-	// @author A0125489U
+
 	// This while loop remove trailing whitespaces
 	while(itemString.size() >0 && itemString.compare(itemString.size() - 1 ,1 , " ") == 0){
 		itemString.erase(itemString.end() -1);
@@ -120,6 +122,7 @@ commandRef parser::getCommandRef(){
 }
 
 //@author A0114411B
+
 std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 	std::string buffer; 
 	std::stringstream ss(commandLine);
@@ -135,6 +138,7 @@ std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 }
 
 //@author A0114411B
+
 void parser::checkAndSetTaskType(std::string commandLine){
 	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
 
@@ -142,16 +146,16 @@ void parser::checkAndSetTaskType(std::string commandLine){
 		if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
 			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
 			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
-				commandReference.setTaskType(DeadLine);
+				commandReference.setTaskType(DEAD_LINE);
 				return;
 		}
 	}
 
 	if(commandReference.getDate() != "" && commandReference.getTime() != ""){
-		commandReference.setTaskType(TimedTask);
+		commandReference.setTaskType(TIMED_TASK);
 	} else if(commandReference.getDate() != "" && commandReference.getTime() == "" ||
 		commandReference.getDate() == "" && commandReference.getTime() == "" ||
 		commandReference.getDate() == "" && commandReference.getTime() != ""){
-			commandReference.setTaskType(FloatingTask);
+			commandReference.setTaskType(FLOATING_TASK);
 	}
 }
