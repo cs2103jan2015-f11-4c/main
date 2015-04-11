@@ -35,6 +35,11 @@ parser::parser(std::string commandLine){
 	//	}
 	//}		commandReference.setCommandAction(commandLineDataContainer[0]);
 	_taskCommand = commandLineDataContainer[0];
+	std::string searchItem;
+	if(commandLineDataContainer[0].compare("search")==0){
+		searchItem = commandLine.substr(commandLineDataContainer[0].length(),commandLine.length()-commandLineDataContainer[0].length());
+		commandReference.setSearchItem(searchItem);
+	}
 	for(auto i = 1; i < commandLineDataContainer.size(); i++){
 		timeAndDate isTime("",commandLineDataContainer[i] );
 		if(isTime.isValid()){
