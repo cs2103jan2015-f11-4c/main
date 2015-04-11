@@ -6,6 +6,7 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
