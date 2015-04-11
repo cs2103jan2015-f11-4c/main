@@ -65,7 +65,9 @@ public:
 	std::string getStartTimeInString();
 	std::string getEndTimeInString();
 	std::string dateAndTimeInString();
+	bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear);
 	bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin);
+	void deadlineTaskDateAndTimeConversion(std::string taskType);
 
 	~timeAndDate(void);
 };

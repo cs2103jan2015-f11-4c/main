@@ -19,6 +19,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	currentCommandReference = newParser.getCommandRef().copyTo();
 
 	timeAndDate newTimeAndDate(currentCommandReference.getDate(),currentCommandReference.getTime());
+	newTimeAndDate.deadlineTaskDateAndTimeConversion(currentCommandReference.getTaskType());
 	task newTask;
 
 	newTask.setCommandAction(newParser.getTaskCommand());

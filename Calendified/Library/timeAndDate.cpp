@@ -167,7 +167,7 @@ void taskDateToStruct(int mday, int month, int year, tm* Date){
 	Date->tm_year = year - YEAR;
 }
 
-bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear){
+bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear){
 	assert(dateString != "");
 	std::regex dateFormat1("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015 or 03/04/2015 or 3-4-2015
 	std::regex dateFormat2("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])-(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015-4/4/2015
@@ -795,4 +795,16 @@ std::string timeAndDate::dateAndTimeInString(){
 
 timeAndDate::~timeAndDate(void)
 {
+}
+
+void timeAndDate::deadlineTaskDateAndTimeConversion(std::string taskType){
+	std::string deadLineTaskType = "DeadLine";
+
+	if(taskType == deadLineTaskType){
+		_endMDay = _startMDay;
+		_endMonth = _startMonth;
+		_endYear = _startYear;
+		_endTimeHour = _startTimeHour;
+		_endTimeMin = _startTimeMin;
+	}
 }
