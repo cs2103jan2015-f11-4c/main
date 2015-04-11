@@ -23,6 +23,9 @@ const std::string TYPE_TODAY =
 const std::string TYPE_NEXTDAY =
 	"nextDay";
 
+const std::string TYPE_ALLDAY =
+	"allDay";
+
 const std::string TYPE_ADD =
 	"Added";
 
@@ -109,6 +112,7 @@ public:
 	std::string displayToday(int flipCount);
 	std::string displayNextDay(int flipCount);
 	std::string displayFloatDay(int flipCount);
+	std::string displayAll(int flipCount);
 	int configureCalendifedView(std::string logicResult, int flipCount);
 	std::string configureListView(std::string logicResult);
 	std::string formatDisplayResults(std::vector<task> taskList, std::string formatType);

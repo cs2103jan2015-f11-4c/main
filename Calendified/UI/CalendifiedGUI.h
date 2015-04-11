@@ -104,7 +104,7 @@ namespace UI {
 					richTextBox_CalendifiedViewL->ResetText();
 					richTextBox_CalendifiedViewR->ResetText();
 					logic newLogic;
-					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
 					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateListView(displayResults);
 					label_status->Text = "List View Toggled!";
@@ -120,7 +120,7 @@ namespace UI {
 					richTextBox_CalendifiedViewR->Visible = true;
 					richTextBox_ListView->ResetText();
 					logic newLogic;			
-					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+					std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
 					std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					updateCalendifiedView(displayResults);
 					mainBg->Visible  = true;	
@@ -136,7 +136,7 @@ namespace UI {
 				//
 				//TODO: Add the constructor code here
 				//
-				std::string getHelpType(std::string inputCommandBox);
+				//by feng//std::string getHelpType(std::string inputCommandBox);
 				bool isValidInput(std::string inputCommandBox);
 				String^ getHTMLFilePath(std::string action);
 				void changeDirectory();
@@ -573,7 +573,7 @@ namespace UI {
 		}
 #pragma endregion
 		//author A0125489U
-	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString){
+	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString, std::string todayDate, std::string nextdayDate){
 				thisRichTextBox->Find(gcnew String(searchString.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
 				if(searchString.compare(KEYWORD_DONE)==0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Blue;
@@ -583,27 +583,41 @@ namespace UI {
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
-				}else{
+				} else if(searchString.compare(TYPE_RESULTS)==0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
 					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
+				} else if(searchString.compare(todayDate)==0 || searchString.compare(nextdayDate)==0){
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
+					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+						static_cast<System::Byte>(0)));
+				}else{
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Chocolate;
 				}
 				thisRichTextBox->Select(0,0);
 			}
 			//author A0125489U
-	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate){
+	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate, std::string todayYear){
+				std::string searchDate;
 				//Highlight Today
-				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str());
-				//Highlight NextDay 
-				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str());
+				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
+				//Highlight NextDay
+				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
 				//Highlight To-Do Text
-				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str());
+				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str(),todayDate.c_str(),nextDayDate.c_str());
 				//Highlight keyword "Results:" if inputcommand is Search
 				if(logicResult.substr(0,8).compare(TYPE_RESULTS) ==0){
-					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS);
+					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS,todayDate.c_str(),nextDayDate.c_str());
 				}
 				//Highlight [DONE] Text
-				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE);
+				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE,todayDate.c_str(),nextDayDate.c_str());
+				//Highlight Date
+				for(int month=1; month <=12;month++){
+					for(int day =1; day <=31; day++){
+						searchDate = std::to_string(day)+KEYWORD_DATE_SEPARATOR+std::to_string(month)+KEYWORD_DATE_SEPARATOR+todayYear.c_str();
+						highlightRichTextBoxContent(thisRichTextBox,searchDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
+					}
+				}
 			}
 			//author A0125489U
 	public: void CalendifiedGUI::updateCalendifiedView(std::vector<std::string> displayResults){
@@ -611,27 +625,31 @@ namespace UI {
 				richTextBox_CalendifiedViewR->ResetText();
 				//Update CalendifiedView
 				if(displayResults.size() == 3){ // Operations for ADD, EDIT, DELETE
-					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[2].c_str());
+					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[3].c_str());
 				}else { //Operations for DISPLAY, VIEW
-					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[2].c_str());
-					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[3].c_str());
-					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[2],displayResults[1],displayResults[0]);
-					updateRichTextBoxContent(richTextBox_CalendifiedViewR,displayResults[3],displayResults[1],displayResults[0]);
+					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[3].c_str());
+					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[4].c_str());
+					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[3],displayResults[1],displayResults[0],displayResults[2]);
+					updateRichTextBoxContent(richTextBox_CalendifiedViewR,displayResults[4],displayResults[1],displayResults[0],displayResults[2]);
 				}
 			}
 			//author A0125489U
 	public: void CalendifiedGUI::updateListView(std::vector<std::string> displayResults){
 				//Update Listview
 				richTextBox_ListView->ResetText();
-				richTextBox_ListView->Text = gcnew String(displayResults[2].c_str());
-				updateRichTextBoxContent(richTextBox_ListView,displayResults[2],displayResults[1],displayResults[0]);
+				richTextBox_ListView->Text = gcnew String(displayResults[3].c_str());
+				updateRichTextBoxContent(richTextBox_ListView,displayResults[3],displayResults[1],displayResults[0],displayResults[2]);
 			}
 
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+				 logic newLogic;
+						 std::vector<std::string> displayResults;
+						 std::string displayResult;
+						 String^ updateStatus;
+						 char buffer[999];
 				 try {
 					 if(e->KeyCode==Keys::Enter){
-						 //system::string -> std::string
-						 char buffer[999];
+						 //system::string -> std::string 
 						 sprintf(buffer,"%s",commandBox->Text);
 						 std::string inputCommandBox(buffer);
 						 //@author A0114411B
@@ -649,15 +667,12 @@ namespace UI {
 						 }
 
 						 //author A0125489U
-						 logic newLogic;
-						 std::vector<std::string> displayResults;
-
+						 
 						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
 							 flipCount=0;
 						 }
-						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
-
-						 String^ updateStatus = gcnew String(displayResult.c_str());
+						 displayResult = newLogic.readCommand(inputCommandBox,toggleCount,flipCount);
+						 updateStatus = gcnew String(displayResult.c_str());
 						 label_status->ResetText();
 						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
 							 label_status-> Text =  updateStatus;
@@ -665,7 +680,7 @@ namespace UI {
 								 flip();
 								 flipCount++;
 							 }
-							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);	 
+							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
 						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
@@ -694,36 +709,32 @@ namespace UI {
 
 					 } else if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
 						 try{
-							 logic newLogic;
 							 flipCount=0;
-							 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
-							 String^ statusUpdate = gcnew String(results.c_str());
-							 label_status->Text = statusUpdate;
-							 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
-							 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
+							 displayResult = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
+							 updateStatus = gcnew String(displayResult.c_str());
+							 label_status->Text = updateStatus;
+							 displayResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
+							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 							 if(toggleCount == 0){ 
 								 updateCalendifiedView(displayResults);
 							 }else{
 								 updateListView(displayResults);
 							 }
 						 } catch(const std::exception& e) {
-							 String^ systemString = gcnew String(e.what()); 
-							 MessageBox::Show(systemString);
+							 MessageBox::Show(gcnew String(e.what()));
 						 }
 					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
 						 commandBox->Text = "delete " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::F){//Shortcut for CTRL + F
-						 logic newLogic;
-						 std::vector<std::string> displayResults;
-						 std::string displayResult = newLogic.readCommand("flip",flipCount);
-						 String^ updateStatus = gcnew String(displayResult.c_str());
-						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {DISPLAY,VIEW}
+						 displayResult = newLogic.readCommand("flip",toggleCount,flipCount);
+						 updateStatus = gcnew String(displayResult.c_str());label_status->ResetText();
+						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
 							 label_status-> Text =  updateStatus;
 							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
 								 flip();
 								 flipCount++;
 							 }
-							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);	 
+							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
 						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
@@ -744,10 +755,10 @@ namespace UI {
 						 logic newLogic;
 						 const std::string TYPE_REDO = "redo";
 						 flipCount=0;
-						 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
+						 std::string results = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
 						 String^ statusUpdate = gcnew String(results.c_str());
 						 label_status->Text = statusUpdate;
-						 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+						 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
 						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 						 if(toggleCount == 0){ 
 						 updateCalendifiedView(displayResults);
@@ -767,8 +778,7 @@ namespace UI {
 					 }
 
 				 } catch (const std::exception& e) {
-					 String^ systemString = gcnew String(e.what()); 
-					 MessageBox::Show(systemString);
+					 MessageBox::Show(gcnew String(e.what()));
 				 }
 			 }
 
@@ -792,7 +802,7 @@ namespace UI {
 			 }
 
 			 //@author A0114411B
-			 std::string getHelpType(std::string inputCommandBox){
+			 public: std::string CalendifiedGUI::getHelpType(std::string inputCommandBox){
 				 if(inputCommandBox == HELP_COMMAND_BACK){
 					 return HELP_MAIN_MENU;
 				 } else	if(inputCommandBox == HELP_COMMAND_ADD){
@@ -823,6 +833,7 @@ namespace UI {
 					 }
 					 return HELP_MAIN_MENU;
 				 }
+				 return HELP_MAIN_MENU;
 			 }
 
 			 //@author A0114411B
@@ -830,13 +841,17 @@ namespace UI {
 				 UI::CalendifiedGUI::ActiveControl = this->commandBox;
 
 				 logic newLogic;
+				 std::string logicResult;
+				 std::vector<std::string> displayResults;
+				 String^ welcomeMessage;
+				 IO::Stream^ mystream;
+				 SaveFileDialog^ saveFileDialog1;
+				 char fileName[999];
 				 std::string directory = newLogic.newStorage.retrieveFilePath();
 				 if(directory == ""){
-					 String^ welcomeMessage = gcnew String(WELCOME_MESSAGE.c_str());
-					 MessageBox::Show(welcomeMessage);
-					 IO::Stream^ mystream;
-					 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
-
+					 welcomeMessage = gcnew String(WELCOME_MESSAGE.c_str());
+					 MessageBox::Show(welcomeMessage);		 
+					 saveFileDialog1 = gcnew SaveFileDialog;
 					 saveFileDialog1->InitialDirectory = "c://";
 					 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
 					 saveFileDialog1->FilterIndex = 2;
@@ -845,37 +860,33 @@ namespace UI {
 
 					 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
 					 {
-						 char fileName[999];
 						 sprintf(fileName,"%s",saveFileDialog1->FileName);
 						 newLogic.newStorage.saveInformation(fileName);
 						 newLogic.newStorage.createFile(fileName);
 						 //IO::StreamWriter^ file = gcnew IO::StreamWriter(saveFileDialog1->FileName);
 						 //file->WriteLine("Calendified Database.");
 						 //file->Close();
-						 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
-						 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
+						 logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
+						 displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 						 if(toggleCount == 0){ //check for mode [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
 							 updateListView(displayResults);
 						 }
 					 }
-
 					 if(toggleCount == 0){ //Calendified 
 						 this->webBrowser_Help->Location = System::Drawing::Point(22, 73);
 						 this->webBrowser_Help->Size = System::Drawing::Size(620, 320);
 					 }else{ //Listview
 						 this->webBrowser_Help->Location = System::Drawing::Point(35, 29);
 						 this->webBrowser_Help->Size = System::Drawing::Size(605, 370);
-
 					 }
 					 webBrowser_Help->Show();
 					 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
 				 } else{
-					 webBrowser_Help->Hide();
-					 logic newLogic;			
-					 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
-					 std::vector<std::string> displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,flipCount),toggleCount,flipCount);
+					 webBrowser_Help->Hide();		
+					 logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
+					 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);
 					 if(toggleCount == 0){ //check for mode [calendified/list] view 
 						 updateCalendifiedView(displayResults);
 					 }else{
@@ -899,7 +910,7 @@ namespace UI {
 				 _sleep(500);
 				 logic newLogic;			
 				 flipCount=0;
-				 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+				 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
 				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 				 if(toggleCount == 0){ //check for mode [calendified/list] view 
 					 updateCalendifiedView(displayResults);
@@ -932,12 +943,11 @@ namespace UI {
 	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
-
 					 flipCount=0;
-					 std::string results = newLogic.readCommand(TYPE_UNDO,flipCount);
+					 std::string results = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
-					 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,flipCount);
+					 std::string logicResult = newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount);
 					 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
 					 if(toggleCount == 0){ 
 						 updateCalendifiedView(displayResults);
@@ -945,8 +955,7 @@ namespace UI {
 						 updateListView(displayResults);
 					 }
 				 } catch(const std::exception& e) {
-					 String^ systemString = gcnew String(e.what()); 
-					 MessageBox::Show(systemString);
+					 MessageBox::Show(gcnew String(e.what()));
 				 }
 			 }
 			 //@author A0114411B
@@ -971,16 +980,14 @@ namespace UI {
 				 logic newLogic; 
 				 IO::Stream^ mystream;
 				 SaveFileDialog^ saveFileDialog1 = gcnew SaveFileDialog;
-
 				 saveFileDialog1->InitialDirectory = "c://";
 				 saveFileDialog1->Filter = "txt files (*.txt)|*.txt";
 				 saveFileDialog1->FilterIndex = 2;
 				 saveFileDialog1->RestoreDirectory = true;
 				 saveFileDialog1->FileName = "";
-
+				 char newFileName[999];
 				 if(saveFileDialog1->ShowDialog() == System::Windows::Forms::DialogResult::OK)
-				 {
-					 char newFileName[999];
+				 {					 
 					 sprintf(newFileName,"%s",saveFileDialog1->FileName);
 					 newLogic.newStorage.transferDatabase(newFileName);
 					 newLogic.newStorage.setFilePath(newFileName);
@@ -989,17 +996,19 @@ namespace UI {
 
 			 //@author A0125489U
 	public: void flip(){
+				Graphics^ gfx;
+				Bitmap^ bmp;
 				if(toggleCount ==0){
-					Graphics^ gfx = mainBg->CreateGraphics();
-					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+40, richTextBox_ListView->Height-40);
+					gfx = mainBg->CreateGraphics();
+					bmp = gcnew Bitmap(richTextBox_ListView->Width+40, richTextBox_ListView->Height-40);
 					gfx = gfx->FromImage(bmp);
 					gfx->CopyFromScreen(this->Location.X+30,this->Location.Y+105,0,0,this->Size);
 					pictureBox_CalendifiedFlipping->Image=bmp;
 					pictureBox_CalendifiedFlipping->Visible=true;
 					timerCalendifiedFlip->Start();
 				} else if(toggleCount==1){
-					Graphics^ gfx = mainBg2->CreateGraphics();
-					Bitmap^ bmp = gcnew Bitmap(richTextBox_ListView->Width+10, richTextBox_ListView->Height);
+					gfx = mainBg2->CreateGraphics();
+					bmp = gcnew Bitmap(richTextBox_ListView->Width+10, richTextBox_ListView->Height);
 					gfx = gfx->FromImage(bmp);
 					gfx->CopyFromScreen(this->Location.X+60,this->Location.Y+60,0,0,this->Size);
 					pictureBox_ListViewFlipping->Image=bmp;

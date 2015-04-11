@@ -113,7 +113,7 @@ std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList
 	return taskList;
 }
 
-//This operation sort the list of task w.r.t. to sort type [float|today|nextDay]
+//This operation sort the list of task w.r.t. to sort type [float|today|nextDay| allDay]
 std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount){
 	std::vector<task> taskList;
 	std::string taskDateDay;
@@ -141,7 +141,15 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 		}
 		updateDisplayContent(taskList);
 		return taskList;
-	} else if(sortType.compare(TYPE_TODAY)==0){ //check if taskList is {today List}
+	} else if(sortType.compare(TYPE_ALLDAY)==0){ //check if taskList is {all day List}
+		for(int i =0;i < allTaskList.size();i++){
+			if(!allTaskList[i].getTaskType().compare("FloatingTask")==0){
+					taskList.push_back(allTaskList[i]);
+			}
+		}
+		updateDisplayContent(taskList);
+		return taskList;
+	}else if(sortType.compare(TYPE_TODAY)==0){ //check if taskList is {today List}
 		dateDay = getTodayDate(flipCount);
 		dateMonth = getTodayDateMonth(flipCount);
 		dateYear = getTodayDateYear(flipCount);
@@ -204,6 +212,18 @@ std::string taskDisplay::displayFloatDay(int flipCount){
 		displayFloatResults += formatDisplayResults(floatTaskList,TYPE_FLOATTASK);
 	}
 	return displayFloatResults;
+}
+
+std::string taskDisplay::displayAll(int flipCount){
+	std::string displayAllResults;
+	std::vector<task> allTaskList = sortTaskList(TYPE_ALLDAY,flipCount);
+	std::vector<task> floatTaskList = sortTaskList(TYPE_FLOATTASK,flipCount);
+	displayAllResults+=formatDisplayResults(allTaskList,TYPE_ALLDAY);
+	if(!floatTaskList.size()==0){
+		displayAllResults = displayAllResults+KEYWORD_NEWLINE+KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE;
+		displayAllResults+=formatDisplayResults(floatTaskList,TYPE_FLOATTASK);
+	}
+	return displayAllResults;
 }
 
 std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string presentationType){
@@ -280,7 +300,9 @@ std::string taskDisplay::formatDisplayResults(std::vector<task> taskList, std::s
 	std::string formatResults = "";
 	if(formatType.compare(TYPE_TIMEDTASK)==0){
 		formatResults= formatTimedTask(taskList,TYPE_DISPLAY);
-	} else if(formatType.compare(TYPE_FLOATTASK)==0){
+	} if(formatType.compare(TYPE_ALLDAY)==0){
+		formatResults= formatTimedTask(taskList,TYPE_VIEW);
+	}else if(formatType.compare(TYPE_FLOATTASK)==0){
 		formatResults = formatFloatTask(taskList);
 	}
 	return formatResults;

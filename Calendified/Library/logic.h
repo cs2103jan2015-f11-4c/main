@@ -44,7 +44,7 @@ public:
 	logic(void);
 	~logic(void);
 	storage newStorage;
-	std::string readCommand(std::string commandLine, int flipCount);
+	std::string readCommand(std::string commandLine, int toggleCount, int flipCount);
     commandType hashCommandAction(std::string commandAction);
 
 	void setCommand(std::string command);

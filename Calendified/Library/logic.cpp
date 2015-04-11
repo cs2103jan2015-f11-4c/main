@@ -9,7 +9,7 @@ logic::~logic(void){
 }
 
 
-std::string logic::readCommand(std::string commandLine, int flipCount){
+std::string logic::readCommand(std::string commandLine, int toggleCount, int flipCount){
 	parser newParser(commandLine);
 	storage newStorage;
 	char symbolTitle = '&';
@@ -52,7 +52,6 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	std::string doneResults = "";
 	std::string searchItem ="";
 	std::vector<task> emptyTaskList;
-	int toggleCount;
 	//Undo operation variables
 	static taskUndo undoTask;
 	//Done operation variables
@@ -116,11 +115,16 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	case DISPLAY:		
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
-		displayTodayResults = displayTask.displayToday(flipCount);
-		displayNextDayResults = displayTask.displayNextDay(flipCount);
-		displayFloatResults += displayTask.displayFloatDay(flipCount);
-		displayTask.setDisplayIndex(0);
-		return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
+		if(toggleCount ==0){ //Display for CalendifiedView	
+			displayTodayResults = displayTask.displayToday(flipCount);
+			displayNextDayResults = displayTask.displayNextDay(flipCount);
+			displayFloatResults += displayTask.displayFloatDay(flipCount);
+			displayTask.setDisplayIndex(0);
+			return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
+		} else { //Display for ListView
+			displayTodayResults = displayTask.displayAll(flipCount);
+			return displayTodayResults;
+		}
 	case EDIT:	
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
@@ -178,6 +182,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 	std::vector<std::string> displayResults;
 	displayResults.push_back(displayTask.getTodayDate(flipCount));
 	displayResults.push_back(displayTask.getNextDayDate(flipCount));
+	displayResults.push_back(displayTask.getTodayDateYear(flipCount));
 	int pos;
 	if(toggleIndex == 0){ // 0 for calendifiedView
 		pos = displayTask.configureCalendifedView(logicResult, flipCount);
