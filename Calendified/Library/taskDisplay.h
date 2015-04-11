@@ -70,8 +70,16 @@ const std::string KEYWORD_AT =
 const std::string KEYWORD_TILDE =
 	"~";
 
+const std::string KEYWORD_DONE =
+	"[DONE]";
+
+const std::string KEYWORD_TO_DO_LIST =
+	"To-Do List";
+
 const char KEYWORD_EMPTY_CHAR =
 	'0';
+
+
 
 class taskDisplay
 {

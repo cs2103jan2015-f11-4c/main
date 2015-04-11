@@ -196,6 +196,7 @@ std::string taskDisplay::displayFloatDay(int flipCount){
 	std::string displayFloatResults= KEYWORD_NEWLINE;
 	std::vector<task> floatTaskList = sortTaskList(TYPE_FLOATTASK,flipCount);
 	if(!floatTaskList.size()==0){
+		displayFloatResults = KEYWORD_TO_DO_LIST+displayFloatResults;
 		displayFloatResults += formatDisplayResults(floatTaskList,TYPE_FLOATTASK);
 	}
 	return displayFloatResults;
@@ -227,7 +228,10 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 			}
 			formatTimeTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
 			if(taskList[i].getLocation().compare("")!=0){
-				formatTimeTaskResults += KEYWORD_AT+taskList[i].getLocation();
+				formatTimeTaskResults += taskList[i].getLocation();
+			}
+			if(taskList[i].getIsDone()){
+				formatTimeTaskResults+= KEYWORD_SPACE+KEYWORD_DONE;
 			}
 			formatTimeTaskResults+=KEYWORD_NEWLINE;
 			setDisplayIndex(formatingIndex);
@@ -256,7 +260,10 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 		}
 		formatFloatTaskResults += taskList[i].getTitle()+KEYWORD_SPACE;
 		if(taskList[i].getLocation().compare("")!=0){
-			formatFloatTaskResults += KEYWORD_AT+taskList[i].getLocation();
+			formatFloatTaskResults += taskList[i].getLocation();
+		}
+		if(taskList[i].getIsDone()){
+				formatFloatTaskResults+= KEYWORD_SPACE+KEYWORD_DONE;
 		}
 		formatFloatTaskResults+=KEYWORD_NEWLINE;
 		setDisplayIndex(formatingIndex);
@@ -278,10 +285,14 @@ std::string taskDisplay::formatDisplayResults(std::vector<task> taskList, std::s
 //This operation formats the search results
 std::string taskDisplay::formatSearchResults(std::vector<task> searchList){
 	std::string searchResults;
+	std::vector<task> searchFloatResults;
 	searchResults += TYPE_RESULTS+KEYWORD_NEWLINE;
 	searchResults += formatTimedTask(sortTimedTaskList(searchList),TYPE_VIEW);
-	searchResults += KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
-	searchResults += formatFloatTask(sortFloatTaskList(searchList));
+	searchFloatResults = sortFloatTaskList(searchList);
+	if(searchFloatResults.size()>0){
+		searchResults += KEYWORD_NEWLINE+KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE;
+		searchResults += formatFloatTask(searchFloatResults);
+	}
 	return searchResults;
 }
 
@@ -550,15 +561,21 @@ std::string taskDisplay::searchAfter(std::string searchItem){
 }
 //This operation search the all existing data w.r.t. the search Item input
 std::vector<task> taskDisplay::searchExact(std::string searchItem){
+	bool isExact = false;
 	std::vector<task> allTaskList;
 	std::vector<task> allTaskListLower;
 	std::vector<task> searchList;
+	char chars[] = "\"";
 	int searchResultsIndex=0;
 	std::string searchResults; 
 	std::string tempLowerStr;
 	if(_currentStorage.isFileEmpty()){
 		searchItem ="";
 		return searchList;
+	}
+	if(searchItem[0] =='"'){
+		isExact = true;
+		searchItem.erase (std::remove(searchItem.begin(), searchItem.end(), chars[0]), searchItem.end());
 	}
 	allTaskList = _currentStorage.readFileJson();
 	allTaskListLower = allTaskList;
@@ -571,20 +588,30 @@ std::vector<task> taskDisplay::searchExact(std::string searchItem){
 		std::transform(tempLowerStr.begin(), tempLowerStr.end(), tempLowerStr.begin(), ::tolower);
 		allTaskListLower[i].setTitle(tempLowerStr);
 	}
+
 	for(int i =0; i< allTaskListLower.size();i++){ //populate the the vector with revelant search results
 		std::string tempTitle = allTaskListLower[i].getTitle();
 		std::string tempLocation = allTaskListLower[i].getLocation();
 		int tempDay = allTaskListLower[i].getTimeAndDate().getStartMDay();
 		int tempMonth = allTaskListLower[i].getTimeAndDate().getStartMonth();
 		int tempYear = allTaskListLower[i].getTimeAndDate().getStartYear();
-
-		if(allTaskListLower[i].getTitle().find(searchItem) != std::string::npos || 
-			allTaskListLower[i].getLocation().find(searchItem) != std::string::npos || 
-			std::to_string(allTaskListLower[i].getTimeAndDate().getStartMDay()).find(searchItem) != std::string::npos || 
-			std::to_string(allTaskListLower[i].getTimeAndDate().getStartMonth()).find(searchItem) != std::string::npos || 
-			std::to_string(allTaskListLower[i].getTimeAndDate().getStartYear()).find(searchItem) != std::string::npos){
-				searchList.push_back(allTaskList[i]);
+		if(!isExact){
+			if(tempTitle.find(searchItem) != std::string::npos || 
+				tempLocation.find(searchItem) != std::string::npos || 
+				std::to_string(tempDay).find(searchItem) != std::string::npos || 
+				std::to_string(tempMonth).find(searchItem) != std::string::npos || 
+				std::to_string(tempYear).find(searchItem) != std::string::npos){
+					searchList.push_back(allTaskList[i]);
 			}
+		} else {
+			if(tempTitle.compare(searchItem) ==0 || 
+				tempLocation.compare(searchItem) ==0|| 
+				std::to_string(tempDay).compare(searchItem) ==0 || 
+				std::to_string(tempMonth).compare(searchItem) ==0 || 
+				std::to_string(tempYear).compare(searchItem) ==0){
+					searchList.push_back(allTaskList[i]);
+			}
+		}
 	}
 	return searchList;
 }
@@ -602,7 +629,8 @@ int taskDisplay::configureCalendifedView(std::string logicResult, int flipCount)
 	} else if(logicResult.substr(0,8).compare(TYPE_TOGGLED)==0){ //check for edit operation
 		pos = -1;
 	} else if(logicResult.substr(0,8).compare(TYPE_RESULTS)==0){ //check for view operation
-		pos = logicResult.find(TYPE_FLOAT);
+		pos = logicResult.find(KEYWORD_TO_DO_LIST);
+		pos = logicResult.length();
 	}else {
 		pos = logicResult.find(getNextDayDate(flipCount)); //check for display operation
 	}

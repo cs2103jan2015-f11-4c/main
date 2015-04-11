@@ -575,31 +575,35 @@ namespace UI {
 		//author A0125489U
 	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString){
 				thisRichTextBox->Find(gcnew String(searchString.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
-				if(searchString.compare("FLOAT")==0){
+				if(searchString.compare(KEYWORD_DONE)==0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Blue;
-					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
+					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 10.00F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+						static_cast<System::Byte>(0)));	
+				} else if(searchString.compare(KEYWORD_TO_DO_LIST)==0){
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
+					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
 				}else{
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
-					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid Italic", 16.25F, System::Drawing::FontStyle::Italic, System::Drawing::GraphicsUnit::Point, 
+					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
 				}
 				thisRichTextBox->Select(0,0);
 			}
 			//author A0125489U
 	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate){
-				std::string floatDate = "FLOAT";
-				std::string viewResults ="Results:";
 				//Highlight Today
 				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str());
 				//Highlight NextDay 
 				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str());
-				//Highlight Float Text
-				highlightRichTextBoxContent(thisRichTextBox,floatDate.c_str());
-				//Highlight keyword "Results:" if inputcommand is View
-				if(logicResult.substr(0,8).compare(viewResults) ==0){
-					highlightRichTextBoxContent(thisRichTextBox,viewResults);
+				//Highlight To-Do Text
+				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str());
+				//Highlight keyword "Results:" if inputcommand is Search
+				if(logicResult.substr(0,8).compare(TYPE_RESULTS) ==0){
+					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS);
 				}
+				//Highlight [DONE] Text
+				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE);
 			}
 			//author A0125489U
 	public: void CalendifiedGUI::updateCalendifiedView(std::vector<std::string> displayResults){
@@ -653,7 +657,8 @@ namespace UI {
 						 std::string displayResult = newLogic.readCommand(inputCommandBox,flipCount);
 
 						 String^ updateStatus = gcnew String(displayResult.c_str());
-						 if(!updateStatus->Contains("FLOAT")){ // This section renders for operation results: {TYPE_DISPLAY,VIEW}
+						 label_status->ResetText();
+						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
 							 label_status-> Text =  updateStatus;
 							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
 								 flip();

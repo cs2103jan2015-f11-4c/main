@@ -48,7 +48,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	std::string editResults = "";
 	//Done and Undone operation variables
 	std::string checkDoneResults = "";
-	std::string displayFloatResults = "FLOAT";
+	std::string displayFloatResults = "";
 	std::string doneResults = "";
 	std::string searchItem ="";
 	std::vector<task> emptyTaskList;
@@ -86,11 +86,11 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		displayTask.setDisplayContent(emptyTaskList);
 		searchItem = newParser.getCommandRef().getSearchItem();
 		if(searchItem.compare("done")==0 || searchItem.compare("taskdone")==0){
-			displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListDone()),"view");
-			displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListDone()));
+			displayTodayResults += TYPE_RESULTS+KEYWORD_NEWLINE+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListDone()),"view");
+			displayTodayResults	+= KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListDone()));
 		} else if(searchItem.compare("undone")==0 || searchItem.compare("taskundone")==0){
-			displayTodayResults += "Results:\n"+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListUndone()),"view");
-			displayTodayResults	+= "FLOAT\n"+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListUndone()));
+			displayTodayResults += TYPE_RESULTS+KEYWORD_NEWLINE+displayTask.formatTimedTask(displayTask.sortTimedTaskList(newTaskDone.getListUndone()),"view");
+			displayTodayResults	+= KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE+displayTask.formatFloatTask(displayTask.sortFloatTaskList(newTaskDone.getListUndone()));
 		} else if(searchItem.substr(0,1).compare("\"")==0 && searchItem.substr(searchItem.length()-1,1).compare("\"")==0){
 			displayTodayResults = displayTask.formatSearchResults(displayTask.searchExact(searchItem));
 		} else if(searchItem.length() > 6){
