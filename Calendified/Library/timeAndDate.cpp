@@ -338,9 +338,9 @@ bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* t
 			*taskEndMDay = mday;
 			*taskEndMonth = month;
 			if(year>=0 && year<=50){
-				*taskStartYear = year + 2000;
+				*taskEndYear = year + 2000;
 			} else if(year>50 && year<=99){
-				*taskStartYear = year + 1900;
+				*taskEndYear = year + 1900;
 			}
 			return true;
 			}
@@ -349,37 +349,6 @@ bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* t
 		}
 	}
 	return false;
-		
-/*
-	if(mday>=1 && mday<=31 && month>=1 && month<=12 && year>=1900 && year<=10000){
-		if(isLeapYear(year) && isValid29(mday)){ //checks leap year and valid date
-			*taskStartMDay = mday;
-			*taskStartMonth = month;
-			*taskStartYear = year;
-			return true;
-		} else if(isValid28(mday, month)){ //check if it's february and date
-			*taskStartMDay = mday;
-			*taskStartMonth = month;
-			*taskStartYear = year;
-			return true;
-		} else if(isValid30(mday, month)){ //check month and date
-			*taskStartMDay = mday;
-			*taskStartMonth = month;
-			*taskStartYear = year;
-			return true;
-		} else if(isValid31(mday, month)){ //check month and date
-			*taskStartMDay = mday;
-			*taskStartMonth = month;
-			*taskStartYear = year;
-			return true;
-		} else {
-			return false;
-		}
-	} else { 
-		return false;
-	}
-	*/
-	
 }
 
 void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
@@ -465,10 +434,6 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 		}
 		*taskStartTimeMin = 0;
 		*taskEndTimeHour = (*taskStartTimeHour) + 1; //1h activity
-		/*if((*taskEndTimeHour)/24>0){
-			*taskEndTimeHour = (*taskEndTimeHour)%12;
-			++_endMDay;
-		}*/
 		*taskEndTimeMin = *taskStartTimeMin;
 	} else if(std::regex_match(timeString, timeFormat4)){
 		in >> outNum;
@@ -496,9 +461,6 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			} else {
 				*taskEndTimeHour = hour + 12;
 			}
-			/*if(*taskEndTimeHour < *taskStartTimeHour){
-				++_endMDay;
-			}*/
 		} else {
 			return false;
 		}
@@ -565,18 +527,12 @@ bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, in
 			} else {
 				*taskEndTimeHour = hour;
 			}
-			/*if(*taskEndTimeHour < *taskStartTimeHour){
-				++_endMDay;
-			}*/
 		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
 			if(hour == 12){
 				*taskEndTimeHour = 12;
 			} else {
 				*taskEndTimeHour = hour + 12;
 			}
-			/*if(*taskEndTimeHour < *taskStartTimeHour){
-				++_endMDay;
-			}*/
 		} else {
 			return false;
 		}
