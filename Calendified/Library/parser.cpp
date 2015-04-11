@@ -37,7 +37,7 @@ parser::parser(std::string commandLine){
 	_taskCommand = commandLineDataContainer[0];
 	std::string searchItem;
 	if(commandLineDataContainer[0].compare("search")==0){
-		searchItem = commandLine.substr(commandLineDataContainer[0].length(),commandLine.length()-commandLineDataContainer[0].length());
+		searchItem = commandLine.substr(commandLineDataContainer[0].length()+1,commandLine.length()-commandLineDataContainer[0].length());
 		commandReference.setSearchItem(searchItem);
 	}
 	for(auto i = 1; i < commandLineDataContainer.size(); i++){
