@@ -37,10 +37,13 @@ std::string taskAdd::executeAdd(){
 	}
 }
 
-void taskAdd::undoAdd(taskUndo* taskToBeUndone){
+void taskAdd::undoAdd(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
-	taskToBeUndone->insertVector(storageFile.readFileJson());
+
+	if((results == MESSAGE_SUCCESS_ADD) || (results == MESSAGE_WARNING_ADD_CLASH)){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
 }
 
 void taskAdd::taskAddRecurrent(){

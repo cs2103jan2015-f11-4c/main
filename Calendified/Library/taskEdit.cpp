@@ -130,45 +130,48 @@ bool isTitleEdited(task editingReference, task originalTask){
 std::string taskEdit::executeEdit(int indexToBeEdited){
 	std::vector<task> storageTasks;
 	storage newStorage;
-
-	if(newStorage.isFileExist()){	
-		storageTasks = newStorage.readFileJson();
-		if(storageTasks.empty()){
-			return MESSAGE_ERROR_FILE_IS_EMPTY;
-		} else if(indexToBeEdited > storageTasks.size()){
-			return MESSAGE_ERROR_INVALID_INDEX;
-		} else {
-			assert(indexToBeEdited>=0);
-			task taskToBeEdited = storageTasks[indexToBeEdited];
+	try{
+		if(newStorage.isFileExist()){	
+			storageTasks = newStorage.readFileJson();
+			if(storageTasks.empty()){
+				return MESSAGE_ERROR_FILE_IS_EMPTY;
+			} else if(indexToBeEdited > storageTasks.size()){
+				return MESSAGE_ERROR_INVALID_INDEX;
+			} else {
+				assert(indexToBeEdited>=0);
+				task taskToBeEdited = storageTasks[indexToBeEdited];
 				
-			if(isDoneEdited(_editingReference, taskToBeEdited)){
-				taskToBeEdited.setIsDone(_editingReference.getIsDone());
-			} //only edits undone to done
-			if(isLocationEdited(_editingReference, taskToBeEdited)){
-				taskToBeEdited.setLocation(_editingReference.getLocation());
+				if(isDoneEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setIsDone(_editingReference.getIsDone());
+				} //only edits undone to done
+				if(isLocationEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setLocation(_editingReference.getLocation());
+				}
+				if(isTimeEdited(_editingReference, taskToBeEdited)){
+					timeAndDate tempTimeAndDate = editedTime(_editingReference, taskToBeEdited);
+					taskToBeEdited.setTimeAndDate(tempTimeAndDate);
+				}
+				if(isDateEdited(_editingReference, taskToBeEdited)){
+					timeAndDate tempTimeAndDate1 = editedDate(_editingReference, taskToBeEdited);
+					taskToBeEdited.setTimeAndDate(tempTimeAndDate1);
+				}
+				if(isTitleEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setTitle(_editingReference.getTitle());
+				}
+				taskTypeEdited(&taskToBeEdited);
+				storageTasks[indexToBeEdited] = taskToBeEdited;
+				try {
+					newStorage.writeFileJson(storageTasks);
+					return MESSAGE_SUCCESS_EDIT;
+				} catch (const std::exception& e){
+					return MESSAGE_FAILURE_EDIT;
+				}
 			}
-			if(isTimeEdited(_editingReference, taskToBeEdited)){
-				timeAndDate tempTimeAndDate = editedTime(_editingReference, taskToBeEdited);
-				taskToBeEdited.setTimeAndDate(tempTimeAndDate);
-			}
-			if(isDateEdited(_editingReference, taskToBeEdited)){
-				timeAndDate tempTimeAndDate1 = editedDate(_editingReference, taskToBeEdited);
-				taskToBeEdited.setTimeAndDate(tempTimeAndDate1);
-			}
-			if(isTitleEdited(_editingReference, taskToBeEdited)){
-				taskToBeEdited.setTitle(_editingReference.getTitle());
-			}
-			taskTypeEdited(&taskToBeEdited);
-			storageTasks[indexToBeEdited] = taskToBeEdited;
-			try {
-				newStorage.writeFileJson(storageTasks);
-				return MESSAGE_SUCCESS_EDIT;
-			} catch (const std::exception& e){
-				return MESSAGE_FAILURE_EDIT;
-			}
+		} else {
+			return MESSAGE_ERROR_EDIT_FILE_NONEXISTENT;
 		}
-	} else {
-		return "File does not exist.";
+	} catch (const std::exception& e){
+		return MESSAGE_FAILURE_EDIT;
 	}
 }
 
@@ -176,8 +179,11 @@ void taskEdit::setEditingRef(task currentTaskData){
 	_editingReference = currentTaskData;
 }
 
-void taskEdit::undoEdit(taskUndo* taskToBeUndone){
+void taskEdit::undoEdit(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
-	taskToBeUndone->insertVector(storageFile.readFileJson());
+
+	if(results == MESSAGE_SUCCESS_EDIT){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
 }

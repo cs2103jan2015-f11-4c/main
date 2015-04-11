@@ -18,6 +18,9 @@ const std::string MESSAGE_SUCCESS_EDIT =
 const std::string MESSAGE_FAILURE_EDIT =
 	"Fail to edit.";
 
+const std::string MESSAGE_ERROR_EDIT_FILE_NONEXISTENT = 
+	"Error: File does not exist.";
+
 class taskEdit
 {
 private:
@@ -29,7 +32,7 @@ public:
 
 	void setEditingRef(task currentcommandRef);
 	std::string executeEdit(int indexToBeEdited);
-	void undoEdit(taskUndo* taskToBeUndone);
+	void undoEdit(taskUndo* taskToBeUndone, std::string results);
 };
 
 #endif

@@ -39,8 +39,8 @@ public:
 	std::string markUndone(int indexToBeActOn);
 	std::vector<task> getListDone();
 	std::vector<task> getListUndone();
-	void undoDone(taskUndo* taskToBeUndone);
-	void undoUndone(taskUndo* taskToBeUndone);
+	void undoDone(taskUndo* taskToBeUndone, std::string results);
+	void undoUndone(taskUndo* taskToBeUndone, std::string results);
 };
 
 #endif
