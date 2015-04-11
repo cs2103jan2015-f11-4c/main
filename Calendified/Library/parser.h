@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <regex>
 #include "commandRef.h"
 #include "timeAndDate.h"
 

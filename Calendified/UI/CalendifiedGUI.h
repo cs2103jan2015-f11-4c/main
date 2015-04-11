@@ -14,6 +14,8 @@ const std::string TYPE_UNDO
 
 std::string const REQUEST_CHANGE_LOCATION =
 	"/change location";
+std::string const MESSAGE_DIRECTORY_CHANGED =
+	"Directory changed";
 
 std::string const MESSAGE_ERROR_INVALID_INPUT =
 	"Invalid input - '/help' for Help Menu!";
@@ -641,6 +643,7 @@ namespace UI {
 
 						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
 							 changeDirectory();
+							 label_status->Text =  MESSAGE_DIRECTORY_CHANGED;
 						 }
 
 						 //author A0125489U
@@ -946,6 +949,7 @@ namespace UI {
 			 //@author A0114411B
 	private: System::Void changeDatabaseLocationToolStripMenuItem1_Click(System::Object^  sender, System::EventArgs^  e) {
 				 changeDirectory();
+				 label_status->Text =  MESSAGE_DIRECTORY_CHANGED;
 			 }
 
 			 //@author A0114411B

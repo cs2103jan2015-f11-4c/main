@@ -22,18 +22,6 @@
 //*******************************************************************************
 //
 #include "storage.h"
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/filereadstream.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/filestream.h"
-#include "rapidjson/filewritestream.h"
-#include <vector>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <cstdio>
 
 using namespace rapidjson;
 
