@@ -33,12 +33,10 @@ public:
 	//setters
 	void setCurrentStack(std::stack<std::vector<task>> stack);
 	void setSessionStack(std::stack<std::vector<task>> stack);
+
 	void insertVector(std::vector<task> vector);
 	void insertSessionVector(std::vector<task> vectorTasks);
-
 	bool isNotEmpty(std::stack<std::vector<task>> vectorTasks);
-	bool isUndone();
-	std::string undoResults();
 	void popSessionStack();
 	std::string executeUndo();
 };

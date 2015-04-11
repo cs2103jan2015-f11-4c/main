@@ -70,8 +70,8 @@ void taskRedo::redo(taskUndo taskToBeRedone){
 		_currentStack.push(currentVectorTasks);
 	}
 	if(taskToBeRedone.isNotEmpty(taskToBeRedone.getSessionStack())){
-	sessionVectorTasks = taskToBeRedone.getSessionStack().top();
-	_sessionStack.push(sessionVectorTasks);
+		sessionVectorTasks = taskToBeRedone.getSessionStack().top();
+		_sessionStack.push(sessionVectorTasks);
 	}
 }
 

@@ -68,8 +68,13 @@ bool taskDelete::isNotValidIndex(int indexToBeDeleted){
 	return (indexToBeDeleted < 0);
 }
 
-void taskDelete::undoDelete(taskUndo* taskToBeUndone){
+//@author A0116027R
+
+void taskDelete::undoDelete(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
-	taskToBeUndone->insertVector(storageFile.readFileJson());
+
+	if(results == MESSAGE_SUCCESS_DELETED){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
 }

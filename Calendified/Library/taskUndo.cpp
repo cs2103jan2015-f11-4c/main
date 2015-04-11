@@ -1,4 +1,4 @@
-//@author A0116027R
+///@author A0116027R
 
 #include "taskUndo.h"
 
@@ -47,38 +47,23 @@ bool taskUndo::isNotEmpty(std::stack<std::vector<task>> vectorTasks){
 	}
 }
 
-bool taskUndo::isUndone(){
-	int sessionStackSize = _sessionStack.size();
-	int currentStackSize = _currentStack.size();
-	if (currentStackSize == sessionStackSize+1 || sessionStackSize == currentStackSize+1){
-		return true;
-	}
-	else {
-		return false;
-	}
-}
-
-std::string taskUndo::undoResults(){
-	if(isUndone()){
-		return MESSAGE_SUCCESS_UNDO;
-	} else {
-		return MESSAGE_FAILURE_UNDO;
-	}
-}
-
 void taskUndo::popSessionStack(){
 	_sessionStack.pop();
 }
 
 std::string taskUndo::executeUndo(){
 	storage newStorage;
-
-	if(isNotEmpty(_sessionStack)){
-		_currentStack = _sessionStack;
-		popSessionStack();
-		newStorage.writeFileJson(_currentStack.top());
-		return undoResults();
-	} else {
+	try{
+		if(isNotEmpty(_sessionStack)){
+			_currentStack = _sessionStack;
+			popSessionStack();
+			newStorage.writeFileJson(_currentStack.top());
+			return MESSAGE_SUCCESS_UNDO;
+		} else {
+			return MESSAGE_ERROR_CANNOT_UNDO;
+		}
+	}
+	catch (const std::exception& e){
 		return MESSAGE_ERROR_CANNOT_UNDO;
 	}
 }

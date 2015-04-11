@@ -51,6 +51,10 @@ void taskDisplay::updateDisplayContent(std::vector<task> newDisplayContent){
 //This operation converts selectedIndex to StorageIndex
 int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex){
 	int storageIndex=-1;
+	if(selectedIndex > currentDisplayContent.size()
+		|| selectedIndex < 0){
+		return storageIndex;
+	}
 	assert(selectedIndex != NULL);
 	assert(selectedIndex >0);
 	selectedIndex = selectedIndex-1;

@@ -51,7 +51,7 @@ parser::parser(std::string commandLine){
 			commandReference.setDate(commandLineDataContainer[i]);
 			dateDataPosition = i;
 		}
-		if(commandLineDataContainer[i].size() == 1){
+		if(std::regex_match(commandLineDataContainer[i], std::regex("[(-|+)|][0-9]+"))){
 			commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 			taskIndexPosition = i;
 		}

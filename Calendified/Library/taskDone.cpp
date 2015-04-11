@@ -124,14 +124,24 @@ std::vector<task> taskDone::getListUndone(){
 	}
 }
 
-void taskDone::undoDone(taskUndo* taskToBeUndone){
+//@author A0116027R
+
+void taskDone::undoDone(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
-	taskToBeUndone->insertVector(storageFile.readFileJson());
+	
+	if(results == MESSAGE_SUCCESS_DONE){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
 }
 
-void taskDone::undoUndone(taskUndo* taskToBeUndone){
+//@author A0116027R
+
+void taskDone::undoUndone(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
-	taskToBeUndone->insertVector(storageFile.readFileJson());
+
+	if(results == MESSAGE_SUCCESS_UNDONE){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
 }

@@ -2,6 +2,7 @@
 
 #ifndef TASKDISPLAY_H
 #define TASKDISPLAY_H
+#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 
 #include <iostream>

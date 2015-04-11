@@ -70,7 +70,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 	case ADD:
 		addTask.setTask(newTask);
 		addResults = addTask.executeAdd(); 
-		addTask.undoAdd(&undoTask);
+		addTask.undoAdd(&undoTask, addResults);
 		return addResults;
 	case DELETE:
 		//get current DisplayIndex using displayTask.getStorageIndex
@@ -78,9 +78,13 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
-		deleteItem.undoDelete(&undoTask);		
-		return deleteResults;
+		if(indexToActOnStorage < 0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		} else { 
+			deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
+			deleteItem.undoDelete(&undoTask, deleteResults);	
+			return deleteResults;
+		}
 	case SEARCH:
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
@@ -122,17 +126,21 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent, indexToActOnDisplay);
-		editItem.setEditingRef(newTask);
-		editResults = editItem.executeEdit(indexToActOnStorage);
-		editItem.undoEdit(&undoTask);
-		return editResults;
+		if(indexToActOnStorage < 0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		} else {
+			editItem.setEditingRef(newTask);
+			editResults = editItem.executeEdit(indexToActOnStorage);
+			editItem.undoEdit(&undoTask, editResults);
+			return editResults;
+		}
 	case DONE:
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		doneResults = newTaskDone.markDone(indexToActOnStorage);
-		newTaskDone.undoDone(&undoTask);
+		newTaskDone.undoDone(&undoTask, doneResults);
 		return doneResults;
 	case UNDONE:
 		displayTask.updateStorageSource();
@@ -140,7 +148,7 @@ std::string logic::readCommand(std::string commandLine, int flipCount){
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
 		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
 		undoneResults = newTaskDone.markUndone(indexToActOnStorage);	
-		newTaskDone.undoUndone(&undoTask);
+		newTaskDone.undoUndone(&undoTask, undoneResults);
 		return undoneResults;
 	case UNDO:
 		redoTask.redo(undoTask);

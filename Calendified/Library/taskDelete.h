@@ -25,7 +25,7 @@ public:
 	bool isEmpty(std::vector<task> file);
 	bool isNotValidIndex(int indexToBeDeleted);
 	std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted);
-	void undoDelete(taskUndo* taskToBeUndone);
+	void undoDelete(taskUndo* taskToBeUndone, std::string results);
 };
 
 #endif
