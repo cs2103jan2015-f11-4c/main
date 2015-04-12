@@ -77,13 +77,17 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		if(indexToActOnStorage < 0){
+		if(indexToActOnDisplay <=0){
 			return MESSAGE_ERROR_INVALID_INDEX;
-		} else { 
-			deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
-			deleteItem.undoDelete(&undoTask, deleteResults);	
-			return deleteResults;
+		} else {
+			indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+			if(indexToActOnStorage < 0){
+				return MESSAGE_ERROR_INVALID_INDEX;
+			} else { 
+				deleteResults = deleteItem.executeDelete(indexToActOnStorage);		
+				deleteItem.undoDelete(&undoTask, deleteResults);	
+				return deleteResults;
+			}
 		}
 	case SEARCH:
 		displayTask.updateStorageSource();
@@ -148,21 +152,34 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		doneResults = newTaskDone.markDone(indexToActOnStorage);
-		newTaskDone.undoDone(&undoTask, doneResults);
-		return doneResults;
+		if(indexToActOnDisplay <=0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		} else{
+			indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+			doneResults = newTaskDone.markDone(indexToActOnStorage);
+			newTaskDone.undoDone(&undoTask, doneResults);
+			return doneResults;
+		}
 	case UNDONE:
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
-		undoneResults = newTaskDone.markUndone(indexToActOnStorage);	
-		newTaskDone.undoUndone(&undoTask, undoneResults);
-		return undoneResults;
+		if(indexToActOnDisplay <=0){
+			return MESSAGE_ERROR_INVALID_INDEX;
+		}else{
+			indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent,indexToActOnDisplay);
+			undoneResults = newTaskDone.markUndone(indexToActOnStorage);	
+			newTaskDone.undoUndone(&undoTask, undoneResults);
+			return undoneResults;
+		}
 	case UNDO:
-		redoTask.redo(undoTask);
-		undoResults = undoTask.executeUndo();	
+		if(undoTask.getCurrentStack().size()!=1){
+			redoTask.redo(undoTask);
+		}
+		undoResults = undoTask.executeUndo();
+	//	if(undoResults.compare(MESSAGE_SUCCESS_UNDO)==0){
+			//redoTask.redo(undoTask);
+		//}
 		return undoResults;
 	case FLIP:	
 		FLIP_CONTENT = newParser.getCommandRef().getSearchItem();
@@ -171,7 +188,7 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		return "";
 	case REDO:
 		redoResults = redoTask.executeRedo(&undoTask);
-		return "";
+		return redoResults;
 	case TOGGLE:
 		return "Toggled!";	
 	default:
@@ -191,7 +208,7 @@ int logic::updateUIFlipCount(){
 	std::string todayYear;
 	std::string todayMonth;
 	std::string todayDate;
-	if(FLIP_CONTENT.length()>4){
+	if(FLIP_CONTENT.length()>4 && FLIP_CONTENT.length()<=8){
 		flipContentYear = FLIP_CONTENT.substr(4);
 		flipContentMonth = FLIP_CONTENT.substr(2,2);
 		flipContentDate = FLIP_CONTENT.substr(0,2);
@@ -201,7 +218,7 @@ int logic::updateUIFlipCount(){
 		totalDiff = tD.calDay(atoi(flipContentYear.c_str()),atoi(flipContentMonth.c_str()),atoi(flipContentDate.c_str())) 
 			- tD.calDay(atoi(todayYear.c_str()),atoi(todayMonth.c_str()),atoi(todayDate.c_str())) -1;
 		FLIP_CONTENT="";
-	}
+	} 
 	return totalDiff;
 }
 
