@@ -14,28 +14,34 @@ storageSort::~storageSort(void)
 }
 
 std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
-
-	for(auto i=1; i<commandVector.size(); i++){
-		for(auto j=0; j<i; j++){
+	for(int i=0; i<commandVector.size(); i++){
+		for(int j=0; j<commandVector.size(); j++){
 			if(isStartYearLarger(i,j,commandVector)){
 				commandVector = switchPlace(i,j,commandVector);
-			} else if(isStartYearEqual(i, j, commandVector))
-				if(isStartMonthLarger(i, j, commandVector)){
+			} else if(isStartYearEqual(i, j, commandVector) 
+				&& isStartMonthLarger(i, j, commandVector)){
 					commandVector = switchPlace(i,j,commandVector);
-				} else if(isStartMonthEqual(i, j, commandVector))
-					if(isStartDayLarger(i, j, commandVector)){
-						commandVector = switchPlace(i,j,commandVector);
-					} else if(isStartDayEqual(i, j, commandVector))
-						if(isStartTimeHourLarger(i, j, commandVector)){
-							commandVector = switchPlace(i,j,commandVector);
-						} else if(isStartTimeHourEqual(i, j, commandVector))
-							if(isStartTimeMinLarger(i, j, commandVector)){
-								commandVector = switchPlace(i,j,commandVector);
-							}
+			} else if(isStartYearEqual(i,j,commandVector)
+				&& isStartMonthEqual(i, j, commandVector)
+				&& isStartDayLarger(i, j, commandVector)){
+					commandVector = switchPlace(i,j,commandVector);
+			} else if(isStartYearEqual(i,j,commandVector)
+				&& isStartMonthEqual(i,j,commandVector)
+				&& isStartDayEqual(i, j, commandVector)
+				&& isStartTimeHourLarger(i, j, commandVector)){
+					commandVector = switchPlace(i,j,commandVector);
+			} else if(isStartYearEqual(i,j,commandVector)
+				&& isStartMonthEqual(i,j,commandVector)
+				&& isStartDayEqual(i, j, commandVector)
+				&& isStartTimeHourEqual(i, j, commandVector)
+				&& isStartTimeMinLarger(i,j,commandVector)){
+					commandVector = switchPlace(i,j,commandVector);
+			}
 		}
 	}
 	return commandVector;
 }
+
 
 std::vector<task> storageSort::switchPlace(int i, int j, std::vector<task> commandVector){
 	task temporaryTask;
@@ -64,11 +70,11 @@ bool storageSort::isStartMonthEqual(int i, int j, std::vector<task> commandVecto
 }
 
 bool storageSort::isStartDayLarger(int i, int j, std::vector<task> commandVector){
-	return (commandVector[j].getTimeAndDate().getStartDay() > commandVector[i].getTimeAndDate().getStartDay());
+	return (commandVector[j].getTimeAndDate().getStartMDay() > commandVector[i].getTimeAndDate().getStartMDay());
 }
 
 bool storageSort::isStartDayEqual(int i, int j, std::vector<task> commandVector){
-	return (commandVector[j].getTimeAndDate().getStartDay() == commandVector[i].getTimeAndDate().getStartDay());
+	return (commandVector[j].getTimeAndDate().getStartMDay() == commandVector[i].getTimeAndDate().getStartMDay());
 }
 
 bool storageSort::isStartTimeHourLarger(int i, int j, std::vector<task> commandVector){
