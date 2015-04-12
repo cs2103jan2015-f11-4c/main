@@ -18,6 +18,27 @@
 #include "taskDone.h"
 #include "taskRedo.h"
 
+const std::string TYPE_DONE =
+	"done";
+
+const std::string TYPE_TASK_DONE =
+	"taskdone";
+
+const std::string TYPE_UNDONE =
+	"undone";
+
+const std::string TYPE_TASK_UNDONE =
+	"taskundone";
+
+const std::string TYPE_QUOTE =
+	"\"";
+
+const std::string TYPE_AFTER =
+	"after ";
+
+const std::string TYPE_BEFORE =
+	"before";
+
 enum commandType {
 	ADD, 
 	DELETE, 

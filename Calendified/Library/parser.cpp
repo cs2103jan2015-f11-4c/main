@@ -263,22 +263,24 @@ int parser::checkDeadlineIndex(std::string commandLine){
 void parser::checkAndSetTaskType(std::string commandLine){
 	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
 
-	for(auto i=0; i<detokenizedVector.size(); i++){
-		if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
-			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
-			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
-				commandReference.setTaskType(DEAD_LINE);
-				detokenizedVector.erase(detokenizedVector.begin()+i);
-				return;
-		}
-	}
 
-	if(commandReference.getDate()[0] !=0 && commandReference.getTime()[0] !=0){
+
+	if(commandReference.getDate()[0] >0 && commandReference.getTime()[0] >0){
 		commandReference.setTaskType(TIMED_TASK);
 	} else if(commandReference.getDate()[0] ==0 && commandReference.getTime()[0] !=0 ||
 		commandReference.getDate()[0] !=0 && commandReference.getTime()[0] ==0 ||
 		commandReference.getDate()[0] ==0 && commandReference.getTime()[0] ==0){
 			commandReference.setTaskType(FLOATING_TASK);
+	} else {
+		for(auto i=0; i<detokenizedVector.size(); i++){
+			if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
+				detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
+				detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
+					commandReference.setTaskType(DEAD_LINE);
+					detokenizedVector.erase(detokenizedVector.begin()+i);
+					return;
+			}
+		}
 	}
 }
 

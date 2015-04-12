@@ -577,7 +577,7 @@ timeAndDate::timeAndDate(std::string dateString, std::string timeString){
 	std::string date = dateString;
 	std::string time = timeString;
 
-	if(date == ""){
+	if(date[0] == 0){
 		_startMDay = 0;
 		_startMonth = 0;
 		_startYear = 0;
@@ -600,7 +600,7 @@ timeAndDate::timeAndDate(std::string dateString, std::string timeString){
 		_endYear = -1;
 	}
 		
-	if(time == ""){
+	if(time[0] == 0){
 		_startTimeHour = 0;
 		_startTimeMin = 0;
 		_endTimeHour = 0;

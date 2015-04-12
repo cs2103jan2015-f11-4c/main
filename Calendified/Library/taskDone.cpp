@@ -103,6 +103,7 @@ std::vector<task> taskDone::getListDone(){
 
 std::vector<task> taskDone::getListUndone(){
 	std::vector<task> undoneVector;
+	std::vector<task> newUndoneVector;
 	storage newStorage;
 	undoneVector = newStorage.readFileJson();
 
@@ -110,16 +111,16 @@ std::vector<task> taskDone::getListUndone(){
 		return undoneVector;
 	} else {
 		int i;
-		for(i=1; i<=undoneVector.size();i++){
-			if(undoneVector[i-1].getIsDone() == true){
-				undoneVector.erase(undoneVector.begin()+i-1);
+		for(i=0; i<undoneVector.size();i++){
+			if(undoneVector[i].getIsDone() == false){
+				newUndoneVector.push_back(undoneVector[i]);
 			}
 		}
-		if(undoneVector.empty()){
-			return undoneVector;
+		if(newUndoneVector.empty()){
+			return newUndoneVector;
 		} else{
-			assert(!undoneVector.empty());
-			return undoneVector;
+			assert(!newUndoneVector.empty());
+			return newUndoneVector;
 		}
 	}
 }

@@ -44,9 +44,6 @@ const std::string TYPE_RESULTS =
 const std::string TYPE_EMPTY =
 	"0";
 
-const std::string TYPE_DATE_EMPTY =
-	"-1";
-
 const std::string TYPE_DISPLAY =
 	"display";
 
