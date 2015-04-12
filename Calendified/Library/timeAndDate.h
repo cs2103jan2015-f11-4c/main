@@ -25,7 +25,7 @@ private:
 public:
 	timeAndDate();
 	timeAndDate(std::string dateString, std::string timeString);
-
+	int calDay(int year, int month, int date);
 	bool isValid();
 
 	//setters

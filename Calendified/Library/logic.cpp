@@ -124,6 +124,7 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 			return displayTodayResults+"\n"+displayNextDayResults+"\n"+displayFloatResults;
 		} else { //Display for ListView
 			displayTodayResults = displayTask.displayAll(flipCount);
+			displayTask.setDisplayIndex(0);
 			return displayTodayResults;
 		}
 	case EDIT:	
@@ -159,7 +160,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		redoTask.redo(undoTask);
 		undoResults = undoTask.executeUndo();	
 		return undoResults;
-	case FLIP:
+	case FLIP:	
+		FLIP_CONTENT = newParser.getCommandRef().getSearchItem();
 		return "Flipped!";
 	case SPECIFY:
 		return "";
@@ -175,7 +177,31 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 }
 
 //author A0125489U
+int logic::updateUIFlipCount(){
+	taskDisplay displayTask;
+	timeAndDate tD;
+	int totalDiff=0;
+	std::string flipContentYear;
+	std::string flipContentMonth;
+	std::string flipContentDate;
+	std::string todayYear;
+	std::string todayMonth;
+	std::string todayDate;
+	if(FLIP_CONTENT.length()>4){
+		flipContentYear = FLIP_CONTENT.substr(4);
+		flipContentMonth = FLIP_CONTENT.substr(2,2);
+		flipContentDate = FLIP_CONTENT.substr(0,2);
+		todayYear = displayTask.getTodayDateYear(0);
+		todayMonth = displayTask.getTodayDateMonth(0);
+		todayDate = displayTask.getTodayDate(0);
+		totalDiff = tD.calDay(atoi(flipContentYear.c_str()),atoi(flipContentMonth.c_str()),atoi(flipContentDate.c_str())) 
+			- tD.calDay(atoi(todayYear.c_str()),atoi(todayMonth.c_str()),atoi(todayDate.c_str())) -1;
+		FLIP_CONTENT="";
+	}
+	return totalDiff;
+}
 
+//author A0125489U
 std::vector<std::string> logic::updateUI(std::string logicResult , int toggleIndex, int flipCount){
 	taskDisplay displayTask;
 	std::string displayLeft;
@@ -184,6 +210,7 @@ std::vector<std::string> logic::updateUI(std::string logicResult , int toggleInd
 	displayResults.push_back(displayTask.getTodayDate(flipCount));
 	displayResults.push_back(displayTask.getNextDayDate(flipCount));
 	displayResults.push_back(displayTask.getTodayDateYear(flipCount));
+	displayResults.push_back(displayTask.getTodayDateMonth_Abbreviated(flipCount));
 	int pos;
 	if(toggleIndex == 0){ // 0 for calendifiedView
 		pos = displayTask.configureCalendifedView(logicResult, flipCount);

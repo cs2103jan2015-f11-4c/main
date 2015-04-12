@@ -77,6 +77,12 @@ const std::string KEYWORD_TILDE =
 const std::string KEYWORD_DONE =
 	"[DONE]";
 
+const std::string KEYWORD_DUE =
+	"[DUE]";
+
+const std::string KEYWORD_DEADLINE =
+	"DeadLine";
+
 const std::string KEYWORD_TO_DO_LIST =
 	"To-Do List";
 

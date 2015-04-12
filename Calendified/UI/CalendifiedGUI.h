@@ -133,13 +133,6 @@ namespace UI {
 				InitializeComponent();
 				toggleCount = 0;
 				currentTime->Start();
-				//
-				//TODO: Add the constructor code here
-				//
-				//by feng//std::string getHelpType(std::string inputCommandBox);
-				bool isValidInput(std::string inputCommandBox);
-				String^ getHTMLFilePath(std::string action);
-				void changeDirectory();
 			}	
 	protected:
 		/// <summary>
@@ -330,9 +323,8 @@ namespace UI {
 			this->lbLengend->ForeColor = System::Drawing::SystemColors::ActiveCaptionText;
 			this->lbLengend->Location = System::Drawing::Point(125, 396);
 			this->lbLengend->Name = L"lbLengend";
-			this->lbLengend->Size = System::Drawing::Size(319, 20);
+			this->lbLengend->Size = System::Drawing::Size(0, 20);
 			this->lbLengend->TabIndex = 8;
-			this->lbLengend->Text = L" Legend: && - Title, $ - Time, % - Date, @ - Location";
 			// 
 			// toggleBox_Calendified
 			// 
@@ -573,49 +565,75 @@ namespace UI {
 		}
 #pragma endregion
 		//author A0125489U
-	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString, std::string todayDate, std::string nextdayDate){
-				thisRichTextBox->Find(gcnew String(searchString.c_str()), 0 , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
+		int highlightPos;
+	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString, std::string todayDate, std::string nextdayDate, std::string todayMonth){
+				highlightPos = thisRichTextBox->Find(gcnew String(searchString.c_str()), highlightPos , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
 				if(searchString.compare(KEYWORD_DONE)==0){
-					thisRichTextBox->SelectionColor = System::Drawing::Color::Blue;
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Teal;
+					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 10.00F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+						static_cast<System::Byte>(0)));	
+				} else if(searchString.compare(KEYWORD_DUE)==0){
+					thisRichTextBox->SelectionColor = System::Drawing::Color::Salmon;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 10.00F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
 				} else if(searchString.compare(KEYWORD_TO_DO_LIST)==0){
-					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
+					thisRichTextBox->SelectionColor = System::Drawing::Color::DodgerBlue;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
 				} else if(searchString.compare(TYPE_RESULTS)==0){
-					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
+					thisRichTextBox->SelectionColor = System::Drawing::Color::DeepPink;
 					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
-				} else if(searchString.compare(todayDate)==0 || searchString.compare(nextdayDate)==0){
-					thisRichTextBox->SelectionColor = System::Drawing::Color::Red;
-					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
+				} else if(searchString.compare(todayDate)==0 || searchString.compare(nextdayDate)==0 || searchString.compare(todayMonth)==0){
+					thisRichTextBox->SelectionColor = System::Drawing::Color::DeepPink;
+					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
 				}else{
-					thisRichTextBox->SelectionColor = System::Drawing::Color::Chocolate;
+					thisRichTextBox->SelectionColor = System::Drawing::Color::SlateGray;
 				}
 				thisRichTextBox->Select(0,0);
+				highlightPos++;
 			}
 			//author A0125489U
-	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate, std::string todayYear){
+	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate, std::string todayYear, std::string todayMonth){
 				std::string searchDate;
+				int divider=21;
+				int numHighlight;
+				numHighlight = logicResult.length()/divider;
 				//Highlight Today
-				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
+				highlightPos=0;
+				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight NextDay
-				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
+				highlightPos=0;
+				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
+				//Highlight Month
+				highlightPos=0;
+				highlightRichTextBoxContent(thisRichTextBox,todayMonth.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight To-Do Text
-				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str(),todayDate.c_str(),nextDayDate.c_str());
+				highlightPos=0;
+				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight keyword "Results:" if inputcommand is Search
 				if(logicResult.substr(0,8).compare(TYPE_RESULTS) ==0){
-					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS,todayDate.c_str(),nextDayDate.c_str());
+					highlightPos=0;
+					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				}
+
 				//Highlight [DONE] Text
-				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE,todayDate.c_str(),nextDayDate.c_str());
+				highlightPos=0;
+				for(int i =0;i < numHighlight;i++){
+					highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
+				}
+				//Highlight [DUE] Text
+				highlightPos=0;
+				for(int i =0;i < numHighlight;i++){
+					highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DUE,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
+				}
 				//Highlight Date
+				highlightPos=0;
 				for(int month=1; month <=12;month++){
 					for(int day =1; day <=31; day++){
 						searchDate = std::to_string(day)+KEYWORD_DATE_SEPARATOR+std::to_string(month)+KEYWORD_DATE_SEPARATOR+todayYear.c_str();
-						highlightRichTextBoxContent(thisRichTextBox,searchDate.c_str(),todayDate.c_str(),nextDayDate.c_str());
+						highlightRichTextBoxContent(thisRichTextBox,searchDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 					}
 				}
 			}
@@ -625,28 +643,56 @@ namespace UI {
 				richTextBox_CalendifiedViewR->ResetText();
 				//Update CalendifiedView
 				if(displayResults.size() == 3){ // Operations for ADD, EDIT, DELETE
-					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[3].c_str());
+					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[4].c_str());
 				}else { //Operations for DISPLAY, VIEW
-					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[3].c_str());
-					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[4].c_str());
-					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[3],displayResults[1],displayResults[0],displayResults[2]);
-					updateRichTextBoxContent(richTextBox_CalendifiedViewR,displayResults[4],displayResults[1],displayResults[0],displayResults[2]);
+					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[4].c_str());
+					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[5].c_str());
+					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[4],displayResults[1],displayResults[0],displayResults[2],displayResults[3]);
+					updateRichTextBoxContent(richTextBox_CalendifiedViewR,displayResults[5],displayResults[1],displayResults[0],displayResults[2],displayResults[3]);
 				}
 			}
 			//author A0125489U
 	public: void CalendifiedGUI::updateListView(std::vector<std::string> displayResults){
 				//Update Listview
 				richTextBox_ListView->ResetText();
-				richTextBox_ListView->Text = gcnew String(displayResults[3].c_str());
-				updateRichTextBoxContent(richTextBox_ListView,displayResults[3],displayResults[1],displayResults[0],displayResults[2]);
+				richTextBox_ListView->Text = gcnew String(displayResults[4].c_str());
+				updateRichTextBoxContent(richTextBox_ListView,displayResults[4],displayResults[1],displayResults[0],displayResults[2],displayResults[3]);
 			}
 
 	private: System::Void commandBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 				 logic newLogic;
-						 std::vector<std::string> displayResults;
-						 std::string displayResult;
-						 String^ updateStatus;
-						 char buffer[999];
+				 std::vector<std::string> displayResults;
+				 std::string displayResult;
+				 String^ updateStatus;
+				 char buffer[999];
+				 String ^ checkFlip1 = gcnew String("flip");
+				 String ^ checkFlip2 = gcnew String("fli");
+				 String ^ checkFlip3 = gcnew String("flip ");
+				 String ^ msgFlip = gcnew String("eg. flip ddmmYYYY | eg. flip 01042015");
+				 String ^ checkAdd1 = gcnew String("add");
+				 String ^ checkAdd2 = gcnew String("ad");
+				 String ^ checkAdd3 = gcnew String("add  ");
+				 String ^ msgAdd = gcnew String("eg. add dinner with alicia 04/06/2016 @ECP");
+				 String ^ checkSearch1 = gcnew String("search");
+				 String ^ checkSearch2 = gcnew String("searc");
+				 String ^ checkSearch3 = gcnew String("search ");
+				 String ^ msgSearch = gcnew String("eg. search [before|after] ddmmYYYY | search \"dinner with\" | search dinner with");
+				 String ^ checkEdit1 = gcnew String("edit");
+				 String ^ checkEdit2 = gcnew String("edi");
+				 String ^ checkEdit3 = gcnew String("edit ");
+				 String ^ msgEdit = gcnew String("eg. edit 1 @new location");
+				 String ^ checkDelete1 = gcnew String("delete");
+				 String ^ checkDelete2 = gcnew String("delet");
+				 String ^ checkDelete3 = gcnew String("delete ");
+				 String ^ msgDelete = gcnew String("eg. delete 1");
+				 String ^ checkDone1 = gcnew String("done");
+				 String ^ checkDone2 = gcnew String("don");
+				 String ^ checkDone3 = gcnew String("done ");
+				 String ^ msgDone = gcnew String("eg. done 1");
+				 String ^ checkUndone1 = gcnew String("undone");
+				 String ^ checkUndone2 = gcnew String("undon");
+				 String ^ checkUndone3 = gcnew String("undone ");
+				 String ^ msgUndone = gcnew String("eg. undone 1");
 				 try {
 					 if(e->KeyCode==Keys::Enter){
 						 //system::string -> std::string 
@@ -679,6 +725,7 @@ namespace UI {
 							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
 								 flip();
 								 flipCount++;
+								 flipCount += newLogic.updateUIFlipCount();
 							 }
 							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
 						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
@@ -779,6 +826,38 @@ namespace UI {
 
 				 } catch (const std::exception& e) {
 					 MessageBox::Show(gcnew String(e.what()));
+				 }
+				 
+				 if(commandBox->Text->ToLower() == checkFlip1 || 
+					 commandBox->Text->ToLower() == checkFlip2 || 
+					 commandBox->Text->ToLower() == checkFlip3){ //Check for flip input
+					 lbLengend->Text = msgFlip;	
+				 } else if(commandBox->Text->ToLower() == checkAdd1 || 
+					 commandBox->Text->ToLower() == checkAdd2 || 
+					 commandBox->Text->ToLower() == checkAdd3){ //Check for add input
+						 lbLengend->Text = msgAdd;
+				 } else if(commandBox->Text->ToLower() == checkSearch1 || 
+					 commandBox->Text->ToLower() == checkSearch2 || 
+					 commandBox->Text->ToLower() == checkSearch3){ //Check for search input
+						 lbLengend->Text = msgSearch;
+				 } else if(commandBox->Text->ToLower() == checkEdit1 || 
+					 commandBox->Text->ToLower() == checkEdit2 || 
+					 commandBox->Text->ToLower() == checkEdit3){ //Check for edit input
+						 lbLengend->Text = msgEdit;
+				 } else if(commandBox->Text->ToLower() == checkDelete1 || 
+					 commandBox->Text->ToLower() == checkDelete2 || 
+					 commandBox->Text->ToLower() == checkDelete3){ //Check for delete input
+						 lbLengend->Text = msgDelete;
+				 } else if(commandBox->Text->ToLower() == checkDone1 || 
+					 commandBox->Text->ToLower() == checkDone2|| 
+					 commandBox->Text->ToLower() == checkDone3){ //Check for done input
+						 lbLengend->Text = msgDone;
+				 } else if(commandBox->Text->ToLower() == checkUndone1|| 
+					 commandBox->Text->ToLower() == checkUndone2 || 
+					 commandBox->Text->ToLower() == checkUndone3){ //Check for undone input
+						 lbLengend->Text = msgUndone;
+				 } else{
+					lbLengend->Text = "";
 				 }
 			 }
 

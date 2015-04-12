@@ -195,7 +195,7 @@ std::string taskDisplay::displayToday(int flipCount){
 //
 std::string taskDisplay::displayNextDay(int flipCount){
 	std::string displayNextDayResults = getNextDayDate(flipCount)+KEYWORD_SPACE;
-	displayNextDayResults +=  getTodayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
+	displayNextDayResults +=  getNextDayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
 	std::vector<task> nextDayTaskList = sortTaskList(TYPE_NEXTDAY,flipCount);
 	if(!nextDayTaskList.size()==0){
 		displayNextDayResults += formatDisplayResults(nextDayTaskList,TYPE_TIMEDTASK);
@@ -257,6 +257,9 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 			if(taskList[i].getIsDone()){
 				formatTimeTaskResults+= KEYWORD_SPACE+KEYWORD_DONE;
 			}
+			if(taskList[i].getTaskType().compare(KEYWORD_DEADLINE)==0){
+				formatTimeTaskResults+= KEYWORD_SPACE+KEYWORD_DUE;
+			}
 			formatTimeTaskResults+=KEYWORD_NEWLINE;
 			setDisplayIndex(formatingIndex);
 		}
@@ -288,6 +291,9 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 		}
 		if(taskList[i].getIsDone()){
 				formatFloatTaskResults+= KEYWORD_SPACE+KEYWORD_DONE;
+		}
+		if(taskList[i].getTaskType().compare(KEYWORD_DEADLINE)==0){
+			formatFloatTaskResults+= KEYWORD_SPACE+KEYWORD_DUE;
 		}
 		formatFloatTaskResults+=KEYWORD_NEWLINE;
 		setDisplayIndex(formatingIndex);
@@ -332,7 +338,15 @@ std::string taskDisplay::getTodayDate(int flipCount){
 	}
 	timeinfo = localtime(&timev);
 	char output[30];
-	strftime(output,30,"%dth",timeinfo);
+	if(timeinfo->tm_mday==1 || timeinfo->tm_mday==21 || timeinfo->tm_mday==31){
+		strftime(output,30,"%dst",timeinfo);
+	}else if(timeinfo->tm_mday==2 || timeinfo->tm_mday==22){
+		strftime(output,30,"%dnd",timeinfo);
+	}else if(timeinfo->tm_mday==3 || timeinfo->tm_mday==23){
+		strftime(output,30,"%drd",timeinfo);
+	}else {
+		strftime(output,30,"%dth",timeinfo);
+	}
 	return std::string(output);
 }
 
@@ -403,7 +417,15 @@ std::string taskDisplay::getNextDayDate(int flipCount){
 	timev += 1 * 24 * 60 * 60;
 	timeinfo = localtime(&timev);
 	char output[30];
-	strftime(output,30,"%dth",timeinfo);
+	if(timeinfo->tm_mday==1 || timeinfo->tm_mday==21 || timeinfo->tm_mday==31){
+		strftime(output,30,"%dst",timeinfo);
+	}else if(timeinfo->tm_mday==2 || timeinfo->tm_mday==22){
+		strftime(output,30,"%dnd",timeinfo);
+	}else if(timeinfo->tm_mday==3 || timeinfo->tm_mday==23){
+		strftime(output,30,"%drd",timeinfo);
+	}else {
+		strftime(output,30,"%dth",timeinfo);
+	}
 	return std::string(output);
 }
 

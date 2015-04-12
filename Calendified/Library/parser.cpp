@@ -39,7 +39,15 @@ parser::parser(std::string commandLine){
 	if(commandLineDataContainer[0].compare("search")==0){
 		searchItem = commandLine.substr(commandLineDataContainer[0].length()+1,commandLine.length()-commandLineDataContainer[0].length());
 		commandReference.setSearchItem(searchItem);
-	}
+	} else if(commandLineDataContainer.size() > 1){
+		if(commandLineDataContainer[1].compare("to") ==0 && commandLineDataContainer[0].compare("flip")==0){
+			searchItem = commandLine.substr(commandLineDataContainer[1].length()+1,commandLine.length()-commandLineDataContainer[0].length()-commandLineDataContainer[1].length());
+			commandReference.setSearchItem(searchItem);
+		} else if(commandLineDataContainer[0].compare("flip") ==0 ){
+			searchItem = commandLine.substr(commandLineDataContainer[0].length()+1,commandLine.length()-commandLineDataContainer[0].length());
+			commandReference.setSearchItem(searchItem);
+		}
+	} 
 	for(auto i = 1; i < commandLineDataContainer.size(); i++){
 		timeAndDate isTime("",commandLineDataContainer[i] );
 		if(isTime.isValid()){
@@ -51,7 +59,8 @@ parser::parser(std::string commandLine){
 			commandReference.setDate(commandLineDataContainer[i]);
 			dateDataPosition = i;
 		}
-		if(std::regex_match(commandLineDataContainer[i], std::regex("[(-|+)|][0-9]+"))){
+		if(std::regex_match(commandLineDataContainer[i], std::regex("[(-|+)|][0-9]+"))
+			|| commandLineDataContainer[i].size() == 1){
 			commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
 			taskIndexPosition = i;
 		}

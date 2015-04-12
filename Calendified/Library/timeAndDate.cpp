@@ -764,3 +764,11 @@ void timeAndDate::deadlineTaskDateAndTimeConversion(std::string taskType){
 		_endTimeMin = _startTimeMin;
 	}
 }
+
+//@author A0125489U
+int timeAndDate::calDay(int year, int month, int date){
+	if (month < 3){
+		year--, month += 12;
+	}
+	return 365*year + year/4 - year/100 + year/400 + (153*month - 457)/5 + date - 306;
+}
