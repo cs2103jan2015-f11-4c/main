@@ -768,7 +768,7 @@ namespace UI {
 								 updateListView(displayResults);
 							 }
 						 } catch(const std::exception& e) {
-							 MessageBox::Show(gcnew String(e.what()));
+							 MessageBox::Show(gcnew String("Invalid Format"));
 						 }
 					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
 						 commandBox->Text = "delete " + commandBox->Text;
@@ -825,7 +825,7 @@ namespace UI {
 					 }
 
 				 } catch (const std::exception& e) {
-					 MessageBox::Show(gcnew String(e.what()));
+					 MessageBox::Show(gcnew String("Invalid Format"));
 				 }
 				 
 				 if(commandBox->Text->ToLower() == checkFlip1 || 

@@ -131,14 +131,18 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
-		indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent, indexToActOnDisplay);
-		if(indexToActOnStorage < 0){
+		if(indexToActOnDisplay <=0){
 			return MESSAGE_ERROR_INVALID_INDEX;
-		} else {
-			editItem.setEditingRef(newTask);
-			editResults = editItem.executeEdit(indexToActOnStorage);
-			editItem.undoEdit(&undoTask, editResults);
-			return editResults;
+		}else{
+			indexToActOnStorage = displayTask.getStorageIndex(currentDisplayContent, indexToActOnDisplay);
+			if(indexToActOnStorage < 0){
+				return MESSAGE_ERROR_INVALID_INDEX;
+			} else {
+				editItem.setEditingRef(newTask);
+				editResults = editItem.executeEdit(indexToActOnStorage);
+				editItem.undoEdit(&undoTask, editResults);
+				return editResults;
+			}
 		}
 	case DONE:
 		displayTask.updateStorageSource();
