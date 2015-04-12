@@ -292,6 +292,7 @@ namespace UI {
 			this->commandBox->Font = (gcnew System::Drawing::Font(L"Verdana", 11.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 				static_cast<System::Byte>(0)));
 			this->commandBox->Location = System::Drawing::Point(104, 424);
+			this->commandBox->Multiline = false;
 			this->commandBox->Name = L"commandBox";
 			this->commandBox->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::Horizontal;
 			this->commandBox->Size = System::Drawing::Size(487, 51);
@@ -693,68 +694,41 @@ namespace UI {
 				 String ^ checkUndone2 = gcnew String("undon");
 				 String ^ checkUndone3 = gcnew String("undone ");
 				 String ^ msgUndone = gcnew String("eg. undone 1");
+				 //Operations to validate search input for tooltip HELP
+				 if(commandBox->Text->ToLower() == checkFlip1 || 
+					 commandBox->Text->ToLower() == checkFlip2 || 
+					 commandBox->Text->ToLower() == checkFlip3){ //Check for flip input
+					 lbLengend->Text = msgFlip;	
+				 } else if(commandBox->Text->ToLower() == checkAdd1 || 
+					 commandBox->Text->ToLower() == checkAdd2 || 
+					 commandBox->Text->ToLower() == checkAdd3){ //Check for add input
+						 lbLengend->Text = msgAdd;
+				 } else if(commandBox->Text->ToLower() == checkSearch1 || 
+					 commandBox->Text->ToLower() == checkSearch2 || 
+					 commandBox->Text->ToLower() == checkSearch3){ //Check for search input
+						 lbLengend->Text = msgSearch;
+				 } else if(commandBox->Text->ToLower() == checkEdit1 || 
+					 commandBox->Text->ToLower() == checkEdit2 || 
+					 commandBox->Text->ToLower() == checkEdit3){ //Check for edit input
+						 lbLengend->Text = msgEdit;
+				 } else if(commandBox->Text->ToLower() == checkDelete1 || 
+					 commandBox->Text->ToLower() == checkDelete2 || 
+					 commandBox->Text->ToLower() == checkDelete3){ //Check for delete input
+						 lbLengend->Text = msgDelete;
+				 } else if(commandBox->Text->ToLower() == checkDone1 || 
+					 commandBox->Text->ToLower() == checkDone2|| 
+					 commandBox->Text->ToLower() == checkDone3){ //Check for done input
+						 lbLengend->Text = msgDone;
+				 } else if(commandBox->Text->ToLower() == checkUndone1|| 
+					 commandBox->Text->ToLower() == checkUndone2 || 
+					 commandBox->Text->ToLower() == checkUndone3){ //Check for undone input
+						 lbLengend->Text = msgUndone;
+				 } else{
+					lbLengend->Text = "";
+				 }
+
 				 try {
-					 if(e->KeyCode==Keys::Enter){
-						 //system::string -> std::string 
-						 sprintf(buffer,"%s",commandBox->Text);
-						 std::string inputCommandBox(buffer);
-						 //@author A0114411B
-						 if(isValidInput(inputCommandBox)){
-							 if(inputCommandBox == HELP_COMMAND_CLOSE){
-								 webBrowser_Help->Hide();
-							 } else {
-								 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(inputCommandBox)));
-							 }
-						 }
-
-						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
-							 changeDirectory();
-							 label_status->Text = "Directory changed";
-						 }
-
-						 //author A0125489U
-						 
-						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
-							 flipCount=0;
-						 }
-						 displayResult = newLogic.readCommand(inputCommandBox,toggleCount,flipCount);
-						 updateStatus = gcnew String(displayResult.c_str());
-						 label_status->ResetText();
-						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
-							 label_status-> Text =  updateStatus;
-							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
-								 flip();
-								 flipCount++;
-								 flipCount += newLogic.updateUIFlipCount();
-							 }
-							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
-						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
-							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
-						 }
-						 if(toggleCount == 0){ //check for mode [calendified/list] view 
-							 updateCalendifiedView(displayResults);
-						 }else{
-							 updateListView(displayResults);
-						 }
-
-						 commandBox->ResetText();				 				 										 Windows::Forms::SendKeys::Send("{BACKSPACE}");
-						 if(label_status->Text =="Toggled!"){ 
-							 toggle();
-						 }
-
-						 /*MessageBoxShowTest
-						 std::string newString =newLogic.getDateAndTime(); 
-						 String^ str2 = gcnew String(newString.c_str());
-						 MessageBox::Show(str2);
-						 */
-
-						 /*
-						 //std::string ->system::string
-						 String^ systemString = gcnew String(inputCommandBox.c_str()); 
-						 MessageBox::Show(systemString); 
-						 */
-
-					 } else if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
+					 if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
 						 try{
 							 flipCount=0;
 							 displayResult = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
@@ -820,44 +794,77 @@ namespace UI {
 						 commandBox->Text = "edit " + commandBox->Text;
 					 } else if(e->Control && e->KeyCode==Keys::H){//Shortcut for CTRL + H
 						 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(HELP_COMMAND_HELP)));
+					 } else if(e->KeyCode==Keys::Back){
+						label_status->Text = gcnew String("");
 					 } else if(e->Control && e->KeyCode==Keys::W){//Shortcut for CTRL + W // exit
 						 Application::Exit();
+					 } else if(e->KeyCode==Keys::Enter){
+						 //system::string -> std::string 
+						 sprintf(buffer,"%s",commandBox->Text);
+						 std::string inputCommandBox(buffer);
+						 //@author A0114411B
+						 if(isValidInput(inputCommandBox)){
+							 if(inputCommandBox == HELP_COMMAND_CLOSE){
+								 webBrowser_Help->Hide();
+							 } else {
+								 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(inputCommandBox)));
+							 }
+						 }
+
+						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
+							 changeDirectory();
+							 label_status->Text = "Directory changed";
+						 }
+
+						 //author A0125489U
+						 
+						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
+							 flipCount=0;
+						 }
+						 displayResult = newLogic.readCommand(inputCommandBox,toggleCount,flipCount);
+						 updateStatus = gcnew String(displayResult.c_str());
+						 label_status->ResetText();
+						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
+							 label_status-> Text =  updateStatus;
+							 if(updateStatus=="Flipped!"){ //This statement renders for countinous flipping
+								 flip();
+								 flipCount++;
+								 flipCount += newLogic.updateUIFlipCount();
+							 }
+							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
+						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
+							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
+						 }
+						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+							 updateCalendifiedView(displayResults);
+						 }else{
+							 updateListView(displayResults);
+						 }
+
+						 commandBox->ResetText();
+						 commandBox->SelectAll();
+						 //Windows::Forms::SendKeys::Send("{BACKSPACE}");
+						 if(label_status->Text =="Toggled!"){ 
+							 toggle();
+						 }
+
+						 /*MessageBoxShowTest
+						 std::string newString =newLogic.getDateAndTime(); 
+						 String^ str2 = gcnew String(newString.c_str());
+						 MessageBox::Show(str2);
+						 */
+
+						 /*
+						 //std::string ->system::string
+						 String^ systemString = gcnew String(inputCommandBox.c_str()); 
+						 MessageBox::Show(systemString); 
+						 */
+
 					 }
 
 				 } catch (const std::exception& e) {
-					 MessageBox::Show(gcnew String("Invalid Format"));
-				 }
-				 
-				 if(commandBox->Text->ToLower() == checkFlip1 || 
-					 commandBox->Text->ToLower() == checkFlip2 || 
-					 commandBox->Text->ToLower() == checkFlip3){ //Check for flip input
-					 lbLengend->Text = msgFlip;	
-				 } else if(commandBox->Text->ToLower() == checkAdd1 || 
-					 commandBox->Text->ToLower() == checkAdd2 || 
-					 commandBox->Text->ToLower() == checkAdd3){ //Check for add input
-						 lbLengend->Text = msgAdd;
-				 } else if(commandBox->Text->ToLower() == checkSearch1 || 
-					 commandBox->Text->ToLower() == checkSearch2 || 
-					 commandBox->Text->ToLower() == checkSearch3){ //Check for search input
-						 lbLengend->Text = msgSearch;
-				 } else if(commandBox->Text->ToLower() == checkEdit1 || 
-					 commandBox->Text->ToLower() == checkEdit2 || 
-					 commandBox->Text->ToLower() == checkEdit3){ //Check for edit input
-						 lbLengend->Text = msgEdit;
-				 } else if(commandBox->Text->ToLower() == checkDelete1 || 
-					 commandBox->Text->ToLower() == checkDelete2 || 
-					 commandBox->Text->ToLower() == checkDelete3){ //Check for delete input
-						 lbLengend->Text = msgDelete;
-				 } else if(commandBox->Text->ToLower() == checkDone1 || 
-					 commandBox->Text->ToLower() == checkDone2|| 
-					 commandBox->Text->ToLower() == checkDone3){ //Check for done input
-						 lbLengend->Text = msgDone;
-				 } else if(commandBox->Text->ToLower() == checkUndone1|| 
-					 commandBox->Text->ToLower() == checkUndone2 || 
-					 commandBox->Text->ToLower() == checkUndone3){ //Check for undone input
-						 lbLengend->Text = msgUndone;
-				 } else{
-					lbLengend->Text = "";
+					 //MessageBox::Show(gcnew String("Invalid Format"));
+					 label_status->Text = gcnew String("Invalid Format");
 				 }
 			 }
 

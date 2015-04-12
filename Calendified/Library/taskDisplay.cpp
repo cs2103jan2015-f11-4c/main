@@ -280,7 +280,7 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 				formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartTimeMin())+KEYWORD_SPACE;
 			}
 		}
-		if(std::to_string(taskList[i].getTimeAndDate().getStartMDay()).compare(TYPE_EMPTY)!=0){
+		if(std::to_string(taskList[i].getTimeAndDate().getStartMDay()).compare(TYPE_DATE_EMPTY)!=0){
 			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMDay())+KEYWORD_DATE_SEPARATOR;
 			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartMonth())+KEYWORD_DATE_SEPARATOR;
 			formatFloatTaskResults += std::to_string(taskList[i].getTimeAndDate().getStartYear())+KEYWORD_SPACE;

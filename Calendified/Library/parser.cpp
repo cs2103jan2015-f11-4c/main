@@ -70,6 +70,10 @@ parser::parser(std::string commandLine){
 			commandReference.setSearchItem(searchItem);
 		}
 	} 
+	int deadlineIndex = checkDeadlineIndex(commandLine);
+	if(deadlineIndex !=0){
+		commandLineDataContainer.erase(commandLineDataContainer.begin() + deadlineIndex);
+	}
 	for(auto i = 1; i < commandLineDataContainer.size(); i++){
 		timeAndDate isTime("",commandLineDataContainer[i] );
 		if(isTime.isValid()){
@@ -93,7 +97,9 @@ parser::parser(std::string commandLine){
 	}	
 	taskTitleDataStartPosition  = taskIndexPosition + 1;
 	taskTitleDataEndPosition = commandLineDataContainer.size() -1;
-	taskLocationDataEndPosition = commandLineDataContainer.size() -1;
+	if(taskLocationDataStartPosition!=0){
+		taskLocationDataEndPosition = commandLineDataContainer.size() -1;
+	}
 	if(timeDataPosition !=0 && dateDataPosition != 0){
 		if(timeDataPosition < dateDataPosition){
 			taskTitleDataEndPosition = timeDataPosition - 1;
@@ -101,28 +107,25 @@ parser::parser(std::string commandLine){
 		else{
 			taskTitleDataEndPosition = dateDataPosition - 1;
 		}	
-	}else if(timeDataPosition == 0){
-		taskTitleDataEndPosition = dateDataPosition - 1;
-	}else if(dateDataPosition == 0){
-		taskTitleDataEndPosition = timeDataPosition - 1;
-	}
-	if(taskTitleDataStartPosition != 0){
+	}//else if(timeDataPosition == 0){
+	//	taskTitleDataEndPosition = dateDataPosition - 1;
+	//}else if(dateDataPosition == 0){
+	//	taskTitleDataEndPosition = timeDataPosition - 1;
+	//}
+	
+	commandReference.setTaskTitle(
+		constructItem(
+		commandLineDataContainer,
+		taskTitleDataStartPosition,
+		taskTitleDataEndPosition
+		));
 
-		commandReference.setTaskTitle(
-			constructItem(
-			commandLineDataContainer,
-			taskTitleDataStartPosition,
-			taskTitleDataEndPosition
-			));
-	}
 	if(taskLocationDataStartPosition != 0){
-
 		commandReference.setTaskLocation(
 			constructItem(
 			commandLineDataContainer,
 			taskLocationDataStartPosition,
 			taskLocationDataEndPosition
-
 			));
 	}
 
@@ -240,6 +243,22 @@ std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 	return tokens;
 }
 
+//@author A0125489U
+int parser::checkDeadlineIndex(std::string commandLine){
+	int index=0;
+	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
+
+	for(auto i=0; i<detokenizedVector.size(); i++){
+		if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
+			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
+			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
+				index = i;
+				break;
+		}
+	}
+	return index;
+}
+
 //@author A0114411B
 void parser::checkAndSetTaskType(std::string commandLine){
 	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
@@ -249,15 +268,16 @@ void parser::checkAndSetTaskType(std::string commandLine){
 			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
 			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
 				commandReference.setTaskType(DEAD_LINE);
+				detokenizedVector.erase(detokenizedVector.begin()+i);
 				return;
 		}
 	}
 
-	if(commandReference.getDate() != "" && commandReference.getTime() != ""){
+	if(commandReference.getDate()[0] !=0 && commandReference.getTime()[0] !=0){
 		commandReference.setTaskType(TIMED_TASK);
-	} else if(commandReference.getDate() != "" && commandReference.getTime() == "" ||
-		commandReference.getDate() == "" && commandReference.getTime() == "" ||
-		commandReference.getDate() == "" && commandReference.getTime() != ""){
+	} else if(commandReference.getDate()[0] ==0 && commandReference.getTime()[0] !=0 ||
+		commandReference.getDate()[0] !=0 && commandReference.getTime()[0] ==0 ||
+		commandReference.getDate()[0] ==0 && commandReference.getTime()[0] ==0){
 			commandReference.setTaskType(FLOATING_TASK);
 	}
 }

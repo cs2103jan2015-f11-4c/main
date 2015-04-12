@@ -44,6 +44,8 @@ public:
 	void checkAndSetTaskType(std::string);
 	std::string constructItem(std::vector<std::string> dataContainor,int startPosition, int endPosition);
 	std::vector<std::string> parser::getCommandlineItem(std::string commandLine);
+	bool checkCommand(std::string checkCommandInput);
+	int checkDeadlineIndex(std::string commandLine);
 };
 
 #endif
