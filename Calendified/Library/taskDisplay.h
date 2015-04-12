@@ -50,9 +50,6 @@ const std::string TYPE_DISPLAY =
 const std::string TYPE_VIEW =
 	"view";
 
-const std::string TYPE_FLOAT =
-	"FLOAT";
-
 const std::string KEYWORD_NEWLINE =
 	"\n";
 
@@ -93,18 +90,28 @@ const char KEYWORD_EMPTY_CHAR =
 
 class taskDisplay
 {
+
 private:
 	storage _currentStorage;
 	std::vector<task> _displayContent;
 	int _displayIndex;
+
 public:
 	taskDisplay();
 	taskDisplay(storage currentStorage);
 	~taskDisplay(void);
 	std::string taskAddTask();
-	void taskAddRecurrent();
+
+	//Setters
 	void setTask(std::string taskString);
 	void setTaskType(std::string taskType);
+	void setDisplayContent(std::vector<task> newDisplayContent);
+	void setDisplayIndex(int newDisplayIndex);
+
+	void updateDisplayContent(std::vector<task> newDisplayContent);
+	void updateStorageSource();
+
+	//Getters
 	std::string getTodayDate(int flipCount);
 	std::string getTodayDateMonth(int flipCount);
 	std::string getTodayDateMonth_Abbreviated(int flipCount);
@@ -115,31 +122,37 @@ public:
 	std::string getNextDayDateMonth_Abbreviated(int flipCount);
 	std::string getNextDayDateYear(int flipCount);
 	std::string getNextDayDateDMY(int flipCount);
+	std::vector<task> getDisplayContent();
+	int getDisplayIndex();
+	int getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex);
+
 	std::string displayToday(int flipCount);
 	std::string displayNextDay(int flipCount);
 	std::string displayFloatDay(int flipCount);
 	std::string displayAll(int flipCount);
-	int configureCalendifedView(std::string logicResult, int flipCount);
-	std::string configureListView(std::string logicResult);
+	
 	std::string formatDisplayResults(std::vector<task> taskList, std::string formatType);
 	std::string formatTimedTask(std::vector<task> taskList, std::string presentationType);
 	std::string formatFloatTask(std::vector<task> taskList);
 	std::string formatSearchResults(std::vector<task> searchList);
+
 	std::vector<task> sortTaskList(std::string sortType, int flipCount);
 	std::vector<task> sortTimedTaskList(std::vector<task> givenTaskList);
 	std::vector<task> sortFloatTaskList(std::vector<task> givenTaskList);
+
 	std::vector<task> searchExact(std::string searchItem);
 	std::string searchAfter(std::string searchItem);
 	std::string searchBefore(std::string searchItem);
 	std::string searchPower(std::string searchItem);
+
 	bool taskDisplay::checkSameTask(task tempSearchItem , std::vector<task> currenetSearchList);
-	void updateDisplayContent(std::vector<task> newDisplayContent);
-	std::vector<task> getDisplayContent();
-	void setDisplayContent(std::vector<task> newDisplayContent);
-	int getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex);
-	void setDisplayIndex(int newDisplayIndex);
-	int getDisplayIndex();
-	void updateStorageSource();
+	
+	int configureCalendifedView(std::string logicResult, int flipCount);
+	std::string configureListView(std::string logicResult);
+	
+	
+	
+	
 };
 
 #endif

@@ -29,9 +29,12 @@ public:
 	taskAdd(std::string taskString);
 	~taskAdd(void);
 	std::string executeAdd();
+
+	//Setter
+	void setTask(task taskString);
+
 	void undoAdd(taskUndo* taskToBeUndone, std::string results);
 	void taskAddRecurrent();
-	void setTask(task taskString);
 	bool isClash(std::vector<task> &storageVector);
 };
 

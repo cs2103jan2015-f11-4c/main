@@ -27,10 +27,10 @@ public:
 	taskUndo(void);
 	~taskUndo(void);
 
-	//getters
+	//Getters
 	std::stack<std::vector<task>> getCurrentStack();
 	std::stack<std::vector<task>> getSessionStack();
-	//setters
+	//Setters
 	void setCurrentStack(std::stack<std::vector<task>> stack);
 	void setSessionStack(std::stack<std::vector<task>> stack);
 

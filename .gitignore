@@ -263,3 +263,6 @@ Calendified/Debug/Library.lib
 Calendified/Library/ClassDiagram1.cd
 Calendified/UI/Calendified Storage.txt
 *.tlog
+*.ipch
+*.ipch
+Calendified/ipch/commandtest-1ee6756d/commandtest-eff6c6ab.ipch

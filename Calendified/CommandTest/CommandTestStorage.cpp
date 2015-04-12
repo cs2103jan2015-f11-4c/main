@@ -28,11 +28,11 @@ namespace CommandTestStorage
 
 			timeAndDate newTimeAndDate1(dateString1,timeStringConst);
 			timeAndDate newTimeAndDate2(dateString2,timeStringConst);
-			task newTask1(TimedTask,"add",newTimeAndDate1,"","",false,false);
-			task newTask2(TimedTask,"add",newTimeAndDate2,"","",false,false);
+//			task newTask1(TimedTask,"add",newTimeAndDate1,"","",false,false);
+//			task newTask2(TimedTask,"add",newTimeAndDate2,"","",false,false);
 			
-			inputVector.push_back(newTask1);
-			inputVector.push_back(newTask2);
+//			inputVector.push_back(newTask1);
+//			inputVector.push_back(newTask2);
 
 
 		}

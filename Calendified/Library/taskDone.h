@@ -35,10 +35,12 @@ public:
 	taskDone(void);
 	~taskDone(void);
 
-	std::string markDone(int indexToBeActOn);
-	std::string markUndone(int indexToBeActOn);
+	//Getters
 	std::vector<task> getListDone();
 	std::vector<task> getListUndone();
+
+	std::string markDone(int indexToBeActOn);
+	std::string markUndone(int indexToBeActOn);	
 	void undoDone(taskUndo* taskToBeUndone, std::string results);
 	void undoUndone(taskUndo* taskToBeUndone, std::string results);
 };

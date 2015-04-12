@@ -33,6 +33,7 @@ int taskDisplay::getDisplayIndex(){
 	return _displayIndex;
 }
 
+//This operation updates the storage source whenever the user changes the source directory
 void taskDisplay::updateStorageSource(){
 	std::string newFilePath = _currentStorage.retrieveFilePath();
 	_currentStorage.setFilePath(newFilePath);
@@ -85,10 +86,6 @@ int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int se
 std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList){
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
-		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
-		givenTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
-		givenTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-		givenTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
 		if(givenTaskList[i].getTaskType().compare("FloatingTask")==0){
 			taskList.push_back(givenTaskList[i]);
 		}
@@ -131,10 +128,6 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 	std::vector<task> allTaskList = _currentStorage.readFileJson();
 	if(sortType.compare(TYPE_FLOATTASK)==0){ //check if taskList is {float List}
 		for(int i =0;i < allTaskList.size();i++){
-			/*if(allTaskList[i].getTimeAndDate().getStartMDay() == 0 || 
-			allTaskList[i].getTimeAndDate().getStartMonth() == 0 || 
-			allTaskList[i].getTimeAndDate().getStartYear() == 0 || 
-			allTaskList[i].getTimeAndDate().getStartTimeHour() == 0){*/
 			if(allTaskList[i].getTaskType().compare("FloatingTask")==0){
 				taskList.push_back(allTaskList[i]);
 			}
@@ -181,7 +174,8 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 	updateDisplayContent(taskList);
 	return taskList;
 }
-//
+
+//This operation returns all today tasks
 std::string taskDisplay::displayToday(int flipCount){
 	std::string displayTodayResults = getTodayDate(flipCount)+KEYWORD_SPACE;
 	displayTodayResults += getTodayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
@@ -192,7 +186,7 @@ std::string taskDisplay::displayToday(int flipCount){
 	return displayTodayResults;
 }
 
-//
+//This operation returns all nextDay tasks
 std::string taskDisplay::displayNextDay(int flipCount){
 	std::string displayNextDayResults = getNextDayDate(flipCount)+KEYWORD_SPACE;
 	displayNextDayResults +=  getNextDayDateMonth_Abbreviated(flipCount)+KEYWORD_NEWLINE;
@@ -203,7 +197,7 @@ std::string taskDisplay::displayNextDay(int flipCount){
 	return displayNextDayResults;
 }
 
-//
+//This operation returns all Floating tasks
 std::string taskDisplay::displayFloatDay(int flipCount){
 	std::string displayFloatResults= KEYWORD_NEWLINE;
 	std::vector<task> floatTaskList = sortTaskList(TYPE_FLOATTASK,flipCount);
@@ -214,6 +208,7 @@ std::string taskDisplay::displayFloatDay(int flipCount){
 	return displayFloatResults;
 }
 
+//This operations returns all tasks
 std::string taskDisplay::displayAll(int flipCount){
 	std::string displayAllResults;
 	std::vector<task> allTaskList = sortTaskList(TYPE_ALLDAY,flipCount);
@@ -226,6 +221,7 @@ std::string taskDisplay::displayAll(int flipCount){
 	return displayAllResults;
 }
 
+//This operation formats all timed task and returns a string
 std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string presentationType){
 	std::string formatTimeTaskResults = "";
 	int formatingIndex;
@@ -266,6 +262,7 @@ std::string taskDisplay::formatTimedTask(std::vector<task> taskList, std::string
 	return formatTimeTaskResults;
 }
 
+//This operation formats all Float Task and returns a string
 std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 	std::string formatFloatTaskResults = "";
 	int formatingIndex;
@@ -301,12 +298,12 @@ std::string taskDisplay::formatFloatTask(std::vector<task> taskList){
 	return formatFloatTaskResults;
 }
 
-//This operation formats the display results based on the paramter formatType - [main|float]
+//This operation formats the display results based on the parameter formatType - [time|float|all] 
 std::string taskDisplay::formatDisplayResults(std::vector<task> taskList, std::string formatType){
 	std::string formatResults = "";
 	if(formatType.compare(TYPE_TIMEDTASK)==0){
 		formatResults= formatTimedTask(taskList,TYPE_DISPLAY);
-	} if(formatType.compare(TYPE_ALLDAY)==0){
+	}else if(formatType.compare(TYPE_ALLDAY)==0){
 		formatResults= formatTimedTask(taskList,TYPE_VIEW);
 	}else if(formatType.compare(TYPE_FLOATTASK)==0){
 		formatResults = formatFloatTask(taskList);
@@ -512,6 +509,8 @@ std::string taskDisplay::searchPower(std::string searchItem){
 	searchResults = formatSearchResults(searchList);
 	return searchResults;
 }
+
+//This operation helps to check for duplicate results in a vector during a search
 bool taskDisplay::checkSameTask(task tempSearchItem , std::vector<task> currenetSearchList){
 	bool isSame = false;
 	for(int i =0; i <currenetSearchList.size();i++){
@@ -607,6 +606,7 @@ std::string taskDisplay::searchAfter(std::string searchItem){
 	searchResults = formatSearchResults(searchList);
 	return searchResults;
 }
+
 //This operation search the all existing data w.r.t. the search Item input
 std::vector<task> taskDisplay::searchExact(std::string searchItem){
 	std::vector<task> allTaskList;
@@ -647,12 +647,10 @@ std::vector<task> taskDisplay::searchExact(std::string searchItem){
 			std::to_string(tempMonth).find(searchItem) != std::string::npos || 
 			std::to_string(tempYear).find(searchItem) != std::string::npos){
 				searchList.push_back(allTaskList[i]);
-
 		}
 	}
 	return searchList;
 }
-
 
 //This operation helps to render UI display results in Calendified View
 int taskDisplay::configureCalendifedView(std::string logicResult, int flipCount){

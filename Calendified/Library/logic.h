@@ -66,14 +66,16 @@ public:
 	~logic(void);
 	storage newStorage;
 	std::string FLIP_CONTENT;
-	std::string readCommand(std::string commandLine, int toggleCount, int flipCount);
-    commandType hashCommandAction(std::string commandAction);
+	
+	//Setters
 	void setCommand(std::string command);
 	void setTitle(std::string title);
 	void setLocation(std::string location);
 	void setDate(std::string date);
 	void setTime(std::string time);
 
+	std::string readCommand(std::string commandLine, int toggleCount, int flipCount);
+    commandType hashCommandAction(std::string commandAction);
 	std::vector<std::string> updateUI(std::string logicResult , int toggleIndex, int flipCount);
 	int updateUIFlipCount();
 };

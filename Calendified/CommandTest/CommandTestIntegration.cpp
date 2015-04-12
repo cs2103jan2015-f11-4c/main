@@ -70,7 +70,7 @@ namespace CommandTestIntegration
 
 			//Logic test to ensure accurate results passed back to UI interface
 			int toggleCount;
-			std::string expectedResultsToUI = displayTask.getTodayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+displayTask.getNextDayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+TYPE_FLOAT+KEYWORD_NEWLINE;
+			std::string expectedResultsToUI = displayTask.getTodayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+displayTask.getNextDayDate(flipCount)+KEYWORD_NEWLINE+KEYWORD_NEWLINE+KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE;
 			std::string actualResultsToUI = newLogic.readCommand(inputCommand,toggleCount,flipCount);
 			Assert::AreEqual(expectedResultsToUI,actualResultsToUI);
 		}

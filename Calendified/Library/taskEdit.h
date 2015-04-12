@@ -30,7 +30,9 @@ public:
 	taskEdit(void);
 	~taskEdit(void);
 
+	//Setters
 	void setEditingRef(task currentcommandRef);
+
 	std::string executeEdit(int indexToBeEdited);
 	void undoEdit(taskUndo* taskToBeUndone, std::string results);
 };

@@ -34,7 +34,7 @@ namespace CommandTestDelete
 
 			timeAndDate newTimeAndDate(inputDateString,inputTimeString);
 
-			newTask1.setTaskType(TimedTask);
+//			newTask1.setTaskType(TimedTask);
 			newTask1.setCommandAction(commandAction);
 			newTask1.setTimeAndDate(newTimeAndDate);
 			newTask1.setTitle(inputTitle);
@@ -54,7 +54,7 @@ namespace CommandTestDelete
 
 			timeAndDate newTimeAndDate2(inputDateString,inputTimeString);
 
-			newTask2.setTaskType(TimedTask);
+//			newTask2.setTaskType(TimedTask);
 			newTask2.setCommandAction(commandAction);
 			newTask2.setTimeAndDate(newTimeAndDate2);
 			newTask2.setTitle(inputTitle);
@@ -75,7 +75,7 @@ namespace CommandTestDelete
 			timeAndDate newTimeAndDate3(inputDateString,inputTimeString);
 
 
-			newTask3.setTaskType(TimedTask);
+//			newTask3.setTaskType(TimedTask);
 			newTask3.setCommandAction(commandAction);
 			newTask3.setTimeAndDate(newTimeAndDate3);
 			newTask3.setTitle(inputTitle);

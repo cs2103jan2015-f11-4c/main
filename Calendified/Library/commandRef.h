@@ -25,13 +25,13 @@ private:
 	bool _isDone;
 
 public:
-	//constructor
 	commandRef(void);
-	//destructor
 	~commandRef(void);
+
 	//copy: copy all data into new same type object;
-	commandRef copyTo();
-	//get method: use this to retrive data;
+	commandRef copyTo();	
+	
+	//Getters
 	std::string getTaskType();
 	std::string getTime();
 	std::string getDate();
@@ -42,7 +42,7 @@ public:
 	std::string getCommandAction();
 	bool getIsDone();
 
-	//set method: use this to assign value to data;
+	//Setters
 	void setTaskType(std::string taskType);
 	void setTime(std::string time);
 	void setDate(std::string date);
