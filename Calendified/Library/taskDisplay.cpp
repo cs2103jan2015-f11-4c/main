@@ -82,11 +82,23 @@ int taskDisplay::getStorageIndex(std::vector<task> currentDisplayContent, int se
 	return storageIndex;
 }
 
+//This operation sort the list of task w.r.t. to given task list [DeadLineList]
+std::vector<task> taskDisplay::sortDeadLineList(std::vector<task> givenTaskList){
+	std::vector<task> taskList;
+	for(int i =0;i < givenTaskList.size();i++){
+		if(givenTaskList[i].getTaskType().compare(TASK_TYPE_DEADLINE_TASK)==0){
+			taskList.push_back(givenTaskList[i]);
+		}
+	}
+	updateDisplayContent(taskList);
+	return taskList;
+}
+
 //This operation sort the list of task w.r.t. to given task list [FloatTaskList]
 std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList){
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
-		if(givenTaskList[i].getTaskType().compare("FloatingTask")==0){
+		if(givenTaskList[i].getTaskType().compare(TASK_TYPE_FLOATING_TASK)==0){
 			taskList.push_back(givenTaskList[i]);
 		}
 	}
@@ -98,11 +110,7 @@ std::vector<task> taskDisplay::sortFloatTaskList(std::vector<task> givenTaskList
 std::vector<task> taskDisplay::sortTimedTaskList(std::vector<task> givenTaskList){
 	std::vector<task> taskList;
 	for(int i =0;i < givenTaskList.size();i++){
-		/*if(givenTaskList[i].getTimeAndDate().getStartMDay() != 0 && 
-		givenTaskList[i].getTimeAndDate().getStartMonth() != 0 && 
-		givenTaskList[i].getTimeAndDate().getStartYear() != 0 && 
-		givenTaskList[i].getTimeAndDate().getStartTimeHour() != 0){*/
-		if(givenTaskList[i].getTaskType().compare("TimedTask")==0){
+		if(givenTaskList[i].getTaskType().compare(TASK_TYPE_TIMED_TASK)==0){
 			taskList.push_back(givenTaskList[i]);
 		}
 	}
@@ -128,7 +136,7 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 	std::vector<task> allTaskList = _currentStorage.readFileJson();
 	if(sortType.compare(TYPE_FLOATTASK)==0){ //check if taskList is {float List}
 		for(int i =0;i < allTaskList.size();i++){
-			if(allTaskList[i].getTaskType().compare("FloatingTask")==0){
+			if(allTaskList[i].getTaskType().compare(TASK_TYPE_FLOATING_TASK)==0){
 				taskList.push_back(allTaskList[i]);
 			}
 		}
@@ -136,7 +144,7 @@ std::vector<task> taskDisplay::sortTaskList(std::string sortType, int flipCount)
 		return taskList;
 	} else if(sortType.compare(TYPE_ALLDAY)==0){ //check if taskList is {all day List}
 		for(int i =0;i < allTaskList.size();i++){
-			if(!allTaskList[i].getTaskType().compare("FloatingTask")==0){
+			if(!allTaskList[i].getTaskType().compare(TASK_TYPE_FLOATING_TASK)==0){
 				taskList.push_back(allTaskList[i]);
 			}
 		}
@@ -317,6 +325,7 @@ std::string taskDisplay::formatSearchResults(std::vector<task> searchList){
 	std::vector<task> searchFloatResults;
 	searchResults += TYPE_RESULTS+KEYWORD_NEWLINE;
 	searchResults += formatTimedTask(sortTimedTaskList(searchList),TYPE_VIEW);
+	searchResults += formatTimedTask(sortDeadLineList(searchList),TYPE_VIEW);
 	searchFloatResults = sortFloatTaskList(searchList);
 	if(searchFloatResults.size()>0){
 		searchResults += KEYWORD_NEWLINE+KEYWORD_TO_DO_LIST+KEYWORD_NEWLINE;
@@ -499,7 +508,23 @@ std::string taskDisplay::searchPower(std::string searchItem){
 		searchItems.push_back(searchBuffer);
 	}
 	for(int i=0; i<searchItems.size();i++){
-		tempSearchList= searchExact(searchItems[i]);
+		if(searchItems[i].length()>=6){
+			tempSearchList = searchExact(searchItems[i].substr(0,3)); //Search for first 3 characters
+			for(int j=0; j<tempSearchList.size();j++){
+				if(!checkSameTask(tempSearchList[j],searchList)){
+					searchList.push_back(tempSearchList[j]);
+				}
+			}
+			tempSearchList = searchExact(searchItems[i].substr(searchItems[i].length()/3,searchItems[i].length()/3*2)); //Search for mid-field characters
+			for(int j=0; j<tempSearchList.size();j++){
+				if(!checkSameTask(tempSearchList[j],searchList)){
+					searchList.push_back(tempSearchList[j]);
+				}
+			}
+			tempSearchList = searchExact(searchItems[i].substr(searchItems[i].length()-3)); //Search for last 3 characters
+		}else{
+			tempSearchList= searchExact(searchItems[i]);
+		}
 		for(int j=0; j<tempSearchList.size();j++){
 			if(!checkSameTask(tempSearchList[j],searchList)){
 				searchList.push_back(tempSearchList[j]);
@@ -609,6 +634,7 @@ std::string taskDisplay::searchAfter(std::string searchItem){
 
 //This operation search the all existing data w.r.t. the search Item input
 std::vector<task> taskDisplay::searchExact(std::string searchItem){
+	bool isExact = false;
 	std::vector<task> allTaskList;
 	std::vector<task> allTaskListLower;
 	std::vector<task> searchList;
@@ -616,11 +642,38 @@ std::vector<task> taskDisplay::searchExact(std::string searchItem){
 	int searchResultsIndex=0;
 	std::string searchResults; 
 	std::string tempLowerStr;
+	std::string tempTitle;
+	std::string tempLocation;
+	int tempDay;
+	int tempMonth;
+	int tempYear;
+	std::string tempDate;
+	std::string tempDateBackslash;
+	std::string tempDateDash;
+	std::string tempMonthAbbreviated;
+	std::string tempMonthName;
+	std::string tempDateAbbreviated;
+	std::string tempDateAbbreviatedBackslash;
+	std::string tempDateAbbreviatedDash;
+	std::string tempDateName;
+	std::string tempDateNameBackslash;
+	std::string tempDateNameDash;	
+	int tempHour;
+	int tempMin;
+	std::string tempTimeHour;
+	std::string tempTimeMin;
+	std::string tempTimeColon;
+	std::string tempTimeHourAM;
+	std::string tempTimeHourPM;
+	std::string tempTime24;
+	std::string tempTime12;
+
 	if(_currentStorage.isFileEmpty()){
 		searchItem ="";
 		return searchList;
 	}
 	if(searchItem[0] =='"'){
+		isExact = true;
 		searchItem.erase (std::remove(searchItem.begin(), searchItem.end(), chars[0]), searchItem.end());
 	}
 	allTaskList = _currentStorage.readFileJson();
@@ -636,20 +689,173 @@ std::vector<task> taskDisplay::searchExact(std::string searchItem){
 	}
 
 	for(int i =0; i< allTaskListLower.size();i++){ //populate the the vector with revelant search results
-		std::string tempTitle = allTaskListLower[i].getTitle();
-		std::string tempLocation = allTaskListLower[i].getLocation();
-		int tempDay = allTaskListLower[i].getTimeAndDate().getStartMDay();
-		int tempMonth = allTaskListLower[i].getTimeAndDate().getStartMonth();
-		int tempYear = allTaskListLower[i].getTimeAndDate().getStartYear();
+		tempTitle = allTaskListLower[i].getTitle();
+		tempLocation = allTaskListLower[i].getLocation();
+		if(tempTitle[0] ==0){
+			tempTitle = KEYWORD_INVALID;
+		}
+		if(tempLocation[0] ==0){
+			tempLocation = KEYWORD_INVALID;
+		}
+		tempDay = allTaskListLower[i].getTimeAndDate().getStartMDay();
+		tempMonth = allTaskListLower[i].getTimeAndDate().getStartMonth();
+		tempYear = allTaskListLower[i].getTimeAndDate().getStartYear();
+		tempHour = allTaskListLower[i].getTimeAndDate().getStartTimeHour();
+		tempMin = allTaskListLower[i].getTimeAndDate().getStartTimeMin();
+		if(tempDay !=0 && tempMonth !=0 && tempYear !=0){
+			tempDate = std::to_string(tempDay)+std::to_string(tempMonth)+std::to_string(tempYear);
+			tempDateBackslash = std::to_string(tempDay)+KEYWORD_DATE_SEPARATOR+std::to_string(tempMonth)+KEYWORD_DATE_SEPARATOR+std::to_string(tempYear);
+			tempDateDash = std::to_string(tempDay)+KEYWORD_DASH+std::to_string(tempMonth)+KEYWORD_DASH+std::to_string(tempYear);
+			tempMonthAbbreviated = getMonthAbbreviated(tempMonth);
+			tempMonthName = getMonthName(tempMonth);
+			tempDateAbbreviated = std::to_string(tempDay)+tempMonthAbbreviated+std::to_string(tempYear);
+			tempDateAbbreviatedBackslash = std::to_string(tempDay)+KEYWORD_DATE_SEPARATOR+tempMonthAbbreviated+KEYWORD_DATE_SEPARATOR+std::to_string(tempYear);
+			tempDateAbbreviatedDash = std::to_string(tempDay)+KEYWORD_DASH+tempMonthAbbreviated+KEYWORD_DASH+std::to_string(tempYear);
+			tempDateName = std::to_string(tempDay)+tempMonthName+std::to_string(tempYear);
+			tempDateNameBackslash = std::to_string(tempDay)+KEYWORD_DATE_SEPARATOR+tempMonthName+KEYWORD_DATE_SEPARATOR+std::to_string(tempYear);
+			tempDateNameDash = std::to_string(tempDay)+KEYWORD_DASH+tempMonthName+KEYWORD_DASH+std::to_string(tempYear);
+		} else { 
+			tempDate = KEYWORD_INVALID;
+			tempDateBackslash = KEYWORD_INVALID;
+			tempDateDash = KEYWORD_INVALID;
+			tempMonthAbbreviated = KEYWORD_INVALID;
+			tempMonthName = KEYWORD_INVALID;
+			tempDateAbbreviated = KEYWORD_INVALID;
+			tempDateAbbreviatedBackslash = KEYWORD_INVALID;
+			tempDateAbbreviatedDash = KEYWORD_INVALID;
+			tempDateName = KEYWORD_INVALID;
+			tempDateNameBackslash = KEYWORD_INVALID;
+			tempDateNameDash = KEYWORD_INVALID;
+		}
+		if(tempHour !=0){
+			tempTimeHour = std::to_string(tempHour);
+			tempTimeMin = std::to_string(tempMin);
+			if(tempHour >12){
+				tempTime12 = std::to_string(tempHour-12);
+			}else {
+				tempTime12 = tempTimeHour;
+			}
+			if(tempTimeMin.length()==1){
+				tempTimeMin =TYPE_EMPTY+tempTimeMin;
+			}
+			tempTimeColon = tempTimeHour+KEYWORD_COLON+tempTimeMin;
+			tempTimeHourAM = tempTime12+KEYWORD_AM;
+			tempTimeHourPM = tempTime12+KEYWORD_PM;
+			tempTime24 = tempTimeHour+tempTimeMin;
+		} else{
+			tempTimeHour = KEYWORD_INVALID;
+			tempTimeMin = KEYWORD_INVALID;
+			tempTimeColon = KEYWORD_INVALID;
+			tempTimeHourAM = KEYWORD_INVALID;
+			tempTimeHourPM = KEYWORD_INVALID;
+			tempTime24 = KEYWORD_INVALID;
+		}
+		
+
 		if(tempTitle.find(searchItem) != std::string::npos || 
 			tempLocation.find(searchItem) != std::string::npos || 
 			std::to_string(tempDay).find(searchItem) != std::string::npos || 
 			std::to_string(tempMonth).find(searchItem) != std::string::npos || 
-			std::to_string(tempYear).find(searchItem) != std::string::npos){
+			std::to_string(tempYear).find(searchItem) != std::string::npos ||
+			tempDate.find(searchItem) != std::string::npos ||
+			tempDateBackslash.find(searchItem) != std::string::npos ||
+			tempDateDash.find(searchItem) != std::string::npos ||
+			tempMonthAbbreviated.find(searchItem) != std::string::npos ||
+			tempMonthName.find(searchItem) != std::string::npos ||
+			tempDateAbbreviated.find(searchItem) != std::string::npos ||
+			tempDateAbbreviatedBackslash.find(searchItem) != std::string::npos ||
+			tempDateAbbreviatedDash.find(searchItem) != std::string::npos ||
+			tempDateName.find(searchItem) != std::string::npos ||
+			tempDateNameBackslash.find(searchItem) != std::string::npos ||
+			tempDateNameDash.find(searchItem) != std::string::npos ||
+			tempTimeHour.find(searchItem) != std::string::npos ||
+			tempTimeMin.find(searchItem) != std::string::npos ||
+			tempTimeColon.find(searchItem) != std::string::npos ||
+			tempTimeHourAM.find(searchItem) != std::string::npos ||
+			tempTimeHourPM.find(searchItem) != std::string::npos ||
+			tempTime24.find(searchItem) != std::string::npos){
 				searchList.push_back(allTaskList[i]);
+		}
+		if(!isExact){
+			std::vector<std::string> searchItems; 
+			std::string searchBuffer; 
+			std::stringstream ss(tempTitle);
+			while (ss >> searchBuffer){
+				std::transform(searchBuffer.begin(), searchBuffer.end(), searchBuffer.begin(), ::tolower);
+				searchItems.push_back(searchBuffer);
+			}
+			for(int j =0;j<searchItems.size();j++){
+				if(searchItems[j].find(searchItem) != std::string::npos){
+					searchList.push_back(allTaskList[i]);
+				}else if (searchItem.find(searchItems[j]) != std::string::npos){
+					searchList.push_back(allTaskList[i]);
+				}
+			}
 		}
 	}
 	return searchList;
+}
+
+//This operation returns the abbreviated name of the month
+std::string taskDisplay::getMonthAbbreviated(int tempMonth){
+	std::string monthString="";
+	if(tempMonth==1){
+		monthString="jan";
+	}else if(tempMonth==2){
+		monthString="feb";
+	}else if(tempMonth==3){
+		monthString="mar";
+	}else if(tempMonth==4){
+		monthString="apr";
+	}else if(tempMonth==5){
+		monthString="may";
+	}else if(tempMonth==6){
+		monthString="jun";
+	}else if(tempMonth==7){
+		monthString="jul";
+	}else if(tempMonth==8){
+		monthString="aug";
+	}else if(tempMonth==9){
+		monthString="sep";
+	}else if(tempMonth==10){
+		monthString="oct";
+	}else if(tempMonth==11){
+		monthString="nov";
+	}else if(tempMonth==12){
+		monthString="dec";
+	}
+	return monthString;		
+}
+
+//This operation results the name of the month 
+std::string taskDisplay::getMonthName(int tempMonth){
+	std::string monthString="";
+	if(tempMonth==1){
+		monthString="january";
+	}else if(tempMonth==2){
+		monthString="february";
+	}else if(tempMonth==3){
+		monthString="march";
+	}else if(tempMonth==4){
+		monthString="april";
+	}else if(tempMonth==5){
+		monthString="may";
+	}else if(tempMonth==6){
+		monthString="june";
+	}else if(tempMonth==7){
+		monthString="july";
+	}else if(tempMonth==8){
+		monthString="august";
+	}else if(tempMonth==9){
+		monthString="september";
+	}else if(tempMonth==10){
+		monthString="october";
+	}else if(tempMonth==11){
+		monthString="november";
+	}else if(tempMonth==12){
+		monthString="december";
+	}
+	return monthString;		
 }
 
 //This operation helps to render UI display results in Calendified View

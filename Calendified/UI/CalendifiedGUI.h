@@ -218,7 +218,7 @@ namespace UI {
 				checkFlip1 = gcnew String("flip");
 				checkFlip2 = gcnew String("fli");
 				checkFlip3 = gcnew String("flip ");
-				msgFlip = gcnew String("eg. flip ddmmYYYY | eg. flip 01042015");
+				msgFlip = gcnew String("eg. flip to ddmmYYYY | eg. flip to 01042015");
 				checkAdd1 = gcnew String("add");
 				checkAdd2 = gcnew String("ad");
 				checkAdd3 = gcnew String("add  ");
