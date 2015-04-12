@@ -41,7 +41,7 @@ parser::parser(std::string commandLine){
 		commandReference.setSearchItem(searchItem);
 	} else if(commandLineDataContainer.size() > 1){
 		if(commandLineDataContainer[1].compare("to") ==0 && commandLineDataContainer[0].compare("flip")==0){
-			searchItem = commandLine.substr(commandLineDataContainer[1].length()+1,commandLine.length()-commandLineDataContainer[0].length()-commandLineDataContainer[1].length());
+			searchItem = commandLine.substr(commandLineDataContainer[0].length()+1+commandLineDataContainer[1].length()+1,commandLine.length()-commandLineDataContainer[0].length()-commandLineDataContainer[1].length());
 			commandReference.setSearchItem(searchItem);
 		} else if(commandLineDataContainer[0].compare("flip") ==0 ){
 			searchItem = commandLine.substr(commandLineDataContainer[0].length()+1,commandLine.length()-commandLineDataContainer[0].length());
