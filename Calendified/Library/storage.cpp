@@ -71,12 +71,7 @@ void storage::transferDatabase(std::string newFileName){
 }
 
 bool storage::isFileExist(){
-
-	if(retrieveFilePath() == ""){
-		return false;
-	} else {
-		return true;
-	}
+	return (retrieveFilePath() != "");
 }
 
 bool storage::isFileEmpty(){
@@ -85,14 +80,14 @@ bool storage::isFileEmpty(){
 	getline(extract,data);
 	extract.close();
 
-	if(data == ""){
-		return true;
-	} else { 
-		return false;
-	}
+	return (data == "");
 }
 
 std::vector<task> storage::readFileJson(){
+	std::vector<task> commandVector;
+	task newTask;
+	timeAndDate newTimeAndDate;
+
 	FILE* in = NULL;
 	in = fopen(_filePath.c_str(), "r");
 	char buffer[65536];
@@ -102,7 +97,7 @@ std::vector<task> storage::readFileJson(){
 	document.ParseStream(iss);
 	assert(document != NULL);
 	fclose(in);
-	std::vector<task> commandVector;
+
 	commandVector.clear();
 
 	const Value& array = document["storage"];
@@ -112,7 +107,7 @@ std::vector<task> storage::readFileJson(){
 		std::string TaskType = TaskObject["TaskType"].GetString();
 
 		if(TaskType == "TimedTask"){
-			task newTask;
+			
 			//standard
 			newTask.setTaskType(TaskObject["TaskType"].GetString());
 			newTask.setTitle(TaskObject["TaskTitle"].GetString());
@@ -122,7 +117,6 @@ std::vector<task> storage::readFileJson(){
 			newTask.setIsClash(TaskObject["IsClash"].GetBool());
 
 			//Date
-			timeAndDate newTimeAndDate;
 			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
 			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
 			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
@@ -142,7 +136,6 @@ std::vector<task> storage::readFileJson(){
 
 
 		else if(TaskType == "FloatingTask"){
-			task newTask;
 			//standard
 			newTask.setTaskType(TaskObject["TaskType"].GetString());
 			newTask.setTitle(TaskObject["TaskTitle"].GetString());
@@ -152,7 +145,6 @@ std::vector<task> storage::readFileJson(){
 			newTask.setIsClash(TaskObject["IsClash"].GetBool());
 
 			//Date
-			timeAndDate newTimeAndDate;
 			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
 			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
 			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
@@ -165,7 +157,6 @@ std::vector<task> storage::readFileJson(){
 		}
 
 		else if(TaskType == "DeadLine"){
-			task newTask;
 			//standard
 			newTask.setTaskType(TaskObject["TaskType"].GetString());
 			newTask.setTitle(TaskObject["TaskTitle"].GetString());
@@ -175,7 +166,6 @@ std::vector<task> storage::readFileJson(){
 			newTask.setIsClash(TaskObject["IsClash"].GetBool());
 
 			//Date
-			timeAndDate newTimeAndDate;
 			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
 			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
 			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
@@ -197,13 +187,12 @@ std::vector<task> storage::readFileJson(){
 }
 
 void storage::writeFileJson(std::vector<task> commandVector){
-
 	storageSort sort;
-	commandVector = sort.sortvector(commandVector);
-
 	Document document;
-	document.SetObject();
 	Value array(kArrayType);
+
+	commandVector = sort.sortvector(commandVector);
+	document.SetObject();
 
 	for(auto i=0; i<commandVector.size(); i++){
 		Value obj(kObjectType);
@@ -327,7 +316,6 @@ void storage::writeFileJson(std::vector<task> commandVector){
 			obj.AddMember("EndHour", commandVector[i].getTimeAndDate().getEndTimeHour(),document.GetAllocator());
 			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());
 		}
-
 		array.PushBack(obj,document.GetAllocator());
 	}
 	document.AddMember("storage", array, document.GetAllocator());
