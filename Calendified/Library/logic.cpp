@@ -10,6 +10,7 @@ logic::~logic(void){
 
 
 std::string logic::readCommand(std::string commandLine, int toggleCount, int flipCount){
+	LOG(INFO) << "Entered Class: Logic. Function: readCommand";
 	parser newParser(commandLine);
 	storage newStorage;
 	//char symbolTitle = '&';
@@ -67,12 +68,14 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 	//@author A0125489U	
 
 	switch(hashCommandAction(newParser.getTaskCommand())){
-	case ADD:
+	case COMMAND_ADD:
+		LOG(INFO) << "Entered Class: Logic. Case: ADD";
 		addTask.setTask(newTask);
 		addResults = addTask.executeAdd(); 
 		addTask.undoAdd(&undoTask, addResults);
 		return addResults;
-	case DELETE:
+	case COMMAND_DELETE:
+		LOG(INFO) << "Entered Class: Logic. Case: ADD";
 		//get current DisplayIndex using displayTask.getStorageIndex
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
@@ -89,7 +92,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 				return deleteResults;
 			}
 		}
-	case SEARCH:
+	case COMMAND_SEARCH:
+		LOG(INFO) << "Entered Class: Logic. Case: ADD";
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		searchItem = newParser.getCommandRef().getSearchItem();
@@ -121,7 +125,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 		}
 		displayTask.setDisplayIndex(0);
 		return displayTodayResults;
-	case DISPLAY:		
+	case COMMAND_DISPLAY:		
+		LOG(INFO) << "Entered Class: Logic. Case: ADD";
 		displayTask.updateStorageSource();
 		displayTask.setDisplayContent(emptyTaskList);
 		if(toggleCount ==0){ //Display for CalendifiedView	
@@ -135,7 +140,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 			displayTask.setDisplayIndex(0);
 			return displayTodayResults;
 		}
-	case EDIT:	
+	case COMMAND_EDIT:	
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_EDIT";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -152,7 +158,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 				return editResults;
 			}
 		}
-	case DONE:
+	case COMMAND_DONE:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_DONE";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -164,7 +171,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 			newTaskDone.undoDone(&undoTask, doneResults);
 			return doneResults;
 		}
-	case UNDONE:
+	case COMMAND_UNDONE:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_UNDONE";
 		displayTask.updateStorageSource();
 		currentDisplayContent = displayTask.getDisplayContent();
 		indexToActOnDisplay = currentCommandReference.getIndexToBeActOn();
@@ -176,7 +184,8 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 			newTaskDone.undoUndone(&undoTask, undoneResults);
 			return undoneResults;
 		}
-	case UNDO:
+	case COMMAND_UNDO:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_UNDO";
 		if(undoTask.getCurrentStack().size()!=1){
 			redoTask.redo(undoTask);
 		}
@@ -185,15 +194,19 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 			//redoTask.redo(undoTask);
 		//}
 		return undoResults;
-	case FLIP:	
+	case COMMAND_FLIP:	
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_FLIP";
 		FLIP_CONTENT = newParser.getCommandRef().getSearchItem();
 		return "Flipped!";
-	case SPECIFY:
+	case COMMAND_SPECIFY:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_SPECIFY";
 		return "";
-	case REDO:
+	case COMMAND_REDO:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_REDO";
 		redoResults = redoTask.executeRedo(&undoTask);
 		return redoResults;
-	case TOGGLE:
+	case COMMAND_TOGGLE:
+		LOG(INFO) << "Entered Class: Logic. Case: COMMAND_TOGGLE";
 		return "Toggled!";	
 	default:
 		return "";
@@ -272,42 +285,42 @@ commandType logic::hashCommandAction(std::string commandAction){
 	transform(commandAction.begin(),commandAction.end(),commandAction.begin(),tolower);
 
 	if(commandAction.compare(commandAdd) == 0){ 
-		return ADD;
+		return COMMAND_ADD;
 	}
 	if(commandAction.compare(commandDelete) == 0){ 
-		return DELETE;
+		return COMMAND_DELETE;
 	}
 	if(commandAction.compare(commandSearch) == 0){ 
-		return SEARCH;
+		return COMMAND_SEARCH;
 	}
 	if(commandAction.compare(commandDisplay) == 0){ 
-		return DISPLAY;
+		return COMMAND_DISPLAY;
 	}
 	if(commandAction.compare(commandEdit) == 0){ 
-		return EDIT;
+		return COMMAND_EDIT;
 	}
 	if(commandAction.compare(commandDone) == 0){
-		return DONE;
+		return COMMAND_DONE;
 	}
 	if(commandAction.compare(commandUndone) == 0){
-		return UNDONE;
+		return COMMAND_UNDONE;
 	}
 	if(commandAction.compare(commandUndo) == 0){ 
-		return UNDO;
+		return COMMAND_UNDO;
 	}
 	if(commandAction.compare(commandFlip) == 0){ 
-		return FLIP;
+		return COMMAND_FLIP;
 	}
 	if(commandAction.compare(commandSpecify) == 0){ 
-		return SPECIFY;
+		return COMMAND_SPECIFY;
 	}
 	if(commandAction.compare(commandRedo) == 0){ 
-		return REDO;
+		return COMMAND_REDO;
 	}
 	if(commandAction.compare(commandToggle) == 0){ 
-		return TOGGLE;
+		return COMMAND_TOGGLE;
 	}
 	if(commandAction.compare(commandCheckDone) == 0){ 
-		return DONE;
+		return COMMAND_DONE;
 	}
 }

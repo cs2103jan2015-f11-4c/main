@@ -63,7 +63,7 @@ const std::string MESSAGE_CURRENT_TIME
 const std::string MESSAGE_FLIP
 	="Flipped!";
 
-int const MAX_PATH = 999999;
+int const MAX_PATH_BUFFER = 999999;
 std::string const HELP_MAIN_MENU =
 	"/Help/Help_Main_Menu.html";
 std::string const HELP_ADD =
@@ -1082,8 +1082,8 @@ namespace UI {
 
 			 //@author A0114411B
 			 String^ getHTMLFilePath(std::string htmlHelpDirectory){
-				 char path[MAX_PATH];
-				 _fullpath(path, ":\\" , MAX_PATH);
+				 char path[MAX_PATH_BUFFER];
+				 _fullpath(path, ":\\" , MAX_PATH_BUFFER);
 				 std::string directoryOfFolder(path);
 				 int const size = directoryOfFolder.size();
 				 directoryOfFolder = directoryOfFolder.substr(0,size-3);

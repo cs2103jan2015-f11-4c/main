@@ -1,5 +1,7 @@
 #include "CalendifiedGUI.h"
+#include "easylogging++.h"
 
+INITIALIZE_EASYLOGGINGPP
 
 using namespace System;
 using namespace System::Windows::Forms;

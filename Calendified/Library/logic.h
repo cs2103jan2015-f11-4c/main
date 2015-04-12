@@ -6,6 +6,7 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include "easylogging++.h"
 #include "taskDelete.h"
 #include "parser.h"
 #include "commandRef.h"
@@ -40,18 +41,18 @@ const std::string TYPE_BEFORE =
 	"before";
 
 enum commandType {
-	ADD, 
-	DELETE, 
-	SEARCH,
-	DISPLAY,
-	EDIT, 
-	DONE,
-	UNDONE,
-	UNDO, 
-	FLIP, 
-	SPECIFY, 
-	REDO, 
-	TOGGLE,
+	COMMAND_ADD, 
+	COMMAND_DELETE, 
+	COMMAND_SEARCH,
+	COMMAND_DISPLAY,
+	COMMAND_EDIT, 
+	COMMAND_DONE,
+	COMMAND_UNDONE,
+	COMMAND_UNDO, 
+	COMMAND_FLIP, 
+	COMMAND_SPECIFY, 
+	COMMAND_REDO, 
+	COMMAND_TOGGLE,
 };
 
 class logic
