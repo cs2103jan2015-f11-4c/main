@@ -3,9 +3,9 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace CommandTestView
+namespace RegressionTest
 {		
-	TEST_CLASS(CommandTestView)
+	TEST_CLASS(UnitTest1)
 	{
 	public:
 		

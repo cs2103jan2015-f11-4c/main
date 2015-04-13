@@ -20,11 +20,45 @@ Class UI.CalendifiedGUI: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   Fields:
     Int32 toggleCount : Public
     Int32 flipCount : Public
+    Int32 highlightPos : Public
     Int32 timerCount : Public
+    System.String checkFlip1 : Public
+    System.String checkFlip2 : Public
+    System.String checkFlip3 : Public
+    System.String msgFlip : Public
+    System.String checkAdd1 : Public
+    System.String checkAdd2 : Public
+    System.String checkAdd3 : Public
+    System.String msgAdd : Public
+    System.String checkSearch1 : Public
+    System.String checkSearch2 : Public
+    System.String checkSearch3 : Public
+    System.String msgSearch : Public
+    System.String checkEdit1 : Public
+    System.String checkEdit2 : Public
+    System.String checkEdit3 : Public
+    System.String msgEdit : Public
+    System.String checkDelete1 : Public
+    System.String checkDelete2 : Public
+    System.String checkDelete3 : Public
+    System.String msgDelete : Public
+    System.String checkDone1 : Public
+    System.String checkDone2 : Public
+    System.String checkDone3 : Public
+    System.String msgDone : Public
+    System.String checkUndone1 : Public
+    System.String checkUndone2 : Public
+    System.String checkUndone3 : Public
+    System.String msgUndone : Public
+    System.String checkSlash1 : Public
+    System.String checkSlash2 : Public
+    System.String checkSlash3 : Public
+    System.String msgSlash : Public
   Methods:
     toggle(): PrivateScope, Public, HideBySig
-    highlightRichTextBoxContent(RichTextBox, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
-    updateRichTextBoxContent(RichTextBox, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
+    highlightRichTextBoxContent(RichTextBox, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
+    updateRichTextBoxContent(RichTextBox, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
     updateCalendifiedView(vector<std::basic_string<char\,std::char_traits<char>\,std::allocator<char> >\,std::allocator<std::basic_string<char\,std::char_traits<char>\,std::allocator<char> > > >*): PrivateScope, Public, HideBySig
     updateListView(vector<std::basic_string<char\,std::char_traits<char>\,std::allocator<char> >\,std::allocator<std::basic_string<char\,std::char_traits<char>\,std::allocator<char> > > >*): PrivateScope, Public, HideBySig
+    getHelpType(basic_string<char\,std::char_traits<char>\,std::allocator<char> >*, basic_string<char\,std::char_traits<char>\,std::allocator<char> >*): PrivateScope, Public, HideBySig
     flip(): PrivateScope, Public, HideBySig

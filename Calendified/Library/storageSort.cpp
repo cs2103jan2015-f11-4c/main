@@ -13,6 +13,12 @@ storageSort::~storageSort(void)
 {
 }
 
+// Sorts the incoming vector of task in terms of their dates.
+// This function checks each task based on this order: start year->
+// start month -> start day -> hour of start time -> the minute of
+// the start time. If the start year is larger, it will switch the 2 
+// task's position. If the start year is equal, it will then move on 
+// to check the next condiiton to see if the month is larger.
 std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
 	for(int i=0; i<commandVector.size(); i++){
 		for(int j=0; j<commandVector.size(); j++){

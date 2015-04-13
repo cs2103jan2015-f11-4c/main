@@ -1,5 +1,13 @@
 //@author A0114411B
 
+//******************************************************************
+//
+// This class governs the marking and unmarking of task
+// being done or undone. It also provides functions such as 
+// extracting the list of done or undone tasks.
+//
+//******************************************************************
+
 #include "taskDone.h"
 
 

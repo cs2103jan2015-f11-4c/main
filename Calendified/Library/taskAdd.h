@@ -32,7 +32,8 @@ public:
 
 	//Setter
 	void setTask(task taskString);
-
+	task getTask();
+	bool notValidTitle();
 	void undoAdd(taskUndo* taskToBeUndone, std::string results);
 	void taskAddRecurrent();
 	bool isClash(std::vector<task> &storageVector);

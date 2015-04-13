@@ -11,16 +11,6 @@
 #include "CppUnitTest.h"
 
 // TODO: reference additional headers your program requires here
-#include "taskAdd.h"
-#include "taskDelete.h"
-#include "taskEdit.h"
-#include "commandRef.h"
-#include "storage.h"
-#include "storageSort.h"
-#include "task.h"
-#include "taskDone.h"
-#include "taskUndo.h"
-#include "timeAndDate.h"
-#include "logic.h"
 #include "parser.h"
-#include "taskDisplay.h"
+#include "task.h"
+#include "taskDelete.h"

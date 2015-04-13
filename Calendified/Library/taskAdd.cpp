@@ -12,9 +12,10 @@ taskAdd::~taskAdd(void)
 std::string taskAdd::executeAdd(){
 	storage storageFile;
 	std::vector<task> taskStorage;
-	if(_task.getTitle() == ""){
+	if(notValidTitle()){
 		return MESSAGE_FAILURE_ADD;
-	}else if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
+	}
+	 if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
 		if(storageFile.isFileEmpty()){
 			storageFile.writeFileJson(taskStorage);
 		}
@@ -35,6 +36,15 @@ std::string taskAdd::executeAdd(){
 	} else {
 		return MESSAGE_FAILURE_ADD;
 	}
+}
+
+bool taskAdd::notValidTitle(){
+	return (getTask().getTitle() == "");
+
+}
+
+task taskAdd::getTask(){
+	return _task;
 }
 
 void taskAdd::undoAdd(taskUndo* taskToBeUndone, std::string results){
