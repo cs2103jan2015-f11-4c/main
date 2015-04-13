@@ -45,7 +45,7 @@ public:
 
 	std::vector<std::string> detokenizeCommandLine(std::string);
 	void checkAndSetTaskType(std::string);
-	std::string constructItem(std::vector<std::string> dataContainor,int startPosition, int endPosition);
+	std::string constructItem(std::vector<std::string> dataContainer,int startPosition, int endPosition);
 	bool checkCommand(std::string checkCommandInput);
 	int checkDeadlineIndex(std::string commandLine);
 };

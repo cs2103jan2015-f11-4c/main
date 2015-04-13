@@ -20,8 +20,8 @@ storageSort::~storageSort(void)
 // task's position. If the start year is equal, it will then move on 
 // to check the next condiiton to see if the month is larger.
 std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
-	for(int i=0; i<commandVector.size(); i++){
-		for(int j=0; j<commandVector.size(); j++){
+	for(int i = 0; i < (int) commandVector.size(); i++){
+		for(int j = 0; j < (int) commandVector.size(); j++){
 			if(isStartYearLarger(i,j,commandVector)){
 				commandVector = switchPlace(i,j,commandVector);
 			} else if(isStartYearEqual(i, j, commandVector) 
