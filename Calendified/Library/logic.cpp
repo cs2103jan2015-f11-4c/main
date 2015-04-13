@@ -13,10 +13,6 @@ std::string logic::readCommand(std::string commandLine, int toggleCount, int fli
 	LOG(INFO) << "Entered Class: Logic. Function: readCommand";
 	parser newParser(commandLine);
 	storage newStorage;
-	//char symbolTitle = '&';
-	//char symbolLocation = '@';
-	//char symbolDate = '%';
-	//char symbolTime = '$';
 	currentCommandReference = newParser.getCommandRef().copyTo();
 
 	timeAndDate newTimeAndDate(currentCommandReference.getDate(),currentCommandReference.getTime());
