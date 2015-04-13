@@ -1,5 +1,13 @@
 //@author A0116027R
 
+//Redo is maintained by two stacks of vector<task>, _currentStack and _sessionStack
+//Redo a task in the following steps:
+//Step 1: Maintains redo stacks with that of taskUndo
+//Step 2: Update the two stacks if redo is possible
+//Step 3: Write top vector of _currentStack into storage file
+//Step 4: Return success message if undo is successful
+//Example user input to undo a task: "redo"
+
 #include "taskRedo.h"
 
 

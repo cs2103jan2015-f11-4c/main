@@ -1,4 +1,14 @@
-///@author A0116027R
+//@author A0116027R
+
+//Undo is maintained by two stacks of vector<task>, _currentStack and _sessionStack
+//Top of _currentStack contains the most updated vector of tasks while
+//top of _sessionStack contains the previous vector of tasks
+//Undo a task in the following steps:
+//Step 1: Check if _sessionStack is empty
+//Step 2: Update the two stacks if undo is possible
+//Step 3: Write top vector of _currentStack into storage file
+//Step 5: Return success message if undo is successful
+//Example user input to undo a task: "undo"
 
 #include "taskUndo.h"
 
