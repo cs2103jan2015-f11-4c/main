@@ -148,7 +148,7 @@ bool isBothTimesClash(task newTask, task storedTask){
 }
 
 bool taskAdd::isClash(std::vector<task> &taskStorage){
-	for(int i=0; i<taskStorage.size(); i++){
+	for(int i=0; i < (int) taskStorage.size(); i++){
 		if(isValidConditions(_task, taskStorage[i])){
 			if(isEndDateClash(_task, taskStorage[i]) && isEndTimeClash(_task, taskStorage[i])){
 				_task.setIsClash(true);

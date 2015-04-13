@@ -74,7 +74,7 @@ parser::parser(std::string commandLine){
 	if(deadlineIndex !=0){
 		commandLineDataContainer.erase(commandLineDataContainer.begin() + deadlineIndex);
 	}
-	for(auto i = 1; i < commandLineDataContainer.size(); i++){
+	for(auto i = 1; i < (int) commandLineDataContainer.size(); i++){
 		timeAndDate isTime("",commandLineDataContainer[i] );
 		if(isTime.isValid()){
 			commandReference.setTime(commandLineDataContainer[i]);
@@ -113,6 +113,8 @@ parser::parser(std::string commandLine){
 		else{
 			taskTitleDataEndPosition = dateDataPosition - 1;
 		}	
+	}else if(timeDataPosition ==0 && dateDataPosition != 0){
+		taskTitleDataEndPosition = dateDataPosition - 1;
 	}//else if(timeDataPosition == 0){
 	//	taskTitleDataEndPosition = dateDataPosition - 1;
 	//}else if(dateDataPosition == 0){
@@ -255,7 +257,7 @@ int parser::checkDeadlineIndex(std::string commandLine){
 	int index=0;
 	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
 
-	for(auto i=0; i<detokenizedVector.size(); i++){
+	for(auto i=0; i < (int) detokenizedVector.size(); i++){
 		if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
 			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
 			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
@@ -279,7 +281,7 @@ void parser::checkAndSetTaskType(std::string commandLine){
 		commandReference.getDate()[0] ==0 && commandReference.getTime()[0] ==0){
 			commandReference.setTaskType(FLOATING_TASK);
 	} else {
-		for(auto i=0; i<detokenizedVector.size(); i++){
+		for(auto i=0; i < (int) detokenizedVector.size(); i++){
 			if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
 				detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
 				detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){

@@ -1,4 +1,4 @@
-//author A0125489U
+//@author A0125489U
 
 #ifndef TASKDISPLAY_H
 #define TASKDISPLAY_H
@@ -107,10 +107,6 @@ const std::string KEYWORD_TO_DO_LIST =
 const char KEYWORD_EMPTY_CHAR =
 	'0';
 
-
-
-
-
 class taskDisplay
 {
 
@@ -126,12 +122,32 @@ public:
 	std::string taskAddTask();
 
 	//Setters
-	void setTask(std::string taskString);
-	void setTaskType(std::string taskType);
 	void setDisplayContent(std::vector<task> newDisplayContent);
 	void setDisplayIndex(int newDisplayIndex);
+		
+	//Update methods
+	void updateStorageSource();
+	void updateDisplayContent(std::vector<task> newDisplayContent);
+	
+	//Sorting methods
+	std::vector<task> sortDeadLineList(std::vector<task> givenTaskList);
+	std::vector<task> sortFloatTaskList(std::vector<task> givenTaskList);
+	std::vector<task> sortTimedTaskList(std::vector<task> givenTaskList);
+	std::vector<task> sortTaskList(std::string sortType, int flipCount);
 
-	//Getters
+	//Displaying methods
+	std::string displayToday(int flipCount);
+	std::string displayNextDay(int flipCount);
+	std::string displayFloatDay(int flipCount);
+	std::string displayAll(int flipCount);
+
+	//Formatting methods
+	std::string formatTimedTask(std::vector<task> taskList, std::string presentationType);
+	std::string formatFloatTask(std::vector<task> taskList);
+	std::string formatDisplayResults(std::vector<task> taskList, std::string formatType);
+	std::string formatSearchResults(std::vector<task> searchList);
+
+	//Getters methods
 	std::string getTodayDate(int flipCount);
 	std::string getTodayDateMonth(int flipCount);
 	std::string getTodayDateMonth_Abbreviated(int flipCount);
@@ -148,31 +164,15 @@ public:
 	int getDisplayIndex();
 	int getStorageIndex(std::vector<task> currentDisplayContent, int selectedIndex);
 
-	void updateDisplayContent(std::vector<task> newDisplayContent);
-	void updateStorageSource();
-	std::string displayToday(int flipCount);
-	std::string displayNextDay(int flipCount);
-	std::string displayFloatDay(int flipCount);
-	std::string displayAll(int flipCount);
-	std::string formatDisplayResults(std::vector<task> taskList, std::string formatType);
-	std::string formatTimedTask(std::vector<task> taskList, std::string presentationType);
-	std::string formatFloatTask(std::vector<task> taskList);
-	std::string formatSearchResults(std::vector<task> searchList);
-	std::vector<task> sortTaskList(std::string sortType, int flipCount);
-	std::vector<task> sortTimedTaskList(std::vector<task> givenTaskList);
-	std::vector<task> sortFloatTaskList(std::vector<task> givenTaskList);
-	std::vector<task> sortDeadLineList(std::vector<task> givenTaskList);
-	std::vector<task> searchExact(std::string searchItem);
-	std::string searchAfter(std::string searchItem);
+	//Search methods
+	std::string searchPower(std::string searchItem);	
 	std::string searchBefore(std::string searchItem);
-	std::string searchPower(std::string searchItem);
+	std::string searchAfter(std::string searchItem);
+	std::vector<task> searchExact(std::string searchItem);
+	
 	bool taskDisplay::checkSameTask(task tempSearchItem , std::vector<task> currenetSearchList);
 	int configureCalendifedView(std::string logicResult, int flipCount);
-	std::string configureListView(std::string logicResult);
-	
-	
-	
-	
+	std::string configureListView(std::string logicResult);	
 };
 
 #endif

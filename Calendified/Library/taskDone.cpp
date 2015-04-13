@@ -29,7 +29,7 @@ std::string taskDone::markDone(int indexToBeActOn){
 	if(storageVector.empty()){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeActOn < 0 || indexToBeActOn > storageVector.size()){
+	else if(indexToBeActOn < 0 || indexToBeActOn > (int) storageVector.size()){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
@@ -61,7 +61,7 @@ std::string taskDone::markUndone(int indexToBeActOn){
 	if(storageVector.empty()){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeActOn < 0 || indexToBeActOn > storageVector.size()){
+	else if(indexToBeActOn < 0 || indexToBeActOn > (int) storageVector.size()){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
@@ -94,7 +94,7 @@ std::vector<task> taskDone::getListDone(){
 		return doneVector;
 	} else {
 		int i;
-		for(i=1; i<=doneVector.size(); i++){
+		for(i=1; i<= (int) doneVector.size(); i++){
 			if(doneVector[i-1].getIsDone() == false){
 				doneVector.erase(doneVector.begin()+i-1);
 				i=0;

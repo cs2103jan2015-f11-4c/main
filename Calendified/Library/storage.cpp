@@ -106,8 +106,29 @@ std::vector<task> storage::readFileJson(){
 		const Value& TaskObject = array[i];
 		std::string TaskType = TaskObject["TaskType"].GetString();
 
-		if(TaskType == "TimedTask"){
-			
+		//Re-initializing newTimeAndDate
+		newTimeAndDate.setStartMDay(0);
+		newTimeAndDate.setStartMonth(0);
+		newTimeAndDate.setStartYear(0);
+		newTimeAndDate.setEndMDay(0);
+		newTimeAndDate.setEndMonth(0);
+		newTimeAndDate.setEndYear(0);
+		newTimeAndDate.setStartTimeHour(0);
+		newTimeAndDate.setStartTimeMin(0);
+		newTimeAndDate.setEndTimeHour(0);
+		newTimeAndDate.setEndTimeMin(0);
+		newTimeAndDate.setStartDay("");
+		newTimeAndDate.setEndDay("");
+		//Re-initializing the newTask
+		newTask.setTaskType("");
+		newTask.setCommandAction("");
+		newTask.setTimeAndDate(newTimeAndDate);
+		newTask.setTitle("");
+		newTask.setLocation("");		
+		newTask.setIsDone(false);
+		newTask.setIsClash(false);		
+		
+		if(TaskType == "TimedTask"){			
 			//standard
 			newTask.setTaskType(TaskObject["TaskType"].GetString());
 			newTask.setTitle(TaskObject["TaskTitle"].GetString());
@@ -194,7 +215,7 @@ void storage::writeFileJson(std::vector<task> commandVector){
 	commandVector = sort.sortvector(commandVector);
 	document.SetObject();
 
-	for(auto i=0; i<commandVector.size(); i++){
+	for(auto i=0; i < (int) commandVector.size(); i++){
 		Value obj(kObjectType);
 		obj.SetObject();
 
