@@ -96,10 +96,16 @@ parser::parser(std::string commandLine){
 
 	}	
 	taskTitleDataStartPosition  = taskIndexPosition + 1;
-	taskTitleDataEndPosition = commandLineDataContainer.size() -1;
-	if(taskLocationDataStartPosition!=0){
-		taskLocationDataEndPosition = commandLineDataContainer.size() -1;
+	if(taskLocationDataStartPosition==0){
+		taskTitleDataEndPosition = commandLineDataContainer.size() -1;
+	}else if(timeDataPosition !=0){
+		taskTitleDataEndPosition = timeDataPosition -1;
+	}else{
+		taskTitleDataEndPosition = taskLocationDataStartPosition -1 ;
 	}
+	//if(taskLocationDataStartPosition!=0){
+	//	taskLocationDataEndPosition = commandLineDataContainer.size() -1;
+	//}
 	if(timeDataPosition !=0 && dateDataPosition != 0){
 		if(timeDataPosition < dateDataPosition){
 			taskTitleDataEndPosition = timeDataPosition - 1;
@@ -121,6 +127,7 @@ parser::parser(std::string commandLine){
 		));
 
 	if(taskLocationDataStartPosition != 0){
+		taskLocationDataEndPosition = commandLineDataContainer.size() -1;
 		commandReference.setTaskLocation(
 			constructItem(
 			commandLineDataContainer,
