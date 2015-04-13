@@ -170,17 +170,18 @@ namespace UI {
 		String ^ checkSlash3;
 		String ^ msgSlash;
 		
+		//@author A0116027R
 		//This operation renders the toggle between Calendified View and List View
 	public: void toggle(){
-				if(toggleCount ==0){
+				if(toggleCount == 0){
 					toggleCount = 1;
 					toggleBox_Calendified->BorderStyle = BorderStyle::Fixed3D;
 					toggleBox_Calendified->Visible = false;
 					toggleBox_ListView->Visible = true;
 					richTextBox_CalendifiedViewL->Visible = false;
 					richTextBox_CalendifiedViewR->Visible = false;
-					mainBg->Visible=false;
-					mainBg2->Visible=true;
+					mainBg->Visible = false;
+					mainBg2->Visible = true;
 					richTextBox_ListView->Visible = true;
 					richTextBox_CalendifiedViewL->ResetText();
 					richTextBox_CalendifiedViewR->ResetText();
@@ -196,7 +197,7 @@ namespace UI {
 					toggleBox_Calendified->Visible = true;
 					toggleBox_ListView->Visible = false;
 					richTextBox_ListView->Visible = false;
-					mainBg2->Visible=false;
+					mainBg2->Visible = false;
 					richTextBox_CalendifiedViewL->Visible = true;
 					richTextBox_CalendifiedViewR->Visible = true;
 					richTextBox_ListView->ResetText();
@@ -640,26 +641,27 @@ namespace UI {
 		}
 #pragma endregion
 
-		//author A0125489U
+		//@author A0125489U
+		//This method highlights the content on a string based on the given parameter
 	public: void CalendifiedGUI::highlightRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string searchString, std::string todayDate, std::string nextdayDate, std::string todayMonth){
 				highlightPos = thisRichTextBox->Find(gcnew String(searchString.c_str()), highlightPos , thisRichTextBox->TextLength, RichTextBoxFinds::MatchCase);		
-				if(searchString.compare(KEYWORD_DONE)==0){
+				if(searchString.compare(KEYWORD_DONE) == 0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Teal;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 10.00F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
-				} else if(searchString.compare(KEYWORD_DUE)==0){
+				} else if(searchString.compare(KEYWORD_DUE) == 0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::Salmon;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Harlow Solid", 10.00F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
-				} else if(searchString.compare(KEYWORD_TO_DO_LIST)==0){
+				} else if(searchString.compare(KEYWORD_TO_DO_LIST) == 0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::DodgerBlue;
 					thisRichTextBox->SelectionFont =(gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));	
-				} else if(searchString.compare(TYPE_RESULTS)==0){
+				} else if(searchString.compare(TYPE_RESULTS) == 0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::DeepPink;
 					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Harlow Solid", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
-				} else if(searchString.compare(todayDate)==0 || searchString.compare(nextdayDate)==0 || searchString.compare(todayMonth)==0){
+				} else if(searchString.compare(todayDate) == 0 || searchString.compare(nextdayDate) == 0 || searchString.compare(todayMonth) == 0){
 					thisRichTextBox->SelectionColor = System::Drawing::Color::DeepPink;
 					thisRichTextBox->SelectionFont = (gcnew System::Drawing::Font(L"Arial Narrow", 16.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point, 
 						static_cast<System::Byte>(0)));
@@ -670,43 +672,44 @@ namespace UI {
 				highlightPos++;
 			}
 
-			//author A0125489U
+			//@author A0125489U
+			//This method updates Calendified and List View and calls highlightRichTextBoxContent to highlight the content
 	public: void CalendifiedGUI::updateRichTextBoxContent(System::Windows::Forms::RichTextBox ^thisRichTextBox, std::string logicResult, std::string nextDayDate, std::string todayDate, std::string todayYear, std::string todayMonth){
 				std::string searchDate;
-				int divider=21;
+				int divider = 21;
 				int numHighlight;
-				numHighlight = logicResult.length()/divider;
+				numHighlight = logicResult.length() / divider;
 				//Highlight Today
-				highlightPos=0;
+				highlightPos = 0;
 				highlightRichTextBoxContent(thisRichTextBox,todayDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight NextDay
-				highlightPos=0;
+				highlightPos = 0;
 				highlightRichTextBoxContent(thisRichTextBox,nextDayDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight Month
-				highlightPos=0;
+				highlightPos = 0;
 				highlightRichTextBoxContent(thisRichTextBox,todayMonth.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight To-Do Text
-				highlightPos=0;
+				highlightPos = 0;
 				highlightRichTextBoxContent(thisRichTextBox,KEYWORD_TO_DO_LIST.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				//Highlight keyword "Results:" if inputcommand is search
 				if(logicResult.substr(0,8).compare(TYPE_RESULTS) ==0){
-					highlightPos=0;
+					highlightPos = 0;
 					highlightRichTextBoxContent(thisRichTextBox,TYPE_RESULTS,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				}
 				//Highlight [DONE] Text
-				highlightPos=0;
-				for(int i =0;i < numHighlight;i++){
+				highlightPos = 0;
+				for(int i = 0; i < numHighlight; i++){
 					highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DONE,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				}
 				//Highlight [DUE] Text
-				highlightPos=0;
-				for(int i =0;i < numHighlight;i++){
+				highlightPos = 0;
+				for(int i = 0; i < numHighlight; i++){
 					highlightRichTextBoxContent(thisRichTextBox,KEYWORD_DUE,todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 				}
 				//Highlight Date
-				highlightPos=0;
-				for(int month=1; month <=12;month++){
-					for(int day =1; day <=31; day++){
+				highlightPos = 0;
+				for(int month = 1; month <= 12; month++){
+					for(int day = 1; day <= 31; day++){
 						searchDate = std::to_string(day)+KEYWORD_DATE_SEPARATOR+std::to_string(month)+KEYWORD_DATE_SEPARATOR+todayYear.c_str();
 						highlightRichTextBoxContent(thisRichTextBox,searchDate.c_str(),todayDate.c_str(),nextDayDate.c_str(),todayMonth.c_str());
 					}
@@ -714,13 +717,15 @@ namespace UI {
 			}
 
 			//@author A0125489U
+			//This method updates CalendifiedView
 	public: void CalendifiedGUI::updateCalendifiedView(std::vector<std::string> displayResults){
 				richTextBox_CalendifiedViewL->ResetText();
 				richTextBox_CalendifiedViewR->ResetText();
-				//Update CalendifiedView
-				if(displayResults.size() == 3){ // Operations for ADD, EDIT, DELETE
+				// check for operations for ADD, EDIT, DELETE
+				if(displayResults.size() == 3){ 
 					richTextBox_CalendifiedViewL->Text=gcnew String(displayResults[4].c_str());
-				}else { //Operations for DISPLAY, VIEW
+				}else { 
+					//check for operations for DISPLAY, VIEW
 					richTextBox_CalendifiedViewL->Text = gcnew String(displayResults[4].c_str());
 					richTextBox_CalendifiedViewR->Text = gcnew String(displayResults[5].c_str());
 					updateRichTextBoxContent(richTextBox_CalendifiedViewL,displayResults[4],displayResults[1],displayResults[0],displayResults[2],displayResults[3]);
@@ -729,8 +734,8 @@ namespace UI {
 			}
 
 			//@author A0125489U
+			//Update Listview
 	public: void CalendifiedGUI::updateListView(std::vector<std::string> displayResults){
-				//Update Listview
 				richTextBox_ListView->ResetText();
 				richTextBox_ListView->Text = gcnew String(displayResults[4].c_str());
 				updateRichTextBoxContent(richTextBox_ListView,displayResults[4],displayResults[1],displayResults[0],displayResults[2],displayResults[3]);
@@ -786,47 +791,51 @@ namespace UI {
 						 if(isValidInput(inputCommandBox)){
 							 if(inputCommandBox == HELP_COMMAND_CLOSE){
 								 webBrowser_Help->Hide();
-								 inputCommandBox= "display";
+								 inputCommandBox = "display";
 							 } else {
 								 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(inputCommandBox)));
-								 inputCommandBox= "display";
+								 inputCommandBox = "display";
 							 }
 						 }
 						 if(inputCommandBox == REQUEST_CHANGE_LOCATION){
 							 changeDirectory();
 							 label_status->Text = gcnew String(MESSAGE_DIRECTORY_CHANGED.c_str());
 						 }
-						 //@author A0125489U						 
-						 if(inputCommandBox.compare("flip")!=0 && inputCommandBox.compare("toggle")!=0){ //This statement resets the flipCount when no countinous flipping is detected
-							 flipCount=0;
+
+						 //This statement resets the flipCount when no countinous flipping is detected
+						 if(inputCommandBox.compare("flip") != 0 && inputCommandBox.compare("toggle") != 0){ 
+							 flipCount = 0;
 						 }
 						 displayResult = newLogic.readCommand(inputCommandBox,toggleCount,flipCount);
 						 updateStatus = gcnew String(displayResult.c_str());
 						 label_status->ResetText();
 						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
 							 label_status-> Text =  updateStatus;
-							 if(updateStatus==gcnew String(MESSAGE_FLIP.c_str())){ //This statement renders for countinous flipping
+							 if(updateStatus == gcnew String(MESSAGE_FLIP.c_str())){ //This statement renders for countinous flipping
 								 flip();
 								 flipCount++;
 								 flipCount += newLogic.updateUIFlipCount();
 							 }
 							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
-						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
+						 }else { 
+							 //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,TYPE_UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
-						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+						 if(toggleCount == 0){ 
+							 //check for [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
 							 updateListView(displayResults);
 						 }
 						 commandBox->ResetText();
 						 commandBox->SelectAll();
-						 if(label_status->Text =="Toggled!"){ 
+						 if(label_status->Text == "Toggled!"){ 
 							 toggle();
 						 }
-					 }else if(e->Control && e->KeyCode==Keys::Z){//Shortcut for Ctrl+Z
+					 }else if(e->Control && e->KeyCode == Keys::Z){
+						 //Shortcut for Ctrl+Z
 						 try{
-							 flipCount=0;
+							 flipCount = 0;
 							 displayResult = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
 							 updateStatus = gcnew String(displayResult.c_str());
 							 label_status->Text = updateStatus;
@@ -840,38 +849,47 @@ namespace UI {
 						 } catch(const std::exception& e) {
 							 label_status->Text = gcnew String(MESSAGE_INVALID_FORMAT.c_str());
 						 }
-					 } else if(e->Control && e->KeyCode==Keys::D){//Shortcut for CTRL + D
+					 } else if(e->Control && e->KeyCode == Keys::D){
+						 //Shortcut for CTRL + D
 						 commandBox->Text = gcnew String(TYPE_DELETE .c_str()) + commandBox->Text;
 						 commandBox->Select(commandBox->Text->Length,0);
-					 } else if(e->Control && e->KeyCode==Keys::F){//Shortcut for CTRL + F
+					 } else if(e->Control && e->KeyCode == Keys::F){
+						 //Shortcut for CTRL + F
 						 displayResult = newLogic.readCommand("flip",toggleCount,flipCount);
 						 updateStatus = gcnew String(displayResult.c_str());label_status->ResetText();
 						 if(!updateStatus->Contains(gcnew String(KEYWORD_TO_DO_LIST.c_str())) && !updateStatus->Contains(gcnew String(TYPE_RESULTS.c_str())) ){ // This section renders for operation results: {TYPE_DISPLAY,SEARCH}
 							 label_status-> Text =  updateStatus;
-							 if(updateStatus==gcnew String(MESSAGE_FLIP.c_str())){ //This statement renders for countinous flipping
+							 if(updateStatus == gcnew String(MESSAGE_FLIP.c_str())){ 
+								 //This statement renders for countinous flipping
 								 flip();
 								 flipCount++;
 							 }
 							 displayResults = newLogic.updateUI(newLogic.readCommand(TYPE_DISPLAY,toggleCount,flipCount),toggleCount,flipCount);	 
-						 }else { //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
+						 }else { 
+							 //This section renders for operation results {ADD,DELETE,EDIT,FLIP,TOGGLE,UNDO}
 							 displayResults = newLogic.updateUI(displayResult,toggleCount,flipCount);
 						 }
-						 if(toggleCount == 0){ //check for mode [calendified/list] view 
+						 if(toggleCount == 0){ 
+							 //check for [calendified/list] view 
 							 updateCalendifiedView(displayResults);
 						 }else{
 							 updateListView(displayResults);
 						 }
-					 } else if(e->Control && e->KeyCode==Keys::A){//Shortcut for CTRL + A
+					 } else if(e->Control && e->KeyCode == Keys::A){
+						 //Shortcut for CTRL + A
 						 commandBox->Text = gcnew String(MESSAGE_ADD .c_str()) + commandBox->Text;
 						 commandBox->Select(commandBox->Text->Length,0);
-					 } else if(e->Control && e->KeyCode==Keys::T){//Shortcut for CTRL + T
+					 } else if(e->Control && e->KeyCode == Keys::T){
+						 //Shortcut for CTRL + T
 						 toggle();
-					 } else if(e->Control && e->KeyCode==Keys::S){//Shortcut for CTRL + S
+					 } else if(e->Control && e->KeyCode==Keys::S){
+						 //Shortcut for CTRL + S
 						 commandBox->Text = gcnew String(TYPE_SEARCH .c_str()) + commandBox->Text;
 						 commandBox->Select(commandBox->Text->Length,0);
-					 } else if(e->Control && e->KeyCode==Keys::Y){//Shortcut for CTRL + Y
+					 } else if(e->Control && e->KeyCode==Keys::Y){
+						 //Shortcut for CTRL + Y
 						 try{
-							 flipCount=0;
+							 flipCount = 0;
 							 displayResult = newLogic.readCommand(TYPE_REDO,toggleCount,flipCount);
 							 updateStatus = gcnew String(displayResult.c_str());
 							 label_status->Text = updateStatus;
@@ -885,14 +903,17 @@ namespace UI {
 						 } catch(const std::exception& e) {
 							 label_status->Text = gcnew String(MESSAGE_INVALID_FORMAT.c_str());
 						 }
-					 } else if(e->Control && e->KeyCode==Keys::E){//Shortcut for CTRL + E
+					 } else if(e->Control && e->KeyCode == Keys::E){
+						 //Shortcut for CTRL + E
 						 commandBox->Text = gcnew String(MESSAGE_EDIT .c_str()) + commandBox->Text;
 						 commandBox->Select(commandBox->Text->Length,0);
-					 } else if(e->Control && e->KeyCode==Keys::H){//Shortcut for CTRL + H
+					 } else if(e->Control && e->KeyCode == Keys::H){
+						 //Shortcut for CTRL + H
 						 webBrowser_Help->Navigate(getHTMLFilePath(getHelpType(HELP_COMMAND_HELP)));
-					 } else if(e->KeyCode==Keys::Back){
+					 } else if(e->KeyCode == Keys::Back){
 						 label_status->Text = gcnew String(MESSAGE_EMPTY.c_str());
-					 } else if(e->Control && e->KeyCode==Keys::W){//Shortcut for CTRL + W // exit
+					 } else if(e->Control && e->KeyCode == Keys::W){
+						 //Shortcut for CTRL + W // exit
 						 Application::Exit();
 					 } 
 				 } catch (const std::exception& e) {
@@ -1004,7 +1025,7 @@ namespace UI {
 						 updateListView(displayResults);
 					 }
 				 }
-				 notifyBox->Text="0!";//need storage return num file;
+				 notifyBox->Text = "0!";//need storage return num file;
 			 }
 
 			 //@author A0114411B
@@ -1015,15 +1036,16 @@ namespace UI {
 				 this->commandBox->ResetText();
 			 }
 
-			 //author A0125489U
+			 //@author A0125489U
 	private: System::Void notifyBox_Click(System::Object^  sender, System::EventArgs^  e) {
 				 notifyBox->BorderStyle = BorderStyle::Fixed3D;
 				 _sleep(500);
 				 logic newLogic;			
-				 flipCount=0;
+				 flipCount = 0;
 				 std::string logicResult = newLogic.readCommand(TYPE_SEARCH_UNDONE,toggleCount,flipCount);
 				 std::vector<std::string> displayResults = newLogic.updateUI(logicResult,toggleCount,flipCount);
-				 if(toggleCount == 0){ //check for mode [calendified/list] view 
+				 if(toggleCount == 0){ 
+					 //check for [calendified/list] view 
 					 updateCalendifiedView(displayResults);
 				 }else{
 					 //Update Listview
@@ -1058,7 +1080,7 @@ namespace UI {
 	private: System::Void pictureBox_Undo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
-					 flipCount=0;
+					 flipCount = 0;
 					 std::string results = newLogic.readCommand(TYPE_UNDO,toggleCount,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
@@ -1110,55 +1132,58 @@ namespace UI {
 			 }
 
 			 //@author A0125489U
+			 //This method renders for the flipping animation
 	public: void flip(){
 				Graphics^ gfx;
 				Bitmap^ bmp;
-				if(toggleCount ==0){
+				if(toggleCount == 0){
 					gfx = mainBg->CreateGraphics();
 					bmp = gcnew Bitmap(richTextBox_ListView->Width+40, richTextBox_ListView->Height-40);
 					gfx = gfx->FromImage(bmp);
-					gfx->CopyFromScreen(this->Location.X+30,this->Location.Y+105,0,0,this->Size);
-					pictureBox_CalendifiedFlipping->Image=bmp;
-					pictureBox_CalendifiedFlipping->Visible=true;
+					gfx->CopyFromScreen(this->Location.X + 30 ,this->Location.Y + 105 ,0,0,this->Size);
+					pictureBox_CalendifiedFlipping->Image = bmp;
+					pictureBox_CalendifiedFlipping->Visible = true;
 					timerCalendifiedFlip->Start();
-				} else if(toggleCount==1){
+				} else if(toggleCount == 1){
 					gfx = mainBg2->CreateGraphics();
-					bmp = gcnew Bitmap(richTextBox_ListView->Width+10, richTextBox_ListView->Height);
+					bmp = gcnew Bitmap(richTextBox_ListView->Width + 10, richTextBox_ListView->Height);
 					gfx = gfx->FromImage(bmp);
-					gfx->CopyFromScreen(this->Location.X+60,this->Location.Y+60,0,0,this->Size);
-					pictureBox_ListViewFlipping->Image=bmp;
-					pictureBox_ListViewFlipping->Visible=true;
+					gfx->CopyFromScreen(this->Location.X + 60,this->Location.Y + 60,0,0,this->Size);
+					pictureBox_ListViewFlipping->Image = bmp;
+					pictureBox_ListViewFlipping->Visible = true;
 					timerListViewFlip->Start();
 				}
 			}
 
 			//@author A0125489U
+			//This method renders the ticking alogorithm for flipping animation
 	private: System::Void timerCalendifiedFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 pictureBox_CalendifiedFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
 				 pictureBox_CalendifiedFlipping->Top -= 1;
-				 pictureBox_CalendifiedFlipping->Height-=11;
+				 pictureBox_CalendifiedFlipping->Height -= 11;
 				 timerCount++;
-				 if(timerCount==30){
+				 if(timerCount == 30){
 					 timerCalendifiedFlip->Stop();
 					 pictureBox_CalendifiedFlipping->Top += 30;
 					 pictureBox_CalendifiedFlipping->Height += 330;
-					 timerCount =0;
-					 pictureBox_CalendifiedFlipping->Visible=false;
+					 timerCount = 0;
+					 pictureBox_CalendifiedFlipping->Visible = false;
 				 }
 			 }
 
 			 //@author A0125489U
+			 //This method renders the ticking alogorithm for flipping animation
 	private: System::Void timerListViewFlip_Tick(System::Object^  sender, System::EventArgs^  e) {
 				 pictureBox_ListViewFlipping->SizeMode = PictureBoxSizeMode::StretchImage;
 				 pictureBox_ListViewFlipping->Left -= 1;
-				 pictureBox_ListViewFlipping->Width-=20;
+				 pictureBox_ListViewFlipping->Width -= 20;
 				 timerCount++;
-				 if(timerCount==30){
+				 if(timerCount == 30){
 					 timerListViewFlip->Stop();
 					 pictureBox_ListViewFlipping->Left += 30;
 					 pictureBox_ListViewFlipping->Width += 600;
-					 timerCount =0;
-					 pictureBox_ListViewFlipping->Visible=false;
+					 timerCount = 0;
+					 pictureBox_ListViewFlipping->Visible = false;
 				 }
 
 			 }
@@ -1169,27 +1194,11 @@ namespace UI {
 				 webBrowser_Help->Navigate(getHTMLFilePath(HELP_MAIN_MENU));
 			 }
 
-			 //@author A0125489U
-			 void updateNotifyBox(){
-				 try{
-					 logic newLogic;
-					 flipCount=0;
-					 std::string results = newLogic.readCommand(TYPE_SEARCH_UNDONE,toggleCount,flipCount);
-					 if(results.length()>0){
-						//notifyBox->Image 
-					 }else {
-
-					 }
-				 } catch(const std::exception& e) {
-					 label_status->Text = gcnew String(MESSAGE_EMPTY.c_str());
-				 }
-			 }
-
-			 //@author A0125489U
+			 //This method renders for Redo operation when the button is clicked
 	private: System::Void pictureBox_Redo_Click(System::Object^  sender, System::EventArgs^  e) {
 				 try{
 					 logic newLogic;
-					 flipCount=0;
+					 flipCount = 0;
 					 std::string results = newLogic.readCommand(TYPE_REDO,toggleCount,flipCount);
 					 String^ statusUpdate = gcnew String(results.c_str());
 					 label_status->Text = statusUpdate;
