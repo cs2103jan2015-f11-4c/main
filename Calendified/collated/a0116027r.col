@@ -1,0 +1,1339 @@
+//@author: a0116027r
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+	 */
+
+
+std::string commandRef::dataToString(){
+	std::string taskTitle = "";
+	std::string taskLocation = "";
+
+	if(_taskTitle != ""){
+		taskTitle = _taskTitle + " ";
+	}
+
+	if(_taskLocation != ""){
+		taskLocation = "@" + _taskLocation;
+	}
+
+	return taskTitle +
+		   taskLocation;
+}
+
+void commandRef::stringTodata(std::string dataInString){
+	int cutBeginIndex = 0;
+	int cutEndIndex;
+	char cutSymbol = ' ';
+	cutEndIndex = dataInString.find_first_of(cutSymbol);
+	//_taskDate = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
+	cutBeginIndex = cutEndIndex + 1;
+
+	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
+	//_taskTime = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
+	cutBeginIndex = cutEndIndex + 1;
+
+	cutSymbol = '-';
+	cutEndIndex = dataInString.find_first_of(cutSymbol,cutBeginIndex);
+	_taskTitle = dataInString.substr(cutBeginIndex, cutEndIndex -cutBeginIndex);
+	cutBeginIndex = cutEndIndex + 1;
+
+	_taskLocation = dataInString.substr(cutBeginIndex);
+}
+
+commandRef commandRef::compareAndSetTaskData(commandRef oldTaskData){
+	std::string temp;
+
+	temp = _taskLocation;
+	if(temp != ""){
+		oldTaskData.setTaskLocation(temp);
+	}
+
+	temp = _taskTitle;
+	if( temp != ""){
+		oldTaskData.setTaskTitle(temp);
+	}
+	return oldTaskData;
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskAdd.cpp
+	 */
+
+
+//Add a task in the following steps:
+//Step 1: Check if task title, time and date are valid, and if a storage file exists
+//Step 2: Extract data from storage file to a vector of tasks
+//Step 3: Add the task to the vector
+//Step 4: Write vector into storage file
+//Step 5: Return success message if task is successfully added
+//Update stack in taskUndo class so for undo execution
+//Example user input to edit a task: "add do homework 12pm 13/4/2015"
+
+#include "taskAdd.h"
+
+taskAdd::taskAdd(){
+}
+
+taskAdd::~taskAdd(void)
+{
+}
+
+bool taskAdd::notValidTitle(){
+	return (getTask().getTitle() == "");
+
+}
+
+std::string taskAdd::executeAdd(){
+	storage storageFile;
+	std::vector<task> taskStorage;
+	if(notValidTitle()){
+		return MESSAGE_FAILURE_ADD;
+	}
+	 if(_task.getTimeAndDate().isValid() && storageFile.isFileExist()){
+		if(storageFile.isFileEmpty()){
+			storageFile.writeFileJson(taskStorage);
+		}
+		taskStorage = storageFile.readFileJson();
+
+		bool clash = isClash(taskStorage);
+		try {
+			taskStorage.push_back(_task);
+			storageFile.writeFileJson(taskStorage);
+			if(clash){
+				return MESSAGE_WARNING_ADD_CLASH;
+			}else {
+				return MESSAGE_SUCCESS_ADD;
+			}
+		} catch (const std::exception& e){
+			return MESSAGE_FAILURE_ADD;
+		}
+	} else {
+		return MESSAGE_FAILURE_ADD;
+	}
+}
+
+void taskAdd::undoAdd(taskUndo* taskToBeUndone, std::string results){
+	storage storageFile;
+
+	if((results == MESSAGE_SUCCESS_ADD) || (results == MESSAGE_WARNING_ADD_CLASH)){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
+}
+
+//if either is floating task, shouldnt ignore
+bool isValidConditions(task newTask, task storedTask){
+	if(newTask.getTaskType()!= FLOATING_TASK
+		&& storedTask.getTaskType() != FLOATING_TASK){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both dates are different and it clashes
+bool isEndDateClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndMDay() > storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getEndMonth() > storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getEndYear() > storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getEndMDay() < storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getEndMonth() < storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getEndYear() < storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both dates are different and it clashes
+bool isStartDateClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartMDay() > storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getStartMonth() > storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getStartYear() > storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getStartMDay() < storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getStartMonth() < storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getStartYear() < storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both dates are different and it clashes
+bool isBothDatesClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartMDay() < storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getStartMonth() < storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getStartYear() < storedTask.getTimeAndDate().getStartYear()
+		&& newTask.getTimeAndDate().getEndMDay() > storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getEndMonth() > storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getEndYear() > storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both timings clashes
+bool isEndTimeClashWithStartTime(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndTimeHour() >= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() > storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getEndTimeHour() <= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() <= storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both timings clashes
+bool isStartTimeClashWithEndTime(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartTimeHour() >= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() >= storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getStartTimeHour() <= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() < storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isStartTimeClashWithStartTime(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartTimeHour() >= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() >= storedTask.getTimeAndDate().getStartTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isEndTimeClashWithEndTime(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndTimeHour() <= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() <= storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if both timings clashes
+bool isBothTimesClash(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartTimeHour() <= storedTask.getTimeAndDate().getStartTimeHour()
+		&& newTask.getTimeAndDate().getStartTimeMin() <= storedTask.getTimeAndDate().getStartTimeMin()
+		&& newTask.getTimeAndDate().getEndTimeHour() >= storedTask.getTimeAndDate().getEndTimeHour()
+		&& newTask.getTimeAndDate().getEndTimeMin() >= storedTask.getTimeAndDate().getEndTimeMin()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isSameStartDate(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getStartMDay() == storedTask.getTimeAndDate().getStartMDay()
+		&& newTask.getTimeAndDate().getStartMonth() == storedTask.getTimeAndDate().getStartMonth()
+		&& newTask.getTimeAndDate().getStartYear() == storedTask.getTimeAndDate().getStartYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool isSameEndDate(task newTask, task storedTask){
+	if(newTask.getTimeAndDate().getEndMDay() > storedTask.getTimeAndDate().getEndMDay()
+		&& newTask.getTimeAndDate().getEndMonth() > storedTask.getTimeAndDate().getEndMonth()
+		&& newTask.getTimeAndDate().getEndYear() > storedTask.getTimeAndDate().getEndYear()){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+bool taskAdd::isClash(std::vector<task> &taskStorage){
+	for(int i = 0; i < (int)taskStorage.size(); i++){
+		if(isValidConditions(_task, taskStorage[i])){
+			if(isEndDateClash(_task, taskStorage[i])){ //task have different dates
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} else if(isStartDateClash(_task, taskStorage[i])){ //task have different dates
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} else if(isBothDatesClash(_task, taskStorage[i])){ //task have different dates
+				_task.setIsClash(true);
+				taskStorage[i].setIsClash(true);
+				return true;
+			} else if(isSameStartDate(_task, taskStorage[i]) 
+				&& isSameEndDate(_task, taskStorage[i])){
+				if (isEndTimeClashWithStartTime(_task, taskStorage[i])
+					|| isStartTimeClashWithEndTime(_task, taskStorage[i])
+					|| isBothDatesClash(_task, taskStorage[i])){
+						_task.setIsClash(true);
+						taskStorage[i].setIsClash(true);
+						return true;
+					}
+			} else if(isSameStartDate(_task, taskStorage[i]) 
+					&& isSameEndDate(_task, taskStorage[i]) == false
+					&& isStartTimeClashWithStartTime(_task, taskStorage[i])){
+						_task.setIsClash(true);
+						taskStorage[i].setIsClash(true);
+						return true;
+				} else if(isSameStartDate(_task, taskStorage[i]) == false
+					&& isSameEndDate(_task, taskStorage[i])
+					&& isEndTimeClashWithEndTime(_task, taskStorage[i])){
+						_task.setIsClash(true);
+						taskStorage[i].setIsClash(true);
+						return true;
+				}
+		}
+	}
+	return false;
+}
+
+task taskAdd::getTask(){
+	return _task;
+}
+
+void taskAdd::setTask(task newTask){
+	_task = newTask;
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskAdd.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDelete.cpp
+	 */
+
+void taskDelete::undoDelete(taskUndo* taskToBeUndone, std::string results){
+	storage storageFile;
+
+	if(results == MESSAGE_SUCCESS_DELETED){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDelete.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+	 */
+
+void taskDone::undoDone(taskUndo* taskToBeUndone, std::string results){
+	storage storageFile;
+
+	if(results == MESSAGE_SUCCESS_DONE){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+	 */
+
+
+void taskDone::undoUndone(taskUndo* taskToBeUndone, std::string results){
+	storage storageFile;
+
+	if(results == MESSAGE_SUCCESS_UNDONE){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskEdit.cpp
+	 */
+
+
+//Edit a task in the following steps:
+//Step 1: Take in an index and identify which task is to be edited
+//Step 2: Checks if storage file has any task to edit
+//Step 3: Extract data from storage file to a vector of tasks
+//Step 4: Edits the original task from the storage file by comparing 
+//it with the data from the user input
+//Step 5: Adds the task to the vector
+//Step 6: Write vector into storage file
+//Step 7: Return success message if task is successfully edited
+//Updates stack in taskUndo class so for undo execution
+//Example user input to edit a task: "edit 1 12pm"
+
+#include "taskEdit.h"
+
+taskEdit::taskEdit(void){
+}
+
+taskEdit::~taskEdit(void){
+}
+
+bool isDoneEdited(task editingReference, task originalTask){
+	if(editingReference.getIsDone() == true 
+		&& editingReference.getIsDone() != originalTask.getIsDone()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isLocationEdited(task editingReference, task originalTask){
+	if(!editingReference.getLocation().empty() 
+		&& (editingReference.getLocation() != originalTask.getLocation())){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isNotEmptyTime(task editingReference){
+	if(editingReference.getTimeAndDate().getStartTimeHour() == 0
+		&& editingReference.getTimeAndDate().getStartTimeMin() == 0
+		&& editingReference.getTimeAndDate().getEndTimeHour() == 0
+		&& editingReference.getTimeAndDate().getEndTimeMin() == 0){
+			return false;
+	} else {
+		return true;
+	}
+}
+
+bool isTimeEdited(task editingReference, task originalTask){
+	if(isNotEmptyTime(editingReference)
+		&& (editingReference.getTimeAndDate().getStartTimeHour() != originalTask.getTimeAndDate().getStartTimeHour()
+		|| editingReference.getTimeAndDate().getStartTimeMin() != originalTask.getTimeAndDate().getStartTimeMin()
+		|| editingReference.getTimeAndDate().getEndTimeHour() != originalTask.getTimeAndDate().getEndTimeHour()
+		|| editingReference.getTimeAndDate().getEndTimeMin() != originalTask.getTimeAndDate().getEndTimeMin())){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+timeAndDate editedTime(task editingReference, task taskToBeEdited){
+	timeAndDate tempTimeAndDate;
+	tempTimeAndDate.setStartTimeHour(editingReference.getTimeAndDate().getStartTimeHour());
+	tempTimeAndDate.setStartTimeMin(editingReference.getTimeAndDate().getStartTimeMin());
+	tempTimeAndDate.setEndTimeHour(editingReference.getTimeAndDate().getEndTimeHour());
+	tempTimeAndDate.setEndTimeMin(editingReference.getTimeAndDate().getEndTimeMin());
+	tempTimeAndDate.setStartMDay(taskToBeEdited.getTimeAndDate().getStartMDay());
+	tempTimeAndDate.setStartMonth(taskToBeEdited.getTimeAndDate().getStartMonth());
+	tempTimeAndDate.setStartYear(taskToBeEdited.getTimeAndDate().getStartYear());
+	tempTimeAndDate.setEndMDay(taskToBeEdited.getTimeAndDate().getEndMDay());
+	tempTimeAndDate.setEndMonth(taskToBeEdited.getTimeAndDate().getEndMonth());
+	tempTimeAndDate.setEndYear(taskToBeEdited.getTimeAndDate().getEndYear());
+
+	return tempTimeAndDate;
+}
+
+bool isNotEmptyDate(task editingReference){
+	if(editingReference.getTimeAndDate().getStartMDay() <= 0
+		&& editingReference.getTimeAndDate().getStartMonth() <= 0
+		&& editingReference.getTimeAndDate().getStartYear() <= 0
+		&& editingReference.getTimeAndDate().getEndMDay() <= 0
+		&& editingReference.getTimeAndDate().getEndMonth() <= 0
+		&& editingReference.getTimeAndDate().getEndYear() <= 0){
+			return false;
+	} else {
+		return true;
+	}
+}
+bool isDateEdited(task editingReference, task originalTask){
+	if(isNotEmptyDate(editingReference)
+		&& (editingReference.getTimeAndDate().getStartMDay() != originalTask.getTimeAndDate().getStartMDay()
+		|| editingReference.getTimeAndDate().getStartMonth() != originalTask.getTimeAndDate().getStartMonth()
+		|| editingReference.getTimeAndDate().getStartYear() != originalTask.getTimeAndDate().getStartYear()
+		|| editingReference.getTimeAndDate().getEndMDay() != originalTask.getTimeAndDate().getEndMDay()
+		|| editingReference.getTimeAndDate().getEndMonth() != originalTask.getTimeAndDate().getEndMonth()
+		|| editingReference.getTimeAndDate().getEndYear() != originalTask.getTimeAndDate().getEndYear())){
+			return true;
+	} else {
+		return false;
+	}
+}
+
+timeAndDate editedDate(task editingReference, task taskToBeEdited){
+	timeAndDate tempTimeAndDate;
+	tempTimeAndDate.setStartMDay(editingReference.getTimeAndDate().getStartMDay());
+	tempTimeAndDate.setStartMonth(editingReference.getTimeAndDate().getStartMonth());
+	tempTimeAndDate.setStartYear(editingReference.getTimeAndDate().getStartYear());
+	tempTimeAndDate.setEndMDay(editingReference.getTimeAndDate().getEndMDay());
+	tempTimeAndDate.setEndMonth(editingReference.getTimeAndDate().getEndMonth());
+	tempTimeAndDate.setEndYear(editingReference.getTimeAndDate().getEndYear());
+	tempTimeAndDate.setStartTimeHour(taskToBeEdited.getTimeAndDate().getStartTimeHour());
+	tempTimeAndDate.setStartTimeMin(taskToBeEdited.getTimeAndDate().getStartTimeMin());
+	tempTimeAndDate.setEndTimeHour(taskToBeEdited.getTimeAndDate().getEndTimeHour());
+	tempTimeAndDate.setEndTimeMin(taskToBeEdited.getTimeAndDate().getEndTimeMin());
+	
+	return tempTimeAndDate;
+}
+
+void taskTypeEdited(task* originalTask){
+	if(originalTask->getTimeAndDate().getStartMDay() > 0
+		&& originalTask->getTimeAndDate().getStartMonth() > 0
+		&& originalTask->getTimeAndDate().getStartYear() > 0){
+			originalTask->setTaskType("TimedTask");
+	} else if(originalTask->getTimeAndDate().getEndMDay() > 0
+		&& originalTask->getTimeAndDate().getEndMonth() > 0
+		&& originalTask->getTimeAndDate().getEndYear() > 0){
+			originalTask->setTaskType("DeadLine");
+	} else {
+		originalTask->setTaskType("FloatingTask");
+	}
+}
+
+bool isTitleEdited(task editingReference, task originalTask){
+	if((!editingReference.getTitle().empty()) && editingReference.getTitle() != originalTask.getTitle()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+std::string taskEdit::executeEdit(int indexToBeEdited){
+	std::vector<task> storageTasks;
+	storage newStorage;
+	try{
+		if(newStorage.isFileExist()){	
+			storageTasks = newStorage.readFileJson();
+			if(storageTasks.empty()){
+				return MESSAGE_ERROR_FILE_IS_EMPTY;
+			} else if(indexToBeEdited > storageTasks.size()){
+				return MESSAGE_ERROR_INVALID_INDEX;
+			} else {
+				assert(indexToBeEdited >= 0);
+				task taskToBeEdited = storageTasks[indexToBeEdited];
+				
+				if(isDoneEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setIsDone(_editingReference.getIsDone());
+				} //only edits undone to done
+				if(isLocationEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setLocation(_editingReference.getLocation());
+				}
+				if(isTimeEdited(_editingReference, taskToBeEdited)){
+					timeAndDate tempTimeAndDate = editedTime(_editingReference, taskToBeEdited);
+					taskToBeEdited.setTimeAndDate(tempTimeAndDate);
+				}
+				if(isDateEdited(_editingReference, taskToBeEdited)){
+					timeAndDate tempTimeAndDate1 = editedDate(_editingReference, taskToBeEdited);
+					taskToBeEdited.setTimeAndDate(tempTimeAndDate1);
+				}
+				if(isTitleEdited(_editingReference, taskToBeEdited)){
+					taskToBeEdited.setTitle(_editingReference.getTitle());
+				}
+				taskTypeEdited(&taskToBeEdited);
+				storageTasks[indexToBeEdited] = taskToBeEdited;
+				try {
+					newStorage.writeFileJson(storageTasks);
+					return MESSAGE_SUCCESS_EDIT;
+				} catch (const std::exception& e){
+					return MESSAGE_FAILURE_EDIT;
+				}
+			}
+		} else {
+			return MESSAGE_ERROR_EDIT_FILE_NONEXISTENT;
+		}
+	} catch (const std::exception& e){
+		return MESSAGE_FAILURE_EDIT;
+	}
+}
+
+void taskEdit::undoEdit(taskUndo* taskToBeUndone, std::string results){
+	storage storageFile;
+
+	if(results == MESSAGE_SUCCESS_EDIT){
+		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
+		taskToBeUndone->insertVector(storageFile.readFileJson());
+	}
+}
+
+void taskEdit::setEditingRef(task currentTaskData){
+	_editingReference = currentTaskData;
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskEdit.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskRedo.cpp
+	 */
+
+
+//Redo is maintained by two stacks of vector<task>, _currentStack and _sessionStack
+//Redo a task in the following steps:
+//Step 1: Maintains redo stacks with that of taskUndo
+//Step 2: Update the two stacks if redo is possible
+//Step 3: Write top vector of _currentStack into storage file
+//Step 4: Return success message if undo is successful
+//Example user input to undo a task: "redo"
+
+#include "taskRedo.h"
+
+taskRedo::taskRedo(void)
+{
+}
+
+taskRedo::~taskRedo(void)
+{
+}
+
+void taskRedo::insertCurrentVector(std::vector<task> currentVectorTasks){
+	_currentStack.push(currentVectorTasks);
+}
+
+void taskRedo::insertSessionVector(std::vector<task> sessionVectorTasks){
+	_sessionStack.push(sessionVectorTasks);
+}
+
+bool taskRedo::isCurrentStackEmpty(){
+	if(_currentStack.empty()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool taskRedo::isSessionStackEmpty(){
+	if(_sessionStack.empty()){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void taskRedo::redo(taskUndo taskToBeRedone){
+	std::vector<task> currentVectorTasks;
+	std::vector<task> sessionVectorTasks;
+
+	if(taskToBeRedone.isNotEmpty(taskToBeRedone.getCurrentStack())){
+		currentVectorTasks = taskToBeRedone.getCurrentStack().top();
+		_currentStack.push(currentVectorTasks);
+	}
+	if(taskToBeRedone.isNotEmpty(taskToBeRedone.getSessionStack())){
+		sessionVectorTasks = taskToBeRedone.getSessionStack().top();
+		_sessionStack.push(sessionVectorTasks);
+	}
+}
+
+std::string taskRedo::executeRedo(taskUndo* undoTaskStack){
+	if(isCurrentStackEmpty() || isSessionStackEmpty()){
+		return MESSAGE_FAILURE_REDO;
+	}
+	storage newStorage;
+	undoTaskStack->insertVector(getTopCurrentVector());
+	newStorage.writeFileJson(getTopCurrentVector());
+	_currentStack.pop();
+	undoTaskStack->insertSessionVector(getTopSessionVector());
+	_sessionStack.pop();
+
+	return MESSAGE_SUCCESS_REDO;
+}
+
+void taskRedo::setCurrentStack(std::stack<std::vector<task>> stack){
+	_currentStack = stack;
+}
+
+void taskRedo::setSessionStack(std::stack<std::vector<task>> stackTasks){
+	_sessionStack = stackTasks;
+}
+
+std::stack<std::vector<task>> taskRedo::getCurrentStack(){
+	return _currentStack;
+}
+
+std::stack<std::vector<task>> taskRedo::getSessionStack(){
+	return _sessionStack;
+}
+
+std::vector<task> taskRedo::getTopCurrentVector(){
+	std::vector<task> topCurrentVector = _currentStack.top();
+	return topCurrentVector;
+}
+
+std::vector<task> taskRedo::getTopSessionVector(){
+	std::vector<task> topSessionVector = _sessionStack.top();
+	return topSessionVector;
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskRedo.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskUndo.cpp
+	 */
+
+
+//Undo is maintained by two stacks of vector<task>, _currentStack and _sessionStack
+//Top of _currentStack contains the most updated vector of tasks while
+//top of _sessionStack contains the previous vector of tasks
+//Undo a task in the following steps:
+//Step 1: Check if _sessionStack is empty
+//Step 2: Update the two stacks if undo is possible
+//Step 3: Write top vector of _currentStack into storage file
+//Step 5: Return success message if undo is successful
+//Example user input to undo a task: "undo"
+
+#include "taskUndo.h"
+
+taskUndo::taskUndo(void){
+	storage readStorage;
+	std::vector<task> vectorStack;
+	if(readStorage.isFileEmpty()){
+		readStorage.writeFileJson(vectorStack);
+	}
+	vectorStack = readStorage.readFileJson();
+	_currentStack.push(vectorStack);
+}
+
+taskUndo::~taskUndo(void){
+}
+
+std::stack<std::vector<task>> taskUndo::getCurrentStack(){
+	return _currentStack;
+}
+
+std::stack<std::vector<task>> taskUndo::getSessionStack(){
+	return _sessionStack;
+}
+
+void taskUndo::setCurrentStack(std::stack<std::vector<task>> stack){
+	_currentStack = stack;
+}
+
+void taskUndo::setSessionStack(std::stack<std::vector<task>> stackTasks){
+	_sessionStack = stackTasks;
+}
+
+void taskUndo::insertVector(std::vector<task> vectorTasks){
+	_currentStack.push(vectorTasks);
+}
+
+void taskUndo::insertSessionVector(std::vector<task> vectorTasks){
+	_sessionStack.push(vectorTasks);
+}
+
+bool taskUndo::isNotEmpty(std::stack<std::vector<task>> vectorTasks){
+	if (vectorTasks.empty()){
+		return false;
+	} else {
+		return true;
+	}
+}
+
+void taskUndo::popSessionStack(){
+	_sessionStack.pop();
+}
+
+std::string taskUndo::executeUndo(){
+	storage newStorage;
+	try{
+		if(isNotEmpty(_sessionStack)){
+			_currentStack = _sessionStack;
+			popSessionStack();
+			newStorage.writeFileJson(_currentStack.top());
+			return MESSAGE_SUCCESS_UNDO;
+		} else {
+			return MESSAGE_ERROR_CANNOT_UNDO;
+		}
+	}
+	catch (const std::exception& e){
+		return MESSAGE_ERROR_CANNOT_UNDO;
+	}
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskUndo.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\timeAndDate.cpp
+	 */
+
+
+//Class that stores time and date of a task
+//Valid times:
+//13:00
+//1pm
+//1.30pm
+//Valid dates:
+//13/04/2015
+//13/4/2015
+//13/4/15
+//13-04-2015
+//13-4-2015
+//13-4-15
+//Use '-' to specify a duration. Example: "13/4/2015-14/4/2015"
+//Checks validity of time and date
+//Able to convert to time_t and string format
+
+#include "timeAndDate.h"
+#include <sstream>
+#include <ctime>
+#include <iostream>
+#include <assert.h>
+#include <regex>
+
+//checks if it's a valid date for months with 31 days
+bool isValid31(int mday, int month){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(month <= 7 && month%2 == 1){
+		return true;
+	} else if(month > 7 && month%2 == 0){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if it's a valid date for months with 30 days
+bool isValid30(int mday, int month){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(mday <= 30 && month != 2 && month <= 7 && month%2 == 0){
+		return true;
+	} else if (mday <= 30 && month > 7 && month%2 == 1){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if date is a less than or equal to 29
+bool isValid29(int mday){
+	assert(mday >= 1 && mday <= 31);
+	if(mday <= 29){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//checks if it's a valid date for February (not leap year)
+bool isValid28(int mday, int month){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(month == 2 && mday <= 28){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool isLeapYear(int year){
+	if(year%4 == 0 || year%400 == 0 || year%100 == 0){
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void taskDateToStruct(int mday, int month, int year, tm* Date){
+	const int MONTH = 1;
+	const int YEAR = 1900;
+
+	Date->tm_mday = mday;
+	Date->tm_mon = month - MONTH;
+	Date->tm_year = year - YEAR;
+}
+
+void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
+	Time->tm_hour = startTimeHour;
+	Time->tm_min = startTimeMin;
+}
+
+bool isAmOrPm(int hour, int* timeHour, char day, char m){
+	if((day=='a' || day=='A') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 0;
+		} else {
+			*timeHour = hour;
+		}
+	} else if((day=='p' || day=='P') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 12;
+		} else {
+			*timeHour = hour + 12;
+		}
+	} else {
+		return false;
+	}
+	return true;
+}
+
+bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear){
+	assert(dateString != "");
+	std::regex dateFormat1("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015 or 03/04/2015 or 3-4-2015
+	std::regex dateFormat2("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])-(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9][0-9][0-9])$"); //3/4/2015-4/4/2015
+	std::regex dateFormat3("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])$"); //3/4/15
+	std::regex dateFormat4("^(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])-(([0]?[1-9])|([12][0-9])|([3][01]))(/|-)(([0]?[1-9])|([1][0-2]))(/|-)([0-9][0-9])$"); //3/4/15-4/4/15
+	//std::regex dateFormat5("^(([0]?[1-9])|([12][0-9])|([3][01]))(([0]?[1-9])|([1][0-2]))[0-9][0-9][0-9][0-9])$"); //03042015
+	//std::regex dateFormat5("^((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})$"); //10 Feb 2015
+	//std::regex dateFormat6("^((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})-((31(?!\ (Feb(ruary)?|Apr(il)?|June?|(Sep(?=\b|t)t?|Nov)(ember)?)))|((30|29)(?!\ Feb(ruary)?))|(29(?=\ Feb(ruary)?\ (((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00)))))|(0?[1-9])|1\d|2[0-8])\ (Jan(uary)?|Feb(ruary)?|Ma(r(ch)?|y)|Apr(il)?|Ju((ly?)|(ne?))|Aug(ust)?|Oct(ober)?|(Sep(?=\b|t)t?|Nov|Dec)(ember)?)\ ((1[6-9]|[2-9]\d)\d{2})$"); //10 Feb 2015-11 Feb 2015
+	
+	char ignore;
+	int outNum;
+	int mday;
+	int month;
+	int year;
+	
+	std::istringstream in(dateString);
+	if(std::regex_match(dateString, dateFormat1)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+		
+		if(year>=1900 && year<=10000){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskStartMDay = mday;
+			*taskStartMonth = month;
+			*taskStartYear = year;
+			*taskEndMDay = *taskStartMDay;
+			*taskEndMonth = *taskStartMonth;
+			*taskEndYear = *taskStartYear;
+			return true;
+			}
+		} 
+		return false;
+	}else if(std::regex_match(dateString, dateFormat2)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	//mday>=1 && mday<=31 && month>=1 && month<=12 && 
+		if(year>=1900 && year<=10000){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+				*taskStartMDay = mday;
+				*taskStartMonth = month;
+				*taskStartYear = year;
+			}
+		} else {
+			return false;
+		}
+		in >> ignore; // '-'
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	
+		if(year>=1900 && year<=10000){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskEndMDay = mday;
+			*taskEndMonth = month;
+			*taskEndYear = year;
+			return true;
+			}
+		} else {
+			return false;
+		}
+	} else if(std::regex_match(dateString, dateFormat3)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+		
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskStartMDay = mday;
+			*taskStartMonth = month;
+			if(year>=0 && year<=50){
+			*taskStartYear = year + 2000;
+			} else if(year>50 && year<=99){
+				*taskStartYear = year + 1900;
+			}
+			*taskEndMDay = *taskStartMDay;
+			*taskEndMonth = *taskStartMonth;
+			*taskEndYear = *taskStartYear;
+			return true;
+			}
+		} 
+		return false;
+	} else if(std::regex_match(dateString, dateFormat4)){
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	//mday>=1 && mday<=31 && month>=1 && month<=12 && 
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+				*taskStartMDay = mday;
+				*taskStartMonth = month;
+				if(year>=0 && year<=50){
+					*taskStartYear = year + 2000;
+				} else if(year>50 && year<=99){
+					*taskStartYear = year + 1900;
+				}
+			}
+		} else {
+			return false;
+		}
+		in >> ignore; // '-'
+		in >> outNum;
+		mday = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		month = outNum;
+		in >> ignore; //'/' or '-'
+		in >> outNum;
+		year = outNum;
+	
+		if(year>=0 && year<=99){ //check year
+			if(isLeapYear(year) == false && isValid29(mday) == false
+				&& isValid28(mday, month) == false
+				&& isValid30(mday, month) == false
+				&& isValid31(mday, month) == false){
+					return false;
+			} else {
+			*taskEndMDay = mday;
+			*taskEndMonth = month;
+			if(year>=0 && year<=50){
+				*taskEndYear = year + 2000;
+			} else if(year>50 && year<=99){
+				*taskEndYear = year + 1900;
+			}
+			return true;
+			}
+		} else {
+			return false;
+		}
+	}
+	return false;
+}
+
+bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin){
+	std::regex timeFormat1("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM or H:M
+	std::regex timeFormat2("^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])-(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])$"); //HH:MM-HH:MM
+	std::regex timeFormat3("^([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12pm, 9am
+	std::regex timeFormat4("^([1-9]|([1][0-2]))(am|pm|AM|PM)-([1-9]|([1][0-2]))(am|pm|AM|PM)$"); //12am-2pm
+	std::regex timeFormat5("^([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)$"); //12.30pm or 12:30pm
+	std::regex timeFormat6("^([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)-([1-9]|([1][0-2]))(.|:)([0-5][0-9])(am|pm|AM|PM)$"); //12.30pm-2.00pm
+
+	char ignore;
+	char t1;
+	char m;
+	std::string day;
+	int outNum;
+	int hour;
+	int min;
+
+	std::istringstream in(timeString);
+
+	if(std::regex_match(timeString, timeFormat1)){ //assumes timed tasks with only start time is 1 hour long
+		in >> outNum;
+		*taskStartTimeHour = outNum;
+		in >> ignore; //:
+		in >> outNum;
+		*taskStartTimeMin = outNum;
+		*taskEndTimeHour = (*taskStartTimeHour) + 1;
+		*taskEndTimeMin = *taskStartTimeMin;
+	} else if(std::regex_match(timeString, timeFormat2)){
+		in >> outNum;
+		*taskStartTimeHour = outNum;
+		in >> ignore; //:
+		in >> outNum;
+		*taskStartTimeMin = outNum;
+		in >> ignore; //-
+		in >> outNum;
+		*taskEndTimeHour = outNum;
+		in >> ignore; //:
+		in >> outNum;
+		*taskEndTimeMin = outNum;
+	} else if(std::regex_match(timeString, timeFormat3)){
+		in >> outNum;
+		hour = outNum;
+		in >> day; //am or pm
+		if(day=="am" || day=="AM"){
+			if(hour == 12){
+				*taskStartTimeHour = 0;
+			} else {
+				*taskStartTimeHour = hour;
+			}
+		} else if(day=="pm" || day=="PM"){
+			if(hour == 12){
+				*taskStartTimeHour = 12;
+			} else {
+				*taskStartTimeHour = hour + 12;
+			}
+		} else {
+			return false;
+		}
+		*taskStartTimeMin = 0;
+		*taskEndTimeHour = (*taskStartTimeHour) + 1; //1h activity
+		*taskEndTimeMin = *taskStartTimeMin;
+	} else if(std::regex_match(timeString, timeFormat4)){
+		in >> outNum;
+		hour = outNum;
+		in >> t1; //a or p
+		in >> m; //m
+		if(isAmOrPm(hour, taskStartTimeHour, t1, m) == false){
+			return false;
+		}
+		*taskStartTimeMin = 0;
+		in >> ignore; //-
+		in >> outNum;
+		hour = outNum;
+		in >> t1; //a or p
+		in >> m; //m
+		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 0;
+			} else {
+				*taskEndTimeHour = hour;
+			}
+		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 12;
+			} else {
+				*taskEndTimeHour = hour + 12;
+			}
+		} else {
+			return false;
+		}
+		*taskEndTimeMin = *taskStartTimeMin;
+	} else if(std::regex_match(timeString, timeFormat5)){
+		in >> outNum;
+		hour = outNum;
+		in >> ignore; //. or :
+		in >> outNum;
+		min = outNum;
+		in >> day; //am or pm
+		if(day=="am" || day=="AM"){
+			if(hour == 12){
+				*taskStartTimeHour = 0;
+			} else {
+				*taskStartTimeHour = hour;
+			}
+		} else if(day=="pm" || day=="PM"){
+			if(hour == 12){
+				*taskStartTimeHour = 12;
+			} else {
+				*taskStartTimeHour = hour + 12;
+			}
+		} else {
+			return false;
+		}
+		*taskStartTimeMin = min;
+		*taskEndTimeHour = (*taskStartTimeHour) + 1;
+		*taskEndTimeMin = *taskStartTimeMin;
+	} else if(std::regex_match(timeString, timeFormat6)){
+		in >> outNum;
+		hour = outNum;
+		in >> ignore; //. or :
+		in >> outNum;
+		min = outNum;
+		in >> t1; //a or p
+		in >> m; //m
+		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskStartTimeHour = 0;
+			} else {
+				*taskStartTimeHour = hour;
+			}
+		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskStartTimeHour = 12;
+			} else {
+				*taskStartTimeHour = hour + 12;
+			}
+		} else {
+			return false;
+		}
+		*taskStartTimeMin = min;
+		in >> ignore; //-
+		in >> outNum;
+		hour = outNum;
+		in >> ignore; //. or :
+		in >> min;
+		in >> t1; //a or p
+		in >> m; //m
+		if((t1=='a' || t1=='A') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 0;
+			} else {
+				*taskEndTimeHour = hour;
+			}
+		} else if((t1=='p' || t1=='P') && (m=='m' || m=='M')){
+			if(hour == 12){
+				*taskEndTimeHour = 12;
+			} else {
+				*taskEndTimeHour = hour + 12;
+			}
+		} else {
+			return false;
+		}
+		*taskEndTimeMin = min;
+		return true;
+	} else {
+		return false;
+	}
+	if((_startMDay == _endMDay)
+		&& (_startMonth == _endMonth)
+		&& (_startYear == _endYear)
+		&& (*taskEndTimeHour < *taskStartTimeHour)){
+			++_endMDay;
+	}
+	return true;
+}
+
+timeAndDate::timeAndDate(){
+	_startMDay = 0;
+	_startMonth = 0;
+	_startYear = 0;
+	_startTimeHour = 0;
+	_startTimeMin = 0;
+	_endTimeHour = 0;
+	_endTimeMin = 0;
+	_startDay = "";
+	_endDay = "";
+}
+
+timeAndDate::timeAndDate(std::string dateString, std::string timeString){
+	int taskStartMDay;
+	int taskStartMonth;
+	int taskStartYear;
+	int taskEndMDay;
+	int taskEndMonth;
+	int taskEndYear;
+	int taskStartTimeHour;
+	int taskStartTimeMin;
+	int taskEndTimeHour;
+	int taskEndTimeMin;
+
+	std::string date = dateString;
+	std::string time = timeString;
+
+	if(date[0] == 0){
+		_startMDay = 0;
+		_startMonth = 0;
+		_startYear = 0;
+		_endMDay = 0;
+		_endMonth = 0;
+		_endYear = 0;
+	} else if(isValidDate(date, &taskStartMDay, &taskStartMonth, &taskStartYear, &taskEndMDay, &taskEndMonth, &taskEndYear)){
+		_startMDay = taskStartMDay;
+		_startMonth = taskStartMonth;
+		_startYear = taskStartYear;
+		_endMDay = taskEndMDay;
+		_endMonth = taskEndMonth;
+		_endYear = taskEndYear;
+	} else {
+		_startMDay = -1;
+		_startMonth = -1;
+		_startYear = -1;
+		_endMDay = -1;
+		_endMonth = -1;
+		_endYear = -1;
+	}
+		
+	if(time[0] == 0){
+		_startTimeHour = 0;
+		_startTimeMin = 0;
+		_endTimeHour = 0;
+		_endTimeMin = 0;
+	} else if (isValidTime(time, &taskStartTimeHour, &taskStartTimeMin, &taskEndTimeHour, &taskEndTimeMin)){
+		_startTimeHour = taskStartTimeHour;
+		_startTimeMin = taskStartTimeMin;
+		_endTimeHour = taskEndTimeHour;
+		_endTimeMin = taskEndTimeMin;
+	} else {
+		_startTimeHour = -1;
+		_startTimeMin = -1;
+		_endTimeHour = -1;
+		_endTimeMin = -1;
+	}
+}
+
+timeAndDate::~timeAndDate(void)
+{
+}
+
+bool timeAndDate::isValid(){
+	if(_startMDay==-1 || _startMonth==-1 || _startYear==-1 || 
+		_endMDay==-1 || _endMonth==-1 || _endYear==-1 ||
+		_startTimeHour==-1 || _startTimeMin==-1 ||
+		_endTimeHour==-1 || _endTimeHour==-1){
+		return false;
+	} else {
+		return true;
+	}
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\timeAndDate.cpp
+
+
+
+
+

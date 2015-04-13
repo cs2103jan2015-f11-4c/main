@@ -1,0 +1,27 @@
+//@author: a0083864u
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+	 */
+
+	//	if(isIndex){
+	//		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
+	//		_taskCommand = commandLine.substr(substringBegin, index - 1);
+	//		commandReference.setCommandAction(_taskCommand);
+	//	}else{
+	//		_taskCommand = getItemsInString(commandLine, NULL);
+	//		commandReference.setCommandAction(_taskCommand);
+	//	}
+	//	commandReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
+	//	commandReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
+	//	commandReference.setTime(getItemsInString(commandLine, symbolTime));
+	//	commandReference.setDate(getItemsInString(commandLine, symbolDate));
+	//}else {
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+
+
+
+
+

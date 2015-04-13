@@ -1,0 +1,1151 @@
+//@author: a0114411b
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+	 */
+
+
+// getters
+std::string commandRef::getTaskType(){
+	return _taskType;
+}
+
+std::string commandRef::getTaskTitle(){
+	return _taskTitle;
+}
+
+std::string commandRef::getCommandAction(){
+	return _commandAction;
+}
+
+std::string commandRef::getTime(){
+	return _time;
+}
+
+std::string commandRef::getDate(){
+	return _date;
+}
+
+std::string commandRef::getTaskLocation(){
+	return _taskLocation;
+}
+
+int commandRef::getIndexToBeActOn(){
+	return _indexToBeActOn;
+}
+
+std::string commandRef::getSearchItem(){
+	return _searchItem;
+}
+
+bool commandRef::getIsDone(){
+	return _isDone;
+}
+
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+	 */
+
+
+// setters
+void commandRef::setTaskType(std::string taskType){
+	_taskType = taskType;
+}
+
+void commandRef::setCommandAction(std::string commandAction){
+	_commandAction = commandAction;
+}
+
+void commandRef::setTime(std::string time){
+	_time = time;
+}
+
+void commandRef::setDate(std::string date){
+	_date = date;
+}
+
+void commandRef::setTaskTitle(std::string taskTitle){
+	_taskTitle = taskTitle;
+}
+
+void commandRef::setTaskLocation(std::string taskLocation){
+	_taskLocation = taskLocation;
+}
+
+void commandRef::setIndexToBeActOn(int indexToBeActOn){
+	_indexToBeActOn = indexToBeActOn;
+}
+
+void commandRef::setSearchItem(std::string searchItem){
+	_searchItem = searchItem;
+}
+
+void commandRef::setIsDone(bool isDone){
+	_isDone = isDone;
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\commandRef.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+	 */
+
+// This function tokenize the command line by splitting the words up
+// using whitespaces as delimiters.
+std::vector<std::string> parser::tokenizeCommandLine(std::string commandLine){
+	std::string buffer; 
+	std::stringstream ss(commandLine);
+
+	std::vector<std::string> tokens; 
+
+	while (ss >> buffer){
+		std::transform(buffer.begin(), buffer.end(), buffer.begin(), ::tolower);
+		tokens.push_back(buffer);
+	}
+
+	return tokens;
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+	 */
+
+// This method checks the task type of a event entered by the user.
+// It checks by if the task has both time and date, it will be a 
+// timed task. If it contained certain keywords such as "by", "due"
+// or "before" it will be a deadline task. If there is no time or date,
+// got time no date or no date and got time, it will all be floating tasks.
+void parser::checkAndSetTaskType(std::string commandLine){
+	std::vector<std::string> tokenizedVector = tokenizeCommandLine(commandLine);
+
+	if(commandReference.getDate()[0] >0 && commandReference.getTime()[0] >0){
+		commandReference.setTaskType(TIMED_TASK);
+	} else if(commandReference.getDate()[0] ==0 && commandReference.getTime()[0] !=0 ||
+		commandReference.getDate()[0] !=0 && commandReference.getTime()[0] ==0 ||
+		commandReference.getDate()[0] ==0 && commandReference.getTime()[0] ==0){
+			commandReference.setTaskType(FLOATING_TASK);
+	} else {
+		for(auto i=0; i < (int) tokenizedVector.size(); i++){
+			if(tokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
+				tokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
+				tokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
+					commandReference.setTaskType(DEAD_LINE);
+					tokenizedVector.erase(tokenizedVector.begin()+i);
+					return;
+			}
+		}
+	}
+}
+
+//This method verify whether the commandInput is a valid one
+bool parser::checkCommand(std::string checkCommandInput){
+	bool isCommand = false;
+	std::string commandAdd = "add";
+	std::string commandDelete = "delete";
+	std::string commandSearch = "search";
+	std::string commandDisplay = "display";
+	std::string commandDone = "done";
+	std::string commandUndone = "undone";
+	std::string commandEdit = "edit";
+	std::string commandUndo = "undo";
+	std::string commandFlip = "flip";
+	std::string commandSpecify = "specify";
+	std::string commandRedo = "redo";
+	std::string commandToggle = "toggle";
+	std::string commandCheckDone = "checkdone";
+	if(checkCommandInput.compare(commandAdd)==0 ||
+		checkCommandInput.compare(commandDelete)==0 ||
+		checkCommandInput.compare(commandSearch)==0 ||
+		checkCommandInput.compare(commandDisplay)==0 ||
+		checkCommandInput.compare(commandDone)==0 ||
+		checkCommandInput.compare(commandUndone)==0 ||
+		checkCommandInput.compare(commandEdit)==0 ||
+		checkCommandInput.compare(commandUndo)==0 ||
+		checkCommandInput.compare(commandFlip)==0 ||
+		checkCommandInput.compare(commandSpecify)==0 ||
+		checkCommandInput.compare(commandRedo)==0 ||
+		checkCommandInput.compare(commandToggle)==0 ||
+		checkCommandInput.compare(commandCheckDone)==0){
+			isCommand = true;
+	}
+	return isCommand;
+}
+
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\storage.cpp
+	 */
+
+//
+//*******************************************************************************
+//                         Storage.cpp										
+//																			
+// Description :
+// Storage uses addtional library such as RapidJson to store information of the user. 
+// RapidJson allows the storing and retrieving of task objects in the text file. 
+//
+// Storage class is responsible for these actions:
+// 1) Creating text file from a specific path passed in.
+// 2) Setting and storing the current file path in a separate text file
+//    in the UI folder represented by "storageInformation.txt".
+// 3) Retrieving of the current file path from the storageInformation.txt
+//    for reading and writing of the current text file.
+// 4) Transferring of the text file from 1 location to another location,
+//    by creating a new textfile, moving of data and removing the old
+//    text file in the process. 
+// 5) Checks for exisiting database whenever the user opens the application.
+//
+//*******************************************************************************
+//
+#include "storage.h"
+
+using namespace rapidjson;
+
+storage::storage(void)
+{
+	_filePath = storage::retrieveFilePath();
+}
+
+storage::~storage(void)
+{
+}
+
+void storage::setFilePath(std::string filePath){
+	_filePath = filePath;
+}
+
+void storage::saveInformation(std::string filename){
+	std::ofstream writeFile(STORAGE_INFORMATION);
+	writeFile << filename;
+	writeFile.close();
+}
+
+std::string storage::retrieveFilePath(){
+	std::ifstream retrieve(STORAGE_INFORMATION);
+	std::string directory;
+	getline(retrieve,directory);
+	return directory;
+}
+
+void storage::createFile(std::string fileName){
+	std::ofstream writeFile(fileName);
+	writeFile.close();
+}
+
+void storage::transferDatabase(std::string newFileName){
+	std::vector<task> oldFiles;
+	std::vector<task> blankVector;
+	std::string oldFileName = _filePath;
+
+	createFile(newFileName);
+	oldFiles = readFileJson();
+	saveInformation(newFileName);
+	_filePath = retrieveFilePath();
+	writeFileJson(blankVector);
+	writeFileJson(oldFiles);
+	remove(oldFileName.c_str());
+}
+
+bool storage::isFileExist(){
+	return (retrieveFilePath() != "");
+}
+
+bool storage::isFileEmpty(){
+	std::string data;
+	std::ifstream extract(_filePath);
+	getline(extract,data);
+	extract.close();
+
+	return (data == "");
+}
+
+std::vector<task> storage::readFileJson(){
+	std::vector<task> commandVector;
+	task newTask;
+	timeAndDate newTimeAndDate;
+
+	FILE* in = NULL;
+	in = fopen(_filePath.c_str(), "r");
+	char buffer[65536];
+	FileReadStream iss(in,buffer,sizeof(buffer));
+
+	Document document;
+	document.ParseStream(iss);
+	assert(document != NULL);
+	fclose(in);
+
+	commandVector.clear();
+
+	const Value& array = document["storage"];
+
+	for(SizeType i=0; i<array.Size(); i++){
+		const Value& TaskObject = array[i];
+		std::string TaskType = TaskObject["TaskType"].GetString();
+
+		//Re-initializing newTimeAndDate
+		newTimeAndDate.setStartMDay(0);
+		newTimeAndDate.setStartMonth(0);
+		newTimeAndDate.setStartYear(0);
+		newTimeAndDate.setEndMDay(0);
+		newTimeAndDate.setEndMonth(0);
+		newTimeAndDate.setEndYear(0);
+		newTimeAndDate.setStartTimeHour(0);
+		newTimeAndDate.setStartTimeMin(0);
+		newTimeAndDate.setEndTimeHour(0);
+		newTimeAndDate.setEndTimeMin(0);
+		newTimeAndDate.setStartDay("");
+		newTimeAndDate.setEndDay("");
+		//Re-initializing the newTask
+		newTask.setTaskType("");
+		newTask.setCommandAction("");
+		newTask.setTimeAndDate(newTimeAndDate);
+		newTask.setTitle("");
+		newTask.setLocation("");		
+		newTask.setIsDone(false);
+		newTask.setIsClash(false);		
+
+		if(TaskType == "TimedTask"){			
+			//standard
+			newTask.setTaskType(TaskObject["TaskType"].GetString());
+			newTask.setTitle(TaskObject["TaskTitle"].GetString());
+			newTask.setLocation(TaskObject["Location"].GetString());	
+			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
+
+			//Date
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
+
+			//Time
+			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
+			newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
+			newTimeAndDate.setEndTimeHour(TaskObject["EndHour"].GetInt());
+			newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());
+
+			newTask.setTimeAndDate(newTimeAndDate);
+			commandVector.push_back(newTask);
+		}
+
+
+		else if(TaskType == "FloatingTask"){
+			//standard
+			newTask.setTaskType(TaskObject["TaskType"].GetString());
+			newTask.setTitle(TaskObject["TaskTitle"].GetString());
+			newTask.setLocation(TaskObject["Location"].GetString());	
+			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
+
+			//Date
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
+
+			newTask.setTimeAndDate(newTimeAndDate);
+			commandVector.push_back(newTask);
+		}
+
+		else if(TaskType == "DeadLine"){
+			//standard
+			newTask.setTaskType(TaskObject["TaskType"].GetString());
+			newTask.setTitle(TaskObject["TaskTitle"].GetString());
+			newTask.setLocation(TaskObject["Location"].GetString());	
+			newTask.setCommandAction(TaskObject["CommandAction"].GetString());
+			newTask.setIsDone(TaskObject["IsDone"].GetBool());
+			newTask.setIsClash(TaskObject["IsClash"].GetBool());
+
+			//Date
+			newTimeAndDate.setStartMDay(TaskObject["StartDay"].GetInt());
+			newTimeAndDate.setStartMonth(TaskObject["StartMonth"].GetInt());
+			newTimeAndDate.setStartYear(TaskObject["StartYear"].GetInt());
+			newTimeAndDate.setEndMDay(TaskObject["EndDay"].GetInt());
+			newTimeAndDate.setEndMonth(TaskObject["EndMonth"].GetInt());
+			newTimeAndDate.setEndYear(TaskObject["EndYear"].GetInt());
+
+			//Time
+			newTimeAndDate.setStartTimeHour(TaskObject["StartHour"].GetInt());
+			newTimeAndDate.setStartTimeMin(TaskObject["StartMin"].GetInt());
+			newTimeAndDate.setEndTimeHour(TaskObject["EndHour"].GetInt());
+			newTimeAndDate.setEndTimeMin(TaskObject["EndMin"].GetInt());
+
+			newTask.setTimeAndDate(newTimeAndDate);
+			commandVector.push_back(newTask);
+		}
+	}
+	return commandVector;
+}
+
+void storage::writeFileJson(std::vector<task> commandVector){
+	storageSort sort;
+	Document document;
+	Value array(kArrayType);
+
+	commandVector = sort.sortvector(commandVector);
+	document.SetObject();
+
+	for(auto i=0; i < (int) commandVector.size(); i++){
+		Value obj(kObjectType);
+		obj.SetObject();
+
+		if(commandVector[i].getTaskType().compare("TimedTask") == 0 ){
+			//Standard
+			obj.AddMember("TaskType","TimedTask",document.GetAllocator());
+
+			char title[10000];
+			sprintf(title, "%s", commandVector[i].getTitle().c_str());
+			Value TaskTitle(kStringType);
+			TaskTitle.SetString(title,strlen(title),document.GetAllocator());
+			obj.AddMember("TaskTitle",TaskTitle,document.GetAllocator());
+
+
+			//Converting Location
+			char location[99999];
+			sprintf(location, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
+			Value Location(kStringType);
+			Location.SetString(location, strlen(location), document.GetAllocator());
+			obj.AddMember("Location", Location, document.GetAllocator());
+
+			//Converting CommandAction
+			char action[99999];
+			sprintf(action, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
+			Value CommandAction(kStringType);
+			CommandAction.SetString(action,strlen(action),document.GetAllocator());
+			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
+			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
+
+			//Date
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
+
+			//Time
+			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
+			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
+			obj.AddMember("EndHour", commandVector[i].getTimeAndDate().getEndTimeHour(),document.GetAllocator());
+			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());
+
+		}
+		else if(commandVector[i].getTaskType().compare("FloatingTask") == 0){
+			//Standard
+			char buffer[10000];
+			obj.AddMember("TaskType","FloatingTask",document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getTitle().c_str());
+			Value TaskTitle(kStringType);
+			TaskTitle.SetString(buffer,strlen(buffer),document.GetAllocator());
+			obj.AddMember("TaskTitle",TaskTitle,document.GetAllocator());
+
+
+			//Converting Location
+			char location[99999];
+			sprintf(location, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
+			Value Location(kStringType);
+			Location.SetString(location, strlen(location), document.GetAllocator());
+			obj.AddMember("Location", Location, document.GetAllocator());
+
+			//Converting CommandAction
+			char action[99999];
+			sprintf(action, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
+			Value CommandAction(kStringType);
+			CommandAction.SetString(action,strlen(action),document.GetAllocator());
+			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
+			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
+
+			//Date
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
+		}
+
+		else if(commandVector[i].getTaskType().compare("DeadLine") == 0){
+			//Converting Title
+			char buffer[99999];
+			obj.AddMember("TaskType", "DeadLine", document.GetAllocator());
+			sprintf(buffer, "%s", commandVector[i].getTitle().c_str());
+			Value TaskTitle(kStringType);
+			TaskTitle.SetString(buffer, strlen(buffer), document.GetAllocator());
+			obj.AddMember("TaskTitle", TaskTitle, document.GetAllocator());
+
+			obj.AddMember("IsDone", commandVector[i].getIsDone(), document.GetAllocator());
+
+			//Converting Location
+			char location[99999];
+			sprintf(location, "%s", commandVector[i].getLocation().c_str(),document.GetAllocator());
+			Value Location(kStringType);
+			Location.SetString(location, strlen(location), document.GetAllocator());
+			obj.AddMember("Location", Location, document.GetAllocator());
+
+			//Converting CommandAction
+			char action[99999];
+			sprintf(action, "%s", commandVector[i].getCommandAction().c_str(),document.GetAllocator());
+			Value CommandAction(kStringType);
+			CommandAction.SetString(action,strlen(action),document.GetAllocator());
+			obj.AddMember("CommandAction", CommandAction, document.GetAllocator());
+			obj.AddMember("IsDone",commandVector[i].getIsDone(),document.GetAllocator());
+			obj.AddMember("IsClash",commandVector[i].getIsClash(),document.GetAllocator());
+
+			//Date
+			obj.AddMember("StartDay", commandVector[i].getTimeAndDate().getStartMDay(),document.GetAllocator());
+			obj.AddMember("StartMonth", commandVector[i].getTimeAndDate().getStartMonth(),document.GetAllocator());
+			obj.AddMember("StartYear", commandVector[i].getTimeAndDate().getStartYear(),document.GetAllocator());
+			obj.AddMember("EndDay", commandVector[i].getTimeAndDate().getEndMDay(),document.GetAllocator());
+			obj.AddMember("EndMonth", commandVector[i].getTimeAndDate().getEndMonth(),document.GetAllocator());
+			obj.AddMember("EndYear", commandVector[i].getTimeAndDate().getEndYear(),document.GetAllocator());
+
+			//Time
+			obj.AddMember("StartHour", commandVector[i].getTimeAndDate().getStartTimeHour(),document.GetAllocator());
+			obj.AddMember("StartMin", commandVector[i].getTimeAndDate().getStartTimeMin(),document.GetAllocator());
+			obj.AddMember("EndHour", commandVector[i].getTimeAndDate().getEndTimeHour(),document.GetAllocator());
+			obj.AddMember("EndMin", commandVector[i].getTimeAndDate().getEndTimeMin(),document.GetAllocator());
+		}
+		array.PushBack(obj,document.GetAllocator());
+	}
+	document.AddMember("storage", array, document.GetAllocator());
+
+	FILE* out = fopen(_filePath.c_str(), "w");
+	char buffer[65536];
+	FileWriteStream oss(out, buffer, sizeof(buffer));
+	PrettyWriter<FileWriteStream> out_writer(oss);
+	document.Accept(out_writer);
+	fclose(out);
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\storage.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\storageSort.cpp
+	 */
+
+
+#include "storageSort.h"
+#include <algorithm>
+#include <string>
+
+storageSort::storageSort(void)
+{
+}
+
+
+storageSort::~storageSort(void)
+{
+}
+
+// Sorts the incoming vector of task in terms of their dates.
+// This function checks each task based on this order: start year->
+// start month -> start day -> hour of start time -> the minute of
+// the start time. If the start year is larger, it will switch the 2 
+// task's position. If the start year is equal, it will then move on 
+// to check the next condiiton to see if the month is larger.
+std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
+	for(int i = 0; i < (int) commandVector.size(); i++){
+		for(int j = 0; j < (int) commandVector.size(); j++){
+			if(isStartYearLarger(i,j,commandVector)){
+				commandVector = switchPlace(i,j,commandVector);
+			} else if(EqualYearButMonthLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthButDayLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthDayButHourLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthDayHourButMinLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			}
+		}
+	}
+	return commandVector;
+}
+bool storageSort::EqualYearButMonthLarger(int i, int j, std::vector<task> commandVector){
+	return(isStartYearEqual(i, j, commandVector) 
+		&& isStartMonthLarger(i, j, commandVector));
+}
+
+bool storageSort::EqualYearMonthButDayLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i, j, commandVector)
+		&& isStartDayLarger(i, j, commandVector));
+}
+
+bool storageSort::EqualYearMonthDayButHourLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i,j,commandVector)
+		&& isStartDayEqual(i, j, commandVector)
+		&& isStartTimeHourLarger(i, j, commandVector));
+}
+
+
+bool storageSort::EqualYearMonthDayHourButMinLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i,j,commandVector)
+		&& isStartDayEqual(i, j, commandVector)
+		&& isStartTimeHourEqual(i, j, commandVector)
+		&& isStartTimeMinLarger(i,j,commandVector));
+}
+
+
+std::vector<task> storageSort::switchPlace(int i, int j, std::vector<task> commandVector){
+	task temporaryTask;
+
+	temporaryTask = commandVector[i];
+	commandVector[i] = commandVector[j];
+	commandVector[j] = temporaryTask;
+
+	return commandVector;
+}
+
+bool storageSort::isStartYearLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartYear() > commandVector[i].getTimeAndDate().getStartYear());
+}
+
+bool storageSort::isStartYearEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartYear() == commandVector[i].getTimeAndDate().getStartYear());
+}
+
+bool storageSort::isStartMonthLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMonth() > commandVector[i].getTimeAndDate().getStartMonth());
+}
+
+bool storageSort::isStartMonthEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMonth() == commandVector[i].getTimeAndDate().getStartMonth());
+}
+
+bool storageSort::isStartDayLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMDay() > commandVector[i].getTimeAndDate().getStartMDay());
+}
+
+bool storageSort::isStartDayEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartMDay() == commandVector[i].getTimeAndDate().getStartMDay());
+}
+
+bool storageSort::isStartTimeHourLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeHour() > commandVector[i].getTimeAndDate().getStartTimeHour());
+}
+
+bool storageSort::isStartTimeHourEqual(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeHour() == commandVector[i].getTimeAndDate().getStartTimeHour());
+}
+
+bool storageSort::isStartTimeMinLarger(int i, int j, std::vector<task> commandVector){
+	return (commandVector[j].getTimeAndDate().getStartTimeMin() > commandVector[i].getTimeAndDate().getStartTimeMin());
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\storageSort.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\task.cpp
+	 */
+
+
+#include "task.h"
+
+task::task()
+{
+	_taskType = "";
+	_commandAction = "";
+	_title = "";
+	_location = "";
+	_isDone = false;
+	_isClash = false;
+}
+
+task::task(std::string taskType, std::string commandAction, timeAndDate timeAndDate, std::string title, std::string location, bool isDone, bool isClash){
+	_taskType = taskType;
+	_commandAction = commandAction;
+	_timeAndDate = timeAndDate;
+	_title = title;
+	_location = location;
+	_isDone = isDone;
+	_isClash = isClash;
+}
+
+
+task::~task(void)
+{
+}
+
+//setters
+void task::setTaskType(std::string taskType){
+	_taskType = taskType;
+}
+
+void task::setCommandAction(std::string commandAction){
+	_commandAction = commandAction;
+}
+
+void task::setTimeAndDate(timeAndDate timeAndDate){
+	_timeAndDate = timeAndDate;
+}
+
+void task::setTitle(std::string title){
+	_title = title;
+}
+
+void task::setLocation(std::string location){
+	_location = location;
+}
+
+void task::setIsDone(bool isDone){
+	_isDone = isDone;
+}
+
+void task::setIsClash(bool isClash){
+	_isClash = isClash;
+}
+
+
+//getters
+std::string task::getTaskType(){
+	return _taskType;
+}
+
+std::string task::getCommandAction(){
+	return _commandAction;
+}
+
+timeAndDate task::getTimeAndDate(){
+	return _timeAndDate;
+}
+
+std::string task::getTitle(){
+	return _title;
+}
+
+std::string task::getLocation(){
+	return _location;
+}
+
+bool task::getIsDone(){
+	return _isDone;
+}
+
+bool task::getIsClash(){
+	return _isClash;
+}
+
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\task.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDelete.cpp
+	 */
+
+#include "taskDelete.h"
+#include <assert.h>
+
+taskDelete::taskDelete(void)
+{
+}
+
+taskDelete::~taskDelete(void)
+{
+}
+
+//******************************************************************
+// This function executes the delete command by:
+//
+// Step 1: Extracting the data from storage and save it in a vector of strings
+// Step 2: Check if the vector(containing the file's data) is empty
+// Step 3: Check if the string to be deleted is inside the file
+// Step 4: If found, update session with the string to be deleted
+// Step 5: Delete string
+// Step 6: Update storage with new information
+// Step 7: Print Message Success
+//
+//******************************************************************
+
+
+std::string taskDelete::executeDelete(int indexToBeDeleted){
+	char buffer[999];
+	std::vector<task> file;
+
+	storage newStorage;
+	file = newStorage.readFileJson();
+
+
+	if(isEmpty(file)){
+		return MESSAGE_ERROR_FILE_IS_EMPTY;
+	}
+	else if(isNotValidIndex(indexToBeDeleted)){
+		return MESSAGE_ERROR_INVALID_INDEX;
+	}
+	else{
+		assert(indexToBeDeleted >= 0);
+		try{
+			file = performDeleteTask(file,indexToBeDeleted);
+			newStorage.writeFileJson(file);
+			file.clear();
+			return MESSAGE_SUCCESS_DELETED;
+		}catch (const std::exception& e){
+			return MESSAGE_FAILURE_DELETE;
+		}
+	}
+}
+
+std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted){
+	file.erase(file.begin()+indexToBeDeleted);
+	return file;
+}
+
+bool taskDelete::isEmpty(std::vector<task> file){
+	return file.empty();
+}
+
+bool taskDelete::isNotValidIndex(int indexToBeDeleted){
+	return (indexToBeDeleted < 0);
+}
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDelete.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+	 */
+
+
+//******************************************************************
+//
+// This class governs the marking and unmarking of task
+// being done or undone. It also provides functions such as 
+// extracting the list of done or undone tasks.
+//
+//******************************************************************
+
+#include "taskDone.h"
+
+
+taskDone::taskDone(void)
+{
+}
+
+
+taskDone::~taskDone(void)
+{
+}
+
+std::vector<task> taskDone::getListDone(){
+	std::vector<task> doneVector;
+	storage newStorage;
+	doneVector = newStorage.readFileJson();
+
+	if(isEmpty(doneVector)){
+		return doneVector;
+	} else {
+		int i;
+		for(i=1; i<= (int) doneVector.size(); i++){
+			if(doneVector[i-1].getIsDone() == false){
+				doneVector.erase(doneVector.begin()+i-1);
+				i=0;
+			}
+		}
+		if(doneVector.empty()){
+			return doneVector;
+		} else{
+			assert(!doneVector.empty());
+			return doneVector;
+		}
+	}
+}
+
+std::vector<task> taskDone::getListUndone(){
+	std::vector<task> undoneVector;
+	std::vector<task> newUndoneVector;
+	storage newStorage;
+	undoneVector = newStorage.readFileJson();
+
+	if(isEmpty(undoneVector)){
+		return undoneVector;
+	} else {
+		int i;
+		for(i=0; i<undoneVector.size();i++){
+			if(undoneVector[i].getIsDone() == false){
+				newUndoneVector.push_back(undoneVector[i]);
+			}
+		}
+		if(newUndoneVector.empty()){
+			return newUndoneVector;
+		} else{
+			assert(!newUndoneVector.empty());
+			return newUndoneVector;
+		}
+	}
+}
+std::string taskDone::markDone(int indexToBeActOn){
+	std::vector<task> storageVector;
+	storage newStorage;
+
+	storageVector = newStorage.readFileJson();
+	if(isEmpty(storageVector)){
+		return MESSAGE_ERROR_FILE_IS_EMPTY;
+	}
+	else if(isInvalidIndex(indexToBeActOn,storageVector.size())){
+		return MESSAGE_ERROR_INVALID_INDEX;
+	}
+	else{
+		assert(indexToBeActOn >= 0);
+		assert(!storageVector.empty());
+		try{
+			task newTask;
+			newTask = storageVector[indexToBeActOn];
+			if(newTask.getIsDone() == true){
+				return MESSAGE_ERROR_ALREADY_DONE;
+			} else {
+				newTask.setIsDone(true);
+				storageVector[indexToBeActOn] = newTask;
+				newStorage.writeFileJson(storageVector);
+				return MESSAGE_SUCCESS_DONE;
+			}
+
+		} catch (const std::exception& e){
+			throw(e.what());
+		}
+	}
+}
+
+std::string taskDone::markUndone(int indexToBeActOn){
+	std::vector<task> storageVector;
+	storage newStorage;
+
+	storageVector = newStorage.readFileJson();
+	if(isEmpty(storageVector)){
+		return MESSAGE_ERROR_FILE_IS_EMPTY;
+	}
+	else if(isInvalidIndex(indexToBeActOn,storageVector.size())){
+		return MESSAGE_ERROR_INVALID_INDEX;
+	}
+	else{
+		assert(indexToBeActOn >= 0);
+		assert(!storageVector.empty());
+		try{
+			task newTask;
+			newTask = storageVector[indexToBeActOn];
+			if(newTask.getIsDone() == false){
+				return MESSAGE_ERROR_ALREADY_UNDONE;
+			} else {
+				newTask.setIsDone(false);
+				storageVector[indexToBeActOn] = newTask;
+				newStorage.writeFileJson(storageVector);
+				return MESSAGE_SUCCESS_UNDONE;
+			}
+
+		} catch (const std::exception& e){
+			throw(e.what());
+		}
+	}
+}
+
+bool taskDone::isEmpty(std::vector<task> storageVector){
+	return (storageVector.empty());
+}
+
+
+bool taskDone::isInvalidIndex(int indexToBeActOn, int size){
+	return (indexToBeActOn < 0 || indexToBeActOn > size);
+}
+
+
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\taskDone.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\RegressionTest\CommandTestDelete.cpp
+	 */
+
+// This unit testing test the integrity of taskDelete.
+
+#include "stdafx.h"
+#include "CppUnitTest.h"
+
+using namespace Microsoft::VisualStudio::CppUnitTestFramework;
+
+namespace CommandTestDelete
+{		
+	TEST_CLASS(CommandTestDelete)
+	{
+	public:
+		TEST_METHOD(CommandTestDelete_ExecuteDelete)
+		{
+			taskDelete newTaskDelete;
+
+			std::vector<task> inputVector;
+			std::string inputString;
+			bool isEmpty;
+			isEmpty = newTaskDelete.isEmpty(inputVector);
+
+			//Check if vector is an empty vector
+			Assert::AreEqual(true,isEmpty);
+
+			task newTask1;
+
+			std::string inputDateString = "5/5/2015";
+			std::string inputTimeString = "4pm-6pm";
+			std::string inputTitle = "Practice floorball";
+			std::string inputLocation = "MPSH 6";
+			std::string commandAction = "add";
+			bool isDone = false;
+			bool isClash = false;
+
+			timeAndDate newTimeAndDate(inputDateString,inputTimeString);
+
+			newTask1.setTaskType(TIMED_TASK);
+			newTask1.setCommandAction(commandAction);
+			newTask1.setTimeAndDate(newTimeAndDate);
+			newTask1.setTitle(inputTitle);
+			newTask1.setIsClash(isClash);
+			newTask1.setIsDone(isDone);
+			inputVector.push_back(newTask1);
+
+			task newTask2;
+
+			inputDateString = "7/5/2015";
+			inputTimeString = "12pm-2pm";
+			inputTitle = "Family Lunch!";
+			inputLocation = "Pizza Hut";
+			commandAction = "add";
+			isDone = false;
+			isClash = false;
+
+			timeAndDate newTimeAndDate2(inputDateString,inputTimeString);
+
+			newTask2.setTaskType(TIMED_TASK);
+			newTask2.setCommandAction(commandAction);
+			newTask2.setTimeAndDate(newTimeAndDate2);
+			newTask2.setTitle(inputTitle);
+			newTask2.setIsClash(isClash);
+			newTask2.setIsDone(isDone);
+			inputVector.push_back(newTask2);
+
+			task newTask3;
+
+			inputDateString = "10/5/2015";
+			inputTimeString = "8pm-10pm";
+			inputTitle = "Catch up on korean drama!";
+			inputLocation = "Home";
+			commandAction = "add";
+			isDone = false;
+			isClash = false;
+
+			timeAndDate newTimeAndDate3(inputDateString,inputTimeString);
+
+
+			newTask3.setTaskType(TIMED_TASK);
+			newTask3.setCommandAction(commandAction);
+			newTask3.setTimeAndDate(newTimeAndDate3);
+			newTask3.setTitle(inputTitle);
+			newTask3.setIsClash(isClash);
+			newTask3.setIsDone(isDone);
+			inputVector.push_back(newTask3);
+
+			//Boundary Cases before any action
+			//Checking on the validity of the indexToBeDeleted input
+			Assert::AreEqual(true, newTaskDelete.isNotValidIndex(-1));
+			Assert::AreEqual(false, newTaskDelete.isNotValidIndex(0));
+			Assert::AreEqual(false, newTaskDelete.isNotValidIndex(1));
+
+			std::vector<task> inputVector2;
+			inputVector2 = newTaskDelete.performDeleteTask(inputVector,1);
+
+			inputDateString = inputVector2[1].getTimeAndDate().getStartDateInString();
+			inputTimeString = inputVector2[1].getTimeAndDate().getStartTimeInString();
+			inputTitle = inputVector2[1].getTitle();
+			inputLocation = inputVector2[1].getLocation();
+			commandAction = inputVector2[1].getCommandAction();
+			isDone = inputVector2[1].getIsDone();
+			isClash = inputVector2[1].getIsClash();
+
+			//Checking 2nd element of the new vector after removing the 2nd task of the old vector
+			//Check -> newVector[2] == oldVector[3] (?)
+			Assert::AreEqual(inputVector[2].getTimeAndDate().getStartDateInString(),inputDateString);
+			Assert::AreEqual(inputVector[2].getTimeAndDate().getStartTimeInString(),inputTimeString);
+			Assert::AreEqual(inputVector[2].getLocation(), inputLocation);
+			Assert::AreEqual(inputVector[2].getTitle(), inputTitle);
+			Assert::AreEqual(inputVector[2].getCommandAction(), commandAction);
+			Assert::AreEqual(inputVector[2].getIsDone(), isDone);
+			Assert::AreEqual(inputVector[2].getIsClash(), isClash);
+
+			inputDateString = inputVector2[0].getTimeAndDate().getStartDateInString();
+			inputTimeString = inputVector2[0].getTimeAndDate().getStartTimeInString();
+			inputTitle = inputVector2[0].getTitle();
+			inputLocation = inputVector2[0].getLocation();
+			commandAction = inputVector2[0].getCommandAction();
+			isDone = inputVector2[0].getIsDone();
+			isClash = inputVector2[0].getIsClash();
+
+			//Checking 1st element of the new vector after removing the 2nd task of the old vector
+			//Check -> newVector[0] == oldVector[0] (?)
+			//Hypothesis = Nothing changed.
+			Assert::AreEqual(inputVector[0].getTimeAndDate().getStartDateInString(),inputDateString);
+			Assert::AreEqual(inputVector[0].getTimeAndDate().getStartTimeInString(),inputTimeString);
+			Assert::AreEqual(inputVector[0].getLocation(), inputLocation);
+			Assert::AreEqual(inputVector[0].getTitle(), inputTitle);
+			Assert::AreEqual(inputVector[0].getCommandAction(), commandAction);
+			Assert::AreEqual(inputVector[0].getIsDone(), isDone);
+			Assert::AreEqual(inputVector[0].getIsClash(), isClash);
+
+		}
+	};
+}
+	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\RegressionTest\CommandTestDelete.cpp
+
+
+
+
+
