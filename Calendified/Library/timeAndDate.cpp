@@ -1,5 +1,21 @@
 //@author A0116027R
 
+//Class that stores time and date of a task
+//Valid times:
+//13:00
+//1pm
+//1.30pm
+//Valid dates:
+//13/04/2015
+//13/4/2015
+//13/4/15
+//13-04-2015
+//13-4-2015
+//13-4-15
+//Use '-' to specify a duration. Example: "13/4/2015-14/4/2015"
+//Checks validity of time and date
+//Able to convert to time_t and string format
+
 #include "timeAndDate.h"
 #include <sstream>
 #include <ctime>

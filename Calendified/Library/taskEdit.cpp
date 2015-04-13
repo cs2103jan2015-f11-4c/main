@@ -1,5 +1,17 @@
 //@author A0116027R
 
+//Edit a task in the following steps:
+//Step 1: Take in an index and identify which task is to be edited
+//Step 2: Checks if storage file has any task to edit
+//Step 3: Extract data from storage file to a vector of tasks
+//Step 4: Edits the original task from the storage file by comparing 
+//it with the data from the user input
+//Step 5: Adds the task to the vector
+//Step 6: Write vector into storage file
+//Step 7: Return success message if task is successfully edited
+//Updates stack in taskUndo class so for undo execution
+//Example user input to edit a task: "edit 1 12pm"
+
 #include "taskEdit.h"
 
 taskEdit::taskEdit(void){
