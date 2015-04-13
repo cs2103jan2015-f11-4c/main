@@ -21,7 +21,8 @@ taskEdit::~taskEdit(void){
 }
 
 bool isDoneEdited(task editingReference, task originalTask){
-	if(editingReference.getIsDone() == true && editingReference.getIsDone() != originalTask.getIsDone()){
+	if(editingReference.getIsDone() == true 
+		&& editingReference.getIsDone() != originalTask.getIsDone()){
 		return true;
 	} else {
 		return false;
@@ -29,7 +30,8 @@ bool isDoneEdited(task editingReference, task originalTask){
 }
 
 bool isLocationEdited(task editingReference, task originalTask){
-	if(!editingReference.getLocation().empty() && (editingReference.getLocation() != originalTask.getLocation())){
+	if(!editingReference.getLocation().empty() 
+		&& (editingReference.getLocation() != originalTask.getLocation())){
 		return true;
 	} else {
 		return false;
@@ -150,7 +152,7 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 			} else if(indexToBeEdited > storageTasks.size()){
 				return MESSAGE_ERROR_INVALID_INDEX;
 			} else {
-				assert(indexToBeEdited>=0);
+				assert(indexToBeEdited >= 0);
 				task taskToBeEdited = storageTasks[indexToBeEdited];
 				
 				if(isDoneEdited(_editingReference, taskToBeEdited)){
@@ -187,10 +189,6 @@ std::string taskEdit::executeEdit(int indexToBeEdited){
 	}
 }
 
-void taskEdit::setEditingRef(task currentTaskData){
-	_editingReference = currentTaskData;
-}
-
 void taskEdit::undoEdit(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
 
@@ -198,4 +196,8 @@ void taskEdit::undoEdit(taskUndo* taskToBeUndone, std::string results){
 		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
 		taskToBeUndone->insertVector(storageFile.readFileJson());
 	}
+}
+
+void taskEdit::setEditingRef(task currentTaskData){
+	_editingReference = currentTaskData;
 }

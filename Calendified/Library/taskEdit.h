@@ -28,13 +28,11 @@ private:
 	
 public:
 	taskEdit(void);
-	~taskEdit(void);
-
-	//Setters
-	void setEditingRef(task currentcommandRef);
-
+	~taskEdit(void);	
 	std::string executeEdit(int indexToBeEdited);
 	void undoEdit(taskUndo* taskToBeUndone, std::string results);
+	//Setter
+	void setEditingRef(task currentcommandRef);
 };
 
 #endif

@@ -23,13 +23,16 @@ private:
 	std::string _endDay;
 
 public:
+	bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear);
+	bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin);
 	timeAndDate();
-	~timeAndDate(void);
 	timeAndDate(std::string dateString, std::string timeString);
-	int calDay(int year, int month, int date);
+	~timeAndDate(void);
 	bool isValid();
+	int calDay(int year, int month, int date);
+	void deadlineTaskDateAndTimeConversion(std::string taskType);
 
-	//setters
+	//Setters
 	void setStartMDay(int taskMday);
 	void setStartMonth(int taskMonth);
 	void setStartYear(int taskYear);
@@ -43,7 +46,7 @@ public:
 	void setStartDay(std::string taskStartDay);
 	void setEndDay(std::string taskEndDay);
 
-	//getters
+	//Getters
 	int getStartMDay();
 	int getStartMonth();
 	int getStartYear();
@@ -65,11 +68,6 @@ public:
 	std::string getTimeInString(std::string timeString);
 	std::string getStartTimeInString();
 	std::string getEndTimeInString();
-
-	std::string dateAndTimeInString();
-	bool isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear);
-	bool isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin);	
-	void deadlineTaskDateAndTimeConversion(std::string taskType);
 };
 
 #endif

@@ -26,16 +26,16 @@ private:
 	task _task;
 public:
 	taskAdd();
-	taskAdd(std::string taskString);
 	~taskAdd(void);
-	std::string executeAdd();
-
-	//Setter
-	void setTask(task taskString);
-	task getTask();
+	taskAdd(std::string taskString);
 	bool notValidTitle();
+	std::string executeAdd();
 	void undoAdd(taskUndo* taskToBeUndone, std::string results);
 	bool isClash(std::vector<task> &storageVector);
+	//Setter
+	void setTask(task taskString);
+	//Getter
+	task getTask();
 };
 
 #endif

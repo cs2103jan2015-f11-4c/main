@@ -10,39 +10,12 @@
 
 #include "taskRedo.h"
 
-
 taskRedo::taskRedo(void)
 {
 }
 
 taskRedo::~taskRedo(void)
 {
-}
-
-std::stack<std::vector<task>> taskRedo::getCurrentStack(){
-	return _currentStack;
-}
-
-std::stack<std::vector<task>> taskRedo::getSessionStack(){
-	return _sessionStack;
-}
-
-std::vector<task> taskRedo::getTopCurrentVector(){
-	std::vector<task> topCurrentVector = _currentStack.top();
-	return topCurrentVector;
-}
-
-std::vector<task> taskRedo::getTopSessionVector(){
-	std::vector<task> topSessionVector = _sessionStack.top();
-	return topSessionVector;
-}
-
-void taskRedo::setCurrentStack(std::stack<std::vector<task>> stack){
-	_currentStack = stack;
-}
-
-void taskRedo::setSessionStack(std::stack<std::vector<task>> stackTasks){
-	_sessionStack = stackTasks;
 }
 
 void taskRedo::insertCurrentVector(std::vector<task> currentVectorTasks){
@@ -95,4 +68,30 @@ std::string taskRedo::executeRedo(taskUndo* undoTaskStack){
 	_sessionStack.pop();
 
 	return MESSAGE_SUCCESS_REDO;
+}
+
+void taskRedo::setCurrentStack(std::stack<std::vector<task>> stack){
+	_currentStack = stack;
+}
+
+void taskRedo::setSessionStack(std::stack<std::vector<task>> stackTasks){
+	_sessionStack = stackTasks;
+}
+
+std::stack<std::vector<task>> taskRedo::getCurrentStack(){
+	return _currentStack;
+}
+
+std::stack<std::vector<task>> taskRedo::getSessionStack(){
+	return _sessionStack;
+}
+
+std::vector<task> taskRedo::getTopCurrentVector(){
+	std::vector<task> topCurrentVector = _currentStack.top();
+	return topCurrentVector;
+}
+
+std::vector<task> taskRedo::getTopSessionVector(){
+	std::vector<task> topSessionVector = _sessionStack.top();
+	return topSessionVector;
 }

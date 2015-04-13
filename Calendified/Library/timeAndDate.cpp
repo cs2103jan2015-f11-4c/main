@@ -23,109 +23,13 @@
 #include <assert.h>
 #include <regex>
 
-void timeAndDate::setStartMDay(int taskMday){
-	_startMDay = taskMday;
-}
-
-void timeAndDate::setStartMonth(int taskMonth){
-	_startMonth = taskMonth;
-}
-
-void timeAndDate::setStartYear(int taskYear){
-	_startYear = taskYear;
-}
-
-void timeAndDate::setEndMDay(int taskMday){
-	_endMDay = taskMday;
-}
-
-void timeAndDate::setEndMonth(int taskMonth){
-	_endMonth = taskMonth;
-}
-
-void timeAndDate::setEndYear(int taskYear){
-	_endYear = taskYear;
-}
-
-void timeAndDate::setStartTimeHour(int taskStartTimeHour){
-	_startTimeHour = taskStartTimeHour;
-}
-
-void timeAndDate::setStartTimeMin(int taskStartTimeMin){
-	_startTimeMin = taskStartTimeMin;
-}
-
-void timeAndDate::setEndTimeHour(int taskEndTimeHour){
-	_endTimeHour = taskEndTimeHour;
-}
-
-void timeAndDate::setEndTimeMin(int taskEndTimeMin){
-	_endTimeMin = taskEndTimeMin;
-}
-
-void timeAndDate::setStartDay(std::string taskStartDay){
-	_startDay = taskStartDay;
-}
-
-void timeAndDate::setEndDay(std::string taskEndDay){
-	_endDay = taskEndDay;
-}
-
-int timeAndDate::getStartMDay(){
-	return _startMDay;
-}
-
-int timeAndDate::getStartMonth(){
-	return _startMonth;
-}
-
-int timeAndDate::getStartYear(){
-	return _startYear;
-}
-
-int timeAndDate::getEndMDay(){
-	return _endMDay;
-}
-
-int timeAndDate::getEndMonth(){
-	return _endMonth;
-}
-
-int timeAndDate::getEndYear(){
-	return _endYear;
-}
-
-int timeAndDate::getStartTimeHour(){
-	return _startTimeHour;
-}
-
-int timeAndDate::getStartTimeMin(){
-	return _startTimeMin;
-}
-
-int timeAndDate::getEndTimeHour(){
-	return _endTimeHour;
-}
-
-int timeAndDate::getEndTimeMin(){
-	return _endTimeMin;
-}
-
-std::string timeAndDate::getStartDay(){
-	return _startDay;
-}
-
-std::string timeAndDate::getEndDay(){
-	return _endDay;
-}
-
 //checks if it's a valid date for months with 31 days
 bool isValid31(int mday, int month){
-	assert(mday>=1 && mday<= 31);
-	assert(month>=1 && month<=12);
-	if(month<=7 && month%2==1){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(month <= 7 && month%2 == 1){
 		return true;
-	} else if(month>7 && month%2==0){
+	} else if(month > 7 && month%2 == 0){
 		return true;
 	} else {
 		return false;
@@ -134,11 +38,11 @@ bool isValid31(int mday, int month){
 
 //checks if it's a valid date for months with 30 days
 bool isValid30(int mday, int month){
-	assert(mday>=1 && mday<=31);
-	assert(month>=1 && month<=12);
-	if(mday<=30 && month!=2 && month<=7 && month%2==0){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(mday <= 30 && month != 2 && month <= 7 && month%2 == 0){
 		return true;
-	} else if (mday<=30 && month>7 && month%2==1){
+	} else if (mday <= 30 && month > 7 && month%2 == 1){
 		return true;
 	} else {
 		return false;
@@ -147,8 +51,8 @@ bool isValid30(int mday, int month){
 
 //checks if date is a less than or equal to 29
 bool isValid29(int mday){
-	assert(mday>=1 && mday<=31);
-	if(mday<=29){
+	assert(mday >= 1 && mday <= 31);
+	if(mday <= 29){
 		return true;
 	} else {
 		return false;
@@ -157,9 +61,9 @@ bool isValid29(int mday){
 
 //checks if it's a valid date for February (not leap year)
 bool isValid28(int mday, int month){
-	assert(mday>=1 && mday<= 31);
-	assert(month>=1 && month<=12);
-	if(month==2 && mday<=28){
+	assert(mday >= 1 && mday <= 31);
+	assert(month >= 1 && month <= 12);
+	if(month == 2 && mday <= 28){
 		return true;
 	} else {
 		return false;
@@ -167,7 +71,7 @@ bool isValid28(int mday, int month){
 }
 
 bool isLeapYear(int year){
-	if(year%4==0 || year%400==0 || year%100==0){
+	if(year%4 == 0 || year%400 == 0 || year%100 == 0){
 		return true;
 	} else {
 		return false;
@@ -181,6 +85,30 @@ void taskDateToStruct(int mday, int month, int year, tm* Date){
 	Date->tm_mday = mday;
 	Date->tm_mon = month - MONTH;
 	Date->tm_year = year - YEAR;
+}
+
+void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
+	Time->tm_hour = startTimeHour;
+	Time->tm_min = startTimeMin;
+}
+
+bool isAmOrPm(int hour, int* timeHour, char day, char m){
+	if((day=='a' || day=='A') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 0;
+		} else {
+			*timeHour = hour;
+		}
+	} else if((day=='p' || day=='P') && (m=='m' || m=='M')){
+		if(hour == 12){
+			*timeHour = 12;
+		} else {
+			*timeHour = hour + 12;
+		}
+	} else {
+		return false;
+	}
+	return true;
 }
 
 bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* taskStartMonth, int* taskStartYear, int* taskEndMDay, int* taskEndMonth, int* taskEndYear){
@@ -366,30 +294,6 @@ bool timeAndDate::isValidDate(std::string dateString, int* taskStartMDay, int* t
 		}
 	}
 	return false;
-}
-
-void taskTimeToStruct(int startTimeHour, int startTimeMin, tm* Time){
-	Time->tm_hour = startTimeHour;
-	Time->tm_min = startTimeMin;
-}
-
-bool isAmOrPm(int hour, int* timeHour, char day, char m){
-	if((day=='a' || day=='A') && (m=='m' || m=='M')){
-		if(hour == 12){
-			*timeHour = 0;
-		} else {
-			*timeHour = hour;
-		}
-	} else if((day=='p' || day=='P') && (m=='m' || m=='M')){
-		if(hour == 12){
-			*timeHour = 12;
-		} else {
-			*timeHour = hour + 12;
-		}
-	} else {
-		return false;
-	}
-	return true;
 }
 
 bool timeAndDate::isValidTime(std::string timeString, int* taskStartTimeHour, int* taskStartTimeMin, int* taskEndTimeHour, int* taskEndTimeMin){
@@ -635,6 +539,10 @@ timeAndDate::timeAndDate(std::string dateString, std::string timeString){
 	}
 }
 
+timeAndDate::~timeAndDate(void)
+{
+}
+
 bool timeAndDate::isValid(){
 	if(_startMDay==-1 || _startMonth==-1 || _startYear==-1 || 
 		_endMDay==-1 || _endMonth==-1 || _endYear==-1 ||
@@ -643,6 +551,26 @@ bool timeAndDate::isValid(){
 		return false;
 	} else {
 		return true;
+	}
+}
+
+//@author A0125489U
+int timeAndDate::calDay(int year, int month, int date){
+	if (month < 3){
+		year--, month += 12;
+	}
+	return 365*year + year/4 - year/100 + year/400 + (153*month - 457)/5 + date - 306;
+}
+
+void timeAndDate::deadlineTaskDateAndTimeConversion(std::string taskType){
+	std::string deadLineTaskType = "DeadLine";
+
+	if(taskType == deadLineTaskType){
+		_endMDay = _startMDay;
+		_endMonth = _startMonth;
+		_endYear = _startYear;
+		_endTimeHour = _startTimeHour;
+		_endTimeMin = _startTimeMin;
 	}
 }
 
@@ -756,36 +684,98 @@ std::string timeAndDate::getEndTimeInString(){
 	}
 }
 
-std::string timeAndDate::dateAndTimeInString(){
-	std::string dateAndTime = "";
-	std::string date = getStartDateInString();
-	std::string startTime = getStartTimeInString();
-	std::string endTime = getEndTimeInString();
-
-	dateAndTime = date + startTime + '-' + endTime;
-	return dateAndTime;
+void timeAndDate::setStartMDay(int taskMday){
+	_startMDay = taskMday;
 }
 
-timeAndDate::~timeAndDate(void)
-{
+void timeAndDate::setStartMonth(int taskMonth){
+	_startMonth = taskMonth;
 }
 
-void timeAndDate::deadlineTaskDateAndTimeConversion(std::string taskType){
-	std::string deadLineTaskType = "DeadLine";
-
-	if(taskType == deadLineTaskType){
-		_endMDay = _startMDay;
-		_endMonth = _startMonth;
-		_endYear = _startYear;
-		_endTimeHour = _startTimeHour;
-		_endTimeMin = _startTimeMin;
-	}
+void timeAndDate::setStartYear(int taskYear){
+	_startYear = taskYear;
 }
 
-//@author A0125489U
-int timeAndDate::calDay(int year, int month, int date){
-	if (month < 3){
-		year--, month += 12;
-	}
-	return 365*year + year/4 - year/100 + year/400 + (153*month - 457)/5 + date - 306;
+void timeAndDate::setEndMDay(int taskMday){
+	_endMDay = taskMday;
+}
+
+void timeAndDate::setEndMonth(int taskMonth){
+	_endMonth = taskMonth;
+}
+
+void timeAndDate::setEndYear(int taskYear){
+	_endYear = taskYear;
+}
+
+void timeAndDate::setStartTimeHour(int taskStartTimeHour){
+	_startTimeHour = taskStartTimeHour;
+}
+
+void timeAndDate::setStartTimeMin(int taskStartTimeMin){
+	_startTimeMin = taskStartTimeMin;
+}
+
+void timeAndDate::setEndTimeHour(int taskEndTimeHour){
+	_endTimeHour = taskEndTimeHour;
+}
+
+void timeAndDate::setEndTimeMin(int taskEndTimeMin){
+	_endTimeMin = taskEndTimeMin;
+}
+
+void timeAndDate::setStartDay(std::string taskStartDay){
+	_startDay = taskStartDay;
+}
+
+void timeAndDate::setEndDay(std::string taskEndDay){
+	_endDay = taskEndDay;
+}
+
+int timeAndDate::getStartMDay(){
+	return _startMDay;
+}
+
+int timeAndDate::getStartMonth(){
+	return _startMonth;
+}
+
+int timeAndDate::getStartYear(){
+	return _startYear;
+}
+
+int timeAndDate::getEndMDay(){
+	return _endMDay;
+}
+
+int timeAndDate::getEndMonth(){
+	return _endMonth;
+}
+
+int timeAndDate::getEndYear(){
+	return _endYear;
+}
+
+int timeAndDate::getStartTimeHour(){
+	return _startTimeHour;
+}
+
+int timeAndDate::getStartTimeMin(){
+	return _startTimeMin;
+}
+
+int timeAndDate::getEndTimeHour(){
+	return _endTimeHour;
+}
+
+int timeAndDate::getEndTimeMin(){
+	return _endTimeMin;
+}
+
+std::string timeAndDate::getStartDay(){
+	return _startDay;
+}
+
+std::string timeAndDate::getEndDay(){
+	return _endDay;
 }

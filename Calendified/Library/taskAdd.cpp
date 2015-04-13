@@ -18,6 +18,11 @@ taskAdd::~taskAdd(void)
 {
 }
 
+bool taskAdd::notValidTitle(){
+	return (getTask().getTitle() == "");
+
+}
+
 std::string taskAdd::executeAdd(){
 	storage storageFile;
 	std::vector<task> taskStorage;
@@ -47,15 +52,6 @@ std::string taskAdd::executeAdd(){
 	}
 }
 
-bool taskAdd::notValidTitle(){
-	return (getTask().getTitle() == "");
-
-}
-
-task taskAdd::getTask(){
-	return _task;
-}
-
 void taskAdd::undoAdd(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
 
@@ -63,10 +59,6 @@ void taskAdd::undoAdd(taskUndo* taskToBeUndone, std::string results){
 		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
 		taskToBeUndone->insertVector(storageFile.readFileJson());
 	}
-}
-
-void taskAdd::setTask(task newTask){
-	_task = newTask;
 }
 
 //if either is floating task, shouldnt ignore
@@ -235,4 +227,12 @@ bool taskAdd::isClash(std::vector<task> &taskStorage){
 		}
 	}
 	return false;
+}
+
+task taskAdd::getTask(){
+	return _task;
+}
+
+void taskAdd::setTask(task newTask){
+	_task = newTask;
 }
