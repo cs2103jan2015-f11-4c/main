@@ -16,15 +16,16 @@ const std::string MESSAGE_FAILURE_DELETE =
 
 class taskDelete
 {
-	
+
 public:
 	taskDelete(void);
 	~taskDelete(void);
-	
+
 	std::string executeDelete(int indexToBeDeleted);
+	std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted);
 	bool isEmpty(std::vector<task> file);
 	bool isNotValidIndex(int indexToBeDeleted);
-	std::vector<task> taskDelete::performDeleteTask(std::vector<task> file, int indexToBeDeleted);
+
 	void undoDelete(taskUndo* taskToBeUndone, std::string results);
 };
 

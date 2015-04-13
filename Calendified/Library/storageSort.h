@@ -14,8 +14,15 @@ public:
 	storageSort(void);
 	~storageSort(void);
 
-	std::vector<task> switchPlace(int i, int j, std::vector<task> commandVector);
+	
 	std::vector<task> storageSort::sortvector(std::vector<task> commandVector);
+
+	bool EqualYearButMonthLarger(int i, int j, std::vector<task> commandVector);
+	bool EqualYearMonthButDayLarger(int i, int j, std::vector<task> commandVector);
+	bool EqualYearMonthDayButHourLarger(int i, int j, std::vector<task> commandVector);
+	bool EqualYearMonthDayHourButMinLarger(int i, int j, std::vector<task> commandVector);
+
+	std::vector<task> switchPlace(int i, int j, std::vector<task> commandVector);
 
 	bool isStartYearLarger(int i, int j, std::vector<task> commandVector);
 	bool isStartYearEqual(int i, int j, std::vector<task> commandVector);

@@ -160,7 +160,9 @@ commandRef parser::getCommandRef(){
 }
 
 //@author A0114411B
-std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
+// This function tokenize the command line by splitting the words up
+// using whitespaces as delimiters.
+std::vector<std::string> parser::tokenizeCommandLine(std::string commandLine){
 	std::string buffer; 
 	std::stringstream ss(commandLine);
 
@@ -179,12 +181,12 @@ std::vector<std::string> parser::detokenizeCommandLine(std::string commandLine){
 //Use this method to remove the deadline keywords {BY, DUE, BEFORE} from the Task Title
 int parser::checkDeadlineIndex(std::string commandLine){
 	int index=0;
-	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
+	std::vector<std::string> tokenizedVector = tokenizeCommandLine(commandLine);
 
-	for(auto i=0; i < (int) detokenizedVector.size(); i++){
-		if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
-			detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
-			detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
+	for(auto i=0; i < (int) tokenizedVector.size(); i++){
+		if(tokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
+			tokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
+			tokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
 				index = i;
 				break;
 		}
@@ -193,8 +195,13 @@ int parser::checkDeadlineIndex(std::string commandLine){
 }
 
 //@author A0114411B
+// This method checks the task type of a event entered by the user.
+// It checks by if the task has both time and date, it will be a 
+// timed task. If it contained certain keywords such as "by", "due"
+// or "before" it will be a deadline task. If there is no time or date,
+// got time no date or no date and got time, it will all be floating tasks.
 void parser::checkAndSetTaskType(std::string commandLine){
-	std::vector<std::string> detokenizedVector = detokenizeCommandLine(commandLine);
+	std::vector<std::string> tokenizedVector = tokenizeCommandLine(commandLine);
 
 	if(commandReference.getDate()[0] >0 && commandReference.getTime()[0] >0){
 		commandReference.setTaskType(TIMED_TASK);
@@ -203,12 +210,12 @@ void parser::checkAndSetTaskType(std::string commandLine){
 		commandReference.getDate()[0] ==0 && commandReference.getTime()[0] ==0){
 			commandReference.setTaskType(FLOATING_TASK);
 	} else {
-		for(auto i=0; i < (int) detokenizedVector.size(); i++){
-			if(detokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
-				detokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
-				detokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
+		for(auto i=0; i < (int) tokenizedVector.size(); i++){
+			if(tokenizedVector[i].compare(DATE_DEADLINE_DUE) == 0 ||
+				tokenizedVector[i].compare(DATE_DEADLINE_BEFORE) == 0 ||
+				tokenizedVector[i].compare(DATE_DEADLINE_BY) == 0){
 					commandReference.setTaskType(DEAD_LINE);
-					detokenizedVector.erase(detokenizedVector.begin()+i);
+					tokenizedVector.erase(tokenizedVector.begin()+i);
 					return;
 			}
 		}

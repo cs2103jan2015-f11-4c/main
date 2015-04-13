@@ -1,4 +1,5 @@
 //@author A0114411B
+// This unit testing test the integrity of taskDelete.
 
 #include "stdafx.h"
 #include "CppUnitTest.h"

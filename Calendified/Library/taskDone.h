@@ -40,7 +40,9 @@ public:
 	std::vector<task> getListUndone();
 
 	std::string markDone(int indexToBeActOn);
-	std::string markUndone(int indexToBeActOn);	
+	std::string markUndone(int indexToBeActOn);
+	bool isEmpty(std::vector<task> storageVector);
+	bool isInvalidIndex(int indexToBeActOn, int size);
 	void undoDone(taskUndo* taskToBeUndone, std::string results);
 	void undoUndone(taskUndo* taskToBeUndone, std::string results);
 };

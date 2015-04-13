@@ -1,5 +1,4 @@
 //@author A0114411B
-
 #include "taskDelete.h"
 #include <assert.h>
 
@@ -25,7 +24,6 @@ taskDelete::~taskDelete(void)
 //******************************************************************
 
 
-// Add file type to parameter once the code is stable
 std::string taskDelete::executeDelete(int indexToBeDeleted){
 	char buffer[999];
 	std::vector<task> file;
@@ -42,8 +40,6 @@ std::string taskDelete::executeDelete(int indexToBeDeleted){
 	}
 	else{
 		assert(indexToBeDeleted >= 0);
-		//task taskToBeDeleted;
-		//taskToBeDeleted = file[indexToBeDeleted];
 		try{
 			file = performDeleteTask(file,indexToBeDeleted);
 			newStorage.writeFileJson(file);
@@ -69,7 +65,6 @@ bool taskDelete::isNotValidIndex(int indexToBeDeleted){
 }
 
 //@author A0116027R
-
 void taskDelete::undoDelete(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
 

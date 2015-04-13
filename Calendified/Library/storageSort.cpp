@@ -24,28 +24,47 @@ std::vector<task> storageSort::sortvector(std::vector<task> commandVector){
 		for(int j = 0; j < (int) commandVector.size(); j++){
 			if(isStartYearLarger(i,j,commandVector)){
 				commandVector = switchPlace(i,j,commandVector);
-			} else if(isStartYearEqual(i, j, commandVector) 
-				&& isStartMonthLarger(i, j, commandVector)){
-					commandVector = switchPlace(i,j,commandVector);
-			} else if(isStartYearEqual(i,j,commandVector)
-				&& isStartMonthEqual(i, j, commandVector)
-				&& isStartDayLarger(i, j, commandVector)){
-					commandVector = switchPlace(i,j,commandVector);
-			} else if(isStartYearEqual(i,j,commandVector)
-				&& isStartMonthEqual(i,j,commandVector)
-				&& isStartDayEqual(i, j, commandVector)
-				&& isStartTimeHourLarger(i, j, commandVector)){
-					commandVector = switchPlace(i,j,commandVector);
-			} else if(isStartYearEqual(i,j,commandVector)
-				&& isStartMonthEqual(i,j,commandVector)
-				&& isStartDayEqual(i, j, commandVector)
-				&& isStartTimeHourEqual(i, j, commandVector)
-				&& isStartTimeMinLarger(i,j,commandVector)){
-					commandVector = switchPlace(i,j,commandVector);
+			} else if(EqualYearButMonthLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthButDayLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthDayButHourLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
+			} else if(EqualYearMonthDayHourButMinLarger(i, j, commandVector)){
+				commandVector = switchPlace(i, j, commandVector);
 			}
 		}
 	}
 	return commandVector;
+}
+bool storageSort::EqualYearButMonthLarger(int i, int j, std::vector<task> commandVector){
+	return(isStartYearEqual(i, j, commandVector) 
+		&& isStartMonthLarger(i, j, commandVector));
+}
+
+bool storageSort::EqualYearMonthButDayLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i, j, commandVector)
+		&& isStartDayLarger(i, j, commandVector));
+}
+
+bool storageSort::EqualYearMonthDayButHourLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i,j,commandVector)
+		&& isStartDayEqual(i, j, commandVector)
+		&& isStartTimeHourLarger(i, j, commandVector));
+}
+
+
+bool storageSort::EqualYearMonthDayHourButMinLarger(int i, int j, std::vector<task> commandVector){
+
+	return (isStartYearEqual(i,j,commandVector)
+		&& isStartMonthEqual(i,j,commandVector)
+		&& isStartDayEqual(i, j, commandVector)
+		&& isStartTimeHourEqual(i, j, commandVector)
+		&& isStartTimeMinLarger(i,j,commandVector));
 }
 
 

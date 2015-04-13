@@ -43,7 +43,7 @@ public:
 	commandRef getCommandRef();
 	std::vector<std::string> parser::getCommandlineItem(std::string commandLine);
 
-	std::vector<std::string> detokenizeCommandLine(std::string);
+	std::vector<std::string> tokenizeCommandLine(std::string);
 	void checkAndSetTaskType(std::string);
 	std::string constructItem(std::vector<std::string> dataContainer,int startPosition, int endPosition);
 	bool checkCommand(std::string checkCommandInput);

@@ -20,16 +20,62 @@ taskDone::~taskDone(void)
 {
 }
 
+std::vector<task> taskDone::getListDone(){
+	std::vector<task> doneVector;
+	storage newStorage;
+	doneVector = newStorage.readFileJson();
 
+	if(isEmpty(doneVector)){
+		return doneVector;
+	} else {
+		int i;
+		for(i=1; i<= (int) doneVector.size(); i++){
+			if(doneVector[i-1].getIsDone() == false){
+				doneVector.erase(doneVector.begin()+i-1);
+				i=0;
+			}
+		}
+		if(doneVector.empty()){
+			return doneVector;
+		} else{
+			assert(!doneVector.empty());
+			return doneVector;
+		}
+	}
+}
+
+std::vector<task> taskDone::getListUndone(){
+	std::vector<task> undoneVector;
+	std::vector<task> newUndoneVector;
+	storage newStorage;
+	undoneVector = newStorage.readFileJson();
+
+	if(isEmpty(undoneVector)){
+		return undoneVector;
+	} else {
+		int i;
+		for(i=0; i<undoneVector.size();i++){
+			if(undoneVector[i].getIsDone() == false){
+				newUndoneVector.push_back(undoneVector[i]);
+			}
+		}
+		if(newUndoneVector.empty()){
+			return newUndoneVector;
+		} else{
+			assert(!newUndoneVector.empty());
+			return newUndoneVector;
+		}
+	}
+}
 std::string taskDone::markDone(int indexToBeActOn){
 	std::vector<task> storageVector;
 	storage newStorage;
 
 	storageVector = newStorage.readFileJson();
-	if(storageVector.empty()){
+	if(isEmpty(storageVector)){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeActOn < 0 || indexToBeActOn > (int) storageVector.size()){
+	else if(isInvalidIndex(indexToBeActOn,storageVector.size())){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
@@ -58,10 +104,10 @@ std::string taskDone::markUndone(int indexToBeActOn){
 	storage newStorage;
 
 	storageVector = newStorage.readFileJson();
-	if(storageVector.empty()){
+	if(isEmpty(storageVector)){
 		return MESSAGE_ERROR_FILE_IS_EMPTY;
 	}
-	else if(indexToBeActOn < 0 || indexToBeActOn > (int) storageVector.size()){
+	else if(isInvalidIndex(indexToBeActOn,storageVector.size())){
 		return MESSAGE_ERROR_INVALID_INDEX;
 	}
 	else{
@@ -85,59 +131,20 @@ std::string taskDone::markUndone(int indexToBeActOn){
 	}
 }
 
-std::vector<task> taskDone::getListDone(){
-	std::vector<task> doneVector;
-	storage newStorage;
-	doneVector = newStorage.readFileJson();
-
-	if(doneVector.empty()){
-		return doneVector;
-	} else {
-		int i;
-		for(i=1; i<= (int) doneVector.size(); i++){
-			if(doneVector[i-1].getIsDone() == false){
-				doneVector.erase(doneVector.begin()+i-1);
-				i=0;
-			}
-		}
-		if(doneVector.empty()){
-			return doneVector;
-		} else{
-			assert(!doneVector.empty());
-			return doneVector;
-		}
-	}
+bool taskDone::isEmpty(std::vector<task> storageVector){
+	return (storageVector.empty());
 }
 
-std::vector<task> taskDone::getListUndone(){
-	std::vector<task> undoneVector;
-	std::vector<task> newUndoneVector;
-	storage newStorage;
-	undoneVector = newStorage.readFileJson();
 
-	if(undoneVector.empty()){
-		return undoneVector;
-	} else {
-		int i;
-		for(i=0; i<undoneVector.size();i++){
-			if(undoneVector[i].getIsDone() == false){
-				newUndoneVector.push_back(undoneVector[i]);
-			}
-		}
-		if(newUndoneVector.empty()){
-			return newUndoneVector;
-		} else{
-			assert(!newUndoneVector.empty());
-			return newUndoneVector;
-		}
-	}
+bool taskDone::isInvalidIndex(int indexToBeActOn, int size){
+	return (indexToBeActOn < 0 || indexToBeActOn > size);
 }
+
 
 //@author A0116027R
-
 void taskDone::undoDone(taskUndo* taskToBeUndone, std::string results){
 	storage storageFile;
-	
+
 	if(results == MESSAGE_SUCCESS_DONE){
 		taskToBeUndone->setSessionStack(taskToBeUndone->getCurrentStack());
 		taskToBeUndone->insertVector(storageFile.readFileJson());

@@ -1,5 +1,4 @@
 //@author A0114411B
-
 //
 //*******************************************************************************
 //                         Storage.cpp										
@@ -127,7 +126,7 @@ std::vector<task> storage::readFileJson(){
 		newTask.setLocation("");		
 		newTask.setIsDone(false);
 		newTask.setIsClash(false);		
-		
+
 		if(TaskType == "TimedTask"){			
 			//standard
 			newTask.setTaskType(TaskObject["TaskType"].GetString());
