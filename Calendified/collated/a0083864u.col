@@ -3,23 +3,331 @@
 
 
 	/**
-	 * origin: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+	 * origin: D:\SE\Project\Calendified\Library\commandRef.cpp
 	 */
 
-	//	if(isIndex){
-	//		commandReference.setIndexToBeActOn(getItemInInteger(commandLine));
-	//		_taskCommand = commandLine.substr(substringBegin, index - 1);
-	//		commandReference.setCommandAction(_taskCommand);
-	//	}else{
-	//		_taskCommand = getItemsInString(commandLine, NULL);
-	//		commandReference.setCommandAction(_taskCommand);
-	//	}
-	//	commandReference.setTaskTitle(getItemsInString(commandLine, symbolTitle));
-	//	commandReference.setTaskLocation(getItemsInString(commandLine, symbolLocation));
-	//	commandReference.setTime(getItemsInString(commandLine, symbolTime));
-	//	commandReference.setDate(getItemsInString(commandLine, symbolDate));
-	//}else {
-	// End of segment: C:\Users\JINGZHEN\Desktop\main\Calendified\Library\parser.cpp
+#include "commandRef.h"
+
+commandRef::commandRef(void){
+	_taskType = '\0';
+	_time = '\0';
+	_date = '\0';
+	_commandAction = '\0';
+	_taskTitle = '\0';
+	_taskLocation = '\0';
+	_searchItem = '\0';
+	_indexToBeActOn = NULL;
+	_isDone = false;
+}
+
+commandRef::~commandRef(void){
+}
+
+commandRef commandRef::copyTo(){
+	commandRef newRef;
+	newRef.setTaskType(_taskType);
+	newRef.setTime(_time);
+	newRef.setDate(_date);
+	newRef.setTaskLocation(_taskLocation);
+	newRef.setTaskTitle(_taskTitle);
+	newRef.setIndexToBeActOn(_indexToBeActOn);
+	newRef.setIsDone(false);
+	return newRef;
+}
+
+
+	// End of segment: D:\SE\Project\Calendified\Library\commandRef.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\SE\Project\Calendified\Library\commandRef.h
+	 */
+
+#ifndef commandRef_H
+#define commandRef_H
+#pragma once
+
+#include <iostream>
+#include <string>
+#include <ctype.h>
+#include <ctime>
+#include <sstream>
+#include <assert.h>
+
+class commandRef
+{
+private:
+	std::string _taskType; //  FloatingTask, TimedTask, DeadLine
+	std::string _time;
+	std::string _date;
+	std::string _taskTitle;
+	std::string _taskLocation;
+	std::string _searchItem;
+	int _indexToBeActOn;
+	std::string _commandAction;
+	bool _isDone;
+
+public:
+	commandRef(void);
+	~commandRef(void);
+
+	//copy: copy all data into new same type object;
+	commandRef copyTo();	
+	
+	//Getters
+	std::string getTaskType();
+	std::string getTime();
+	std::string getDate();
+	std::string getTaskTitle();
+	std::string getTaskLocation();
+	int getIndexToBeActOn();
+	std::string getSearchItem();
+	std::string getCommandAction();
+	bool getIsDone();
+
+	//Setters
+	void setTaskType(std::string taskType);
+	void setTime(std::string time);
+	void setDate(std::string date);
+	void setTaskTitle(std::string taskTitle);
+	void setTaskLocation(std::string taskLocation);	
+	void setIndexToBeActOn(int indexToBeActOn);
+	void setSearchItem(std::string searchItem);
+	void setCommandAction(std::string commandAction);
+	void setIsDone(bool isDone);
+
+	//toString: format the data in string to store in the file (the format can be changed if wish);
+	std::string dataToString();
+	void stringTodata(std::string dataInString);
+	commandRef compareAndSetTaskData(commandRef oldTaskData);
+};
+
+#endif
+
+	// End of segment: D:\SE\Project\Calendified\Library\commandRef.h
+
+
+
+
+
+	/**
+	 * origin: D:\SE\Project\Calendified\Library\logic.cpp
+	 */
+
+commandType logic::hashCommandAction(std::string commandAction){
+	std::string commandAdd = "add";
+	std::string commandDelete = "delete";
+	std::string commandSearch = "search";
+	std::string commandDisplay = "display";
+	std::string commandDone = "done";
+	std::string commandUndone = "undone";
+	std::string commandEdit = "edit";
+	std::string commandUndo = "undo";
+	std::string commandFlip = "flip";
+	std::string commandSpecify = "specify";
+	std::string commandRedo = "redo";
+	std::string commandToggle = "toggle";
+	std::string commandCheckDone = "checkdone";
+
+	transform(commandAction.begin(),commandAction.end(),commandAction.begin(),tolower);
+
+	if(commandAction.compare(commandAdd) == 0){ 
+		return COMMAND_ADD;
+	}
+	if(commandAction.compare(commandDelete) == 0){ 
+		return COMMAND_DELETE;
+	}
+	if(commandAction.compare(commandSearch) == 0){ 
+		return COMMAND_SEARCH;
+	}
+	if(commandAction.compare(commandDisplay) == 0){ 
+		return COMMAND_DISPLAY;
+	}
+	if(commandAction.compare(commandEdit) == 0){ 
+		return COMMAND_EDIT;
+	}
+	if(commandAction.compare(commandDone) == 0){
+		return COMMAND_DONE;
+	}
+	if(commandAction.compare(commandUndone) == 0){
+		return COMMAND_UNDONE;
+	}
+	if(commandAction.compare(commandUndo) == 0){ 
+		return COMMAND_UNDO;
+	}
+	if(commandAction.compare(commandFlip) == 0){ 
+		return COMMAND_FLIP;
+	}
+	if(commandAction.compare(commandSpecify) == 0){ 
+		return COMMAND_SPECIFY;
+	}
+	if(commandAction.compare(commandRedo) == 0){ 
+		return COMMAND_REDO;
+	}
+	if(commandAction.compare(commandToggle) == 0){ 
+		return COMMAND_TOGGLE;
+	}
+	if(commandAction.compare(commandCheckDone) == 0){ 
+		return COMMAND_DONE;
+	}
+}
+	// End of segment: D:\SE\Project\Calendified\Library\logic.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\SE\Project\Calendified\Library\logic.h
+	 */
+
+enum commandType {
+	COMMAND_ADD, 
+	COMMAND_DELETE, 
+	COMMAND_SEARCH,
+	COMMAND_DISPLAY,
+	COMMAND_EDIT, 
+	COMMAND_DONE,
+	COMMAND_UNDONE,
+	COMMAND_UNDO, 
+	COMMAND_FLIP, 
+	COMMAND_SPECIFY, 
+	COMMAND_REDO, 
+	COMMAND_TOGGLE,
+};
+
+class logic
+{
+private:
+	std::set <std::string> allTasks;
+	commandRef currentCommandReference;
+	
+	
+public:
+	logic(void);
+	~logic(void);
+	storage newStorage;
+	std::string FLIP_CONTENT;
+	
+	//Setters
+	void setCommand(std::string command);
+	void setTitle(std::string title);
+	void setLocation(std::string location);
+	void setDate(std::string date);
+	void setTime(std::string time);
+
+	std::string readCommand(std::string commandLine, int toggleCount, int flipCount);
+    commandType hashCommandAction(std::string commandAction);
+	std::vector<std::string> updateUI(std::string logicResult , int toggleIndex, int flipCount);
+	int updateUIFlipCount();
+};
+
+#endif
+	// End of segment: D:\SE\Project\Calendified\Library\logic.h
+
+
+
+
+
+	/**
+	 * origin: D:\SE\Project\Calendified\Library\parser.cpp
+	 */
+
+#include "parser.h"
+
+parser::parser(void){
+}
+
+std::vector<std::string> parser::getCommandlineItem(std::string commandLine){
+
+	char blankSpace = ' ';
+	unsigned int substringBegin = 0;
+	unsigned int substringEnd = 0;
+
+	std::vector<std::string> commandLineItemData;
+	while(substringEnd != std::string::npos){
+		substringEnd = commandLine.find(blankSpace, substringBegin);
+		commandLineItemData.push_back(commandLine.substr(substringBegin,substringEnd - substringBegin));
+		substringBegin = substringEnd + 1;
+
+	}
+	return commandLineItemData;
+
+}
+
+parser::parser(std::string commandLine){
+	bool isSymbol = false;
+	bool isIndex = false;
+	unsigned int substringBegin = 0;
+	int timeDataPosition = 0;
+	int dateDataPosition = 0;
+	// End of segment: D:\SE\Project\Calendified\Library\parser.cpp
+
+
+
+
+
+	/**
+	 * origin: D:\SE\Project\Calendified\Library\parser.h
+	 */
+
+#ifndef PARSER_H
+#define PARSER_H
+#pragma once
+
+#include <iostream>
+#include <sstream>
+#include <ctype.h>
+#include <time.h>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <regex>
+#include "commandRef.h"
+#include "timeAndDate.h"
+
+
+const std::string DATE_DEADLINE_BY =
+	"by";
+const std::string DATE_DEADLINE_DUE =
+	"due";
+const std::string DATE_DEADLINE_BEFORE =
+	"before";
+
+const std::string TIMED_TASK = "TimedTask";
+const std::string FLOATING_TASK = "FloatingTask";
+const std::string DEAD_LINE = "DeadLine";
+
+class parser
+{
+private:
+	std::string _taskCommand;
+	commandRef commandReference;
+
+public:
+	parser(void);
+	parser::parser(std::string commandLine);
+	~parser(void);
+	int getItemInInteger(std::string inputString);
+
+	//Getters
+	std::string getTaskCommand();
+	commandRef getCommandRef();
+	std::vector<std::string> parser::getCommandlineItem(std::string commandLine);
+
+	std::vector<std::string> tokenizeCommandLine(std::string);
+	void checkAndSetTaskType(std::string);
+	std::string constructItem(std::vector<std::string> dataContainer,int startPosition, int endPosition);
+	bool checkCommand(std::string checkCommandInput);
+	int checkDeadlineIndex(std::string commandLine);
+};
+
+#endif
+
+	// End of segment: D:\SE\Project\Calendified\Library\parser.h
 
 
 
